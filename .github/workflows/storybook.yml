@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - develop
+      - develop-mame
       - dev/storybook8 # for testing
   pull_request_target:
 
