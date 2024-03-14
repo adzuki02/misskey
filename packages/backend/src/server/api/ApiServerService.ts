@@ -134,14 +134,7 @@ export class ApiServerService {
 		fastify.post<{ Body: { code: string; } }>('/signup-pending', (request, reply) => this.signupApiService.signupPending(request, reply));
 
 		fastify.get('/v1/instance/peers', async (request, reply) => {
-			const instances = await this.instancesRepository.find({
-				select: ['host'],
-				where: {
-					isSuspended: false,
-				},
-			});
-
-			return instances.map(instance => instance.host);
+			reply.code(404).send();
 		});
 
 		fastify.post<{ Params: { session: string; } }>('/miauth/:session/check', async (request, reply) => {
