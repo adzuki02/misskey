@@ -63,7 +63,7 @@ export default class Stream extends EventEmitter<StreamEvents> {
 		const wsOrigin = origin.replace('http://', 'ws://').replace('https://', 'wss://');
 
 		this.stream = new ReconnectingWebsocket(`${wsOrigin}/streaming?${query}`, '', {
-			minReconnectionDelay: 1, // https://github.com/pladaria/reconnecting-websocket/issues/91
+			minReconnectionDelay: 1000, // https://github.com/pladaria/reconnecting-websocket/issues/91
 			WebSocket: options.WebSocket,
 		});
 		this.stream.addEventListener('open', this.onOpen);
