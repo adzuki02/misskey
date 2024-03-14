@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 */
 import { onMounted, ref, shallowRef, watch, PropType } from 'vue';
 import { Chart } from 'chart.js';
-import { misskeyApiGet } from '@/scripts/misskey-api.js';
+import { misskeyApi, misskeyApiGet } from '@/scripts/misskey-api.js';
 import { defaultStore } from '@/store.js';
 import { useChartTooltip } from '@/scripts/use-chart-tooltip.js';
 import { chartVLine } from '@/scripts/chart-vline.js';
@@ -570,7 +570,7 @@ const fetchDriveFilesChart = async (): Promise<typeof chartData> => {
 };
 
 const fetchInstanceRequestsChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'In',
@@ -592,7 +592,7 @@ const fetchInstanceRequestsChart = async (): Promise<typeof chartData> => {
 };
 
 const fetchInstanceUsersChart = async (total: boolean): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'Users',
@@ -607,7 +607,7 @@ const fetchInstanceUsersChart = async (total: boolean): Promise<typeof chartData
 };
 
 const fetchInstanceNotesChart = async (total: boolean): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'Notes',
@@ -622,7 +622,7 @@ const fetchInstanceNotesChart = async (total: boolean): Promise<typeof chartData
 };
 
 const fetchInstanceFfChart = async (total: boolean): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'Following',
@@ -645,7 +645,7 @@ const fetchInstanceFfChart = async (total: boolean): Promise<typeof chartData> =
 };
 
 const fetchInstanceDriveUsageChart = async (total: boolean): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
 	return {
 		bytes: true,
 		series: [{
@@ -661,7 +661,7 @@ const fetchInstanceDriveUsageChart = async (total: boolean): Promise<typeof char
 };
 
 const fetchInstanceDriveFilesChart = async (total: boolean): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'Drive files',

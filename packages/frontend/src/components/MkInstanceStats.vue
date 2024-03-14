@@ -65,7 +65,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</MkFoldableSection>
 
-	<MkFoldableSection class="item">
+	<MkFoldableSection v-if="$i" class="item">
 		<template #header>Federation</template>
 		<div :class="$style.federation">
 			<div class="pies">
@@ -90,13 +90,14 @@ import MkSelect from '@/components/MkSelect.vue';
 import MkChart from '@/components/MkChart.vue';
 import { useChartTooltip } from '@/scripts/use-chart-tooltip.js';
 import * as os from '@/os.js';
-import { misskeyApiGet } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import MkHeatmap, { type HeatmapSource } from '@/components/MkHeatmap.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import MkRetentionHeatmap from '@/components/MkRetentionHeatmap.vue';
 import MkRetentionLineChart from '@/components/MkRetentionLineChart.vue';
 import { initChart } from '@/scripts/init-chart.js';
+import { $i } from '@/account.js';
 
 initChart();
 
@@ -164,7 +165,8 @@ function createDoughnut(chartEl, tooltip, data) {
 }
 
 onMounted(() => {
-	misskeyApiGet('federation/stats', { limit: 30 }).then(fedStats => {
+	if (!$i) { return; }
+	misskeyApi('federation/stats', { limit: 30 }).then(fedStats => {
 		type ChartData = {
 			name: string,
 			color: string | null,

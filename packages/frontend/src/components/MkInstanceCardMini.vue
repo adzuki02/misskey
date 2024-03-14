@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { ref } from 'vue';
 import * as Misskey from 'misskey-js';
 import MkMiniChart from '@/components/MkMiniChart.vue';
-import { misskeyApiGet } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { getProxiedImageUrlNullable } from '@/scripts/media-proxy.js';
 
 const props = defineProps<{
@@ -27,7 +27,7 @@ const props = defineProps<{
 
 const chartValues = ref<number[] | null>(null);
 
-misskeyApiGet('charts/instance', { host: props.instance.host, limit: 16 + 1, span: 'day' }).then(res => {
+misskeyApi('charts/instance', { host: props.instance.host, limit: 16 + 1, span: 'day' }).then(res => {
 	// 今日のぶんの値はまだ途中の値であり、それも含めると大抵の場合前日よりも下降しているようなグラフになってしまうため今日は弾く
 	res['requests.received'].splice(0, 1);
 	chartValues.value = res['requests.received'];

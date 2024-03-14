@@ -56,13 +56,6 @@ function getInstanceIcon(instance: Misskey.entities.FederationInstance): string 
 misskeyApi('meta', { detail: true }).then(_meta => {
 	meta.value = _meta;
 });
-
-misskeyApiGet('federation/instances', {
-	sort: '+pubSub',
-	limit: 20,
-}).then(_instances => {
-	instances.value = _instances;
-});
 </script>
 
 <style lang="scss" scoped>
