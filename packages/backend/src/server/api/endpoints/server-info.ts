@@ -8,11 +8,12 @@ import si from 'systeminformation';
 import { Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { MetaService } from '@/core/MetaService.js';
+import { createHash } from 'node:crypto';
 
 export const meta = {
 	requireCredential: false,
 	allowGet: true,
-	cacheSec: 60 * 1,
+	cacheSec: 60 * 10,
 
 	tags: ['meta'],
 	res: {
@@ -95,7 +96,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			const fsStats = await si.fsSize();
 
 			return {
-				machine: os.hostname(),
+				machine: createHash('md5').update(os.hostname()).digest('hex'),
 				cpu: {
 					model: os.cpus()[0].model,
 					cores: os.cpus().length,
