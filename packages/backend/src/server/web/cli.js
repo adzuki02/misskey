@@ -21,7 +21,8 @@ window.onload = async () => {
 				},
 				method: 'POST',
 				body: JSON.stringify(data),
-				credentials: 'omit',
+				credentials: 'same-origin',
+				mode: 'same-origin',
 				cache: 'no-cache'
 			}).then(async (res) => {
 				const body = res.status === 204 ? null : await res.json();
