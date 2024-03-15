@@ -6,7 +6,7 @@
 process.env.NODE_ENV = 'test';
 
 import * as assert from 'assert';
-import { channel, clip, cookie, galleryPost, page, play, post, signup, simpleGet, uploadFile } from '../utils.js';
+import { api, channel, clip, galleryPost, page, play, post, relativeFetch, signup, simpleGet, uploadFile } from '../utils.js';
 import type { SimpleGetResponse } from '../utils.js';
 import type * as misskey from 'misskey-js';
 
@@ -169,15 +169,34 @@ describe('Webリソース', () => {
 			status: 401,
 		}));
 
+		const getBullCookie = async (me: misskey.entities.SignupResponse) => {
+			const bullLoginRes = await relativeFetch('/queue/login', { redirect: 'manual' });
+			const [session, signature] = (<string>bullLoginRes.headers.get('set-cookie')).split(';')[0].split('=')[1].split('.');
+
+			await api('miauth/gen-token', {
+				session: session,
+				permission: [],
+			}, me);
+
+			const bullCallbackRes = await relativeFetch(`/queue/login/callback?session=${session}`, {
+				redirect: 'manual',
+				headers: {
+					cookie: `__Secure-session=${session}.${signature}`,
+				},
+			});
+
+			return (<RegExpMatchArray>(<string>bullCallbackRes.headers.get('set-cookie')).match(/(__Secure-token=[^;]+);/))[1];
+		};
+
 		test('はadminでなければGETできない。', async () => await notOk({
 			path,
-			cookie: cookie(bob),
+			cookie: await getBullCookie(bob),
 			status: 403,
 		}));
 
 		test('はadminならGETできる。', async () => await ok({
 			path,
-			cookie: cookie(alice),
+			cookie: await getBullCookie(alice),
 		}));
 	});
 

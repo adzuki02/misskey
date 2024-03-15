@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { randomUUID } from 'node:crypto';
+import { randomUUID, randomBytes } from 'node:crypto';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { Buffer } from 'node:buffer';
 import { Inject, Injectable } from '@nestjs/common';
 import { createBullBoard } from '@bull-board/api';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter.js';
@@ -33,7 +34,7 @@ import { MetaEntityService } from '@/core/entities/MetaEntityService.js';
 import { GalleryPostEntityService } from '@/core/entities/GalleryPostEntityService.js';
 import { ClipEntityService } from '@/core/entities/ClipEntityService.js';
 import { ChannelEntityService } from '@/core/entities/ChannelEntityService.js';
-import type { ChannelsRepository, ClipsRepository, FlashsRepository, GalleryPostsRepository, MiMeta, NotesRepository, PagesRepository, ReversiGamesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
+import type { AccessTokensRepository, ChannelsRepository, ClipsRepository, FlashsRepository, GalleryPostsRepository, MiMeta, NotesRepository, PagesRepository, ReversiGamesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import type Logger from '@/logger.js';
 import { handleRequestRedirectToOmitSearch } from '@/misc/fastify-hook-handlers.js';
 import { bindThis } from '@/decorators.js';
@@ -89,6 +90,9 @@ export class ClientServerService {
 
 		@Inject(DI.reversiGamesRepository)
 		private reversiGamesRepository: ReversiGamesRepository,
+
+		@Inject(DI.accessTokensRepository)
+		private accessTokensRepository: AccessTokensRepository,
 
 		private flashEntityService: FlashEntityService,
 		private userEntityService: UserEntityService,
@@ -192,22 +196,35 @@ export class ClientServerService {
 
 	@bindThis
 	public createServer(fastify: FastifyInstance, options: FastifyPluginOptions, done: (err?: Error) => void) {
-		fastify.register(fastifyCookie, {});
+		fastify.register(fastifyCookie, {
+			secret: Buffer.from(this.config.bullBoardCookieSignKey ?? randomBytes(32).toString('hex'), 'hex'),
+		});
 
 		//#region Bull Dashboard
 		const bullBoardPath = '/queue';
+		const bullBoardCookieName = '__Secure-token';
 
 		// Authenticate
 		fastify.addHook('onRequest', async (request, reply) => {
 			// %71ueueとかでリクエストされたら困るため
 			const url = decodeURI(request.routeOptions.url);
 			if (url === bullBoardPath || url.startsWith(bullBoardPath + '/')) {
-				const token = request.cookies.token;
-				if (token == null) {
+				if (url.startsWith(`${bullBoardPath}/login`)) {
+					return;
+				}
+				const unsignResult = request.unsignCookie(request.cookies[bullBoardCookieName] ?? '');
+				const valid = unsignResult.valid, token = unsignResult.value;
+				if (!valid || token == null) {
 					reply.code(401).send('Login required');
 					return;
 				}
-				const user = await this.usersRepository.findOneBy({ token });
+				const accessToken = await this.accessTokensRepository.findOneBy({ token: token });
+				if (accessToken == null) {
+					reply.code(403).send('No such user');
+					return;
+				}
+				this.accessTokensRepository.update(accessToken.id, { lastUsedAt: new Date() });
+				const user = await this.usersRepository.findOneBy({ id: accessToken.userId });
 				if (user == null) {
 					reply.code(403).send('No such user');
 					return;
@@ -218,6 +235,77 @@ export class ClientServerService {
 					return;
 				}
 			}
+		});
+
+		const bullBoardTempCookieName = '__Secure-session';
+		const miauthParams = new URLSearchParams({
+			name: encodeURIComponent('Bull Dashboard'),
+			icon: encodeURIComponent(`${this.config.url}/favicon.ico`),
+			callback: encodeURIComponent(`${this.config.url}${bullBoardPath}/login/callback`),
+		}).toString();
+
+		fastify.get(`${bullBoardPath}/login`, async (request, reply) => {
+			const uuid = crypto.randomUUID();
+			reply.setCookie(bullBoardTempCookieName, uuid, {
+				path: bullBoardPath,
+				httpOnly: true,
+				secure: true,
+				sameSite: true,
+				signed: true,
+				maxAge: 600,
+			});
+			return reply.redirect(302, `/miauth/${uuid}?${miauthParams}`);
+		});
+
+		fastify.get<{
+			Querystring: { session?: string; };
+		}>(`${bullBoardPath}/login/callback`, async(request, reply) => {
+			const unsignResult = request.unsignCookie(request.cookies[bullBoardTempCookieName] ?? '');
+			const valid = unsignResult.valid, sessionCookie = unsignResult.value;
+			const sessionParam = request.query.session;
+
+			reply.clearCookie(bullBoardTempCookieName, {
+				path: bullBoardPath,
+				httpOnly: true,
+				secure: true,
+				sameSite: true,
+			});
+
+			if (valid && sessionCookie?.length === 36 && sessionCookie === sessionParam) {
+				try {
+					const check = await fetch(`http://localhost:${this.config.port}/api/miauth/${sessionParam}/check`, {
+						method: 'POST',
+					});
+					const { ok, token } = await check.json();
+					if (ok) {
+						reply.setCookie(bullBoardCookieName, token, {
+							path: bullBoardPath,
+							httpOnly: true,
+							secure: true,
+							sameSite: true,
+							signed: true,
+							maxAge: 31536000,
+						});
+						return reply.redirect(302, bullBoardPath);
+					} else {
+						reply.code(401).send('MiAuth Failed');
+					}
+				} catch (e) {
+					reply.code(401).send('MiAuth Failed');
+				}
+			} else {
+				reply.code(401).send('MiAuth Failed');
+			}
+		});
+
+		fastify.get(`${bullBoardPath}/login/logout`, async(request, reply) => {
+			reply.clearCookie(bullBoardCookieName, {
+				path: bullBoardPath,
+				httpOnly: true,
+				secure: true,
+				sameSite: true,
+			});
+			reply.code(200).send('Logged out');
 		});
 
 		const serverAdapter = new FastifyAdapter();
@@ -233,6 +321,16 @@ export class ClientServerService {
 				this.webhookDeliverQueue,
 			].map(q => new BullMQAdapter(q)),
 			serverAdapter,
+			options: {
+				uiConfig: {
+					miscLinks: [
+						{
+							text: 'Logout',
+							url: `${bullBoardPath}/login/logout`,
+						},
+					],
+				},
+			},
 		});
 
 		serverAdapter.setBasePath(bullBoardPath);
