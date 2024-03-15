@@ -13,7 +13,7 @@ import type { OnApplicationShutdown } from '@nestjs/common';
 
 const ev = new Xev();
 
-const interval = 2000;
+const interval = 10000;
 
 const roundCpu = (num: number) => Math.round(num * 1000) / 1000;
 const round = (num: number) => Math.round(num * 10) / 10;
