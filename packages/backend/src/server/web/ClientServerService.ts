@@ -197,7 +197,7 @@ export class ClientServerService {
 	@bindThis
 	public createServer(fastify: FastifyInstance, options: FastifyPluginOptions, done: (err?: Error) => void) {
 		fastify.register(fastifyCookie, {
-			secret: Buffer.from(this.config.bullBoardCookieSignKey ?? randomBytes(256)),
+			secret: Buffer.from(this.config.bullBoardCookieSignKey ?? randomBytes(32).toString('hex'), 'hex'),
 		});
 
 		//#region Bull Dashboard
@@ -287,6 +287,8 @@ export class ClientServerService {
 							maxAge: 31536000,
 						});
 						return reply.redirect(302, bullBoardPath);
+					} else {
+						reply.code(401).send('MiAuth Failed');
 					}
 				} catch (e) {
 					reply.code(401).send('MiAuth Failed');
@@ -319,6 +321,16 @@ export class ClientServerService {
 				this.webhookDeliverQueue,
 			].map(q => new BullMQAdapter(q)),
 			serverAdapter,
+			options: {
+				uiConfig: {
+					miscLinks: [
+						{
+							text: 'Logout',
+							url: `${bullBoardPath}/login/logout`,
+						},
+					],
+				},
+			},
 		});
 
 		serverAdapter.setBasePath(bullBoardPath);
