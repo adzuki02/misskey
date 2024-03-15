@@ -257,10 +257,12 @@ export class ClientServerService {
 			return reply.redirect(302, `/miauth/${uuid}?${miauthParams}`);
 		});
 
-		fastify.get(`${bullBoardPath}/login/callback`, async(request, reply) => {
+		fastify.get<{
+			Querystring: { session?: string; };
+		}>(`${bullBoardPath}/login/callback`, async(request, reply) => {
 			const unsignResult = request.unsignCookie(request.cookies[bullBoardTempCookieName] ?? '');
 			const valid = unsignResult.valid, sessionCookie = unsignResult.value;
-			const sessionParam = new URL(decodeURI(request.url), this.config.url).searchParams.get('session');
+			const sessionParam = request.query.session;
 
 			reply.clearCookie(bullBoardTempCookieName, {
 				path: bullBoardPath,
