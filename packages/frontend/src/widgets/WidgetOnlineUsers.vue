@@ -45,7 +45,7 @@ const { widgetProps, configure } = useWidgetPropsManager(name,
 const onlineUsersCount = ref(0);
 
 const tick = () => {
-	misskeyApiGet('get-online-users-count').then(res => {
+	misskeyApi('get-online-users-count').then(res => {
 		onlineUsersCount.value = res.count;
 	});
 };
