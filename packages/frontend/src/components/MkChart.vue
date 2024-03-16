@@ -708,7 +708,7 @@ const fetchPerUserNotesChart = async (): Promise<typeof chartData> => {
 };
 
 const fetchPerUserPvChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/user/pv', { userId: props.args?.user?.id, limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/user/pv', { userId: props.args?.user?.id, limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'Unique PV (user)',
