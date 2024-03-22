@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<template #header><i class="ti ti-users"></i> Following</template>
 			<XFollowing :user="user"/>
 		</MkFoldableSection>
-		<MkFoldableSection v-if="iAmModerator || $i?.id == user.id" class="item">
+		<MkFoldableSection v-if="user.host == null && (iAmModerator || $i?.id == user.id)" class="item">
 			<template #header><i class="ti ti-eye"></i> PV</template>
 			<XPv :user="user"/>
 		</MkFoldableSection>
