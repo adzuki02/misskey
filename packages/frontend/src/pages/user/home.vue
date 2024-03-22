@@ -131,7 +131,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkLazy>
 						<XFiles :key="user.id" :user="user"/>
 					</MkLazy>
-					<MkLazy>
+					<MkLazy v-if="iAmModerator || $i?.id == user.id">
 						<XActivity :key="user.id" :user="user"/>
 					</MkLazy>
 				</template>
@@ -144,7 +144,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
 			<XFiles :key="user.id" :user="user"/>
-			<XActivity :key="user.id" :user="user"/>
+			<XActivity v-if="iAmModerator || $i?.id == user.id" :key="user.id" :user="user"/>
 		</div>
 	</div>
 </MkSpacer>

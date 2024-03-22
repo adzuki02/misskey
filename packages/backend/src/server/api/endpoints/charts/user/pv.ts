@@ -34,7 +34,7 @@ export const meta = {
 			code: 'ACCESS_DENIED',
 			id: '47954d96-c146-4f5a-b145-ffc5252b906c',
 		},
-	}
+	},
 } as const;
 
 export const paramDef = {
