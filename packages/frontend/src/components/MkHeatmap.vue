@@ -128,7 +128,7 @@ async function renderChart() {
 				backgroundColor(c) {
 					// @ts-expect-error TS(2339)
 					const value = c.dataset.data[c.dataIndex].v as number;
-					let a = (value - min) / max;
+					let a = max === 0 ? 0 : (value - min) / max;
 					if (value !== 0) { // 0でない限りは完全に不可視にはしない
 						a = Math.max(a, 0.05);
 					}
