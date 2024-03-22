@@ -119,6 +119,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 						throw new ApiError(meta.errors.forbidden);
 					}
 				}
+			} else if (user.host != null && me == null) {
+				throw new ApiError(meta.errors.forbidden);
 			}
 
 			const query = this.queryService.makePaginationQuery(this.followingsRepository.createQueryBuilder('following'), ps.sinceId, ps.untilId)
