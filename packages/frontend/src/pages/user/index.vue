@@ -13,14 +13,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSpacer v-else-if="tab === 'notes'" key="notes" :contentMax="800" style="padding-top: 0">
 					<XTimeline :user="user"/>
 				</MkSpacer>
-				<XActivity v-else-if="tab === 'activity'" key="activity" :user="user"/>
+				<XActivity v-else-if="tab === 'activity' && (iAmModerator || $i?.id === user.id)" key="activity" :user="user"/>
 				<XAchievements v-else-if="tab === 'achievements'" key="achievements" :user="user"/>
-				<XReactions v-else-if="tab === 'reactions'" key="reactions" :user="user"/>
-				<XClips v-else-if="tab === 'clips'" key="clips" :user="user"/>
-				<XLists v-else-if="tab === 'lists'" key="lists" :user="user"/>
-				<XPages v-else-if="tab === 'pages'" key="pages" :user="user"/>
-				<XFlashs v-else-if="tab === 'flashs'" key="flashs" :user="user"/>
-				<XGallery v-else-if="tab === 'gallery'" key="gallery" :user="user"/>
+				<XReactions v-else-if="tab === 'reactions' && (iAmModerator || $i?.id === user.id || user.publicReactions)" key="reactions" :user="user"/>
+				<XClips v-else-if="tab === 'clips' && user.host === null" key="clips" :user="user"/>
+				<XLists v-else-if="tab === 'lists' && user.host === null" key="lists" :user="user"/>
+				<XPages v-else-if="tab === 'pages' && user.host === null" key="pages" :user="user"/>
+				<XFlashs v-else-if="tab === 'flashs' && user.host === null" key="flashs" :user="user"/>
+				<XGallery v-else-if="tab === 'gallery' && user.host === null" key="gallery" :user="user"/>
 				<XRaw v-else-if="tab === 'raw'" key="raw" :user="user"/>
 			</MkHorizontalSwipe>
 		</div>
@@ -37,7 +37,7 @@ import { acct as getAcct } from '@/filters/user.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
+import { $i, iAmModerator } from '@/account.js';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));
@@ -88,11 +88,11 @@ const headerTabs = computed(() => user.value ? [{
 	key: 'notes',
 	title: i18n.ts.notes,
 	icon: 'ti ti-pencil',
-}, {
+}, ...(iAmModerator || $i?.id === user.value.id ? [{
 	key: 'activity',
 	title: i18n.ts.activity,
 	icon: 'ti ti-chart-line',
-}, ...(user.value.host == null ? [{
+}] : []), ...(user.value.host == null ? [{
 	key: 'achievements',
 	title: i18n.ts.achievements,
 	icon: 'ti ti-medal',
@@ -100,27 +100,27 @@ const headerTabs = computed(() => user.value ? [{
 	key: 'reactions',
 	title: i18n.ts.reaction,
 	icon: 'ti ti-mood-happy',
-}] : [], {
+}] : [], ...(user.value.host == null ? [{
 	key: 'clips',
 	title: i18n.ts.clips,
 	icon: 'ti ti-paperclip',
-}, {
+}] : []), ...(user.value.host == null ? [{
 	key: 'lists',
 	title: i18n.ts.lists,
 	icon: 'ti ti-list',
-}, {
+}] : []), ...(user.value.host == null ? [{
 	key: 'pages',
 	title: i18n.ts.pages,
 	icon: 'ti ti-news',
-}, {
+}] : []), ...(user.value.host == null ? [{
 	key: 'flashs',
 	title: 'Play',
 	icon: 'ti ti-player-play',
-}, {
+}] : []), ...(user.value.host == null ? [{
 	key: 'gallery',
 	title: i18n.ts.gallery,
 	icon: 'ti ti-icons',
-}, {
+}] : []), {
 	key: 'raw',
 	title: 'Raw',
 	icon: 'ti ti-code',
