@@ -44,9 +44,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkTimeline src="local"/>
 		</div>
 	</div>
-	<div :class="$style.panel">
-		<XActiveUsersChart/>
-	</div>
 </div>
 </template>
 

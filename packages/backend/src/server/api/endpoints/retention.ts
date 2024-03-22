@@ -11,7 +11,9 @@ import { DI } from '@/di-symbols.js';
 export const meta = {
 	tags: ['users'],
 
-	requireCredential: false,
+	requireCredential: true,
+
+	kind: 'read:account',
 
 	res: {
 		type: 'array',
@@ -41,9 +43,6 @@ export const meta = {
 			],
 		},
 	},
-
-	allowGet: true,
-	cacheSec: 60 * 60,
 } as const;
 
 export const paramDef = {
