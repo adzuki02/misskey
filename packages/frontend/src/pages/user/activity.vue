@@ -6,15 +6,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkSpacer :contentMax="700">
 	<div class="_gaps">
-		<MkFoldableSection class="item">
+		<MkFoldableSection v-if="iAmModerator || $i?.id == user.id" class="item">
 			<template #header><i class="ti ti-activity"></i> Heatmap</template>
 			<MkHeatmap :user="user" :src="'notes'"/>
 		</MkFoldableSection>
-		<MkFoldableSection class="item">
+		<MkFoldableSection v-if="iAmModerator || $i?.id == user.id" class="item">
 			<template #header><i class="ti ti-pencil"></i> Notes</template>
 			<XNotes :user="user"/>
 		</MkFoldableSection>
-		<MkFoldableSection class="item">
+		<MkFoldableSection v-if="iAmModerator || $i?.id == user.id" class="item">
 			<template #header><i class="ti ti-users"></i> Following</template>
 			<XFollowing :user="user"/>
 		</MkFoldableSection>

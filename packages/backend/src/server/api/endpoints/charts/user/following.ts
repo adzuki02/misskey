@@ -3,19 +3,38 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { getJsonSchema } from '@/core/chart/core.js';
 import PerUserFollowingChart from '@/core/chart/charts/per-user-following.js';
 import { schema } from '@/core/chart/charts/entities/per-user-following.js';
+import type { UsersRepository } from '@/models/_.js';
+import { DI } from '@/di-symbols.js';
+import { RoleService } from '@/core/RoleService.js';
+import { ApiError } from '../../../error.js';
 
 export const meta = {
 	tags: ['charts', 'users', 'following'],
 
 	res: getJsonSchema(schema),
 
-	allowGet: true,
-	cacheSec: 60 * 60,
+	requireCredential: true,
+
+	kind: 'read:account',
+
+	errors: {
+		noSuchUser: {
+			message: 'No such user.',
+			code: 'NO_SUCH_USER',
+			id: '3b4cc707-d0b3-493d-b722-85bae07eac17',
+		},
+
+		accessDenied: {
+			message: 'Access denied.',
+			code: 'ACCESS_DENIED',
+			id: '47954d96-c146-4f5a-b145-ffc5252b906c',
+		},
+	},
 } as const;
 
 export const paramDef = {
@@ -32,9 +51,23 @@ export const paramDef = {
 @Injectable()
 export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
+		@Inject(DI.usersRepository)
+		private usersRepository: UsersRepository,
+
 		private perUserFollowingChart: PerUserFollowingChart,
+		private roleService: RoleService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			const user = await this.usersRepository.findOneBy({ id: ps.userId });
+
+			if (user == null) {
+				throw new ApiError(meta.errors.noSuchUser);
+			}
+
+			if (!await this.roleService.isModerator(me) && (user.id !== me.id)) {
+				throw new ApiError(meta.errors.accessDenied);
+			}
+
 			return await this.perUserFollowingChart.getChart(ps.span, ps.limit, ps.offset ? new Date(ps.offset) : null, ps.userId);
 		});
 	}
