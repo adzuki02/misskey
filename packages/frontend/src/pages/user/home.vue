@@ -110,14 +110,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<b>{{ number(user.notesCount) }}</b>
 							<span>{{ i18n.ts.notes }}</span>
 						</MkA>
-						<MkA v-if="isFollowingVisibleForMe(user)" :to="userPage(user, 'following')">
+						<MkA v-if="isFollowingVisibleForMe(user) && (user.host == null || $i)" :to="userPage(user, 'following')">
 							<b>{{ number(user.followingCount) }}</b>
 							<span>{{ i18n.ts.following }}</span>
 						</MkA>
-						<MkA v-if="isFollowersVisibleForMe(user)" :to="userPage(user, 'followers')">
+						<div v-else>
+							<b>{{ number(user.followingCount) }}</b>
+							<span>{{ i18n.ts.following }}</span>
+						</div>
+						<MkA v-if="isFollowersVisibleForMe(user) && (user.host == null || $i)" :to="userPage(user, 'followers')">
 							<b>{{ number(user.followersCount) }}</b>
 							<span>{{ i18n.ts.followers }}</span>
 						</MkA>
+						<div v-else>
+							<b>{{ number(user.followersCount) }}</b>
+							<span>{{ i18n.ts.followers }}</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -555,7 +563,7 @@ onUnmounted(() => {
 					padding: 24px;
 					border-top: solid 0.5px var(--divider);
 
-					> a {
+					> a, div {
 						flex: 1;
 						text-align: center;
 
