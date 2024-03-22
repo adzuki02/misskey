@@ -14,18 +14,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<option value="federation">{{ i18n.ts._charts.federation }}</option>
 						<option value="ap-request">{{ i18n.ts._charts.apRequest }}</option>
 					</optgroup>
-					<optgroup :label="i18n.ts.users">
+					<optgroup v-if="$i" :label="i18n.ts.users">
 						<option value="users">{{ i18n.ts._charts.usersIncDec }}</option>
 						<option value="users-total">{{ i18n.ts._charts.usersTotal }}</option>
 						<option value="active-users">{{ i18n.ts._charts.activeUsers }}</option>
 					</optgroup>
-					<optgroup :label="i18n.ts.notes">
+					<optgroup v-if="$i" :label="i18n.ts.notes">
 						<option value="notes">{{ i18n.ts._charts.notesIncDec }}</option>
 						<option value="local-notes">{{ i18n.ts._charts.localNotesIncDec }}</option>
 						<option value="remote-notes">{{ i18n.ts._charts.remoteNotesIncDec }}</option>
 						<option value="notes-total">{{ i18n.ts._charts.notesTotal }}</option>
 					</optgroup>
-					<optgroup :label="i18n.ts.drive">
+					<optgroup v-if="$i" :label="i18n.ts.drive">
 						<option value="drive-files">{{ i18n.ts._charts.filesIncDec }}</option>
 						<option value="drive">{{ i18n.ts._charts.storageUsageIncDec }}</option>
 					</optgroup>
@@ -44,8 +44,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkFoldableSection class="item">
 		<template #header>Active users heatmap</template>
 		<MkSelect v-model="heatmapSrc" style="margin: 0 0 12px 0;">
-			<option value="active-users">Active users</option>
-			<option value="notes">Notes</option>
+			<option v-if="$i" value="active-users">Active users</option>
+			<option v-if="$i" value="notes">Notes</option>
 			<option value="ap-requests-inbox-received">AP Requests: inboxReceived</option>
 			<option value="ap-requests-deliver-succeeded">AP Requests: deliverSucceeded</option>
 			<option value="ap-requests-deliver-failed">AP Requests: deliverFailed</option>
@@ -55,7 +55,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</MkFoldableSection>
 
-	<MkFoldableSection class="item">
+	<MkFoldableSection v-if="$i" class="item">
 		<template #header>Retention rate</template>
 		<div class="_panel" :class="$style.retentionHeatmap">
 			<MkRetentionHeatmap/>
@@ -103,8 +103,8 @@ initChart();
 
 const chartLimit = 500;
 const chartSpan = ref<'hour' | 'day'>('hour');
-const chartSrc = ref('active-users');
-const heatmapSrc = ref<HeatmapSource>('active-users');
+const chartSrc = ref('federation');
+const heatmapSrc = ref<HeatmapSource>('ap-requests-inbox-received');
 const subDoughnutEl = shallowRef<HTMLCanvasElement>();
 const pubDoughnutEl = shallowRef<HTMLCanvasElement>();
 

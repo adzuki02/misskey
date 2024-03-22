@@ -353,7 +353,7 @@ const fetchApRequestChart = async (): Promise<typeof chartData> => {
 };
 
 const fetchNotesChart = async (type: string): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/notes', { limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/notes', { limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'All',
@@ -400,7 +400,7 @@ const fetchNotesChart = async (type: string): Promise<typeof chartData> => {
 };
 
 const fetchNotesTotalChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/notes', { limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/notes', { limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'Combined',
@@ -419,7 +419,7 @@ const fetchNotesTotalChart = async (): Promise<typeof chartData> => {
 };
 
 const fetchUsersChart = async (total: boolean): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/users', { limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/users', { limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'Combined',
@@ -447,7 +447,7 @@ const fetchUsersChart = async (total: boolean): Promise<typeof chartData> => {
 };
 
 const fetchActiveUsersChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/active-users', { limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/active-users', { limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'Read & Write',
@@ -499,7 +499,7 @@ const fetchActiveUsersChart = async (): Promise<typeof chartData> => {
 };
 
 const fetchDriveChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/drive', { limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/drive', { limit: props.limit, span: props.span });
 	return {
 		bytes: true,
 		series: [{
@@ -535,7 +535,7 @@ const fetchDriveChart = async (): Promise<typeof chartData> => {
 };
 
 const fetchDriveFilesChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/drive', { limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/drive', { limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'All',
