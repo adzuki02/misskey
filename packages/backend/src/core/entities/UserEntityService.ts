@@ -388,7 +388,7 @@ export class UserEntityService implements OnModuleInit {
 						.then(xs => xs.length === 0 ? null : xs.filter(isNotNull))
 					: null,
 				createdAt: this.idService.parse(user.id).date.toISOString(),
-				updatedAt: user.updatedAt ? user.updatedAt.toISOString() : null,
+				updatedAt: user.updatedAt && me ? user.updatedAt.toISOString() : null,
 				lastFetchedAt: user.lastFetchedAt ? user.lastFetchedAt.toISOString() : null,
 				bannerUrl: user.bannerUrl,
 				bannerBlurhash: user.bannerBlurhash,
@@ -403,7 +403,7 @@ export class UserEntityService implements OnModuleInit {
 				verifiedLinks: profile!.verifiedLinks,
 				followersCount: followersCount ?? 0,
 				followingCount: followingCount ?? 0,
-				notesCount: user.notesCount,
+				notesCount: me ? user.notesCount : 0,
 				pinnedNoteIds: pins.map(pin => pin.noteId),
 				pinnedNotes: this.noteEntityService.packMany(pins.map(pin => pin.note!), me, {
 					detail: true,

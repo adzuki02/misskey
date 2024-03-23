@@ -107,7 +107,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 					<div class="status">
 						<MkA :to="userPage(user)">
-							<b>{{ number(user.notesCount) }}</b>
+							<b>{{ $i || user.host ? number(user.notesCount) : i18n.ts.private }}</b>
 							<span>{{ i18n.ts.notes }}</span>
 						</MkA>
 						<MkA v-if="isFollowingVisibleForMe(user) && ($i || user.host == null)" :to="userPage(user, 'following')">
