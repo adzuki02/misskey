@@ -622,10 +622,10 @@ describe('ユーザー', () => {
 	test.each([
 		{ label: 'ID指定で自分自身を', parameters: (): object => ({ userId: alice.id }), user: (): User => alice, type: meDetailed },
 		{ label: 'ID指定で他人を', parameters: (): object => ({ userId: alice.id }), user: (): User => bob, type: userDetailedNotMeWithRelations },
-		{ label: 'ID指定かつ未認証', parameters: (): object => ({ userId: alice.id }), user: undefined, type: userDetailedNotMe },
+		{ label: 'ID指定かつ未認証', parameters: (): object => ({ userId: alice.id }), user: undefined, type: (user: User) => Object.assign(userDetailedNotMe(user), { notesCount: 0, updatedAt: null }) },
 		{ label: '@指定で自分自身を', parameters: (): object => ({ username: alice.username }), user: (): User => alice, type: meDetailed },
 		{ label: '@指定で他人を', parameters: (): object => ({ username: alice.username }), user: (): User => bob, type: userDetailedNotMeWithRelations },
-		{ label: '@指定かつ未認証', parameters: (): object => ({ username: alice.username }), user: undefined, type: userDetailedNotMe },
+		{ label: '@指定かつ未認証', parameters: (): object => ({ username: alice.username }), user: undefined, type: (user: User) => Object.assign(userDetailedNotMe(user), { notesCount: 0, updatedAt: null }) },
 	] as const)('を取得することができる（$label）', async ({ parameters, user, type }) => {
 		const response = await successfulApiCall({ endpoint: 'users/show', parameters: parameters(), user: user?.() });
 		const expected = type(alice);
