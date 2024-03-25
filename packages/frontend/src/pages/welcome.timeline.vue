@@ -39,10 +39,6 @@ const notes = ref<Misskey.entities.Note[]>([]);
 const isScrolling = ref(false);
 const scrollEl = shallowRef<HTMLElement>();
 
-misskeyApiGet('notes/featured').then(_notes => {
-	notes.value = _notes;
-});
-
 onUpdated(() => {
 	if (!scrollEl.value) return;
 	const container = getScrollContainer(scrollEl.value);

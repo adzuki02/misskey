@@ -15,9 +15,9 @@ import { CacheService } from '@/core/CacheService.js';
 export const meta = {
 	tags: ['notes'],
 
-	requireCredential: false,
-	allowGet: true,
-	cacheSec: 3600,
+	requireCredential: true,
+
+	kind: 'read:account',
 
 	res: {
 		type: 'array',
