@@ -34,7 +34,7 @@ export class SecurityHeaderService {
 		this.reportTo = `{"group":"csp-enforce","max_age":31536000,"endpoints":[{"url":"${this.config.contentSecurityPolicy.reportTo.enforce ?? ''}"}],"include_subdomains":true},{"group":"csp-reportonly","max_age":31536000,"endpoints":[{"url":"${(this.config.contentSecurityPolicy.reportTo.reportOnly ?? this.config.contentSecurityPolicy.reportTo.enforce) ?? ''}"}],"include_subdomains":true}`;
 
 		const baseHashes = [
-			createHash('sha256').update(`var VERSION = "${this.config.version}";\nvar CLIENT_ENTRY = "${this.config.clientEntry.file}";\n`).digest().toString('base64'),
+			createHash('sha256').update(`var VERSION = "${this.config.version}";\nvar CLIENT_ENTRY = "${(this.config.clientEntry as any).file}";\n`).digest().toString('base64'),
 			createHash('sha256').update(readFileSync(`${_dirname}/web/boot.js`)).digest().toString('base64'),
 		];
 
