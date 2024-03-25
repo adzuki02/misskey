@@ -145,7 +145,7 @@ export class NodeinfoServerService {
 				.header('Cache-Control', 'public, max-age=600')
 				.header('Access-Control-Allow-Headers', 'Accept')
 				.header('Access-Control-Allow-Methods', 'GET, OPTIONS')
-				.header('Access-Control-Allow-Origin', '*')
+				.header('Access-Control-Allow-Origin', this.config.url)
 				.header('Access-Control-Expose-Headers', 'Vary');
 			return { version: '2.1', ...base };
 		});
@@ -162,7 +162,7 @@ export class NodeinfoServerService {
 				.header('Cache-Control', 'public, max-age=600')
 				.header('Access-Control-Allow-Headers', 'Accept')
 				.header('Access-Control-Allow-Methods', 'GET, OPTIONS')
-				.header('Access-Control-Allow-Origin', '*')
+				.header('Access-Control-Allow-Origin', this.config.url)
 				.header('Access-Control-Expose-Headers', 'Vary');
 			return { version: '2.0', ...base };
 		});

@@ -56,7 +56,7 @@ export class WellKnownServerService {
 		fastify.addHook('onRequest', (request, reply, done) => {
 			reply.header('Access-Control-Allow-Headers', 'Accept');
 			reply.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
-			reply.header('Access-Control-Allow-Origin', '*');
+			reply.header('Access-Control-Allow-Origin', this.config.url);
 			reply.header('Access-Control-Expose-Headers', 'Vary');
 			done();
 		});
