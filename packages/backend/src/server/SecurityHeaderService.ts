@@ -14,25 +14,14 @@ const inlineStyleLaxedPolicy = "default-src 'none'; style-src 'unsafe-inline'; b
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
 
-type InlineHashes = {
-	base: {
-		script: string[];
-	};
-	bios: {
-		script: string[];
-	};
-	cli: {
-		script: string[];
-	};
-};
-
 @Injectable()
 export class SecurityHeaderService {
 	private imgSrc: string;
 	private frameSrc: string;
 	private reportTo: string;
-	private inlineHashes: InlineHashes;
 	private basePolicy: string;
+	private biosPolicy: string;
+	private cliPolicy: string;
 
 	constructor(
 		@Inject(DI.config)
@@ -44,26 +33,24 @@ export class SecurityHeaderService {
 
 		this.reportTo = `{"group":"csp-enforce","max_age":31536000,"endpoints":[{"url":"${this.config.contentSecurityPolicy.reportTo.enforce ?? ''}"}],"include_subdomains":true},{"group":"csp-reportonly","max_age":31536000,"endpoints":[{"url":"${(this.config.contentSecurityPolicy.reportTo.reportOnly ?? this.config.contentSecurityPolicy.reportTo.enforce) ?? ''}"}],"include_subdomains":true}`;
 
-		this.inlineHashes = {
-			base: {
-				script: [
-					createHash('sha256').update(`var VERSION = "${this.config.version}";\nvar CLIENT_ENTRY = "${this.config.clientEntry.file}";\n`).digest().toString('base64'),
-					createHash('sha256').update(readFileSync(`${_dirname}/web/boot.js`)).digest().toString('base64'),
-				],
-			},
-			bios: {
-				script: [
-					createHash('sha256').update(readFileSync(`${_dirname}/web/bios.js`)).digest().toString('base64'),
-				],
-			},
-			cli: {
-				script: [
-					createHash('sha256').update(readFileSync(`${_dirname}/web/cli.js`)).digest().toString('base64'),
-				],
-			},
-		};
+		const baseHashes = [
+			createHash('sha256').update(`var VERSION = "${this.config.version}";\nvar CLIENT_ENTRY = "${this.config.clientEntry.file}";\n`).digest().toString('base64'),
+			createHash('sha256').update(readFileSync(`${_dirname}/web/boot.js`)).digest().toString('base64'),
+		];
 
-		this.basePolicy = `default-src 'self'; object-src 'none'; script-src 'self' 'sha256-${this.inlineHashes.base.script[0]}' 'sha256-${this.inlineHashes.base.script[1]}' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://hcaptcha.com https://*.hcaptcha.com https://challenges.cloudflare.com 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com; img-src ${this.imgSrc}; connect-src 'self' https://hcaptcha.com https://*.hcaptcha.com; frame-src ${this.frameSrc}; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; report-to csp-enforce`;
+		this.basePolicy = `default-src 'self'; object-src 'none'; script-src 'self' 'sha256-${baseHashes[0]}' 'sha256-${baseHashes[1]}' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://hcaptcha.com https://*.hcaptcha.com https://challenges.cloudflare.com 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com; img-src ${this.imgSrc}; connect-src 'self' https://hcaptcha.com https://*.hcaptcha.com; frame-src ${this.frameSrc}; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; report-to csp-enforce`;
+
+		const biosHashes = [
+			createHash('sha256').update(readFileSync(`${_dirname}/web/bios.js`)).digest().toString('base64'),
+		];
+
+		this.biosPolicy = `default-src 'none'; script-src 'sha256-${biosHashes[0]}'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce`;
+
+		const cliHashes = [
+			createHash('sha256').update(readFileSync(`${_dirname}/web/cli.js`)).digest().toString('base64'),
+		];
+
+		this.cliPolicy = `default-src 'none'; script-src 'sha256-${cliHashes[0]}'; style-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce`;
 	}
 
 	@bindThis
@@ -197,10 +184,10 @@ export class SecurityHeaderService {
 					policy = `default-src 'none'; style-src 'unsafe-inline'; img-src ${this.imgSrc}; base-uri 'none'; form-action 'none'; report-to csp-enforce`;
 					break;
 				case '/bios':
-					policy = `default-src 'none'; script-src 'sha256-${this.inlineHashes.bios.script[0]}'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce`;
+					policy = this.biosPolicy;
 					break;
 				case '/cli':
-					policy = `default-src 'none'; script-src 'sha256-${this.inlineHashes.cli.script[0]}'; style-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce`;
+					policy = this.cliPolicy;
 					break;
 				case '/flush':
 					policy = "default-src 'none'; script-src 'sha256-q8KD3Hi5Ef5r5b+pW1/LB/ZQAZOBRI2MHx55DbTE5gs='; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce"; // eslint-disable-line quotes
