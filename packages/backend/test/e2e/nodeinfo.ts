@@ -6,13 +6,13 @@
 process.env.NODE_ENV = 'test';
 
 import * as assert from 'assert';
-import { relativeFetch } from '../utils.js';
+import { origin, relativeFetch } from '../utils.js';
 
 describe('nodeinfo', () => {
 	test('nodeinfo 2.1', async () => {
 		const res = await relativeFetch('nodeinfo/2.1');
 		assert.ok(res.ok);
-		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), '*');
+		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), origin);
 
 		const nodeInfo = await res.json() as any;
 		assert.strictEqual(nodeInfo.software.name, 'misskey');
@@ -21,7 +21,7 @@ describe('nodeinfo', () => {
 	test('nodeinfo 2.0', async () => {
 		const res = await relativeFetch('nodeinfo/2.0');
 		assert.ok(res.ok);
-		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), '*');
+		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), origin);
 
 		const nodeInfo = await res.json() as any;
 		assert.strictEqual(nodeInfo.software.name, 'misskey');

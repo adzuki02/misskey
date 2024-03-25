@@ -95,6 +95,15 @@ type Source = {
 	pidFile: string;
 
 	bullBoardCookieSignKey?: string;
+
+	contentSecurityPolicy?: {
+		imgSrc?: string[];
+		frameSrc?: string[];
+		reportTo?: {
+			enforce?: string;
+			reportOnly?: string;
+		};
+	};
 };
 
 export type Config = {
@@ -173,6 +182,14 @@ export type Config = {
 	deactivateAntennaThreshold: number;
 	pidFile: string;
 	bullBoardCookieSignKey: string | undefined;
+	contentSecurityPolicy: {
+		imgSrc: string[];
+		frameSrc: string[];
+		reportTo: {
+			enforce?: string;
+			reportOnly?: string;
+		};
+	};
 };
 
 const _filename = fileURLToPath(import.meta.url);
@@ -269,6 +286,14 @@ export function loadConfig(): Config {
 		deactivateAntennaThreshold: config.deactivateAntennaThreshold ?? (1000 * 60 * 60 * 24 * 7),
 		pidFile: config.pidFile,
 		bullBoardCookieSignKey: config.bullBoardCookieSignKey,
+		contentSecurityPolicy: {
+			imgSrc: config.contentSecurityPolicy?.imgSrc ?? [],
+			frameSrc: config.contentSecurityPolicy?.frameSrc ?? [],
+			reportTo: {
+				enforce: config.contentSecurityPolicy?.reportTo?.enforce,
+				reportOnly: config.contentSecurityPolicy?.reportTo?.reportOnly,
+			},
+		},
 	};
 }
 

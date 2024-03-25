@@ -19,7 +19,7 @@ describe('.well-known', () => {
 	test('nodeinfo', async () => {
 		const res = await relativeFetch('.well-known/nodeinfo');
 		assert.ok(res.ok);
-		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), '*');
+		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), origin);
 
 		const nodeInfo = await res.json();
 		assert.deepStrictEqual(nodeInfo, {
@@ -46,7 +46,7 @@ describe('.well-known', () => {
 
 		const res = await relativeFetch(`.well-known/webfinger?resource=acct:alice@${host}`);
 		assert.ok(res.ok);
-		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), '*');
+		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), origin);
 		assert.strictEqual(res.headers.get('Access-Control-Expose-Headers'), 'Vary');
 		assert.strictEqual(res.headers.get('Vary'), 'Accept');
 
@@ -72,13 +72,13 @@ describe('.well-known', () => {
 	test('host-meta', async () => {
 		const res = await relativeFetch('.well-known/host-meta');
 		assert.ok(res.ok);
-		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), '*');
+		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), origin);
 	});
 
 	test('host-meta.json', async () => {
 		const res = await relativeFetch('.well-known/host-meta.json');
 		assert.ok(res.ok);
-		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), '*');
+		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), origin);
 
 		const hostMeta = await res.json();
 		assert.deepStrictEqual(hostMeta, {
@@ -93,7 +93,7 @@ describe('.well-known', () => {
 	test('oauth-authorization-server', async () => {
 		const res = await relativeFetch('.well-known/oauth-authorization-server');
 		assert.ok(res.ok);
-		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), '*');
+		assert.strictEqual(res.headers.get('Access-Control-Allow-Origin'), origin);
 
 		const serverInfo = await res.json() as any;
 		assert.strictEqual(serverInfo.issuer, origin);
