@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<{
 	tag?: string;
 	initialTab?: string;
 }>(), {
-	initialTab: 'users',
+	initialTab: $i ? 'featured' : 'users',
 });
 
 const tab = ref(props.initialTab);
