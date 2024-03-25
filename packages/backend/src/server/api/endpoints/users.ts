@@ -9,6 +9,7 @@ import { Endpoint } from '@/server/api/endpoint-base.js';
 import { QueryService } from '@/core/QueryService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { DI } from '@/di-symbols.js';
+import { ApiError } from '../error.js';
 
 export const meta = {
 	tags: ['users'],
@@ -22,6 +23,14 @@ export const meta = {
 			type: 'object',
 			optional: false, nullable: false,
 			ref: 'UserDetailed',
+		},
+	},
+
+	errors: {
+		accessDenied: {
+			message: 'Access denied.',
+			code: 'ACCESS_DENIED',
+			id: '1f52fa0c-0873-436b-9888-df7ca85679d0',
 		},
 	},
 } as const;
@@ -54,6 +63,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private queryService: QueryService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			if (me == null && ps.origin !== 'local') {
+				throw new ApiError(meta.errors.accessDenied);
+			}
+
 			const query = this.usersRepository.createQueryBuilder('user')
 				.where('user.isExplorable = TRUE')
 				.andWhere('user.isSuspended = FALSE');

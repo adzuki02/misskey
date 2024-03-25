@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFoldableSection>
 		</template>
 	</div>
-	<div v-else>
+	<div v-else-if="$i">
 		<MkFoldableSection ref="tagsEl" :foldable="true" :expanded="false" class="_margin">
 			<template #header><i class="ti ti-hash ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularTags }}</template>
 
@@ -59,6 +59,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFoldableSection>
 		</template>
 	</div>
+	<div v-else>
+		<div class="_fullinfo">
+			<img :src="infoImageUrl" class="_ghost"/>
+			<div>{{ i18n.ts.nothing }}</div>
+		</div>
+	</div>
 </MkSpacer>
 </template>
 
@@ -70,6 +76,8 @@ import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import MkTab from '@/components/MkTab.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
+import { $i } from '@/account.js';
+import { infoImageUrl } from '@/instance.js';
 
 const props = defineProps<{
 	tag?: string;
