@@ -348,12 +348,6 @@ export class ClientServerService {
 			},
 		});
 
-		fastify.addHook('onRequest', (request, reply, done) => {
-			// クリックジャッキング防止のためiFrameの中に入れられないようにする
-			reply.header('X-Frame-Options', 'DENY');
-			done();
-		});
-
 		//#region vite assets
 		if (this.config.clientManifestExists) {
 			fastify.register((fastify, options, done) => {
@@ -428,8 +422,6 @@ export class ClientServerService {
 				return;
 			}
 
-			reply.header('Content-Security-Policy', 'default-src \'none\'; style-src \'unsafe-inline\'');
-
 			return await reply.sendFile(path, `${_dirname}/../../../../../fluent-emojis/dist/`, {
 				maxAge: ms('30 days'),
 			});
@@ -442,8 +434,6 @@ export class ClientServerService {
 				reply.code(404);
 				return;
 			}
-
-			reply.header('Content-Security-Policy', 'default-src \'none\'; style-src \'unsafe-inline\'');
 
 			return await reply.sendFile(path, `${_dirname}/../../../node_modules/@discordapp/twemoji/dist/svg/`, {
 				maxAge: ms('30 days'),
@@ -487,7 +477,6 @@ export class ClientServerService {
 				.png()
 				.toBuffer();
 
-			reply.header('Content-Security-Policy', 'default-src \'none\'; style-src \'unsafe-inline\'');
 			reply.header('Cache-Control', 'max-age=2592000');
 			reply.header('Content-Type', 'image/png');
 			return buffer;
@@ -614,10 +603,6 @@ export class ClientServerService {
 					: [];
 
 				reply.header('Cache-Control', 'public, max-age=15');
-				if (profile.preventAiLearning) {
-					reply.header('X-Robots-Tag', 'noimageai');
-					reply.header('X-Robots-Tag', 'noai');
-				}
 				return await reply.view('user', {
 					user, profile, me,
 					avatarUrl: user.avatarUrl ?? this.userEntityService.getIdenticonUrl(user),
@@ -662,10 +647,6 @@ export class ClientServerService {
 				const profile = await this.userProfilesRepository.findOneByOrFail({ userId: note.userId });
 				const meta = await this.metaService.fetch();
 				reply.header('Cache-Control', 'public, max-age=15');
-				if (profile.preventAiLearning) {
-					reply.header('X-Robots-Tag', 'noimageai');
-					reply.header('X-Robots-Tag', 'noai');
-				}
 				return await reply.view('note', {
 					note: _note,
 					profile,
@@ -703,10 +684,6 @@ export class ClientServerService {
 				} else {
 					reply.header('Cache-Control', 'private, max-age=0, must-revalidate');
 				}
-				if (profile.preventAiLearning) {
-					reply.header('X-Robots-Tag', 'noimageai');
-					reply.header('X-Robots-Tag', 'noai');
-				}
 				return await reply.view('page', {
 					page: _page,
 					profile,
@@ -729,10 +706,6 @@ export class ClientServerService {
 				const profile = await this.userProfilesRepository.findOneByOrFail({ userId: flash.userId });
 				const meta = await this.metaService.fetch();
 				reply.header('Cache-Control', 'public, max-age=15');
-				if (profile.preventAiLearning) {
-					reply.header('X-Robots-Tag', 'noimageai');
-					reply.header('X-Robots-Tag', 'noai');
-				}
 				return await reply.view('flash', {
 					flash: _flash,
 					profile,
@@ -755,10 +728,6 @@ export class ClientServerService {
 				const profile = await this.userProfilesRepository.findOneByOrFail({ userId: clip.userId });
 				const meta = await this.metaService.fetch();
 				reply.header('Cache-Control', 'public, max-age=15');
-				if (profile.preventAiLearning) {
-					reply.header('X-Robots-Tag', 'noimageai');
-					reply.header('X-Robots-Tag', 'noai');
-				}
 				return await reply.view('clip', {
 					clip: _clip,
 					profile,
@@ -779,10 +748,6 @@ export class ClientServerService {
 				const profile = await this.userProfilesRepository.findOneByOrFail({ userId: post.userId });
 				const meta = await this.metaService.fetch();
 				reply.header('Cache-Control', 'public, max-age=15');
-				if (profile.preventAiLearning) {
-					reply.header('X-Robots-Tag', 'noimageai');
-					reply.header('X-Robots-Tag', 'noai');
-				}
 				return await reply.view('gallery-post', {
 					post: _post,
 					profile,

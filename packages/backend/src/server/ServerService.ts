@@ -32,6 +32,7 @@ import { FileServerService } from './FileServerService.js';
 import { ClientServerService } from './web/ClientServerService.js';
 import { OpenApiServerService } from './api/openapi/OpenApiServerService.js';
 import { OAuth2ProviderService } from './oauth/OAuth2ProviderService.js';
+import { SecurityHeaderService } from './SecurityHeaderService.js';
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -66,6 +67,7 @@ export class ServerService implements OnApplicationShutdown {
 		private globalEventService: GlobalEventService,
 		private loggerService: LoggerService,
 		private oauth2ProviderService: OAuth2ProviderService,
+		private securityHeaderService: SecurityHeaderService,
 	) {
 		this.logger = this.loggerService.getLogger('server', 'gray', false);
 	}
@@ -86,6 +88,8 @@ export class ServerService implements OnApplicationShutdown {
 				done();
 			});
 		}
+
+		this.securityHeaderService.attach(fastify);
 
 		// Register raw-body parser for ActivityPub HTTP signature validation.
 		await fastify.register(fastifyRawBody, {
@@ -128,8 +132,6 @@ export class ServerService implements OnApplicationShutdown {
 				host: (host == null || host === '.') ? IsNull() : host,
 				name: name,
 			});
-
-			reply.header('Content-Security-Policy', 'default-src \'none\'; style-src \'unsafe-inline\'');
 
 			if (emoji == null) {
 				if ('fallback' in request.query) {
