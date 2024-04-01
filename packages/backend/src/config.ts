@@ -97,7 +97,7 @@ type Source = {
 	bullBoardCookieSignKey?: string;
 
 	contentSecurityPolicy?: {
-		imgSrc?: string[];
+		imgAndMediaSrc?: string[];
 		frameSrc?: string[];
 		reportTo?: {
 			enforce?: string;
@@ -183,13 +183,13 @@ export type Config = {
 	pidFile: string;
 	bullBoardCookieSignKey: string | undefined;
 	contentSecurityPolicy: {
-		imgSrc: string[];
+		imgAndMediaSrc: string[];
 		frameSrc: string[];
 		reportTo: {
 			enforce?: string;
 			reportOnly?: string;
 		};
-	};
+	} | undefined;
 };
 
 const _filename = fileURLToPath(import.meta.url);
@@ -286,12 +286,12 @@ export function loadConfig(): Config {
 		deactivateAntennaThreshold: config.deactivateAntennaThreshold ?? (1000 * 60 * 60 * 24 * 7),
 		pidFile: config.pidFile,
 		bullBoardCookieSignKey: config.bullBoardCookieSignKey,
-		contentSecurityPolicy: {
-			imgSrc: config.contentSecurityPolicy?.imgSrc ?? [],
-			frameSrc: config.contentSecurityPolicy?.frameSrc ?? [],
+		contentSecurityPolicy: config.contentSecurityPolicy === undefined ? undefined : {
+			imgAndMediaSrc: config.contentSecurityPolicy.imgAndMediaSrc ?? [],
+			frameSrc: config.contentSecurityPolicy.frameSrc ?? [],
 			reportTo: {
-				enforce: config.contentSecurityPolicy?.reportTo?.enforce,
-				reportOnly: config.contentSecurityPolicy?.reportTo?.reportOnly,
+				enforce: config.contentSecurityPolicy.reportTo?.enforce,
+				reportOnly: config.contentSecurityPolicy.reportTo?.reportOnly,
 			},
 		},
 	};
