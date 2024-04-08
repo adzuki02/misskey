@@ -103,7 +103,7 @@ export class PushNotificationService implements OnApplicationShutdown {
 				userId,
 				dateTime: (new Date()).getTime(),
 			}), {
-				proxy: this.config.proxy,
+				proxy: this.config.proxy === undefined ? undefined : typeof this.config.proxy === 'string' ? this.config.proxy : { host: this.config.proxy.hostname, port: this.config.proxy.port, headers: {} },
 			}).catch((err: any) => {
 				//swLogger.info(err.statusCode);
 				//swLogger.info(err.headers);

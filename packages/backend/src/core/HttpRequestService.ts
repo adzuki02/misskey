@@ -79,6 +79,7 @@ export class HttpRequestService {
 				maxSockets,
 				maxFreeSockets: 256,
 				scheduling: 'lifo',
+				// @ts-expect-error eslint-disable-line @typescript-eslint/ban-ts-comment
 				proxy: config.proxy,
 				localAddress: config.outgoingAddress,
 			})
@@ -91,6 +92,7 @@ export class HttpRequestService {
 				maxSockets,
 				maxFreeSockets: 256,
 				scheduling: 'lifo',
+				// @ts-expect-error eslint-disable-line @typescript-eslint/ban-ts-comment
 				proxy: config.proxy,
 				localAddress: config.outgoingAddress,
 			})
