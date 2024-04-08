@@ -6,7 +6,8 @@
 import { Inject, Injectable, OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
 import * as Redis from 'ioredis';
 import { ModuleRef } from '@nestjs/core';
-import type { UserListMembershipsRepository } from '@/models/_.js';
+import { IsNull } from 'typeorm';
+import type { FollowingsRepository, UserListMembershipsRepository } from '@/models/_.js';
 import type { MiUser } from '@/models/User.js';
 import type { MiUserList } from '@/models/UserList.js';
 import type { MiUserListMembership } from '@/models/UserListMembership.js';
@@ -39,6 +40,9 @@ export class UserListService implements OnApplicationShutdown, OnModuleInit {
 
 		@Inject(DI.userListMembershipsRepository)
 		private userListMembershipsRepository: UserListMembershipsRepository,
+
+		@Inject(DI.followingsRepository)
+		private followingsRepository: FollowingsRepository,
 
 		private userEntityService: UserEntityService,
 		private idService: IdService,
@@ -111,9 +115,20 @@ export class UserListService implements OnApplicationShutdown, OnModuleInit {
 
 		// このインスタンス内にこのリモートユーザーをフォローしているユーザーがいなくても投稿を受け取るためにダミーのユーザーがフォローしたということにする
 		if (this.userEntityService.isRemoteUser(target)) {
-			const proxy = await this.proxyAccountService.fetch();
-			if (proxy) {
-				this.queueService.createFollowJob([{ from: { id: proxy.id }, to: { id: target.id } }]);
+			// リスト追加時にローカルにフォロワーがいればダミーユーザーによるフォローは行わない
+			// ローカルのフォロワーがいなくなった場合に投稿を受け取れなくなるが気にしないことにする
+			const hasLocalFollower = await this.followingsRepository.exists({
+				where: {
+					followerId: target.id,
+					followeeHost: IsNull(),
+				},
+			});
+
+			if (!hasLocalFollower) {
+				const proxy = await this.proxyAccountService.fetch();
+				if (proxy) {
+					this.queueService.createFollowJob([{ from: { id: proxy.id }, to: { id: target.id } }]);
+				}
 			}
 		}
 	}
