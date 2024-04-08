@@ -59,7 +59,7 @@ type Source = {
 
 	publishTarballInsteadOfProvideRepositoryUrl?: boolean;
 
-	proxy?: string;
+	proxy?: string | { protocol: string, hostname: string, port: number };
 	proxySmtp?: string;
 	proxyBypassHosts?: string[];
 
@@ -137,7 +137,7 @@ export type Config = {
 		index: string;
 		scope?: 'local' | 'global' | string[];
 	} | undefined;
-	proxy: string | undefined;
+	proxy: string | { protocol: string, hostname: string, port: number } | undefined;
 	proxySmtp: string | undefined;
 	proxyBypassHosts: string[] | undefined;
 	allowedPrivateNetworks: string[] | undefined;
