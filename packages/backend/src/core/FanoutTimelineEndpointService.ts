@@ -149,7 +149,7 @@ export class FanoutTimelineEndpointService {
 				if (ps.allowPartial ? redisTimeline.length !== 0 : redisTimeline.length >= ps.limit) {
 					// 十分Redisからとれた
 					const result = redisTimeline.slice(0, ps.limit);
-					if (shouldPrepend) result.reverse();
+					// if (shouldPrepend) result.reverse();
 					return result;
 				}
 			}
