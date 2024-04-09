@@ -44,7 +44,7 @@ export class EndedPollNotificationProcessorService {
 			.andWhere('user.host IS NULL')
 			.getMany();
 
-		const userIds = [...new Set([note.userId, ...votes.map(v => v.userId)])];
+		const userIds = [...new Set([...(note.userHost === null ? [note.userId] : []), ...votes.map(v => v.userId)])];
 
 		for (const userId of userIds) {
 			this.notificationService.createNotification(userId, 'pollEnded', {
