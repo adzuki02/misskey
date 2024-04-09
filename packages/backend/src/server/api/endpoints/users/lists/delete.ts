@@ -6,6 +6,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { UserListsRepository } from '@/models/_.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
+import { FanoutTimelineService } from '@/core/FanoutTimelineService.js';
 import { DI } from '@/di-symbols.js';
 import { ApiError } from '../../../error.js';
 
@@ -40,6 +41,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	constructor(
 		@Inject(DI.userListsRepository)
 		private userListsRepository: UserListsRepository,
+		private fanoutTimelineService: FanoutTimelineService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const userList = await this.userListsRepository.findOneBy({
@@ -52,6 +54,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			}
 
 			await this.userListsRepository.delete(userList.id);
+
+			await this.fanoutTimelineService.purge(`userListTimeline:${ps.listId}`);
+			await this.fanoutTimelineService.purge(`userListTimelineWithFiles:${ps.listId}`);
 		});
 	}
 }
