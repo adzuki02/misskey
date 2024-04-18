@@ -77,6 +77,7 @@ export class SecurityHeaderService {
 			if (secFetchSite === 'same-site' || secFetchSite === 'cross-site') {
 				/* eslint-disable no-empty */
 				if (secFetchMode === 'navigate' && secFetchDest === 'document') {
+				} else if (secFetchMode === 'navigate' && secFetchDest === 'empty') {
 				} else if (request.routeOptions.url === '/_info_card_' && secFetchMode === 'navigate' && secFetchDest === 'iframe') {
 				} else if (request.routeOptions.url === '/favicon.ico' && secFetchDest === 'image') {
 				} else {
