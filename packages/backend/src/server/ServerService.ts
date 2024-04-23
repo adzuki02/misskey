@@ -77,6 +77,7 @@ export class ServerService implements OnApplicationShutdown {
 		const fastify = Fastify({
 			trustProxy: true,
 			logger: false,
+			maxParamLength: 170,
 		});
 		this.#fastify = fastify;
 
