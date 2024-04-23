@@ -76,8 +76,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			await this.userListService.removeMember(user, userList);
 
-			await fanoutTimelineService.purge(`userListTimeline:${ps.listId}`);
-			await fanoutTimelineService.purge(`userListTimelineWithFiles:${ps.listId}`);
+			await Promise.allSettled([
+				fanoutTimelineService.purge(`userListTimeline:${ps.listId}`),
+				fanoutTimelineService.purge(`userListTimelineWithFiles:${ps.listId}`),
+			]);
 		});
 	}
 }
