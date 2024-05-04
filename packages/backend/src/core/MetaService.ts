@@ -143,10 +143,10 @@ export class MetaService implements OnApplicationShutdown {
 			});
 		}
 
-		if (data.enableFanoutTimeline === false) {
-			if (!before || before.enableFanoutTimeline === true) {
-				this.fanoutTimelineService.purgeAll();
-			}
+		if (data.enableFanoutTimeline === false && (!before || before.enableFanoutTimeline === true)) {
+			this.fanoutTimelineService.purgeAll();
+		} else if (data.enableFanoutTimeline === true && before?.enableFanoutTimeline === false) {
+			this.fanoutTimelineService.purgeAll();
 		}
 
 		this.globalEventService.publishInternalEvent('metaUpdated', updated);
