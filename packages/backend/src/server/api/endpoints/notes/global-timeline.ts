@@ -90,10 +90,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.withRenotes === false) {
 				query.andWhere(new Brackets(qb => {
-					qb.where('note.renoteId IS NULL');
+					qb.orWhere('note.renoteId IS NULL');
 					qb.orWhere(new Brackets(qb => {
-						qb.where('note.text IS NOT NULL');
+						qb.orWhere('note.text IS NOT NULL');
 						qb.orWhere('note.fileIds != \'{}\'');
+						qb.orWhere('note.hasPoll IS TRUE');
 					}));
 				}));
 			}

@@ -97,6 +97,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					sinceId,
 					limit: ps.limit,
 					withFiles: ps.withFiles,
+					withRenotes: ps.withRenotes,
 					withReplies: ps.withReplies,
 				}, me);
 
@@ -128,6 +129,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					sinceId,
 					limit,
 					withFiles: ps.withFiles,
+					withRenotes: ps.withRenotes,
 					withReplies: ps.withReplies,
 				}, me),
 			});
@@ -147,6 +149,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		untilId: string | null,
 		limit: number,
 		withFiles: boolean,
+		withRenotes: boolean,
 		withReplies: boolean,
 	}, me: MiLocalUser | null) {
 		const query = this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note'),
@@ -165,6 +168,17 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 		if (ps.withFiles) {
 			query.andWhere('note.fileIds != \'{}\'');
+		}
+
+		if (ps.withRenotes === false) {
+			query.andWhere(new Brackets(qb => {
+				qb.orWhere('note.renoteId IS NULL');
+				qb.orWhere(new Brackets(qb => {
+					qb.orWhere('note.text IS NOT NULL');
+					qb.orWhere('note.fileIds != \'{}\'');
+					qb.orWhere('note.hasPoll IS TRUE');
+				}));
+			}));
 		}
 
 		if (!ps.withReplies) {
