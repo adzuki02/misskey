@@ -9,7 +9,6 @@ import { Endpoint } from '@/server/api/endpoint-base.js';
 import { GetterService } from '@/server/api/GetterService.js';
 import { DI } from '@/di-symbols.js';
 import { UserListService } from '@/core/UserListService.js';
-import { FanoutTimelineService } from '@/core/FanoutTimelineService.js';
 import { ApiError } from '../../../error.js';
 
 export const meta = {
@@ -55,7 +54,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 		private userListService: UserListService,
 		private getterService: GetterService,
-		private fanoutTimelineService: FanoutTimelineService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			// Fetch the list
@@ -75,11 +73,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			});
 
 			await this.userListService.removeMember(user, userList);
-
-			await Promise.allSettled([
-				fanoutTimelineService.purge(`userListTimeline:${ps.listId}`),
-				fanoutTimelineService.purge(`userListTimelineWithFiles:${ps.listId}`),
-			]);
 		});
 	}
 }

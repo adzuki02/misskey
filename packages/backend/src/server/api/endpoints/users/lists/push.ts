@@ -9,7 +9,6 @@ import type { UserListsRepository, UserListMembershipsRepository, BlockingsRepos
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { GetterService } from '@/server/api/GetterService.js';
 import { UserListService } from '@/core/UserListService.js';
-import { FanoutTimelineService } from '@/core/FanoutTimelineService.js';
 import { DI } from '@/di-symbols.js';
 import { ApiError } from '../../../error.js';
 
@@ -85,7 +84,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 		private getterService: GetterService,
 		private userListService: UserListService,
-		private fanoutTimelineService: FanoutTimelineService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			// Fetch the list
@@ -137,11 +135,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 				throw err;
 			}
-
-			await Promise.allSettled([
-				fanoutTimelineService.purge(`userListTimeline:${ps.listId}`),
-				fanoutTimelineService.purge(`userListTimelineWithFiles:${ps.listId}`),
-			]);
 		});
 	}
 }
