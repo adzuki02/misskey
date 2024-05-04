@@ -8,6 +8,7 @@ import * as Redis from 'ioredis';
 import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
 import { IdService } from '@/core/IdService.js';
+import type { Config } from '@/config.js';
 
 export type FanoutTimelineName =
 	// home timeline
@@ -43,6 +44,9 @@ export class FanoutTimelineService {
 	constructor(
 		@Inject(DI.redisForTimelines)
 		private redisForTimelines: Redis.Redis,
+
+		@Inject(DI.config)
+		private config: Config,
 
 		private idService: IdService,
 	) {
@@ -110,5 +114,17 @@ export class FanoutTimelineService {
 	@bindThis
 	public purge(name: FanoutTimelineName) {
 		return this.redisForTimelines.del('list:' + name);
+	}
+
+	@bindThis
+	public purgeAll() {
+		const keyPrefixLen = (this.config.redisForTimelines.keyPrefix as string).length;
+		this.redisForTimelines.keys(`${this.config.redisForTimelines.keyPrefix}list:*`).then(
+			listKeys => {
+				if (listKeys.length > 0) {
+					this.redisForTimelines.del(listKeys.map(key => key.slice(keyPrefixLen)));
+				}
+			},
+		);
 	}
 }
