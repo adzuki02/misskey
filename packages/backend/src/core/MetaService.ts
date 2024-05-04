@@ -13,6 +13,7 @@ import { bindThis } from '@/decorators.js';
 import type { GlobalEvents } from '@/core/GlobalEventService.js';
 import { FeaturedService } from '@/core/FeaturedService.js';
 import type { OnApplicationShutdown } from '@nestjs/common';
+import { FanoutTimelineService } from '@/core/FanoutTimelineService.js';
 
 @Injectable()
 export class MetaService implements OnApplicationShutdown {
@@ -28,6 +29,7 @@ export class MetaService implements OnApplicationShutdown {
 
 		private featuredService: FeaturedService,
 		private globalEventService: GlobalEventService,
+		private fanoutTimelineService: FanoutTimelineService,
 	) {
 		//this.onMessage = this.onMessage.bind(this);
 
@@ -139,6 +141,12 @@ export class MetaService implements OnApplicationShutdown {
 					this.featuredService.removeHashtagsFromRanking(hiddenTag);
 				}
 			});
+		}
+
+		if (data.enableFanoutTimeline === false && (!before || before.enableFanoutTimeline === true)) {
+			this.fanoutTimelineService.purgeAll();
+		} else if (data.enableFanoutTimeline === true && before?.enableFanoutTimeline === false) {
+			this.fanoutTimelineService.purgeAll();
 		}
 
 		this.globalEventService.publishInternalEvent('metaUpdated', updated);

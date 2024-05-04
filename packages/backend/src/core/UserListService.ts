@@ -77,6 +77,7 @@ export class UserListService implements OnApplicationShutdown, OnModuleInit {
 					const members = await this.membersCache.get(userListId);
 					if (members) {
 						members.add(memberId);
+						this.membersCache.set(userListId, members);
 					}
 					break;
 				}
@@ -85,6 +86,7 @@ export class UserListService implements OnApplicationShutdown, OnModuleInit {
 					const members = await this.membersCache.get(userListId);
 					if (members) {
 						members.delete(memberId);
+						this.membersCache.set(userListId, members);
 					}
 					break;
 				}

@@ -16,6 +16,7 @@ import { QueryService } from '@/core/QueryService.js';
 import { MiLocalUser } from '@/models/User.js';
 import { MetaService } from '@/core/MetaService.js';
 import { FanoutTimelineEndpointService } from '@/core/FanoutTimelineEndpointService.js';
+import { UserListService } from '@/core/UserListService.js';
 import { ApiError } from '../../error.js';
 
 export const meta = {
@@ -85,6 +86,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private fanoutTimelineEndpointService: FanoutTimelineEndpointService,
 		private queryService: QueryService,
 		private metaService: MetaService,
+		private userListService: UserListService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const untilId = ps.untilId ?? (ps.untilDate ? this.idService.gen(ps.untilDate!) : null);
@@ -118,6 +120,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				await this.noteEntityService.packMany(timeline, me);
 			}
 
+			const listMembers = await this.userListService.membersCache.fetch(list.id);
+
 			const timeline = await this.fanoutTimelineEndpointService.timeline({
 				untilId,
 				sinceId,
@@ -128,6 +132,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				redisTimelines: ps.withFiles ? [`userListTimelineWithFiles:${list.id}`] : [`userListTimeline:${list.id}`],
 				alwaysIncludeMyNotes: true,
 				excludePureRenotes: !ps.withRenotes,
+				noteFilter: note => {
+					if (!listMembers.has(note.userId)) {
+						return false;
+					}
+
+					return true;
+				},
 				dbFallback: async (untilId, sinceId, limit) => await this.getFromDb(list, {
 					untilId,
 					sinceId,
