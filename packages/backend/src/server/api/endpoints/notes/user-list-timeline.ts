@@ -238,6 +238,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				qb.orWhere(new Brackets(qb => {
 					qb.orWhere('note.text IS NOT NULL');
 					qb.orWhere('note.fileIds != \'{}\'');
+					qb.orWhere('note.hasPoll IS TRUE');
 				}));
 			}));
 		}
