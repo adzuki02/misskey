@@ -196,6 +196,10 @@ export default class Stream extends EventEmitter<StreamEvents> {
 		this.stream.send('h');
 	}
 
+	public reconnect(): void {
+		this.stream.reconnect();
+	}
+
 	/**
 	 * Close this connection
 	 */

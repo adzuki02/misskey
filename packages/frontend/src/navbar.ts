@@ -13,6 +13,7 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { ui } from '@/config.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
+import { useStream } from '@/stream.js';
 
 export const navbarItemDef = reactive({
 	notifications: {
@@ -169,6 +170,13 @@ export const navbarItemDef = reactive({
 		icon: 'ti ti-refresh',
 		action: (ev) => {
 			location.reload();
+		},
+	},
+	reconnect: {
+		title: i18n.ts.reconnect,
+		icon: 'ti ti-refresh',
+		action: (ev) => {
+			useStream().reconnect();
 		},
 	},
 	profile: {
