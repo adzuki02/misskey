@@ -2861,6 +2861,8 @@ export class Stream extends EventEmitter<StreamEvents> {
     heartbeat(): void;
     // (undocumented)
     ping(): void;
+    // (undocumented)
+    reconnect(): void;
     // Warning: (ae-forgotten-export) The symbol "SharedConnection" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)

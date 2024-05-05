@@ -1361,6 +1361,10 @@ export interface Locale extends ILocale {
      */
     "reload": string;
     /**
+     * 再接続
+     */
+    "reconnect": string;
+    /**
      * なにもしない
      */
     "doNothing": string;

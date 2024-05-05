@@ -4,11 +4,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="hasDisconnected && defaultStore.state.serverDisconnectedBehavior === 'quiet'" :class="$style.root" class="_panel _shadow" @click="resetDisconnected">
+<div v-if="hasDisconnected && defaultStore.state.serverDisconnectedBehavior === 'quiet'" :class="$style.root" class="_panel _shadow">
 	<div><i class="ti ti-alert-triangle"></i> {{ i18n.ts.disconnectedFromServer }}</div>
 	<div :class="$style.command" class="_buttons">
-		<MkButton small primary @click="reload">{{ i18n.ts.reload }}</MkButton>
-		<MkButton small>{{ i18n.ts.doNothing }}</MkButton>
+		<MkButton small primary @click="reconnect">{{ i18n.ts.reconnect }}</MkButton>
+		<MkButton small @click="resetDisconnected">{{ i18n.ts.doNothing }}</MkButton>
 	</div>
 </div>
 </template>
@@ -35,6 +35,10 @@ function resetDisconnected() {
 
 function reload() {
 	location.reload();
+}
+
+function reconnect() {
+	useStream().reconnect();
 }
 
 useStream().on('_disconnected_', onDisconnected);
