@@ -65,6 +65,7 @@ type DecodedReaction = {
 };
 
 const isCustomEmojiRegexp = /^:([\w+-]+)(?:@\.)?:$/;
+const isRemoteCustomEmojiRegexp = /^:([\w+-]+)@([\w.-]+):$/;
 const decodeCustomEmojiRegexp = /^:([\w+-]+)(?:@([\w.-]+))?:$/;
 
 @Injectable()
@@ -122,21 +123,53 @@ export class ReactionService {
 		if (note.reactionAcceptance === 'likeOnly' || ((note.reactionAcceptance === 'likeOnlyForRemote' || note.reactionAcceptance === 'nonSensitiveOnlyForLocalLikeOnlyForRemote') && (user.host != null))) {
 			reaction = '\u2764';
 		} else if (_reaction) {
-			const custom = reaction.match(isCustomEmojiRegexp);
+			let custom = reaction.match(isCustomEmojiRegexp);
+
+			// ローカルユーザーがリアクションする場合、ローカル絵文字の正規表現にマッチしなかったらリモート絵文字の正規表現を試す
+			if (custom === null && user.host === null) {
+				custom = reaction.match(isRemoteCustomEmojiRegexp);
+			}
+
 			if (custom) {
 				const reacterHost = this.utilityService.toPunyNullable(user.host);
 
 				const name = custom[1];
-				const emoji = reacterHost == null
+				let emoji = reacterHost == null
 					? (await this.customEmojiService.localEmojisCache.fetch()).get(name)
 					: await this.emojisRepository.findOneBy({
 						host: reacterHost,
 						name,
 					});
 
+				// リモートの絵文字を指定したが同名の絵文字がローカルにある
+				if (emoji !== undefined && reacterHost == null && custom.length === 3) {
+					custom = `:${name}:`.match(isCustomEmojiRegexp) as RegExpMatchArray;
+				}
+
+				// ローカルユーザーがリモートの絵文字を使用する
+				if (emoji === undefined && reacterHost == null && custom.length === 3) {
+					const reactionHost = this.utilityService.toPuny(custom[2]);
+
+					// リモートの絵文字の使用は既に付いている絵文字リアクションとノート内の絵文字のみに制限しておく
+					if (Object.hasOwn(note.reactions, _reaction) || (note.userHost === reactionHost && note.emojis.includes(name))) {
+						const original = await this.emojisRepository.findOneBy({
+							host: reactionHost,
+							name,
+						});
+
+						if (original) {
+							emoji = original;
+						}
+					}
+				}
+
 				if (emoji) {
 					if (emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.length === 0 || (await this.roleService.getUserRoles(user.id)).some(r => emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.includes(r.id))) {
 						reaction = reacterHost ? `:${name}@${reacterHost}:` : `:${name}:`;
+
+						if (custom.length === 3) {
+							reaction = `:${name}@${this.utilityService.toPuny(custom[2])}:`;
+						}
 
 						// センシティブ
 						if ((note.reactionAcceptance === 'nonSensitiveOnly' || note.reactionAcceptance === 'nonSensitiveOnlyForLocalLikeOnlyForRemote') && emoji.isSensitive) {
@@ -253,7 +286,7 @@ export class ReactionService {
 
 		//#region 配信
 		if (this.userEntityService.isLocalUser(user) && !note.localOnly) {
-			const content = this.apRendererService.addContext(await this.apRendererService.renderLike(record, note));
+			const content = this.apRendererService.addContext(await this.apRendererService.renderLike(record, note, record.reaction.includes('@')));
 			const dm = this.apDeliverManagerService.createDeliverManager(user, content);
 			if (note.userHost !== null) {
 				const reactee = await this.usersRepository.findOneBy({ id: note.userId });
@@ -310,7 +343,7 @@ export class ReactionService {
 
 		//#region 配信
 		if (this.userEntityService.isLocalUser(user) && !note.localOnly) {
-			const content = this.apRendererService.addContext(this.apRendererService.renderUndo(await this.apRendererService.renderLike(exist, note), user));
+			const content = this.apRendererService.addContext(this.apRendererService.renderUndo(await this.apRendererService.renderLike(exist, note, exist.reaction.includes('@')), user));
 			const dm = this.apDeliverManagerService.createDeliverManager(user, content);
 			if (note.userHost !== null) {
 				const reactee = await this.usersRepository.findOneBy({ id: note.userId });
