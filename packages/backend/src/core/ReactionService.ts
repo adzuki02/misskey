@@ -167,7 +167,8 @@ export class ReactionService {
 				}
 
 				if (emoji) {
-					if (emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.length === 0 || (await this.roleService.getUserRoles(user.id)).some(r => emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.includes(r.id))) {
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+					if (emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.length === 0 || (await this.roleService.getUserRoles(user.id)).some(r => emoji!.roleIdsThatCanBeUsedThisEmojiAsReaction.includes(r.id))) {
 						reaction = reacterHost ? `:${name}@${reacterHost}:` : `:${name}:`;
 
 						if (localUserUsingRemoteEmoji) {
