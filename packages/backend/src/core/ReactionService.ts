@@ -130,6 +130,8 @@ export class ReactionService {
 				custom = reaction.match(isRemoteCustomEmojiRegexp);
 			}
 
+			let localUserUsingRemoteEmoji = custom ? custom.length === 3 : false;
+
 			if (custom) {
 				const reacterHost = this.utilityService.toPunyNullable(user.host);
 
@@ -141,13 +143,14 @@ export class ReactionService {
 						name,
 					});
 
-				// リモートの絵文字を指定したが同名の絵文字がローカルにある
-				if (emoji !== undefined && reacterHost == null && custom.length === 3) {
+				// ローカルユーザーがリモートの絵文字を指定したが同名の絵文字がローカルにある
+				if (emoji !== undefined && localUserUsingRemoteEmoji) {
 					custom = `:${name}:`.match(isCustomEmojiRegexp) as RegExpMatchArray;
+					localUserUsingRemoteEmoji = false;
 				}
 
 				// ローカルユーザーがリモートの絵文字を使用する
-				if (emoji === undefined && reacterHost == null && custom.length === 3) {
+				if (emoji === undefined && localUserUsingRemoteEmoji) {
 					const reactionHost = this.utilityService.toPuny(custom[2]);
 
 					// リモートの絵文字の使用は既に付いている絵文字リアクションとノート内の絵文字のみに制限しておく
@@ -167,7 +170,7 @@ export class ReactionService {
 					if (emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.length === 0 || (await this.roleService.getUserRoles(user.id)).some(r => emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.includes(r.id))) {
 						reaction = reacterHost ? `:${name}@${reacterHost}:` : `:${name}:`;
 
-						if (custom.length === 3) {
+						if (localUserUsingRemoteEmoji) {
 							reaction = `:${name}@${this.utilityService.toPuny(custom[2])}:`;
 						}
 
