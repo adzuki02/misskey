@@ -1,4 +1,4 @@
-name: Build (frontend, production)
+name: Build and archive (production)
 
 on:
   push:
@@ -34,16 +34,16 @@ jobs:
       - run: pnpm i --frozen-lockfile
       - name: Check pnpm-lock.yaml
         run: git diff --exit-code pnpm-lock.yaml
-      - name: Build pre
-        run: pnpm build-pre
+      - name: Build
+        run: pnpm run build
       - name: Get version
         id: get-version
-        run: |
-          cat built/meta.json | jq -r ."version"
-      - name: Build frontend
-        run: pnpm -r --filter frontend... build
+        run: jq -rj ."version" ./built/meta.json
+      - name: Archive (tar)
+        run: tar -cvf ./built.tar ./built ./packages/misskey-js/built ./packages/misskey-reversi/built ./packages/misskey-bubble-game/built ./packages/backend/built
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: built-vite
-          path: built/_vite_
+          name: built
+          path: ./built.tar
+          if-no-files-found: error
