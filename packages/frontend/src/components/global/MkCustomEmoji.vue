@@ -99,10 +99,10 @@ function onClick(ev: MouseEvent) {
 			text: i18n.ts.doReaction,
 			icon: 'ti ti-plus',
 			action: () => {
-				react(`:${props.name}:`);
+				react(props.host ? `:${props.name}@${props.host}:` : `:${props.name}:`);
 				sound.playMisskeySfx('reaction');
 			},
-		}] : []), {
+		}] : []), ...(isLocal.value ? [{
 			text: i18n.ts.info,
 			icon: 'ti ti-info-circle',
 			action: async () => {
@@ -114,7 +114,7 @@ function onClick(ev: MouseEvent) {
 					anchor: ev.target,
 				});
 			},
-		}], ev.currentTarget ?? ev.target);
+		}] : [])], ev.currentTarget ?? ev.target);
 	}
 }
 </script>
