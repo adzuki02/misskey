@@ -290,7 +290,7 @@ export class ReactionService {
 
 		//#region 配信
 		if (this.userEntityService.isLocalUser(user) && !note.localOnly) {
-			const content = this.apRendererService.addContext(await this.apRendererService.renderLike(record, note, record.reaction.includes('@')));
+			const content = this.apRendererService.addContext(await this.apRendererService.renderLike(record, note, record.reaction.includes('@') && !record.reaction.endsWith('@.:')));
 			const dm = this.apDeliverManagerService.createDeliverManager(user, content);
 			if (note.userHost !== null) {
 				const reactee = await this.usersRepository.findOneBy({ id: note.userId });
@@ -347,7 +347,7 @@ export class ReactionService {
 
 		//#region 配信
 		if (this.userEntityService.isLocalUser(user) && !note.localOnly) {
-			const content = this.apRendererService.addContext(this.apRendererService.renderUndo(await this.apRendererService.renderLike(exist, note, exist.reaction.includes('@')), user));
+			const content = this.apRendererService.addContext(this.apRendererService.renderUndo(await this.apRendererService.renderLike(exist, note, exist.reaction.includes('@') && !exist.reaction.endsWith('@.:')), user));
 			const dm = this.apDeliverManagerService.createDeliverManager(user, content);
 			if (note.userHost !== null) {
 				const reactee = await this.usersRepository.findOneBy({ id: note.userId });
