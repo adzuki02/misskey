@@ -36,9 +36,8 @@ jobs:
         run: git diff --exit-code pnpm-lock.yaml
       - name: Build
         run: pnpm run build
-      - name: Get version
-        id: get-version
-        run: jq -rj ."version" ./built/meta.json
+      - name: Note head hash
+        run: git rev-parse HEAD | tee ./built/hash
       - name: Archive (tar)
         run: tar -cvf ./built.tar ./built ./packages/misskey-js/built ./packages/misskey-reversi/built ./packages/misskey-bubble-game/built ./packages/backend/built
       - name: Upload artifact
