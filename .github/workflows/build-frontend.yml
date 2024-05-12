@@ -1,0 +1,49 @@
+name: Build (frontend, production)
+
+on:
+  push:
+    branches:
+      - develop-mame
+
+env:
+  NODE_ENV: production
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.13.1]
+
+    steps:
+      - uses: actions/checkout@v4.1.1
+        with:
+          submodules: true
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+          run_install: false
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - run: corepack enable
+      - run: pnpm i --frozen-lockfile
+      - name: Check pnpm-lock.yaml
+        run: git diff --exit-code pnpm-lock.yaml
+      - name: Build pre
+        run: pnpm build-pre
+      - name: Get version
+        id: get-version
+        run: |
+          cat built/meta.json | jq -r ."version"
+      - name: Build frontend
+        run: pnpm -r --filter frontend... build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-vite
+          path: built/_vite_
