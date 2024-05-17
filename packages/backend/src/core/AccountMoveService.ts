@@ -178,7 +178,7 @@ export class AccountMoveService {
 			{ muteeId: dst.id, expiresAt: IsNull() },
 		).then(mutings => mutings.map(muting => muting.muterId));
 
-		const newMutings: Map<string, { muterId: string; muteeId: string; expiresAt: Date | null; }> = new Map();
+		const newMutings: Map<string, { muterId: string; muteeId: string; expiresAt: Date | null; excludeNotification: boolean; }> = new Map();
 
 		// 重複しないようにIDを生成
 		const genId = (): string => {
