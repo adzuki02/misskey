@@ -30,7 +30,7 @@ export class SecurityHeaderService {
 	) {
 		const mediaProxyOrigin = new URL(this.config.mediaProxy).origin;
 
-		this.imgSrc = ['\'self\'', 'data:', 'https://xn--931a.moe/assets/error.jpg', 'https://xn--931a.moe/assets/info.jpg', 'https://xn--931a.moe/assets/not-found.jpg', ...(this.config.externalMediaProxyEnabled ? [mediaProxyOrigin] : []), ...(this.config.contentSecurityPolicy?.imgAndMediaSrc ?? [])].join(' ');
+		this.imgSrc = ['\'self\'', 'data:', 'https://xn--931a.moe', 'https://misskey-hub.net', 'https://avatars.githubusercontent.com', 'https://assets.misskey-hub.net', ...(this.config.externalMediaProxyEnabled ? [mediaProxyOrigin] : []), ...(this.config.contentSecurityPolicy?.imgAndMediaSrc ?? [])].join(' ');
 
 		this.mediaSrc = ['\'self\'', ...(this.config.externalMediaProxyEnabled ? [mediaProxyOrigin] : []), ...(this.config.contentSecurityPolicy?.imgAndMediaSrc ?? [])].join(' ');
 
