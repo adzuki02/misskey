@@ -41,6 +41,7 @@ export class MutingEntityService {
 			mutee: this.userEntityService.pack(muting.muteeId, me, {
 				schema: 'UserDetailedNotMe',
 			}),
+			excludeNotification: muting.excludeNotification,
 		});
 	}
 
