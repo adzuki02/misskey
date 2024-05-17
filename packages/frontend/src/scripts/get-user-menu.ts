@@ -63,6 +63,44 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		}
 	}
 
+	async function toggleMuteExcludingNotification() {
+		if (user.isMuted) {
+			// do nothing
+		} else {
+			const { canceled, result: period } = await os.select({
+				title: i18n.ts.mutePeriod,
+				items: [{
+					value: 'indefinitely', text: i18n.ts.indefinitely,
+				}, {
+					value: 'tenMinutes', text: i18n.ts.tenMinutes,
+				}, {
+					value: 'oneHour', text: i18n.ts.oneHour,
+				}, {
+					value: 'oneDay', text: i18n.ts.oneDay,
+				}, {
+					value: 'oneWeek', text: i18n.ts.oneWeek,
+				}],
+				default: 'indefinitely',
+			});
+			if (canceled) return;
+
+			const expiresAt = period === 'indefinitely' ? null
+				: period === 'tenMinutes' ? Date.now() + (1000 * 60 * 10)
+				: period === 'oneHour' ? Date.now() + (1000 * 60 * 60)
+				: period === 'oneDay' ? Date.now() + (1000 * 60 * 60 * 24)
+				: period === 'oneWeek' ? Date.now() + (1000 * 60 * 60 * 24 * 7)
+				: null;
+
+			os.apiWithDialog('mute/create', {
+				userId: user.id,
+				expiresAt,
+				excludeNotification: true,
+			}).then(() => {
+				user.isMuted = true;
+			});
+		}
+	}
+
 	async function toggleRenoteMute() {
 		os.apiWithDialog(user.isRenoteMuted ? 'renote-mute/delete' : 'renote-mute/create', {
 			userId: user.id,
@@ -319,7 +357,11 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 			icon: user.isMuted ? 'ti ti-eye' : 'ti ti-eye-off',
 			text: user.isMuted ? i18n.ts.unmute : i18n.ts.mute,
 			action: toggleMute,
-		}, {
+		}, ...(user.isMuted ? [] : [{
+			icon: 'ti ti-eye-off',
+			text: `${i18n.ts.mute} (${i18n.ts.excludeNotification})`,
+			action: toggleMuteExcludingNotification,
+		}]), {
 			icon: user.isRenoteMuted ? 'ti ti-repeat' : 'ti ti-repeat-off',
 			text: user.isRenoteMuted ? i18n.ts.renoteUnmute : i18n.ts.renoteMute,
 			action: toggleRenoteMute,

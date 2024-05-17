@@ -561,6 +561,10 @@ export interface Locale extends ILocale {
      */
     "unmute": string;
     /**
+     * 通知を除く
+     */
+    "excludeNotification": string;
+    /**
      * リノートをミュート
      */
     "renoteMute": string;
