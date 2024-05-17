@@ -55,7 +55,7 @@ export const paramDef = {
 			nullable: true,
 			description: 'A Unix Epoch timestamp that must lie in the future. `null` means an indefinite mute.',
 		},
-		excludeNotification: { type: 'boolean', default: 'false' },
+		excludeNotification: { type: 'boolean', default: false },
 	},
 	required: ['userId'],
 } as const;
