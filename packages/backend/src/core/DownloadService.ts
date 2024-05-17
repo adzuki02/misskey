@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import * as http from 'node:http';
+import * as https from 'node:https';
 import * as fs from 'node:fs';
 import * as stream from 'node:stream/promises';
 import { Inject, Injectable } from '@nestjs/common';
@@ -61,8 +63,8 @@ export class DownloadService {
 				request: operationTimeout,	// whole operation timeout
 			},
 			agent: {
-				http: this.httpRequestService.httpAgent,
-				https: this.httpRequestService.httpsAgent,
+				http: urlObj.protocol === 'http:' ? this.httpRequestService.getAgentByUrl(urlObj) as http.Agent : this.httpRequestService.httpAgent,
+				https: urlObj.protocol === 'https:' ? this.httpRequestService.getAgentByUrl(urlObj) as https.Agent : this.httpRequestService.httpsAgent,
 			},
 			http2: false,	// default
 			retry: {
