@@ -34,6 +34,7 @@ export class UserMutingService {
 		});
 
 		this.cacheService.userMutingsCache.refresh(user.id);
+		this.cacheService.userMutingsNotificationExclusionsCache.refresh(user.id);
 	}
 
 	@bindThis
@@ -47,6 +48,7 @@ export class UserMutingService {
 		const muterIds = [...new Set(mutings.map(m => m.muterId))];
 		for (const muterId of muterIds) {
 			this.cacheService.userMutingsCache.refresh(muterId);
+			this.cacheService.userMutingsNotificationExclusionsCache.refresh(muterId);
 		}
 	}
 }
