@@ -55,6 +55,7 @@ export const paramDef = {
 			nullable: true,
 			description: 'A Unix Epoch timestamp that must lie in the future. `null` means an indefinite mute.',
 		},
+		excludeNotification: { type: 'boolean', default: false },
 	},
 	required: ['userId'],
 } as const;
@@ -98,7 +99,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				return;
 			}
 
-			await this.userMutingService.mute(muter, mutee, ps.expiresAt ? new Date(ps.expiresAt) : null);
+			await this.userMutingService.mute(muter, mutee, ps.expiresAt ? new Date(ps.expiresAt) : null, ps.excludeNotification);
 		});
 	}
 }

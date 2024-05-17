@@ -264,11 +264,12 @@ export class NotificationEntityService implements OnModuleInit {
 	#validateNotifier <T extends MiNotification | MiGroupedNotification> (
 		notification: T,
 		userIdsWhoMeMuting: Set<MiUser['id']>,
+		userIdsWhoMeMutingButExcludingNotification: Set<MiUser['id']>,
 		userMutedInstances: Set<string>,
 		notifiers: MiUser[],
 	): boolean {
 		if (!('notifierId' in notification)) return true;
-		if (userIdsWhoMeMuting.has(notification.notifierId)) return false;
+		if (userIdsWhoMeMuting.has(notification.notifierId) && !userIdsWhoMeMutingButExcludingNotification.has(notification.notifierId)) return false;
 
 		const notifier = notifiers.find(x => x.id === notification.notifierId) ?? null;
 
@@ -299,9 +300,11 @@ export class NotificationEntityService implements OnModuleInit {
 	): Promise<T[]> {
 		const [
 			userIdsWhoMeMuting,
+			userIdsWhoMeMutingButExcludingNotification,
 			userMutedInstances,
 		] = await Promise.all([
 			this.cacheService.userMutingsCache.fetch(meId),
+			this.cacheService.userMutingsNotificationExclusionsCache.fetch(meId),
 			this.cacheService.userProfileCache.fetch(meId).then(p => new Set(p.mutedInstances)),
 		]);
 
@@ -311,7 +314,7 @@ export class NotificationEntityService implements OnModuleInit {
 		}) : [];
 
 		const filteredNotifications = ((await Promise.all(notifications.map(async (notification) => {
-			const isValid = this.#validateNotifier(notification, userIdsWhoMeMuting, userMutedInstances, notifiers);
+			const isValid = this.#validateNotifier(notification, userIdsWhoMeMuting, userIdsWhoMeMutingButExcludingNotification, userMutedInstances, notifiers);
 			return isValid ? notification : null;
 		}))) as [T | null] ).filter(isNotNull);
 

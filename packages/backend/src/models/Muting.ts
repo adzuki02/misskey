@@ -44,4 +44,9 @@ export class MiMuting {
 	})
 	@JoinColumn()
 	public muter: MiUser | null;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public excludeNotification: boolean;
 }

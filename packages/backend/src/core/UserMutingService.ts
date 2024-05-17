@@ -24,15 +24,17 @@ export class UserMutingService {
 	}
 
 	@bindThis
-	public async mute(user: MiUser, target: MiUser, expiresAt: Date | null = null): Promise<void> {
+	public async mute(user: MiUser, target: MiUser, expiresAt: Date | null = null, excludeNotification = false): Promise<void> {
 		await this.mutingsRepository.insert({
 			id: this.idService.gen(),
 			expiresAt: expiresAt ?? null,
 			muterId: user.id,
 			muteeId: target.id,
+			excludeNotification,
 		});
 
 		this.cacheService.userMutingsCache.refresh(user.id);
+		this.cacheService.userMutingsNotificationExclusionsCache.refresh(user.id);
 	}
 
 	@bindThis
@@ -46,6 +48,7 @@ export class UserMutingService {
 		const muterIds = [...new Set(mutings.map(m => m.muterId))];
 		for (const muterId of muterIds) {
 			this.cacheService.userMutingsCache.refresh(muterId);
+			this.cacheService.userMutingsNotificationExclusionsCache.refresh(muterId);
 		}
 	}
 }

@@ -32,5 +32,9 @@ export const packedMutingSchema = {
 			optional: false, nullable: false,
 			ref: 'UserDetailedNotMe',
 		},
+		excludeNotification: {
+			type: 'boolean',
+			optional: false, nullable: false,
+		},
 	},
 } as const;
