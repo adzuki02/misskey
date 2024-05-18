@@ -76,10 +76,10 @@ export class SecurityHeaderService {
 			const secFetchDest = request.headers['sec-fetch-dest'];
 			if (secFetchSite === 'same-site' || secFetchSite === 'cross-site') {
 				/* eslint-disable no-empty */
-				if (secFetchMode === 'navigate' && secFetchDest === 'document') {
-				} else if (secFetchMode === 'navigate' && secFetchDest === 'empty') {
-				} else if (request.routeOptions.url === '/_info_card_' && secFetchMode === 'navigate' && secFetchDest === 'iframe') {
-				} else if (request.routeOptions.url === '/favicon.ico' && secFetchDest === 'image') {
+				if (request.method === 'GET' && secFetchMode === 'navigate' && secFetchDest === 'document') {
+				} else if (request.method === 'GET' && secFetchMode === 'navigate' && secFetchDest === 'empty') {
+				} else if (request.method === 'GET' && request.routeOptions.url === '/_info_card_' && secFetchMode === 'navigate' && secFetchDest === 'iframe') {
+				} else if (request.method === 'GET' && request.routeOptions.url === '/favicon.ico' && secFetchDest === 'image') {
 				} else {
 					reply.header('Content-Security-Policy', strictestPolicy);
 					reply.header('Cache-Control', 'private');
@@ -93,6 +93,11 @@ export class SecurityHeaderService {
 				let enforce = true;
 
 				switch (request.routeOptions.url) {
+					// No registered routes
+					case undefined:
+						policy = strictestPolicy;
+						break;
+
 					// OpenApiServerService
 					case '/api-doc':
 						policy = "default-src 'self'; object-src 'none'; script-src https://cdn.redoc.ly; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://cdn.redoc.ly; worker-src blob:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; report-to csp-enforce"; // eslint-disable-line quotes
