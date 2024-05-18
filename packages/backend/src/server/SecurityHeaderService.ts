@@ -93,6 +93,11 @@ export class SecurityHeaderService {
 				let enforce = true;
 
 				switch (request.routeOptions.url) {
+					// No registered routes
+					case undefined:
+						policy = strictestPolicy;
+						break;
+
 					// OpenApiServerService
 					case '/api-doc':
 						policy = "default-src 'self'; object-src 'none'; script-src https://cdn.redoc.ly; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://cdn.redoc.ly; worker-src blob:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; report-to csp-enforce"; // eslint-disable-line quotes
