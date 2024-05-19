@@ -131,13 +131,13 @@ export class HttpRequestService {
 	}
 
 	@bindThis
-	public async getJson<T = unknown>(url: string, accept = 'application/json, */*', headers?: Record<string, string>): Promise<T> {
+	public async getJson<T = unknown>(url: string, accept = 'application/json, */*', headers?: Record<string, string>, timeout = 5000): Promise<T> {
 		const res = await this.send(url, {
 			method: 'GET',
 			headers: Object.assign({
 				Accept: accept,
 			}, headers ?? {}),
-			timeout: 5000,
+			timeout: timeout,
 			size: 1024 * 256,
 		});
 
