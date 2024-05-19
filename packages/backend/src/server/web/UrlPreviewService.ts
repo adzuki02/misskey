@@ -70,7 +70,7 @@ export class UrlPreviewService {
 				await this.httpRequestService.getJson<ReturnType<typeof summaly>>(`${meta.summalyProxy}?${query({
 					url: url,
 					lang: lang ?? 'ja-JP',
-				})}`)
+				})}`, 'application/json, */*', undefined, 30000)
 				:
 				await summaly(url, {
 					followRedirects: false,
