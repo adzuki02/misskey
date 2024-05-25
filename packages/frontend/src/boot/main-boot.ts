@@ -59,6 +59,16 @@ export async function mainBoot() {
 		}
 	});
 
+	document.addEventListener('visibilitychange', () => {
+		if (document.visibilityState === 'visible') {
+			setTimeout(() => {
+				if (stream.getReadyState() !== 0) {
+					stream.reconnect();
+				}
+			}, 500);
+		}
+	});
+
 	for (const plugin of ColdDeviceStorage.get('plugins').filter(p => p.active)) {
 		import('@/plugin.js').then(async ({ install }) => {
 			// Workaround for https://bugs.webkit.org/show_bug.cgi?id=242740
