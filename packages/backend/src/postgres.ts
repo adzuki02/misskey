@@ -202,8 +202,12 @@ const log = process.env.NODE_ENV !== 'production';
 export function createPostgresDataSource(config: Config) {
 	return new DataSource({
 		type: 'postgres',
-		host: config.db.host,
-		port: config.db.port,
+		...(config.db.url ? {
+			url: config.db.url,
+		} : {
+			host: config.db.host,
+			port: config.db.port,
+		}),
 		username: config.db.user,
 		password: config.db.pass,
 		database: config.db.db,
@@ -234,8 +238,12 @@ export function createPostgresDataSource(config: Config) {
 		cache: !config.db.disableCache && process.env.NODE_ENV !== 'test' ? { // dbをcloseしても何故かredisのコネクションが内部的に残り続けるようで、テストの際に支障が出るため無効にする(キャッシュも含めてテストしたいため本当は有効にしたいが...)
 			type: 'ioredis',
 			options: {
-				host: config.redis.host,
-				port: config.redis.port,
+				...(config.redis.path ? {
+					path: config.redis.path,
+				} : {
+					host: config.redis.host,
+					port: config.redis.port,
+				}),
 				family: config.redis.family ?? 0,
 				password: config.redis.pass,
 				keyPrefix: `${config.redis.prefix}:query:`,

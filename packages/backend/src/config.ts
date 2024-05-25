@@ -28,6 +28,7 @@ type Source = {
 	chmodSocket?: string;
 	disableHsts?: boolean;
 	db: {
+		url?: string;
 		host: string;
 		port: number;
 		db: string;
@@ -113,6 +114,7 @@ export type Config = {
 	chmodSocket: string | undefined;
 	disableHsts: boolean | undefined;
 	db: {
+		url?: string;
 		host: string;
 		port: number;
 		db: string;
