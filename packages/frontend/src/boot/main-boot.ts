@@ -62,7 +62,8 @@ export async function mainBoot() {
 	document.addEventListener('visibilitychange', () => {
 		if (document.visibilityState === 'visible') {
 			setTimeout(() => {
-				if (stream.getReadyState() !== 0) {
+				const state = stream.getReadyState();
+				if (state === 2 || state === 3) {
 					stream.reconnect();
 				}
 			}, 500);
