@@ -200,6 +200,10 @@ export default class Stream extends EventEmitter<StreamEvents> {
 		this.stream.reconnect();
 	}
 
+	public getReadyState(): number {
+		return this.stream.readyState;
+	}
+
 	/**
 	 * Close this connection
 	 */
