@@ -51,6 +51,18 @@ export default class Logger {
 		}
 
 		if (envOption.logJson) {
+			if (data) {
+				for (const key in data) {
+					if (data[key] instanceof Error) {
+						data[key] = {
+							name: (data[key] as Error).name,
+							message: (data[key] as Error).message,
+							stack: (data[key] as Error).stack,
+						};
+					}
+				}
+			}
+
 			console.log(JSON.stringify({
 				time: formatISO(new Date()),
 				level: level,

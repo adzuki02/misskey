@@ -49,14 +49,18 @@ cluster.on('exit', worker => {
 
 // Display detail of unhandled promise rejection
 if (!envOption.quiet) {
-	process.on('unhandledRejection', console.dir);
+	process.on('unhandledRejection', reason => {
+		logger.error('unhandled rejection', {
+			e: reason instanceof Error ? { name: reason.name, message: reason.message, stack: reason.stack } : undefined,
+		});
+	});
 }
 
 // Display detail of uncaught exception
 process.on('uncaughtException', err => {
 	try {
 		logger.error(err);
-		console.trace(err);
+		// console.trace(err);
 	} catch { }
 });
 

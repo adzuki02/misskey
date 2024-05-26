@@ -109,7 +109,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				return await this.driveFileEntityService.pack(driveFile, { self: true });
 			} catch (err) {
 				if (err instanceof Error || typeof err === 'string') {
-					console.error(err);
+					// console.error(err);
 				}
 				if (err instanceof IdentifiableError) {
 					if (err.id === '282f77bf-5816-4f72-9264-aa14d8261a21') throw new ApiError(meta.errors.inappropriate);
