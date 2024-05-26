@@ -377,7 +377,7 @@ export class ApiCallService implements OnApplicationShutdown {
 						id: errId,
 					},
 				});
-				console.error(err, errId);
+				// console.error(err, errId);
 				throw new ApiError(null, {
 					e: {
 						message: err.message,

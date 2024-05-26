@@ -36,7 +36,7 @@ export class AiService {
 			}
 
 			if (!isSupportedCpu) {
-				console.error('This CPU cannot use TensorFlow.');
+				// console.error('This CPU cannot use TensorFlow.');
 				return null;
 			}
 
@@ -59,7 +59,7 @@ export class AiService {
 				image.dispose();
 			}
 		} catch (err) {
-			console.error(err);
+			// console.error(err);
 			return null;
 		}
 	}

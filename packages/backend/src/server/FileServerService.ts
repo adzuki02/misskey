@@ -262,7 +262,7 @@ export class FileServerService {
 					const parts = range.replace(/bytes=/, '').split('-');
 					const start = parseInt(parts[0], 10);
 					let end = parts[1] ? parseInt(parts[1], 10) : file.file.size - 1;
-					console.log(end);
+					// console.log(end);
 					if (end > file.file.size) {
 						end = file.file.size - 1;
 					}

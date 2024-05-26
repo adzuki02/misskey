@@ -6,7 +6,7 @@
 import cluster from 'node:cluster';
 import chalk from 'chalk';
 import { default as convertColor } from 'color-convert';
-import { format as dateFormat } from 'date-fns';
+import { format as dateFormat, formatISO } from 'date-fns';
 import { bindThis } from '@/decorators.js';
 import { envOption } from './env.js';
 import type { KEYWORD } from 'color-convert/conversions.js';
@@ -47,6 +47,31 @@ export default class Logger {
 
 		if (this.parentLogger) {
 			this.parentLogger.log(level, message, data, important, [this.context].concat(subContexts), store);
+			return;
+		}
+
+		if (envOption.logJson) {
+			if (data) {
+				for (const key of Object.keys(data)) {
+					if (data[key] instanceof Error) {
+						data[key] = {
+							name: (data[key] as Error).name,
+							message: (data[key] as Error).message,
+							stack: (data[key] as Error).stack,
+						};
+					}
+				}
+			}
+
+			console.log(JSON.stringify({
+				time: formatISO(new Date()),
+				level: level,
+				worker: cluster.isPrimary ? '*' : `${cluster.worker!.id}`,
+				context: [this.context.name].concat(subContexts.map(c => c.name)).join('.'),
+				important: important,
+				message: message,
+				data: data,
+			}));
 			return;
 		}
 

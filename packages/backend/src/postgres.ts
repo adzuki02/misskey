@@ -81,6 +81,7 @@ import { MiReversiGame } from '@/models/ReversiGame.js';
 
 import { Config } from '@/config.js';
 import MisskeyLogger from '@/logger.js';
+import { envOption } from '@/env.js';
 import { bindThis } from '@/decorators.js';
 
 export const dbLogger = new MisskeyLogger('db');
@@ -90,7 +91,7 @@ const sqlLogger = dbLogger.createSubLogger('sql', 'gray', false);
 class MyCustomLogger implements Logger {
 	@bindThis
 	private highlight(sql: string) {
-		return highlight.highlight(sql, {
+		return envOption.logJson ? sql : highlight.highlight(sql, {
 			language: 'sql', ignoreIllegals: true,
 		});
 	}
