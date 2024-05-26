@@ -59,16 +59,15 @@ export async function mainBoot() {
 		}
 	});
 
-	document.addEventListener('visibilitychange', () => {
-		if (document.visibilityState === 'visible') {
-			setTimeout(() => {
-				const state = stream.getReadyState();
-				if (state === 2 || state === 3) {
+	if (/ipad|mobile|iphone|android/.test(navigator.userAgent.toLowerCase())) {
+		document.addEventListener('visibilitychange', () => {
+			if (document.visibilityState === 'visible') {
+				setTimeout(() => {
 					stream.reconnect();
-				}
-			}, 500);
-		}
-	});
+				}, 500);
+			}
+		});
+	}
 
 	for (const plugin of ColdDeviceStorage.get('plugins').filter(p => p.active)) {
 		import('@/plugin.js').then(async ({ install }) => {
