@@ -2858,8 +2858,6 @@ export class Stream extends EventEmitter<StreamEvents> {
     // (undocumented)
     disconnectToChannel(connection: NonSharedConnection): void;
     // (undocumented)
-    getReadyState(): number;
-    // (undocumented)
     heartbeat(): void;
     // (undocumented)
     ping(): void;
