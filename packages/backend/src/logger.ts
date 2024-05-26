@@ -52,7 +52,7 @@ export default class Logger {
 
 		if (envOption.logJson) {
 			if (data) {
-				for (const key in data) {
+				for (const key of Object.keys(data)) {
 					if (data[key] instanceof Error) {
 						data[key] = {
 							name: (data[key] as Error).name,
