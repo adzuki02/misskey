@@ -98,12 +98,16 @@ class MyCustomLogger implements Logger {
 
 	@bindThis
 	public logQuery(query: string, parameters?: any[]) {
-		sqlLogger.info(this.highlight(query).substring(0, 100));
+		if (log) {
+			sqlLogger.info(this.highlight(query).substring(0, 100));
+		}
 	}
 
 	@bindThis
 	public logQueryError(error: string, query: string, parameters?: any[]) {
-		sqlLogger.error(this.highlight(query));
+		if (log) {
+			sqlLogger.error(this.highlight(query));
+		}
 	}
 
 	@bindThis
@@ -113,12 +117,16 @@ class MyCustomLogger implements Logger {
 
 	@bindThis
 	public logSchemaBuild(message: string) {
-		sqlLogger.info(message);
+		if (log) {
+			sqlLogger.info(message);
+		}
 	}
 
 	@bindThis
 	public log(message: string) {
-		sqlLogger.info(message);
+		if (log) {
+			sqlLogger.info(message);
+		}
 	}
 
 	@bindThis
@@ -252,7 +260,7 @@ export function createPostgresDataSource(config: Config) {
 			},
 		} : false,
 		logging: log,
-		logger: log ? new MyCustomLogger() : undefined,
+		logger: new MyCustomLogger(),
 		maxQueryExecutionTime: 300,
 		entities: entities,
 		migrations: ['../../migration/*.js'],
