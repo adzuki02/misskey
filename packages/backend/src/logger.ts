@@ -6,7 +6,7 @@
 import cluster from 'node:cluster';
 import chalk from 'chalk';
 import { default as convertColor } from 'color-convert';
-import { format as dateFormat } from 'date-fns';
+import { format as dateFormat, addMinutes } from 'date-fns';
 import { bindThis } from '@/decorators.js';
 import { envOption } from './env.js';
 import type { KEYWORD } from 'color-convert/conversions.js';
@@ -47,6 +47,19 @@ export default class Logger {
 
 		if (this.parentLogger) {
 			this.parentLogger.log(level, message, data, important, [this.context].concat(subContexts), store);
+			return;
+		}
+
+		if (envOption.logJson) {
+			console.log(JSON.stringify({
+				time: this.dateToISOStringWithTimezone(new Date()),
+				level: level,
+				worker: cluster.isPrimary ? '*' : `${cluster.worker!.id}`,
+				context: [this.context.name].concat(subContexts.map(c => c.name)).join('.'),
+				important: important,
+				message: message,
+				data: data,
+			}));
 			return;
 		}
 
@@ -111,5 +124,21 @@ export default class Logger {
 	@bindThis
 	public info(message: string, data?: Record<string, any> | null, important = false): void { // それ以外
 		this.log('info', message, data, important);
+	}
+
+	private dateToISOStringWithTimezone(date: Date): string {
+		const offset = date.getTimezoneOffset();
+
+		if (offset === 0) {
+			return date.toISOString();
+		}
+
+		const tzSign = offset < 0 ? '+' : '-';
+		const offsetHours = (Math.abs(offset) / 60).toString().padStart(2, '0');
+		const offsetMinutes = (Math.abs(offset) % 60).toString().padStart(2, '0');
+
+		const d = addMinutes(date, -offset);
+
+		return `${d.toISOString().slice(0, -1)}${tzSign}${offsetHours}:${offsetMinutes}`;
 	}
 }
