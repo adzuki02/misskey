@@ -118,7 +118,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					}
 
 					if (note.reply && note.reply.visibility === 'followers') {
-						if (!Object.hasOwn(followings, note.reply.userId)) return false;
+						if (note.reply.userId !== me.id && !Object.hasOwn(followings, note.reply.userId)) return false;
 					}
 
 					return true;
