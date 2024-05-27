@@ -106,13 +106,17 @@ class MyCustomLogger implements Logger {
 	@bindThis
 	public logQueryError(error: string, query: string, parameters?: any[]) {
 		if (log) {
-			sqlLogger.error(this.highlight(query));
+			sqlLogger.error(`query-error: ${this.highlight(query)}`);
 		}
 	}
 
 	@bindThis
 	public logQuerySlow(time: number, query: string, parameters?: any[]) {
-		sqlLogger.warn(this.highlight(query));
+		if (log || !envOption.logJson) {
+			sqlLogger.warn(`query-slow: time: ${time}, query: ${this.highlight(query)}`);
+		} else {
+			sqlLogger.warn('query-slow', { query: this.highlight(query), time });
+		}
 	}
 
 	@bindThis
@@ -131,7 +135,11 @@ class MyCustomLogger implements Logger {
 
 	@bindThis
 	public logMigration(message: string) {
-		sqlLogger.info(message);
+		if (log || !envOption.logJson) {
+			sqlLogger.info(message);
+		} else {
+			sqlLogger.info('migration', { message });
+		}
 	}
 }
 
