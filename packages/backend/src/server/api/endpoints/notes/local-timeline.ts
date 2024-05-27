@@ -190,6 +190,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 							.where('note.replyId IS NOT NULL')
 							.andWhere('note.replyUserId = note.userId');
 					}));
+				if (me) {
+					qb.orWhere(new Brackets(qb => {
+						qb // 返信だけど自分宛ての返信
+							.where('note.replyId IS NOT NULL')
+							.andWhere('note.replyUserId = :meId', { meId: me.id });
+					}));
+				}
 			}));
 		}
 
