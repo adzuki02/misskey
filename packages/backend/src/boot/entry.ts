@@ -50,7 +50,7 @@ cluster.on('exit', worker => {
 // Display detail of unhandled promise rejection
 if (!envOption.quiet) {
 	process.on('unhandledRejection', reason => {
-		logger.error('unhandled rejection', { reason });
+		logger.error(`Unhandled Rejection${ reason instanceof Error ? ` (${reason.toString()})` : '' }`, { reason });
 	});
 }
 
