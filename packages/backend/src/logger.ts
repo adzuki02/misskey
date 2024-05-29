@@ -66,7 +66,7 @@ export default class Logger {
 			const d = new Date();
 
 			console.log(JSON.stringify({
-				time: formatISO(d).replace(/^([^Z\+]+)(Z|\+[0-9:]+)$/, `$1.${d.getMilliseconds()}$2`),
+				time: formatISO(d).replace(/^([^Z\+]+)(Z|\+[0-9:]+)$/, `$1.${d.getMilliseconds().toString().padStart(3, '0')}$2`),
 				level: level,
 				worker: cluster.isPrimary ? '*' : `${cluster.worker!.id}`,
 				context: [this.context.name].concat(subContexts.map(c => c.name)).join('.'),
