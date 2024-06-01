@@ -45,6 +45,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: built-${{ steps.head-hash.outputs.HEAD_HASH }}.tar.zip
+          name: built-${{ steps.head-hash.outputs.HEAD_HASH }}.tar
           path: ./built.tar
           if-no-files-found: error
