@@ -246,7 +246,7 @@ export class ClientServerService {
 
 		fastify.get(`${bullBoardPath}/login`, async (request, reply) => {
 			const uuid = crypto.randomUUID();
-			reply.setCookie(bullBoardTempCookieName, uuid, {
+			reply.setCookie(bullBoardTempCookieName, `${uuid}.${Date.now()}`, {
 				path: bullBoardPath,
 				httpOnly: true,
 				secure: true,
@@ -261,8 +261,7 @@ export class ClientServerService {
 			Querystring: { session?: string; };
 		}>(`${bullBoardPath}/login/callback`, async(request, reply) => {
 			const unsignResult = request.unsignCookie(request.cookies[bullBoardTempCookieName] ?? '');
-			const valid = unsignResult.valid, sessionCookie = unsignResult.value;
-			const sessionParam = request.query.session;
+			const sessionIdFromQuery = request.query.session;
 
 			reply.clearCookie(bullBoardTempCookieName, {
 				path: bullBoardPath,
@@ -271,31 +270,34 @@ export class ClientServerService {
 				sameSite: true,
 			});
 
-			if (valid && sessionCookie?.length === 36 && sessionCookie === sessionParam) {
-				try {
-					const check = await fetch(`http://localhost:${this.config.port}/api/miauth/${sessionParam}/check`, {
-						method: 'POST',
-					});
-					const { ok, token } = await check.json();
-					if (ok) {
-						reply.setCookie(bullBoardCookieName, token, {
-							path: bullBoardPath,
-							httpOnly: true,
-							secure: true,
-							sameSite: true,
-							signed: true,
-							maxAge: 31536000,
+			if (unsignResult.valid && unsignResult.value) {
+				const [sessionIdFromCookie, time] = unsignResult.value.split('.');
+				if (sessionIdFromCookie.length === 36 && sessionIdFromCookie === sessionIdFromQuery && Date.now() - parseInt(time) < 10 * 60 * 1000) {
+					try {
+						const token = await this.accessTokensRepository.findOneBy({
+							session: sessionIdFromCookie,
 						});
-						return reply.redirect(302, bullBoardPath);
-					} else {
-						reply.code(401).send('MiAuth Failed');
-					}
-				} catch (e) {
-					reply.code(401).send('MiAuth Failed');
+
+						if (token && token.session != null && !token.fetched) {
+							this.accessTokensRepository.update(token.id, {
+								fetched: true,
+							});
+
+							reply.setCookie(bullBoardCookieName, token.token, {
+								path: bullBoardPath,
+								httpOnly: true,
+								secure: true,
+								sameSite: true,
+								signed: true,
+								maxAge: 31536000,
+							});
+							return reply.redirect(302, bullBoardPath);
+						}
+					} catch {}
 				}
-			} else {
-				reply.code(401).send('MiAuth Failed');
 			}
+
+			reply.code(401).send('MiAuth Failed');
 		});
 
 		fastify.get(`${bullBoardPath}/login/logout`, async(request, reply) => {
