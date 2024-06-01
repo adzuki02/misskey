@@ -39,12 +39,12 @@ jobs:
         run: pnpm run build
       - name: Note head hash
         id: head-hash
-        run: git rev-parse HEAD | tee ./built/hash
+        run: echo "HEAD_HASH=$(git rev-parse HEAD | tee ./built/hash)" >> "$GITHUB_OUTPUT"
       - name: Archive (tar)
         run: tar -cvf ./built.tar ./built ./packages/misskey-js/built ./packages/misskey-reversi/built ./packages/misskey-bubble-game/built ./packages/backend/built
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: built-${{ steps.head-hash.outputs }}.tar.zip
+          name: built-${{ steps.head-hash.outputs.HEAD_HASH }}.tar.zip
           path: ./built.tar
           if-no-files-found: error
