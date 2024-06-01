@@ -171,7 +171,7 @@ describe('Webリソース', () => {
 
 		const getBullCookie = async (me: misskey.entities.SignupResponse) => {
 			const bullLoginRes = await relativeFetch('/queue/login', { redirect: 'manual' });
-			const [session, signature] = (<string>bullLoginRes.headers.get('set-cookie')).split(';')[0].split('=')[1].split('.');
+			const [session, time, signature] = (<string>bullLoginRes.headers.get('set-cookie')).split(';')[0].split('=')[1].split('.');
 
 			await api('miauth/gen-token', {
 				session: session,
@@ -181,7 +181,7 @@ describe('Webリソース', () => {
 			const bullCallbackRes = await relativeFetch(`/queue/login/callback?session=${session}`, {
 				redirect: 'manual',
 				headers: {
-					cookie: `__Secure-session=${session}.${signature}`,
+					cookie: `__Secure-session=${session}.${time}.${signature}`,
 				},
 			});
 
