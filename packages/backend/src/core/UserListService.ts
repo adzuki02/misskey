@@ -121,8 +121,8 @@ export class UserListService implements OnApplicationShutdown, OnModuleInit {
 			// ローカルのフォロワーがいなくなった場合に投稿を受け取れなくなるが気にしないことにする
 			const hasLocalFollower = await this.followingsRepository.exists({
 				where: {
-					followerId: target.id,
-					followeeHost: IsNull(),
+					followeeId: target.id,
+					followerHost: IsNull(),
 				},
 			});
 
