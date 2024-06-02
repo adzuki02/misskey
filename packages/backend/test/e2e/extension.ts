@@ -293,54 +293,60 @@ describe('独自拡張', () => {
 	});
 
 	describe('通知を除外するミュートの実装', () => {
-		beforeEach(async () => {
-			await api('/mute/delete', { userId: bob.id }, alice);
-			await api('/notes/create', { text: 'text' }, bob);
-		});
-
-		afterEach(async () => {
-			await api('/mute/delete', { userId: bob.id }, alice);
-		});
-
 		describe('通常のミュート', () => {
-			beforeAll(async () => {
-				await api('/mute/create', { userId: bob.id, expiresAt: null, excludeNotification: false }, alice);
-				await api('/notes/create', { text: '@alice text' }, bob);
+			test('ミュート作成', async () => {
+				const res = await api('/mute/create', { userId: bob.id, expiresAt: null, excludeNotification: false }, alice);
+				assert.strictEqual(res.status, 204);
 			});
 
 			test('がTLにミュート対象のユーザーのノートを含まない。', async () => {
-				const hTl = await api('/notes/timeline', {}, alice);
-				for (const note of hTl.body) {
+				await api('/notes/create', { text: 'text' }, bob);
+				const res = await api('/notes/timeline', {}, alice);
+				for (const note of res.body) {
 					assert.notStrictEqual(note.userId, bob.id);
 				}
 			});
 
-			// 動作しない
-			// test('が通知欄にミュート対象のユーザーからの通知を含まない。', async () => {
-			// 	const notificationTl = await api('/i/notifications', {}, alice);
-			// 	for (const notification of notificationTl.body) {
-			// 		assert.notStrictEqual(notification.userId, bob.id);
-			// 	}
-			// });
+			test('が通知欄にミュート対象のユーザーからの通知を含まない。', async () => {
+				await api('/notes/create', { text: '@alice text' }, bob);
+				await sleep(500);
+				const res = await api('/i/notifications', {}, alice);
+				for (const n of res.body) {
+					assert.notStrictEqual(n.userId, bob.id);
+				}
+			});
+
+			test('ミュート解除', async () => {
+				const res = await api('/mute/delete', { userId: bob.id }, alice);
+				assert.strictEqual(res.status, 204);
+			});
 		});
 
 		describe('通知を除外ずるミュート', () => {
-			beforeAll(async () => {
-				await api('/mute/create', { userId: bob.id, expiresAt: null, excludeNotification: true }, alice);
-				await api('/notes/create', { text: '@alice text' }, bob);
+			test('ミュート作成', async () => {
+				const res = await api('/mute/create', { userId: bob.id, expiresAt: null, excludeNotification: true }, alice);
+				assert.strictEqual(res.status, 204);
 			});
 
 			test('がTLにミュート対象のユーザーのノートを含まない。', async () => {
-				const hTl = await api('/notes/timeline', {}, alice);
-				for (const note of hTl.body) {
+				await api('/notes/create', { text: 'text' }, bob);
+				const res = await api('/notes/timeline', {}, alice);
+				for (const note of res.body) {
 					assert.notStrictEqual(note.userId, bob.id);
 				}
 			});
 
 			test('が通知欄にミュート対象のユーザーからの通知を含む。', async () => {
-				const notificationTl = await api('/i/notifications', {}, alice);
-				const countOfNotificationFromMutee = notificationTl.body.filter((notification: any) => notification.userId === bob.id).length;
-				assert.notStrictEqual(countOfNotificationFromMutee, 0);
+				await api('/notes/create', { text: '@alice text' }, bob);
+				await sleep(500);
+				const res = await api('/i/notifications', {}, alice);
+				const count = res.body.filter((notification: any) => notification.userId === bob.id).length;
+				assert.notStrictEqual(count, 0);
+			});
+
+			test('ミュート解除', async () => {
+				const res = await api('/mute/delete', { userId: bob.id }, alice);
+				assert.strictEqual(res.status, 204);
 			});
 		});
 	});
