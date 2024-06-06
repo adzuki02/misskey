@@ -206,6 +206,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkInput>
 						</MkFolder>
 
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.canMakePureRenoteOfRemoteNotes, 'canHideAds'])">
+							<template #label>{{ i18n.ts._role._options.canMakePureRenoteOfRemoteNotes }}</template>
+							<template #suffix>{{ policies.canMakePureRenoteOfRemoteNotes ? i18n.ts.yes : i18n.ts.no }}</template>
+							<MkSwitch v-model="policies.canMakePureRenoteOfRemoteNotes">
+								<template #label>{{ i18n.ts.enable }}</template>
+							</MkSwitch>
+						</MkFolder>
+
 						<MkButton primary rounded @click="updateBaseRole">{{ i18n.ts.save }}</MkButton>
 					</div>
 				</MkFolder>

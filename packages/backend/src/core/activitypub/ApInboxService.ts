@@ -39,6 +39,7 @@ import { ApQuestionService } from './models/ApQuestionService.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import type { Resolver } from './ApResolverService.js';
 import type { IAccept, IAdd, IAnnounce, IBlock, ICreate, IDelete, IFlag, IFollow, ILike, IObject, IReject, IRemove, IUndo, IUpdate, IMove } from './type.js';
+import { RoleService } from '@/core/RoleService.js';
 
 @Injectable()
 export class ApInboxService {
@@ -85,6 +86,7 @@ export class ApInboxService {
 		private apQuestionService: ApQuestionService,
 		private queueService: QueueService,
 		private globalEventService: GlobalEventService,
+		private roleService: RoleService,
 	) {
 		this.logger = this.apLoggerService.logger;
 	}
@@ -275,6 +277,13 @@ export class ApInboxService {
 		// アナウンス先をブロックしてたら中断
 		const meta = await this.metaService.fetch();
 		if (this.utilityService.isBlockedHost(meta.blockedHosts, this.utilityService.extractDbHost(uri))) return;
+
+		// リモートのノートのピュアなリノートを無視する
+		if (this.utilityService.extractDbHost(targetUri) !== this.utilityService.toPuny(this.config.hostname)) {
+			if ((await this.roleService.getUserPolicies(actor.id)).canMakePureRenoteOfRemoteNotes === false) {
+				return;
+			}
+		}
 
 		const unlock = await this.appLockService.getApLock(uri);
 

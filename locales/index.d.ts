@@ -6542,6 +6542,10 @@ export interface Locale extends ILocale {
              * アイコンデコレーションの最大取付個数
              */
             "avatarDecorationLimit": string;
+            /**
+             * リモートのノートの引用でないリノート
+             */
+            "canMakePureRenoteOfRemoteNotes": string;
         };
         "_condition": {
             /**
