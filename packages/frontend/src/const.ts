@@ -97,6 +97,7 @@ export const ROLE_POLICIES = [
 	'userEachUserListsLimit',
 	'rateLimitFactor',
 	'avatarDecorationLimit',
+	'canMakePureRenoteOfRemoteNotes',
 ] as const;
 
 // なんか動かない

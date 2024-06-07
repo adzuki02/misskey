@@ -1680,6 +1680,7 @@ _role:
     canSearchNotes: "Usage of note search"
     canUseTranslator: "Translator usage"
     avatarDecorationLimit: "Maximum number of avatar decorations that can be applied"
+    canMakePureRenoteOfRemoteNotes: "Can make pure renotes of remote notes"
   _condition:
     roleAssignedTo: "Assigned to manual roles"
     isLocal: "Local user"

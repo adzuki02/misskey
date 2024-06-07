@@ -251,6 +251,10 @@ export const packedRolePoliciesSchema = {
 			type: 'integer',
 			optional: false, nullable: false,
 		},
+		canMakePureRenoteOfRemoteNotes: {
+			type: 'boolean',
+			optional: false, nullable: false,
+		},
 	},
 } as const;
 
