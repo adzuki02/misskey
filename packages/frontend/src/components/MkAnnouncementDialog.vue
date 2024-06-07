@@ -52,7 +52,7 @@ async function ok() {
 	modal.value?.close();
 	misskeyApi('i/read-announcement', { announcementId: props.announcement.id });
 	updateAccount({
-		unreadAnnouncements: $i!.unreadAnnouncements.filter(a => a.id !== props.announcement.id),
+		unreadAnnouncements: $i!.unreadAnnouncements?.filter(a => a.id !== props.announcement.id),
 	});
 }
 
