@@ -6,8 +6,12 @@ const config = loadConfig();
 
 export default new DataSource({
 	type: 'postgres',
-	host: config.db.host,
-	port: config.db.port,
+	...(config.db.url ? {
+		url: config.db.url,
+	} : {
+		host: config.db.host,
+		port: config.db.port,
+	}),
 	username: config.db.user,
 	password: config.db.pass,
 	database: config.db.db,
