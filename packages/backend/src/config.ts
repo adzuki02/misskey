@@ -105,6 +105,8 @@ type Source = {
 			reportOnly?: string;
 		};
 	};
+
+	cfAnalyticsToken?: string;
 };
 
 export type Config = {
@@ -192,6 +194,7 @@ export type Config = {
 			reportOnly?: string;
 		};
 	} | undefined;
+	cfAnalyticsToken?: string;
 };
 
 const _filename = fileURLToPath(import.meta.url);
@@ -296,6 +299,7 @@ export function loadConfig(): Config {
 				reportOnly: config.contentSecurityPolicy.reportTo?.reportOnly,
 			},
 		},
+		cfAnalyticsToken: config.cfAnalyticsToken,
 	};
 }
 
