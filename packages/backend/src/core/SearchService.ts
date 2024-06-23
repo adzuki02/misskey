@@ -4,7 +4,7 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-import { In } from 'typeorm';
+import { Brackets, In } from 'typeorm';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import { bindThis } from '@/decorators.js';
@@ -220,8 +220,8 @@ export class SearchService {
 				return [];
 			}
 
-			for (const s of qs) {
-				query.andWhere('note.text ILIKE :q', { q: `%${ sqlLikeEscape(s) }%` });
+			for (let i = 0; i < qs.length; i++) {
+				query.andWhere(`note.text ILIKE :q${i}`, { [`q${i}`]: `%${ sqlLikeEscape(qs[i]) }%` });
 			}
 
 			query
