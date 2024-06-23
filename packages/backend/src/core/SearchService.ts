@@ -214,8 +214,17 @@ export class SearchService {
 				query.andWhere('note.channelId = :channelId', { channelId: opts.channelId });
 			}
 
+			const qs = q.match(/(?<=")[^"]*(?=")|[^" ]+/g)?.map(s => s.trim()).filter(s => s !== '') ?? [];
+
+			if (qs.length === 0) {
+				return [];
+			}
+
+			for (const s of qs) {
+				query.andWhere('note.text ILIKE :q', { q: `%${ sqlLikeEscape(s) }%` });
+			}
+
 			query
-				.andWhere('note.text ILIKE :q', { q: `%${ sqlLikeEscape(q) }%` })
 				.innerJoinAndSelect('note.user', 'user')
 				.leftJoinAndSelect('note.reply', 'reply')
 				.leftJoinAndSelect('note.renote', 'renote')
