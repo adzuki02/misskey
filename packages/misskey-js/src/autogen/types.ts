@@ -991,14 +991,7 @@ export type paths = {
      * charts/active-users
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['charts___active-users'];
-    /**
-     * charts/active-users
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['charts___active-users'];
   };
@@ -1023,14 +1016,7 @@ export type paths = {
      * charts/drive
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['charts___drive'];
-    /**
-     * charts/drive
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['charts___drive'];
   };
@@ -1055,14 +1041,7 @@ export type paths = {
      * charts/instance
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['charts___instance'];
-    /**
-     * charts/instance
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['charts___instance'];
   };
@@ -1071,14 +1050,7 @@ export type paths = {
      * charts/notes
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['charts___notes'];
-    /**
-     * charts/notes
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['charts___notes'];
   };
@@ -1087,14 +1059,7 @@ export type paths = {
      * charts/user/drive
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['charts___user___drive'];
-    /**
-     * charts/user/drive
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['charts___user___drive'];
   };
@@ -1103,14 +1068,7 @@ export type paths = {
      * charts/user/following
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['charts___user___following'];
-    /**
-     * charts/user/following
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['charts___user___following'];
   };
@@ -1119,14 +1077,7 @@ export type paths = {
      * charts/user/notes
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['charts___user___notes'];
-    /**
-     * charts/user/notes
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['charts___user___notes'];
   };
@@ -1135,14 +1086,7 @@ export type paths = {
      * charts/user/pv
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['charts___user___pv'];
-    /**
-     * charts/user/pv
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['charts___user___pv'];
   };
@@ -1151,14 +1095,7 @@ export type paths = {
      * charts/user/reactions
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['charts___user___reactions'];
-    /**
-     * charts/user/reactions
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['charts___user___reactions'];
   };
@@ -1167,14 +1104,7 @@ export type paths = {
      * charts/users
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['charts___users'];
-    /**
-     * charts/users
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['charts___users'];
   };
@@ -1499,14 +1429,7 @@ export type paths = {
      * federation/instances
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['federation___instances'];
-    /**
-     * federation/instances
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['federation___instances'];
   };
@@ -1515,7 +1438,7 @@ export type paths = {
      * federation/show-instance
      * @description No description provided.
      *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['federation___show-instance'];
   };
@@ -1542,14 +1465,7 @@ export type paths = {
      * federation/stats
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['federation___stats'];
-    /**
-     * federation/stats
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['federation___stats'];
   };
@@ -1720,14 +1636,7 @@ export type paths = {
      * get-online-users-count
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['get-online-users-count'];
-    /**
-     * get-online-users-count
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['get-online-users-count'];
   };
@@ -2563,14 +2472,7 @@ export type paths = {
      * notes/featured
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['notes___featured'];
-    /**
-     * notes/featured
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['notes___featured'];
   };
@@ -3449,14 +3351,7 @@ export type paths = {
      * retention
      * @description No description provided.
      *
-     * **Credential required**: *No*
-     */
-    get: operations['retention'];
-    /**
-     * retention
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['retention'];
   };
@@ -4286,6 +4181,7 @@ export type components = {
       /** Format: id */
       muteeId: string;
       mutee: components['schemas']['UserDetailedNotMe'];
+      excludeNotification: boolean;
     };
     RenoteMuting: {
       /**
@@ -4696,6 +4592,7 @@ export type components = {
       userEachUserListsLimit: number;
       rateLimitFactor: number;
       avatarDecorationLimit: number;
+      canMakePureRenoteOfRemoteNotes: boolean;
     };
     ReversiGameLite: {
       /** Format: id */
@@ -11443,7 +11340,7 @@ export type operations = {
    * charts/active-users
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   'charts___active-users': {
     requestBody: {
@@ -11573,7 +11470,7 @@ export type operations = {
    * charts/drive
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   charts___drive: {
     requestBody: {
@@ -11711,7 +11608,7 @@ export type operations = {
    * charts/instance
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   charts___instance: {
     requestBody: {
@@ -11809,7 +11706,7 @@ export type operations = {
    * charts/notes
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   charts___notes: {
     requestBody: {
@@ -11890,7 +11787,7 @@ export type operations = {
    * charts/user/drive
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   charts___user___drive: {
     requestBody: {
@@ -11957,7 +11854,7 @@ export type operations = {
    * charts/user/following
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   charts___user___following: {
     requestBody: {
@@ -12042,7 +11939,7 @@ export type operations = {
    * charts/user/notes
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   charts___user___notes: {
     requestBody: {
@@ -12112,7 +12009,7 @@ export type operations = {
    * charts/user/pv
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   charts___user___pv: {
     requestBody: {
@@ -12181,7 +12078,7 @@ export type operations = {
    * charts/user/reactions
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   charts___user___reactions: {
     requestBody: {
@@ -12248,7 +12145,7 @@ export type operations = {
    * charts/users
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   charts___users: {
     requestBody: {
@@ -14295,7 +14192,7 @@ export type operations = {
    * federation/instances
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   federation___instances: {
     requestBody: {
@@ -14362,7 +14259,7 @@ export type operations = {
    * federation/show-instance
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   'federation___show-instance': {
     requestBody: {
@@ -14530,7 +14427,7 @@ export type operations = {
    * federation/stats
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   federation___stats: {
     requestBody: {
@@ -15611,7 +15508,7 @@ export type operations = {
    * get-online-users-count
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   'get-online-users-count': {
     responses: {
@@ -19868,6 +19765,8 @@ export type operations = {
           userId: string;
           /** @description A Unix Epoch timestamp that must lie in the future. `null` means an indefinite mute. */
           expiresAt?: number | null;
+          /** @default false */
+          excludeNotification?: boolean;
         };
       };
     };
@@ -20751,7 +20650,7 @@ export type operations = {
    * notes/featured
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   notes___featured: {
     requestBody: {
@@ -26283,7 +26182,7 @@ export type operations = {
    * retention
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   retention: {
     responses: {

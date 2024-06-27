@@ -1196,7 +1196,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'charts/active-users', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1218,7 +1218,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'charts/drive', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1240,7 +1240,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'charts/instance', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1251,7 +1251,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'charts/notes', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1262,7 +1262,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'charts/user/drive', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1273,7 +1273,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'charts/user/following', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1284,7 +1284,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'charts/user/notes', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1295,7 +1295,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'charts/user/pv', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1306,7 +1306,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'charts/user/reactions', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1317,7 +1317,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'charts/users', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1714,7 +1714,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'federation/instances', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1725,7 +1725,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'federation/show-instance', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1758,7 +1758,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'federation/stats', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1967,7 +1967,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'get-online-users-count', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2956,7 +2956,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'notes/featured', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -3995,7 +3995,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'retention', P extends Endpoints[E]['req']>(
       endpoint: E,

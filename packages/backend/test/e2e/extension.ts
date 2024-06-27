@@ -43,12 +43,12 @@ describe('独自拡張', () => {
 			});
 
 			test('は認証が必要。', async () => {
-				const res = await api(endpoint, {});
+				const res = await api(endpoint as keyof misskey.Endpoints, {});
 				assert.strictEqual(res.status, 401);
 			});
 
 			test('はトークンがあればアクセスできる。', async () => {
-				const res = await api(endpoint, param ?? {}, bob);
+				const res = await api(endpoint as keyof misskey.Endpoints, param ?? {}, bob);
 				assert.strictEqual(res.status, couldBeEmpty ? 204 : 200);
 			});
 		});
@@ -87,22 +87,22 @@ describe('独自拡張', () => {
 			});
 
 			test('は認証が必要。', async () => {
-				const res = await api(endpoint, {});
+				const res = await api(endpoint as keyof misskey.Endpoints, {});
 				assert.strictEqual(res.status, 401);
 			});
 
 			test('はモデレータならアクセスできる。', async () => {
-				const res = await api(endpoint, { span: 'day', userId: bob.id }, alice);
+				const res = await api(endpoint as keyof misskey.Endpoints, { span: 'day', userId: bob.id }, alice);
 				assert.strictEqual(res.status, 200);
 			});
 
 			test('は本人ならアクセスできる。', async () => {
-				const res = await api(endpoint, { span: 'day', userId: bob.id }, bob);
+				const res = await api(endpoint as keyof misskey.Endpoints, { span: 'day', userId: bob.id }, bob);
 				assert.strictEqual(res.status, 200);
 			});
 
 			test('はモデレータでも本人でもないならアクセスできない。', async () => {
-				const res = await api(endpoint, { span: 'day', userId: alice.id }, bob);
+				const res = await api(endpoint as keyof misskey.Endpoints, { span: 'day', userId: alice.id }, bob);
 				assert.strictEqual(res.status, 400);
 			});
 		});
@@ -121,12 +121,12 @@ describe('独自拡張', () => {
 			});
 
 			test('は認証が必要。', async () => {
-				const res = await api(endpoint, param ?? {});
+				const res = await api(endpoint as keyof misskey.Endpoints, param ?? {});
 				assert.strictEqual(res.status, 401);
 			});
 
 			test('はトークンがあればアクセスできる。', async () => {
-				const res = await api(endpoint, param ?? {}, bob);
+				const res = await api(endpoint as keyof misskey.Endpoints, param ?? {}, bob);
 				assert.strictEqual(res.status, 200);
 			});
 		});
@@ -138,12 +138,12 @@ describe('独自拡張', () => {
 			{ endpoint: 'users/following' },
 		])('/api/$endpoint', ({ endpoint }) => {
 			test('は認証が必要。', async () => {
-				const res = await api(endpoint, { userId: remoteUser.id });
+				const res = await api(endpoint as keyof misskey.Endpoints, { userId: remoteUser.id });
 				assert.strictEqual(res.status, 400);
 			});
 
 			test('はトークンがあればアクセスできる。', async () => {
-				const res = await api(endpoint, { userId: remoteUser.id }, bob);
+				const res = await api(endpoint as keyof misskey.Endpoints, { userId: remoteUser.id }, bob);
 				assert.strictEqual(res.status, 200);
 			});
 		});
