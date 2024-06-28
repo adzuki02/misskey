@@ -101,7 +101,7 @@ export class PushNotificationService implements OnApplicationShutdown {
 				type,
 				body: (type === 'notification' || type === 'unreadAntennaNote') ? truncateBody(type, body) : body,
 				userId,
-				dateTime: (new Date()).getTime(),
+				dateTime: Date.now(),
 			}), {
 				proxy: this.config.proxy === undefined ? undefined : typeof this.config.proxy === 'string' ? this.config.proxy : { host: this.config.proxy.hostname, port: this.config.proxy.port, headers: {} },
 			}).catch((err: any) => {
