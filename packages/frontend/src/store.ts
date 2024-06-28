@@ -226,10 +226,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
-	showReactionsCount: {
-		where: 'device',
-		default: false,
-	},
 	enableQuickAddMfmFunction: {
 		where: 'device',
 		default: false,
