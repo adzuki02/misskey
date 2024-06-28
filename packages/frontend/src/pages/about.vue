@@ -98,7 +98,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkKeyValue>
 							<MkKeyValue>
 								<template #key>{{ i18n.ts.notes }}</template>
-								<template #value>{{ $i ? number(stats.originalNotesCount) : i18n.ts.private }}</template>
+								<template #value>{{ $i ? number(stats.originalNotesCount) : '-' }}</template>
 							</MkKeyValue>
 						</FormSplit>
 					</FormSection>
