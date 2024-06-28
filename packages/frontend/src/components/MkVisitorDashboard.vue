@@ -35,7 +35,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div :class="[$style.statsItem, $style.panel]">
 			<div :class="$style.statsItemLabel">{{ i18n.ts.notes }}</div>
-			<div :class="$style.statsItemCount"><span>{{ i18n.ts.private }}</span></div>
+			<div :class="$style.statsItemCount"><span>{{ '-' }}</span></div>
 		</div>
 	</div>
 	<div v-if="instance.policies.ltlAvailable" :class="[$style.tl, $style.panel]">
