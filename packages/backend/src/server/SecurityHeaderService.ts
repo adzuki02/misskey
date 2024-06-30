@@ -3,6 +3,8 @@ import { fileURLToPath } from 'node:url';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
+import pug from 'pug';
+import { JSDOM } from 'jsdom';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import { bindThis } from '@/decorators.js';
@@ -16,13 +18,14 @@ const _dirname = dirname(_filename);
 
 @Injectable()
 export class SecurityHeaderService {
-	private imgSrc: string;
-	private mediaSrc: string;
-	private frameSrc: string;
-	private reportTo: string;
-	private basePolicy: string;
-	private biosPolicy: string;
-	private cliPolicy: string;
+	private readonly imgSrc: string;
+	private readonly mediaSrc: string;
+	private readonly frameSrc: string;
+	private readonly reportTo: string;
+	private readonly basePolicy: string;
+	private readonly biosPolicy: string;
+	private readonly cliPolicy: string;
+	private readonly flushPolicy: string;
 
 	constructor(
 		@Inject(DI.config)
@@ -30,7 +33,7 @@ export class SecurityHeaderService {
 	) {
 		const mediaProxyOrigin = new URL(this.config.mediaProxy).origin;
 
-		this.imgSrc = ['\'self\'', 'data:', 'https://xn--931a.moe', 'https://misskey-hub.net', 'https://avatars.githubusercontent.com', 'https://assets.misskey-hub.net', ...(this.config.externalMediaProxyEnabled ? [mediaProxyOrigin] : []), ...(this.config.contentSecurityPolicy?.imgAndMediaSrc ?? [])].join(' ');
+		this.imgSrc = ['\'self\'', 'data:', 'blob:', 'https://xn--931a.moe', 'https://misskey-hub.net', 'https://avatars.githubusercontent.com', 'https://assets.misskey-hub.net', ...(this.config.externalMediaProxyEnabled ? [mediaProxyOrigin] : []), ...(this.config.contentSecurityPolicy?.imgAndMediaSrc ?? [])].join(' ');
 
 		this.mediaSrc = ['\'self\'', ...(this.config.externalMediaProxyEnabled ? [mediaProxyOrigin] : []), ...(this.config.contentSecurityPolicy?.imgAndMediaSrc ?? [])].join(' ');
 
@@ -39,11 +42,14 @@ export class SecurityHeaderService {
 		this.reportTo = `{"group":"csp-enforce","max_age":31536000,"endpoints":[{"url":"${this.config.contentSecurityPolicy?.reportTo.enforce ?? ''}"}],"include_subdomains":true},{"group":"csp-reportonly","max_age":31536000,"endpoints":[{"url":"${(this.config.contentSecurityPolicy?.reportTo.reportOnly ?? this.config.contentSecurityPolicy?.reportTo.enforce) ?? ''}"}],"include_subdomains":true}`;
 
 		const baseHashes = [
-			createHash('sha256').update(`var VERSION = "${this.config.version}";\nvar CLIENT_ENTRY = "${(this.config.clientEntry as any).file}";\n`).digest().toString('base64'),
+			createHash('sha256').update(new JSDOM(pug.compileFile(`${_dirname}/web/views/base.pug`)({
+				version: this.config.version,
+				config: this.config,
+			})).window.document.getElementsByTagName('script')[0].textContent as string).digest().toString('base64'),
 			createHash('sha256').update(readFileSync(`${_dirname}/web/boot.js`)).digest().toString('base64'),
 		];
 
-		this.basePolicy = `default-src 'self'; object-src 'none'; script-src 'self' 'sha256-${baseHashes[0]}' 'sha256-${baseHashes[1]}' 'wasm-unsafe-eval' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://hcaptcha.com https://*.hcaptcha.com https://challenges.cloudflare.com https://static.cloudflareinsights.com/beacon.min.js; style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com; img-src ${this.imgSrc}; media-src ${this.mediaSrc}; connect-src 'self' https://hcaptcha.com https://*.hcaptcha.com https://cloudflareinsights.com/cdn-cgi/rum; frame-src ${this.frameSrc}; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; report-to csp-enforce`;
+		this.basePolicy = `default-src 'self'; object-src 'none'; script-src 'sha256-${baseHashes[0]}' 'sha256-${baseHashes[1]}' 'wasm-unsafe-eval' 'strict-dynamic'; style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com; img-src ${this.imgSrc}; media-src ${this.mediaSrc}; connect-src 'self' https://hcaptcha.com https://*.hcaptcha.com https://cloudflareinsights.com/cdn-cgi/rum; frame-src ${this.frameSrc}; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; report-to csp-enforce`;
 
 		const biosHashes = [
 			createHash('sha256').update(readFileSync(`${_dirname}/web/bios.js`)).digest().toString('base64'),
@@ -56,6 +62,12 @@ export class SecurityHeaderService {
 		];
 
 		this.cliPolicy = `default-src 'none'; script-src 'sha256-${cliHashes[0]}'; style-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce`;
+
+		const flushHashes = [
+			createHash('sha256').update(new JSDOM(pug.compileFile(`${_dirname}/web/views/flush.pug`)()).window.document.getElementsByTagName('script')[0].textContent as string).digest().toString('base64'),
+		];
+
+		this.flushPolicy = `default-src 'none'; script-src 'sha256-${flushHashes[0]}'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce`;
 	}
 
 	@bindThis
@@ -202,7 +214,7 @@ export class SecurityHeaderService {
 						policy = this.cliPolicy;
 						break;
 					case '/flush':
-						policy = "default-src 'none'; script-src 'sha256-q8KD3Hi5Ef5r5b+pW1/LB/ZQAZOBRI2MHx55DbTE5gs='; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce"; // eslint-disable-line quotes
+						policy = this.flushPolicy;
 						break;
 					case '/streaming':
 						policy = strictestPolicy;
@@ -223,6 +235,10 @@ export class SecurityHeaderService {
 							policy = this.basePolicy;
 						}
 						break;
+				}
+
+				if (process.env.NODE_ENV !== 'production') {
+					enforce = false;
 				}
 
 				reply.header(enforce ? 'Content-Security-Policy' : 'Content-Security-Policy-Report-Only', policy);
