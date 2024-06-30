@@ -49,7 +49,7 @@ export class SecurityHeaderService {
 			createHash('sha256').update(readFileSync(`${_dirname}/web/boot.js`)).digest().toString('base64'),
 		];
 
-		this.basePolicy = `default-src 'self'; object-src 'none'; script-src 'sha256-${baseHashes[0]}' 'sha256-${baseHashes[1]}' 'wasm-unsafe-eval' 'strict-dynamic'; style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com; img-src ${this.imgSrc}; media-src ${this.mediaSrc}; connect-src 'self' https://hcaptcha.com https://*.hcaptcha.com https://cloudflareinsights.com/cdn-cgi/rum; frame-src ${this.frameSrc}; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; report-to csp-enforce`;
+		this.basePolicy = `default-src 'self'; object-src 'none'; script-src 'sha256-${baseHashes[0]}' 'sha256-${baseHashes[1]}' 'wasm-unsafe-eval' 'strict-dynamic'; style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com; img-src ${this.imgSrc}; media-src ${this.mediaSrc}; connect-src 'self' https://hcaptcha.com https://*.hcaptcha.com; frame-src ${this.frameSrc}; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; report-to csp-enforce`;
 
 		const biosHashes = [
 			createHash('sha256').update(readFileSync(`${_dirname}/web/bios.js`)).digest().toString('base64'),
