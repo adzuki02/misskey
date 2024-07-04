@@ -105,6 +105,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref, shallowRef, computed, watch, onMounted } from 'vue';
 import * as Misskey from 'misskey-js';
+import * as romajiConv from '@koozaki/romaji-conv';
 import XSection from '@/components/MkEmojiPicker.section.vue';
 import {
 	emojilist,
@@ -274,6 +275,37 @@ watch(q, () => {
 
 			for (const emoji of emojis) {
 				if (emoji.aliases.some(alias => alias.includes(newQ))) {
+					matches.add(emoji);
+					if (matches.size >= max) break;
+				}
+			}
+			if (matches.size >= max) return matches;
+
+			// 日本語のための対応
+
+			// 約物
+			// 「？」「！」「…」以外は無視
+			const newQ1 = newQ
+				.replace(/__q/g, '？') // 「__q」を「？」に
+				.replace(/__i/g, '！') // 「__i」を「！」に
+				.replace(/__ooo/g, '…') // 「__ooo」を「…」に
+				.replace(/_/g, ''); // 「_」を取り除く
+			const newQ1j = romajiConv.toHiragana(newQ1);
+
+			// 「ん」の表記を「nn」に合わせる
+			// んな、んに、んぬ、んね、んの、んや、んゆ、んよ
+			//「minna（みんな）」→「minnna」、「panya（パン屋）」→「pannya」等
+			const newQ2 = newQ1.replace(/(?<!n)nn(a|i|u|e|o)/g, 'nnn$1').replace(/(?<!n)ny(a|u|o)/g, 'nny$1');
+			const newQ2j = romajiConv.toHiragana(newQ2);
+
+			// 「ん」の表記を「nn」に合わせる
+			// んにゃ、んにゅ、んにょ
+			// 「hannya（般若）」→「hannnya」等
+			const newQ3 = newQ2.replace(/(?<!n)nny(a|u|o)/g, 'nnny$1');
+			const newQ3j = romajiConv.toHiragana(newQ3);
+
+			for (const emoji of emojis) {
+				if (emoji.aliases.some(alias => alias.includes(newQ1j) || alias.includes(newQ2j) || alias.includes(newQ3j))) {
 					matches.add(emoji);
 					if (matches.size >= max) break;
 				}
