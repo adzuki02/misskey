@@ -96,3 +96,5 @@ html
 					</g>
 				</svg>
 		block content
+		if config.cfAnalyticsToken
+				script(defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=`{"token":"${config.cfAnalyticsToken}"}`)
