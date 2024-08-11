@@ -103,13 +103,10 @@ type Source = {
 	contentSecurityPolicy?: {
 		imgAndMediaSrc?: string[];
 		frameSrc?: string[];
-		reportTo?: {
-			enforce?: string;
-			reportOnly?: string;
-		};
+		reportTo?: string;
 	};
 
-	cfAnalyticsToken?: string;
+	cfWebAnalyticsToken?: string;
 };
 
 export type Config = {
@@ -192,14 +189,11 @@ export type Config = {
 	pidFile: string;
 	bullBoardCookieSignKey: string | undefined;
 	contentSecurityPolicy: {
-		imgAndMediaSrc: string[];
-		frameSrc: string[];
-		reportTo: {
-			enforce?: string;
-			reportOnly?: string;
-		};
+		imgAndMediaSrc: string[] | undefined;
+		frameSrc: string[] | undefined;
+		reportTo: string | undefined;
 	} | undefined;
-	cfAnalyticsToken?: string;
+	cfWebAnalyticsToken?: string;
 };
 
 const _filename = fileURLToPath(import.meta.url);
@@ -299,14 +293,11 @@ export function loadConfig(): Config {
 		pidFile: config.pidFile,
 		bullBoardCookieSignKey: config.bullBoardCookieSignKey,
 		contentSecurityPolicy: config.contentSecurityPolicy === undefined ? undefined : {
-			imgAndMediaSrc: config.contentSecurityPolicy.imgAndMediaSrc ?? [],
-			frameSrc: config.contentSecurityPolicy.frameSrc ?? [],
-			reportTo: {
-				enforce: config.contentSecurityPolicy.reportTo?.enforce,
-				reportOnly: config.contentSecurityPolicy.reportTo?.reportOnly,
-			},
+			imgAndMediaSrc: config.contentSecurityPolicy.imgAndMediaSrc,
+			frameSrc: config.contentSecurityPolicy.frameSrc,
+			reportTo: config.contentSecurityPolicy.reportTo,
 		},
-		cfAnalyticsToken: config.cfAnalyticsToken,
+		cfWebAnalyticsToken: config.cfWebAnalyticsToken,
 	};
 }
 
