@@ -2,6 +2,7 @@ block vars
 
 block loadClientEntry
 	- const clientEntry = config.clientEntry;
+	- const cfWebAnalyticsToken = config.cfWebAnalyticsToken;
 
 doctype html
 
@@ -96,3 +97,10 @@ html
 					</g>
 				</svg>
 		block content
+		if config.cfWebAnalyticsToken
+				script.
+					const e = document.createElement("script");
+					e.setAttribute("defer", "");
+					e.setAttribute("src", "https://static.cloudflareinsights.com/beacon.min.js");
+					e.dataset.cfBeacon = `{"token":"#{cfWebAnalyticsToken}"}`;
+					document.body.appendChild(e);

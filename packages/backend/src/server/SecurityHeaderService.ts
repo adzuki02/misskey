@@ -10,82 +10,100 @@ import type { Config } from '@/config.js';
 import { bindThis } from '@/decorators.js';
 import type { FastifyInstance } from 'fastify';
 
-const strictestPolicy = "default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce"; // eslint-disable-line quotes
-const inlineStyleLaxedPolicy = "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce"; // eslint-disable-line quotes
-
 const _filename = fileURLToPath(import.meta.url);
 const _dirname = dirname(_filename);
 
 @Injectable()
 export class SecurityHeaderService {
-	private readonly imgSrc: string;
-	private readonly mediaSrc: string;
-	private readonly frameSrc: string;
-	private readonly reportTo: string;
+	private readonly cspEnabled: boolean;
+	private readonly reportEnabled: boolean;
+	private readonly reportTo: string | undefined;
+	private readonly strictestPolicy: string;
+	private readonly selfHostedMediaPolicy: string;
 	private readonly basePolicy: string;
-	private readonly biosPolicy: string;
-	private readonly cliPolicy: string;
-	private readonly flushPolicy: string;
 
 	constructor(
 		@Inject(DI.config)
 		private config: Config,
 	) {
-		const mediaProxyOrigin = new URL(this.config.mediaProxy).origin;
+		this.cspEnabled = this.config.contentSecurityPolicy !== undefined && process.env.NODE_ENV === 'production';
 
-		this.imgSrc = ['\'self\'', 'data:', 'blob:', 'https://xn--931a.moe', 'https://misskey-hub.net', 'https://avatars.githubusercontent.com', 'https://assets.misskey-hub.net', ...(this.config.externalMediaProxyEnabled ? [mediaProxyOrigin] : []), ...(this.config.contentSecurityPolicy?.imgAndMediaSrc ?? [])].join(' ');
+		this.reportEnabled = this.cspEnabled && this.config.contentSecurityPolicy?.reportTo !== undefined;
 
-		this.mediaSrc = ['\'self\'', ...(this.config.externalMediaProxyEnabled ? [mediaProxyOrigin] : []), ...(this.config.contentSecurityPolicy?.imgAndMediaSrc ?? [])].join(' ');
+		if (this.reportEnabled) {
+			/* eslint-disable @typescript-eslint/no-non-null-assertion */
+			this.reportTo = JSON.stringify({
+				group: 'csp',
+				max_age: 31536000,
+				endpoints: [
+					{ url: this.config.contentSecurityPolicy!.reportTo },
+				],
+				include_subdomains: true,
+			});
+			/* eslint-enable @typescript-eslint/no-non-null-assertion */
+		} else {
+			this.reportTo = undefined;
+		}
 
-		this.frameSrc = ['https://www.google.com/recaptcha/', 'https://recaptcha.google.com/recaptcha/', 'https://hcaptcha.com', 'https://*.hcaptcha.com', 'https://challenges.cloudflare.com', ...(this.config.contentSecurityPolicy?.frameSrc ?? [])].join(' '),
+		this.strictestPolicy = `default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none';${this.reportEnabled ? ' report-to csp;' : ''}`;
 
-		this.reportTo = `{"group":"csp-enforce","max_age":31536000,"endpoints":[{"url":"${this.config.contentSecurityPolicy?.reportTo.enforce ?? ''}"}],"include_subdomains":true},{"group":"csp-reportonly","max_age":31536000,"endpoints":[{"url":"${(this.config.contentSecurityPolicy?.reportTo.reportOnly ?? this.config.contentSecurityPolicy?.reportTo.enforce) ?? ''}"}],"include_subdomains":true}`;
+		this.selfHostedMediaPolicy = `default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; media-src 'self'; base-uri 'none'; sandbox; form-action 'none'; frame-ancestors 'none';${this.reportEnabled ? ' report-to csp;' : ''}`;
 
-		const baseHashes = [
-			createHash('sha256').update(new JSDOM(pug.compileFile(`${_dirname}/web/views/base.pug`)({
-				version: this.config.version,
-				config: this.config,
-			})).window.document.getElementsByTagName('script')[0].textContent as string).digest().toString('base64'),
+		const baseScripts = new JSDOM(pug.compileFile(`${_dirname}/web/views/base.pug`)({
+			version: this.config.version,
+			config: this.config,
+		})).window.document.getElementsByTagName('script');
+
+		const scriptHash = [
+			createHash('sha256').update(baseScripts[0].textContent as string).digest().toString('base64'),
 			createHash('sha256').update(readFileSync(`${_dirname}/web/boot.js`)).digest().toString('base64'),
-		];
-
-		this.basePolicy = `default-src 'self'; object-src 'none'; script-src 'sha256-${baseHashes[0]}' 'sha256-${baseHashes[1]}' 'wasm-unsafe-eval' 'strict-dynamic'; style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com; img-src ${this.imgSrc}; media-src ${this.mediaSrc}; connect-src 'self' https://hcaptcha.com https://*.hcaptcha.com; frame-src ${this.frameSrc}; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; report-to csp-enforce`;
-
-		const biosHashes = [
+			...(this.config.cfWebAnalyticsToken
+				? [createHash('sha256').update(baseScripts[baseScripts.length - 1].textContent as string).digest().toString('base64')]
+				: []),
 			createHash('sha256').update(readFileSync(`${_dirname}/web/bios.js`)).digest().toString('base64'),
-		];
-
-		this.biosPolicy = `default-src 'none'; script-src 'sha256-${biosHashes[0]}'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce`;
-
-		const cliHashes = [
 			createHash('sha256').update(readFileSync(`${_dirname}/web/cli.js`)).digest().toString('base64'),
-		];
-
-		this.cliPolicy = `default-src 'none'; script-src 'sha256-${cliHashes[0]}'; style-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce`;
-
-		const flushHashes = [
 			createHash('sha256').update(new JSDOM(pug.compileFile(`${_dirname}/web/views/flush.pug`)()).window.document.getElementsByTagName('script')[0].textContent as string).digest().toString('base64'),
 		];
 
-		this.flushPolicy = `default-src 'none'; script-src 'sha256-${flushHashes[0]}'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce`;
+		const scriptSrc = [
+			// eslint-disable-next-line quotes
+			"'strict-dynamic'", "'self'", "'wasm-unsafe-eval'", 'https://static.cloudflareinsights.com/beacon.min.js',
+			...(scriptHash.map(hash => `'sha256-${hash}'`)),
+		].join(' ');
+
+		const mediaProxyOrigin = new URL(this.config.mediaProxy).origin;
+
+		// eslint-disable-next-line quotes
+		const imgSrc = ["'self'", 'data:', 'blob:', 'https://xn--931a.moe', 'https://misskey-hub.net', 'https://avatars.githubusercontent.com', 'https://assets.misskey-hub.net', ...(this.config.externalMediaProxyEnabled ? [mediaProxyOrigin] : []), ...(this.config.contentSecurityPolicy?.imgAndMediaSrc ?? [])].join(' ');
+
+		// eslint-disable-next-line quotes
+		const mediaSrc = ["'self'", ...(this.config.externalMediaProxyEnabled ? [mediaProxyOrigin] : []), ...(this.config.contentSecurityPolicy?.imgAndMediaSrc ?? [])].join(' ');
+
+		const frameSrc = ['https://www.google.com/recaptcha/', 'https://recaptcha.google.com/recaptcha/', 'https://hcaptcha.com', 'https://*.hcaptcha.com', 'https://challenges.cloudflare.com', ...(this.config.contentSecurityPolicy?.frameSrc ?? [])].join(' ');
+
+		this.basePolicy = `default-src 'self'; script-src ${scriptSrc}; style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com; img-src ${imgSrc}; media-src ${mediaSrc}; connect-src 'self' https://hcaptcha.com https://*.hcaptcha.com https://cloudflareinsights.com/cdn-cgi/rum; frame-src ${frameSrc}; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none';${this.reportEnabled ? ' report-to csp;' : ''}`;
 	}
 
 	@bindThis
 	public attach(fastify: FastifyInstance) {
 		fastify.addHook('onRequest', (request, reply, done) => {
 			reply.header('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet, noimageindex, noai, noimageai');
-			reply.header('Report-To', this.reportTo);
 			reply.header('Cross-Origin-Opener-Policy', 'same-origin');
 			reply.header('Cross-Origin-Resource-Policy', 'same-origin');
 			reply.header('Origin-Agent-Cluster', '?1');
 			reply.header('Referrer-Policy', 'same-origin');
 			reply.header('X-Content-Type-Options', 'nosniff');
 			reply.header('X-Frame-Options', 'DENY');
-			reply.header('X-XSS-Protection', '1; mode=block');
+			reply.header('X-XSS-Protection', '0');
+
+			if (this.reportEnabled) {
+				reply.header('Report-To', this.reportTo);
+			}
 
 			const secFetchSite = request.headers['sec-fetch-site'];
 			const secFetchMode = request.headers['sec-fetch-mode'];
 			const secFetchDest = request.headers['sec-fetch-dest'];
+
 			if (secFetchSite === 'same-site' || secFetchSite === 'cross-site') {
 				/* eslint-disable no-empty */
 				if (request.method === 'GET' && secFetchMode === 'navigate' && secFetchDest === 'document') {
@@ -93,29 +111,28 @@ export class SecurityHeaderService {
 				} else if (request.method === 'GET' && request.routeOptions.url === '/_info_card_' && secFetchMode === 'navigate' && secFetchDest === 'iframe') {
 				} else if (request.method === 'GET' && request.routeOptions.url === '/favicon.ico' && secFetchDest === 'image') {
 				} else {
-					reply.header('Content-Security-Policy', strictestPolicy);
+					reply.header('Content-Security-Policy', this.strictestPolicy);
 					reply.header('Cache-Control', 'private');
 					reply.code(400).send();
 				}
 				/* eslint-enable no-empty */
 			}
 
-			if (this.config.contentSecurityPolicy !== undefined) {
-				let policy: string;
-				let enforce = true;
-
+			if (this.cspEnabled) {
 				switch (request.routeOptions.url) {
-					// No registered routes
-					case undefined:
-						policy = strictestPolicy;
-						break;
-
 					// OpenApiServerService
 					case '/api-doc':
-						policy = "default-src 'self'; object-src 'none'; script-src https://cdn.redoc.ly; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://cdn.redoc.ly; worker-src blob:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; report-to csp-enforce"; // eslint-disable-line quotes
+						reply.header('Content-Security-Policy', `default-src 'self'; script-src https://cdn.redoc.ly; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://cdn.redoc.ly; worker-src blob:; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none';${this.reportEnabled ? ' report-to csp;' : ''}`);
 						break;
-					case '/api.json':
-						policy = strictestPolicy;
+
+					// ActivityPubServerService
+					case '/inbox':
+						reply.header('Content-Security-Policy', this.strictestPolicy);
+						break;
+
+					// ServerService
+					case '/emoji/:path(.*)':
+						reply.header('Content-Security-Policy', this.strictestPolicy);
 						break;
 
 					// FileServerService
@@ -123,125 +140,59 @@ export class SecurityHeaderService {
 					case '/files/:key':
 					case '/files/:key/*':
 					case '/proxy/:url*':
-						policy = "default-src 'none'; img-src 'self'; media-src 'self'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; sandbox; report-to csp-enforce"; // eslint-disable-line quotes
-						break;
-
-					// ActivityPubServerService
-					case '/inbox':
-					case 'notes/:note/activity':
-					case '/users/:user/outbox':
-					case '/users/:user/followers':
-					case '/users/:user/following':
-					case '/users/:user/collections/featured':
-					case '/users/:user/publickey':
-					case '/emojis/:emoji':
-					case '/likes/:like':
-					case '/follows/:follower/:followee':
-					case '/follows/:followRequestId':
-						policy = strictestPolicy;
-						break;
-
-					// NodeinfoServerService
-					case '/nodeinfo/2.1':
-					case '/nodeinfo/2.0':
-						policy = strictestPolicy;
-						break;
-
-					// WellKnownServerService
-					case '/.well-known/*':
-					case '/.well-known/host-meta':
-					case '/.well-known/host-meta.json':
-					case '/.well-known/nodeinfo':
-					case '/.well-known/oauth-authorization-server':
-					case '/.well-known/webfinger':
-						policy = strictestPolicy;
-						break;
-
-					// ServerService
-					case '/emoji/:path(.*)':
-					case '/avatar/@:acct':
-					case '/identicon/:x':
-					case '/verify-email/:code':
-						policy = strictestPolicy;
+						reply.header('Content-Security-Policy', this.selfHostedMediaPolicy);
 						break;
 
 					// ClientServerService
 					case '/vite/*':
-						policy = strictestPolicy;
+						reply.header('Content-Security-Policy', this.strictestPolicy);
 						break;
+
 					case '/static-assets/*':
-						policy = inlineStyleLaxedPolicy;
-						break;
 					case '/client-assets/*':
-						policy = "default-src 'none'; style-src 'unsafe-inline'; media-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce"; // eslint-disable-line quotes
-						break;
 					case '/assets/*':
-						policy = strictestPolicy;
-						break;
-					case '/tarball/*':
-						policy = strictestPolicy;
-						break;
-					case '/favicon.ico':
-						policy = inlineStyleLaxedPolicy;
-						reply.removeHeader('Cross-Origin-Resource-Policy');
-						break;
 					case '/apple-touch-icon.png':
 					case '/fluent-emoji/:path(.*)':
 					case '/twemoji/:path(.*)':
-					case 'twemoji-badge/:path(.*)':
-						policy = inlineStyleLaxedPolicy;
+					case '/twemoji-badge/:path(.*)':
+						reply.header('Content-Security-Policy', this.selfHostedMediaPolicy);
 						break;
+
+					case '/favicon.ico':
+						reply.removeHeader('Cross-Origin-Resource-Policy');
+						reply.header('Content-Security-Policy', this.selfHostedMediaPolicy);
+						break;
+
 					case '/sw.js':
-						policy = "default-src 'none'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-reportonly"; // eslint-disable-line quotes
-						enforce = false;
+						reply.header('Content-Security-Policy-Report-Only', `default-src 'none'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none';${this.reportEnabled ? ' report-to csp;' : ''}`);
 						break;
-					case '/manifest.json':
-					case '/robots.txt':
-					case '/opensearch.xml':
+
 					case '/url':
-					case '/@:user.atom':
-					case '/@:user.rss':
-					case '/@:user.json':
-						policy = strictestPolicy;
+						reply.header('Content-Security-Policy', this.strictestPolicy);
 						break;
+
 					case '/_info_card_':
-						policy = `default-src 'none'; style-src 'unsafe-inline'; img-src ${this.imgSrc}; base-uri 'none'; form-action 'none'; report-to csp-enforce`;
-						break;
-					case '/bios':
-						policy = this.biosPolicy;
-						break;
-					case '/cli':
-						policy = this.cliPolicy;
-						break;
-					case '/flush':
-						policy = this.flushPolicy;
-						break;
-					case '/streaming':
-						policy = strictestPolicy;
+						reply.removeHeader('X-Frame-Options');
+						reply.header('Content-Security-Policy', `default-src 'none'; style-src 'unsafe-inline'; img-src ${(this.config.contentSecurityPolicy?.imgAndMediaSrc ?? []).join(' ')}; base-uri 'none'; form-action 'none';${this.reportEnabled ? ' report-to csp;' : ''}`);
 						break;
 
 					default:
-						if (request.routeOptions.url.startsWith('/api/')) {
+						if (request.routeOptions.url === undefined) {
+							reply.header('Content-Security-Policy', this.strictestPolicy);
+						} else if (request.routeOptions.url.startsWith('/api/')) {
 							// ApiServerService
-							policy = strictestPolicy;
+							reply.header('Content-Security-Policy', this.strictestPolicy);
 						} else if (request.routeOptions.url.startsWith('/oauth/')) {
 							// OAuth2ProviderService
-							policy = "default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; report-to csp-reportonly"; // eslint-disable-line quotes
-							enforce = false;
+							reply.header('Content-Security-Policy-Report-Only', `default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none';${this.reportEnabled ? ' report-to csp;' : ''}`);
 						} else if (request.routeOptions.url === '/queue' || request.routeOptions.url.startsWith('/queue/')) {
 							// ClientServerService
-							policy = "default-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; report-to csp-enforce"; // eslint-disable-line quotes
+							reply.header('Content-Security-Policy', `default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none';${this.reportEnabled ? ' report-to csp;' : ''}`);
 						} else {
-							policy = this.basePolicy;
+							reply.header('Content-Security-Policy', this.basePolicy);
 						}
 						break;
 				}
-
-				if (process.env.NODE_ENV !== 'production') {
-					enforce = false;
-				}
-
-				reply.header(enforce ? 'Content-Security-Policy' : 'Content-Security-Policy-Report-Only', policy);
 			}
 
 			done();
