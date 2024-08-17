@@ -10,7 +10,7 @@ on:
   pull_request_target:
 
 jobs:
-  build:
+  build_and_publish_storybook:
     runs-on: ubuntu-latest
 
     env:

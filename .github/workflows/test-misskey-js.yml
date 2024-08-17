@@ -14,7 +14,7 @@ on:
       - packages/misskey-js/**
 
 jobs:
-  test:
+  test_misskey_js:
 
     runs-on: ubuntu-latest
 

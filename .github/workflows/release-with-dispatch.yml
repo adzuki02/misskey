@@ -27,7 +27,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  get-pr:
+  get-opened-release-pr:
     runs-on: ubuntu-latest
     outputs:
       pr_number: ${{ steps.get_pr.outputs.pr_number }}
@@ -41,10 +41,10 @@ jobs:
 
   merge:
     uses: misskey-dev/release-manager-actions/.github/workflows/merge.yml@v1
-    needs: get-pr
-    if: ${{ needs.get-pr.outputs.pr_number != '' && inputs.merge == true }}
+    needs: get-opened-release-pr
+    if: ${{ needs.get-opened-release-pr.outputs.pr_number != '' && inputs.merge == true }}
     with:
-      pr_number: ${{ needs.get-pr.outputs.pr_number }}
+      pr_number: ${{ needs.get-opened-release-pr.outputs.pr_number }}
       package_jsons_to_rewrite: ${{ vars.PACKAGE_JSONS_TO_REWRITE }}
       # Text to prepend to the changelog
       # The first line must be `## Unreleased`
@@ -70,10 +70,10 @@ jobs:
 
   create-prerelease:
     uses: misskey-dev/release-manager-actions/.github/workflows/create-prerelease.yml@v1
-    needs: get-pr
-    if: ${{ needs.get-pr.outputs.pr_number != '' && inputs.merge != true  }}
+    needs: get-opened-release-pr
+    if: ${{ needs.get-opened-release-pr.outputs.pr_number != '' && inputs.merge != true  }}
     with:
-      pr_number: ${{ needs.get-pr.outputs.pr_number }}
+      pr_number: ${{ needs.get-opened-release-pr.outputs.pr_number }}
       package_jsons_to_rewrite: ${{ vars.PACKAGE_JSONS_TO_REWRITE }}
       use_external_app_to_release: ${{ vars.USE_RELEASE_APP == 'true' }}
       indent: ${{ vars.INDENT }}
@@ -83,8 +83,8 @@ jobs:
 
   create-target:
     uses: misskey-dev/release-manager-actions/.github/workflows/create-target.yml@v1
-    needs: get-pr
-    if: ${{ needs.get-pr.outputs.pr_number == '' }}
+    needs: get-opened-release-pr
+    if: ${{ needs.get-opened-release-pr.outputs.pr_number == '' }}
     with:
       # The script for version increment.
       # process.env.CURRENT_VERSION: The current version.

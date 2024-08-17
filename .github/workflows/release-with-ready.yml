@@ -13,7 +13,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  check:
+  check_pr_branch_name:
     runs-on: ubuntu-latest
     outputs:
       ref: ${{ steps.get_pr.outputs.ref }}
@@ -27,10 +27,10 @@ jobs:
         id: get_pr
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
-  release:
+  release_rc:
     uses: misskey-dev/release-manager-actions/.github/workflows/create-prerelease.yml@v1
-    needs: check
-    if: startsWith(needs.check.outputs.ref, 'release/')
+    needs: check_pr_branch_name
+    if: startsWith(needs.check_pr_branch_name.outputs.ref, 'release/')
     with:
       pr_number: ${{ github.event.pull_request.number }}
       package_jsons_to_rewrite: ${{ vars.PACKAGE_JSONS_TO_REWRITE }}

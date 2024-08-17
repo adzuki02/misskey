@@ -12,7 +12,7 @@ on:
       - .github/workflows/get-api-diff.yml
 
 jobs:
-  get-from-misskey:
+  get-api-json-from-misskey:
     runs-on: ubuntu-latest
     permissions:
       contents: read
