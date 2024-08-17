@@ -10,7 +10,7 @@ env:
   NODE_ENV: production
 
 jobs:
-  build:
+  build_and_archive:
     runs-on: ubuntu-latest
 
     strategy:

@@ -9,7 +9,7 @@ on:
       - packages/misskey-js/**
 
 jobs:
-  report:
+  api_report:
 
     runs-on: ubuntu-latest
 
