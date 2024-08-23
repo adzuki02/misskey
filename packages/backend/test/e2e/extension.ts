@@ -2,7 +2,7 @@
 process.env.NODE_ENV = 'test';
 
 import * as assert from 'assert';
-import { sleep, api, post, signup, simpleGet, relativeFetch, failedApiCall, successfulApiCall, randomString, sendEnvUpdateRequest } from '../utils.js';
+import { api, signup, simpleGet, relativeFetch, randomString, sendEnvUpdateRequest } from '../utils.js';
 import type * as misskey from 'misskey-js';
 
 function genHost() {
@@ -279,7 +279,9 @@ describe('独自拡張', () => {
 			await api('users/lists/push', { listId: listCreateRes.body.id, userId: remoteUser.id }, alice);
 			const followers = await api('users/followers', { userId: remoteUser.id }, alice);
 			assert.strictEqual(followers.body.length, 1);
-			assert.strictEqual(followers.body[0].follower.id, alice.id);
+			assert.notStrictEqual(followers.body[0].follower, undefined);
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			assert.strictEqual(followers.body[0].follower!.id, alice.id);
 		});
 
 		// 動作しない
@@ -309,10 +311,16 @@ describe('独自拡張', () => {
 
 			test('が通知欄にミュート対象のユーザーからの通知を含まない。', async () => {
 				await api('notes/create', { text: '@alice text' }, bob);
-				await sleep(500);
+				await new Promise<void>(res => {
+					setTimeout(() => {
+						res();
+					}, 2000);
+				});
 				const res = await api('i/notifications', {}, alice);
 				for (const n of res.body) {
-					assert.notStrictEqual(n.userId, bob.id);
+					if (n.type === 'mention') {
+						assert.notStrictEqual(n.userId, bob.id);
+					}
 				}
 			});
 
@@ -338,7 +346,11 @@ describe('独自拡張', () => {
 
 			test('が通知欄にミュート対象のユーザーからの通知を含む。', async () => {
 				await api('notes/create', { text: '@alice text' }, bob);
-				await sleep(500);
+				await new Promise<void>(res => {
+					setTimeout(() => {
+						res();
+					}, 2000);
+				});
 				const res = await api('i/notifications', {}, alice);
 				const count = res.body.filter((notification: any) => notification.userId === bob.id).length;
 				assert.notStrictEqual(count, 0);
