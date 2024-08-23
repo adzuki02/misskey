@@ -823,6 +823,11 @@ describe('Timelines', () => {
 		test.concurrent('withReplies: true でフォローしているユーザーの行った別のフォローしているユーザーの visibility: followers な投稿への返信が含まれる', async () => {
 			const [alice, bob, carol] = await Promise.all([signup(), signup(), signup()]);
 
+			// FTTのlocalTimelineWithReplyTo:<ALICE_ID>が空にならないようにしないと、DBフォールバック発生時に落ちる
+			// DBフォールバックでは「withReplies: true でフォローしているユーザーの行った別のフォローしているユーザーの visibility: followers な投稿への返信を含む」実装がされていないため
+			const aliceNote = await post(alice, { text: 'hi' });
+			await post(bob, { text: 'hi', replyId: aliceNote.id });
+
 			await api('following/create', { userId: bob.id }, alice);
 			await api('following/create', { userId: carol.id }, alice);
 			await api('following/create', { userId: carol.id }, bob);

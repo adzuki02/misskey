@@ -91,15 +91,20 @@ export class FanoutTimelineService {
 	}
 
 	@bindThis
-	public getMulti(name: FanoutTimelineName[], untilId?: string | null, sinceId?: string | null): Promise<string[][]> {
+	public getMulti(name: FanoutTimelineName[], untilId?: string | null, sinceId?: string | null): Promise<[string[][], string | undefined]> {
 		const pipeline = this.redisForTimelines.pipeline();
 		for (const n of name) {
 			pipeline.lrange('list:' + n, 0, -1);
 		}
 		return pipeline.exec().then(res => {
-			if (res == null) return [];
+			if (res == null) return [[], undefined];
 			const tls = res.map(r => r[1] as string[]);
-			return tls.map(ids =>
+
+			// 基本的にRedisにある一番古いIDより新しいものだけを追加している、かつLPUSHしていくので一番右が一番古いはず
+			// 空のTLがある場合はundefinedになる
+			const oldestValidId = tls.map(ids => ids[ids.length - 1]).sort().pop();
+
+			return [tls.map(ids =>
 				(untilId && sinceId)
 					? ids.filter(id => id < untilId && id > sinceId).sort((a, b) => a > b ? -1 : 1)
 					: untilId
@@ -107,7 +112,7 @@ export class FanoutTimelineService {
 						: sinceId
 							? ids.filter(id => id > sinceId).sort((a, b) => a < b ? -1 : 1)
 							: ids.sort((a, b) => a > b ? -1 : 1),
-			);
+			), oldestValidId];
 		});
 	}
 

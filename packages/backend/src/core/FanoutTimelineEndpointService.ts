@@ -55,29 +55,24 @@ export class FanoutTimelineEndpointService {
 
 	@bindThis
 	private async getMiNotes(ps: TimelineOptions): Promise<MiNote[]> {
-		let noteIds: string[];
-		let shouldFallbackToDb = false;
-
 		// 呼び出し元と以下の処理をシンプルにするためにdbFallbackを置き換える
 		if (!ps.useDbFallback) ps.dbFallback = () => Promise.resolve([]);
 
 		const ascending = ps.sinceId && !ps.untilId;
 		const idCompare: (a: string, b: string) => number = ascending ? (a, b) => a < b ? -1 : 1 : (a, b) => a > b ? -1 : 1;
 
-		const redisResult = await this.fanoutTimelineService.getMulti(ps.redisTimelines, ps.untilId, ps.sinceId);
+		const [redisResult, oldestValidId] = await this.fanoutTimelineService.getMulti(ps.redisTimelines, ps.untilId, ps.sinceId);
 
-		// 取得したredisResultのうち、2つ以上ソースがあり、1つでも空であればDBにフォールバックする
-		shouldFallbackToDb = ps.useDbFallback && (redisResult.length > 1 && redisResult.some(ids => ids.length === 0));
-
-		// 取得したresultの中で最古のIDのうち、最も新しいものを取得
-		const thresholdId = redisResult.filter(ids => ids.length > 0).map(ids => ids[ids.length - 1]).sort(idCompare)[0];
+		// オプション無効時、取得したredisResultのうち、2つ以上ソースがあり、1つでも空であればDBにフォールバックする
+		let shouldFallbackToDb = ps.useDbFallback && (oldestValidId === undefined || (redisResult.length > 1 && redisResult.some(ids => ids.length === 0)));
 
 		// TODO: いい感じにgetMulti内でソート済だからuniqするときにredisResultが全てソート済なのを利用して再ソートを避けたい
-		const redisResultIds = shouldFallbackToDb ? [] : Array.from(new Set(redisResult.flat(1))).filter(id => (idCompare(id, thresholdId) !== 1) || (id === thresholdId));
+		const redisResultIds = shouldFallbackToDb ? [] : Array.from(new Set(redisResult.flat(1))).filter(id => oldestValidId === undefined ? !ps.useDbFallback : id >= oldestValidId).sort(idCompare);
 
-		noteIds = redisResultIds.slice(0, ps.limit);
-		const oldestNoteId = ascending ? redisResultIds[0] : redisResultIds[redisResultIds.length - 1];
-		shouldFallbackToDb = shouldFallbackToDb || (noteIds.length === 0 || ps.sinceId != null && ps.sinceId < oldestNoteId);
+		let noteIds = redisResultIds.slice(0, ps.limit);
+
+		// const oldestNoteId = ascending ? redisResultIds[0] : redisResultIds[redisResultIds.length - 1];
+		shouldFallbackToDb ||= ps.useDbFallback && (noteIds.length === 0 || (oldestValidId === undefined || (ps.sinceId != null && ps.sinceId < oldestValidId)));
 
 		if (!shouldFallbackToDb) {
 			let filter = ps.noteFilter ?? (_note => true);
