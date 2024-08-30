@@ -80,6 +80,7 @@ jobs:
       matrix:
         workspace:
         - backend
+        - sw
         - misskey-js
 
     steps:
@@ -100,6 +101,6 @@ jobs:
       run: git diff --exit-code pnpm-lock.yaml
     - name: Build misskey-js
       run: pnpm --filter misskey-js run build
-      if: ${{ matrix.workspace == 'backend' }}
+      if: ${{ matrix.workspace == 'backend' || matrix.workspace == 'sw' }}
     - name: Run typecheck
       run: pnpm --filter ${{ matrix.workspace }} run typecheck
