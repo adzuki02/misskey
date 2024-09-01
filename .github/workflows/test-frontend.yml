@@ -22,12 +22,8 @@ on:
       - packages/backend/**
       - .github/workflows/test-frontend.yml
 jobs:
-  vitest:
+  unit:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.16.0]
 
     steps:
     - uses: actions/checkout@v4.1.1
@@ -35,10 +31,9 @@ jobs:
         submodules: true
     - name: Install pnpm
       uses: pnpm/action-setup@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4.0.3
+    - uses: actions/setup-node@v4.0.3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version-file: '.node-version'
         cache: 'pnpm'
     - run: corepack enable
     - run: pnpm i --frozen-lockfile
@@ -56,13 +51,12 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ./packages/frontend/coverage/coverage-final.json
 
-  e2e_frontend:
+  e2e:
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20.16.0]
         browser: [chrome]
 
     services:
@@ -90,10 +84,9 @@ jobs:
     #  if: ${{ matrix.browser == 'firefox' }}
     - name: Install pnpm
       uses: pnpm/action-setup@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4.0.3
+    - uses: actions/setup-node@v4.0.3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version-file: '.node-version'
         cache: 'pnpm'
     - run: corepack enable
     - run: pnpm i --frozen-lockfile

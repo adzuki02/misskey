@@ -1,0 +1,49 @@
+name: Dummy
+on:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    if: ${{ false }}
+
+    steps:
+      - name: Dummy
+        run: echo dummy
+
+  typecheck:
+    runs-on: ubuntu-latest
+
+    if: ${{ false }}
+
+    steps:
+      - name: Dummy
+        run: echo dummy
+
+  unit:
+    runs-on: ubuntu-latest
+
+    if: ${{ false }}
+
+    steps:
+      - name: Dummy
+        run: echo dummy
+
+  e2e:
+    runs-on: ubuntu-latest
+
+    if: ${{ false }}
+
+    steps:
+      - name: Dummy
+        run: echo dummy
+
+  test_misskey_js:
+    runs-on: ubuntu-latest
+
+    if: ${{ false }}
+
+    steps:
+      - name: Dummy
+        run: echo dummy
