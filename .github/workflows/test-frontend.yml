@@ -56,8 +56,6 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix:
-        browser: [chrome]
 
     services:
       postgres:
@@ -77,11 +75,6 @@ jobs:
       with:
         submodules: true
     # https://github.com/cypress-io/cypress-docker-images/issues/150
-    #- name: Install mplayer for FireFox
-    #  run: sudo apt install mplayer -y
-    #  if: ${{ matrix.browser == 'firefox' }}
-    #- uses: browser-actions/setup-firefox@latest
-    #  if: ${{ matrix.browser == 'firefox' }}
     - name: Install pnpm
       uses: pnpm/action-setup@v4
     - uses: actions/setup-node@v4.0.3
@@ -109,14 +102,14 @@ jobs:
         start: pnpm start:test
         wait-on: 'http://localhost:61812'
         headed: true
-        browser: ${{ matrix.browser }}
+        browser: chrome
     - uses: actions/upload-artifact@v4
       if: failure()
       with:
-        name: ${{ matrix.browser }}-cypress-screenshots
+        name: chrome-cypress-screenshots
         path: cypress/screenshots
     - uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: ${{ matrix.browser }}-cypress-videos
+        name: chrome-cypress-videos
         path: cypress/videos

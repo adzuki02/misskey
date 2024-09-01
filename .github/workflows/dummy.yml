@@ -14,11 +14,9 @@ jobs:
         - sw
         - misskey-js
 
-    if: ${{ false }}
-
     steps:
-      - name: Dummy
-        run: echo dummy
+      - name: Dummy (${{ matrix.workspace }})
+        run: echo dummy (${{ matrix.workspace }})
 
   typecheck:
     runs-on: ubuntu-latest
@@ -29,11 +27,9 @@ jobs:
         - backend
         - misskey-js
 
-    if: ${{ false }}
-
     steps:
-      - name: Dummy
-        run: echo dummy
+      - name: Dummy (${{ matrix.workspace }})
+        run: echo dummy (${{ matrix.workspace }})
 
   unit:
     runs-on: ubuntu-latest
