@@ -6,6 +6,14 @@ jobs:
   lint:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        workspace:
+        - backend
+        - frontend
+        - sw
+        - misskey-js
+
     if: ${{ false }}
 
     steps:
@@ -14,6 +22,12 @@ jobs:
 
   typecheck:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        workspace:
+        - backend
+        - misskey-js
 
     if: ${{ false }}
 
