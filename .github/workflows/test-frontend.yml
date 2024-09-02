@@ -22,12 +22,8 @@ on:
       - packages/backend/**
       - .github/workflows/test-frontend.yml
 jobs:
-  vitest:
+  unit:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.16.0]
 
     steps:
     - uses: actions/checkout@v4.1.1
@@ -35,10 +31,9 @@ jobs:
         submodules: true
     - name: Install pnpm
       uses: pnpm/action-setup@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4.0.3
+    - uses: actions/setup-node@v4.0.3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version-file: '.node-version'
         cache: 'pnpm'
     - run: corepack enable
     - run: pnpm i --frozen-lockfile
@@ -56,14 +51,11 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ./packages/frontend/coverage/coverage-final.json
 
-  e2e_frontend:
+  e2e:
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
-      matrix:
-        node-version: [20.16.0]
-        browser: [chrome]
 
     services:
       postgres:
@@ -83,17 +75,11 @@ jobs:
       with:
         submodules: true
     # https://github.com/cypress-io/cypress-docker-images/issues/150
-    #- name: Install mplayer for FireFox
-    #  run: sudo apt install mplayer -y
-    #  if: ${{ matrix.browser == 'firefox' }}
-    #- uses: browser-actions/setup-firefox@latest
-    #  if: ${{ matrix.browser == 'firefox' }}
     - name: Install pnpm
       uses: pnpm/action-setup@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4.0.3
+    - uses: actions/setup-node@v4.0.3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version-file: '.node-version'
         cache: 'pnpm'
     - run: corepack enable
     - run: pnpm i --frozen-lockfile
@@ -116,14 +102,14 @@ jobs:
         start: pnpm start:test
         wait-on: 'http://localhost:61812'
         headed: true
-        browser: ${{ matrix.browser }}
+        browser: chrome
     - uses: actions/upload-artifact@v4
       if: failure()
       with:
-        name: ${{ matrix.browser }}-cypress-screenshots
+        name: chrome-cypress-screenshots
         path: cypress/screenshots
     - uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: ${{ matrix.browser }}-cypress-videos
+        name: chrome-cypress-videos
         path: cypress/videos

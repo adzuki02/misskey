@@ -18,12 +18,8 @@ on:
       - packages/misskey-js/**
       - .github/workflows/test-backend.yml
 jobs:
-  unit_backend:
+  unit:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.16.0]
 
     services:
       postgres:
@@ -46,10 +42,9 @@ jobs:
       uses: pnpm/action-setup@v4
     - name: Install FFmpeg
       uses: FedericoCarboni/setup-ffmpeg@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4.0.3
+    - uses: actions/setup-node@v4.0.3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version-file: '.node-version'
         cache: 'pnpm'
     - run: corepack enable
     - run: pnpm i --frozen-lockfile
@@ -67,12 +62,8 @@ jobs:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ./packages/backend/coverage/coverage-final.json
 
-  e2e_backend:
+  e2e:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.16.0]
 
     services:
       postgres:
@@ -93,10 +84,9 @@ jobs:
           submodules: true
       - name: Install pnpm
         uses: pnpm/action-setup@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4.0.3
+      - uses: actions/setup-node@v4.0.3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: '.node-version'
           cache: 'pnpm'
       - run: corepack enable
       - run: pnpm i --frozen-lockfile
