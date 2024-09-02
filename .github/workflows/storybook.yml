@@ -91,7 +91,7 @@ jobs:
           echo "skip=true" >> $GITHUB_OUTPUT
         fi
         BRANCH="${{ github.event.pull_request.head.user.login }}:$HEAD_REF"
-        if [ "$BRANCH" = "misskey-dev:$HEAD_REF" ]; then
+        if [ "$BRANCH" = "adzukimame:$HEAD_REF" ]; then
           BRANCH="$HEAD_REF"
         fi
         pnpm --filter frontend chromatic --exit-once-uploaded -d storybook-static --branch-name "$BRANCH" $(echo "$CHROMATIC_PARAMETER")
