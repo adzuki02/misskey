@@ -65,3 +65,9 @@ jobs:
     if: ${{ false }}
     steps:
       - run: echo dummy
+
+  validate-api-json:
+    runs-on: ubuntu-latest
+    if: ${{ false }}
+    steps:
+      - run: echo dummy
