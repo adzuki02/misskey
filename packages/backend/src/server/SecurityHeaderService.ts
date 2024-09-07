@@ -122,7 +122,7 @@ export class SecurityHeaderService {
 				switch (request.routeOptions.url) {
 					// OpenApiServerService
 					case '/api-doc':
-						reply.header('Content-Security-Policy', `default-src 'self'; script-src https://cdn.redoc.ly; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://cdn.redoc.ly; worker-src blob:; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none';${this.reportEnabled ? ' report-to csp;' : ''}`);
+						reply.header('Content-Security-Policy', `default-src 'self'; script-src https://cdn.jsdelivr.net/npm/@scalar/api-reference; style-src 'unsafe-inline'; font-src https://fonts.scalar.com; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none';${this.reportEnabled ? ' report-to csp;' : ''}`);
 						break;
 
 					// ActivityPubServerService
