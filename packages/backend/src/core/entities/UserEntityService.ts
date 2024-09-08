@@ -454,11 +454,13 @@ export class UserEntityService implements OnModuleInit {
 		}
 
 		const followingCount = profile == null ? null :
+			!me && user.host ? null :
 			(profile.followingVisibility === 'public') || isMe || iAmModerator ? user.followingCount :
 			(profile.followingVisibility === 'followers') && (relation && relation.isFollowing) ? user.followingCount :
 			null;
 
 		const followersCount = profile == null ? null :
+			!me && user.host ? null :
 			(profile.followersVisibility === 'public') || isMe || iAmModerator ? user.followersCount :
 			(profile.followersVisibility === 'followers') && (relation && relation.isFollowing) ? user.followersCount :
 			null;
@@ -543,8 +545,8 @@ export class UserEntityService implements OnModuleInit {
 				pinnedPageId: profile!.pinnedPageId,
 				pinnedPage: profile!.pinnedPageId ? this.pageEntityService.pack(profile!.pinnedPageId, me) : null,
 				publicReactions: this.isLocalUser(user) ? profile!.publicReactions : false, // https://github.com/misskey-dev/misskey/issues/12964
-				followersVisibility: profile!.followersVisibility,
-				followingVisibility: profile!.followingVisibility,
+				followersVisibility: !me && user.host ? 'private' : profile!.followersVisibility,
+				followingVisibility: !me && user.host ? 'private' : profile!.followingVisibility,
 				twoFactorEnabled: profile!.twoFactorEnabled,
 				usePasswordLessLogin: profile!.usePasswordLessLogin,
 				securityKeys: profile!.twoFactorEnabled

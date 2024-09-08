@@ -132,6 +132,33 @@ describe('独自拡張', () => {
 		});
 	});
 
+	describe('リモートユーザーのFFは非公開として扱う', () => {
+		test('followingVisibilityがprivate', async () => {
+			const res = await api('users/show', { userId: remoteUser.id });
+			assert.strictEqual(res.body.followingVisibility, 'private');
+		});
+
+		test('followersVisibilityがprivate', async () => {
+			const res = await api('users/show', { userId: remoteUser.id });
+			assert.strictEqual(res.body.followersVisibility, 'private');
+		});
+
+		test('followingCountが0', async () => {
+			const res = await api('users/show', { userId: remoteUser.id });
+			assert.strictEqual(res.body.followingCount, 0);
+		});
+
+		test('followingCountが0', async () => {
+			const res = await api('users/show', { userId: remoteUser.id });
+			assert.strictEqual(res.body.followingCount, 0);
+		});
+
+		test('followersCountが0', async () => {
+			const res = await api('users/show', { userId: remoteUser.id });
+			assert.strictEqual(res.body.followersCount, 0);
+		});
+	});
+
 	describe('リモートユーザーのFFの表示をクレデンシャル必須に', () => {
 		describe.each([
 			{ endpoint: 'users/followers' },
