@@ -3041,6 +3041,10 @@ export interface Locale extends ILocale {
      */
     "disableShowingAnimatedImages": string;
     /**
+     * ポップアップや絵文字ピッカーではアニメーション画像を再生する
+     */
+    "forceAnimatedImagesOnPopup": string;
+    /**
      * メディアがセンシティブであることを分かりやすく表示
      */
     "highlightSensitiveMedia": string;

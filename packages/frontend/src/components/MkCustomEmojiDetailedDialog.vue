@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSpacer>
 			<div style="display: flex; flex-direction: column; gap: 1em;">
 				<div :class="$style.emojiImgWrapper">
-					<MkCustomEmoji :name="emoji.name" :normal="true" :useOriginalSize="true" style="height: 100%;"></MkCustomEmoji>
+					<MkCustomEmoji :name="emoji.name" :host="emoji.host ?? undefined" :normal="true" :useOriginalSize="true" :forceAnimation="defaultStore.reactiveState.forceAnimatedImagesOnPopup.value" style="height: 100%;"></MkCustomEmoji>
 				</div>
 				<MkKeyValue :copy="`:${emoji.name}:`">
 					<template #key>{{ i18n.ts.name }}</template>
@@ -19,7 +19,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkKeyValue>
 					<template #key>{{ i18n.ts.tags }}</template>
 					<template #value>
-						<div v-if="emoji.aliases.length === 0">{{ i18n.ts.none }}</div>
+						<div v-if="emoji.host">{{ `${i18n.ts.unknown} (${i18n.ts.remote})` }}</div>
+						<div v-else-if="emoji.aliases.length === 0">{{ i18n.ts.none }}</div>
 						<div v-else :class="$style.aliases">
 							<span v-for="alias in emoji.aliases" :key="alias" :class="$style.alias">
 								{{ alias }}
@@ -29,19 +30,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkKeyValue>
 				<MkKeyValue>
 					<template #key>{{ i18n.ts.category }}</template>
-					<template #value>{{ emoji.category ?? i18n.ts.none }}</template>
+					<template #value>{{ emoji.host ? `${i18n.ts.unknown} (${i18n.ts.remote})` : (emoji.category ?? i18n.ts.none) }}</template>
 				</MkKeyValue>
 				<MkKeyValue>
 					<template #key>{{ i18n.ts.sensitive }}</template>
-					<template #value>{{ emoji.isSensitive ? i18n.ts.yes : i18n.ts.no }}</template>
+					<template #value>{{ emoji.host ? `${i18n.ts.unknown} (${i18n.ts.remote})` : (emoji.isSensitive ? i18n.ts.yes : i18n.ts.no) }}</template>
 				</MkKeyValue>
 				<MkKeyValue>
 					<template #key>{{ i18n.ts.localOnly }}</template>
-					<template #value>{{ emoji.localOnly ? i18n.ts.yes : i18n.ts.no }}</template>
+					<template #value>{{ emoji.host ? `${i18n.ts.unknown} (${i18n.ts.remote})` : (emoji.localOnly ? i18n.ts.yes : i18n.ts.no) }}</template>
 				</MkKeyValue>
 				<MkKeyValue>
 					<template #key>{{ i18n.ts.license }}</template>
-					<template #value><Mfm :text="emoji.license ?? i18n.ts.none"/></template>
+					<template #value><Mfm :text="emoji.host ? `${i18n.ts.unknown} (${i18n.ts.remote})` : (emoji.license ?? i18n.ts.none)"/></template>
 				</MkKeyValue>
 				<MkKeyValue :copy="emoji.url">
 					<template #key>{{ i18n.ts.emojiUrl }}</template>
@@ -62,6 +63,7 @@ import MkLink from '@/components/MkLink.vue';
 import { i18n } from '@/i18n.js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
+import { defaultStore } from '@/store';
 
 const props = defineProps<{
   emoji: Misskey.entities.EmojiDetailed,

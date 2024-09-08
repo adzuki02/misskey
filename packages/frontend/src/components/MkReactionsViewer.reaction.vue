@@ -161,6 +161,7 @@ if (!mock) {
 			users,
 			count: props.count,
 			targetElement: buttonEl.value,
+			forceAnimation: defaultStore.reactiveState.forceAnimatedImagesOnPopup.value,
 		}, {
 			closed: () => dispose(),
 		});

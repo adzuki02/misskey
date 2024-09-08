@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkTooltip ref="tooltip" :showing="showing" :targetElement="targetElement" :maxWidth="340" @closed="emit('closed')">
 	<div :class="$style.root">
 		<div :class="$style.reaction">
-			<MkReactionIcon :reaction="reaction" :class="$style.reactionIcon" :noStyle="true"/>
+			<MkReactionIcon :reaction="reaction" :class="$style.reactionIcon" :noStyle="true" :forceAnimation="forceAnimation"/>
 			<div :class="$style.reactionName">{{ getReactionName(reaction) }}</div>
 		</div>
 		<div :class="$style.users">
@@ -33,6 +33,7 @@ defineProps<{
 	users: any[]; // TODO
 	count: number;
 	targetElement: HTMLElement;
+	forceAnimation?: boolean;
 }>();
 
 const emit = defineEmits<{

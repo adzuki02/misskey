@@ -46,6 +46,7 @@ const props = defineProps<{
 	menu?: boolean;
 	menuReaction?: boolean;
 	fallbackToImage?: boolean;
+	forceAnimation?: boolean;
 }>();
 
 const react = inject<((name: string) => void) | null>('react', null);
@@ -75,7 +76,7 @@ const url = computed(() => {
 				false,
 				true,
 			);
-	return defaultStore.reactiveState.disableShowingAnimatedImages.value
+	return defaultStore.reactiveState.disableShowingAnimatedImages.value && !props.forceAnimation
 		? getStaticImageUrl(proxied)
 		: proxied;
 });
@@ -102,19 +103,31 @@ function onClick(ev: MouseEvent) {
 				react(props.host ? `:${props.name}@${props.host}:` : `:${props.name}:`);
 				sound.playMisskeySfx('reaction');
 			},
-		}] : []), ...(isLocal.value ? [{
+		}] : []), {
 			text: i18n.ts.info,
 			icon: 'ti ti-info-circle',
 			action: async () => {
 				const { dispose } = os.popup(MkCustomEmojiDetailedDialog, {
-					emoji: await misskeyApiGet('emoji', {
+					emoji: isLocal.value ? await misskeyApiGet('emoji', {
 						name: customEmojiName.value,
-					}),
+					}) : {
+						id: '',
+						aliases: [],
+						name: props.name,
+						category: null,
+						// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+						host: props.host ?? (URL.canParse(rawUrl.value!) ? new URL(rawUrl.value!).host : ''),
+						url: url.value ?? 'null',
+						license: null,
+						isSensitive: false,
+						localOnly: false,
+						roleIdsThatCanBeUsedThisEmojiAsReaction: [],
+					},
 				}, {
 					closed: () => dispose(),
 				});
 			},
-		}] : [])], ev.currentTarget ?? ev.target);
+		}], ev.currentTarget ?? ev.target);
 	}
 }
 </script>
