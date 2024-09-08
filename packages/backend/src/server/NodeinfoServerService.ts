@@ -50,8 +50,8 @@ export class NodeinfoServerService {
 		const nodeinfo2 = async (version: number) => {
 			const now = Date.now();
 
-			const notesChart = await this.notesChart.getChart('hour', 1, null);
-			const localPosts = 0;
+			// const notesChart = await this.notesChart.getChart('hour', 1, null);
+			const localPosts = 1;
 
 			const usersChart = await this.usersChart.getChart('hour', 1, null);
 			const total = usersChart.local.total[0];
