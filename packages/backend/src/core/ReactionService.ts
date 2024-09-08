@@ -131,14 +131,7 @@ export class ReactionService {
 		if (note.reactionAcceptance === 'likeOnly' || ((note.reactionAcceptance === 'likeOnlyForRemote' || note.reactionAcceptance === 'nonSensitiveOnlyForLocalLikeOnlyForRemote') && (user.host != null))) {
 			reaction = '\u2764';
 		} else if (_reaction != null) {
-			let custom = reaction.match(isCustomEmojiRegexp);
-
-			// ローカルユーザーがリアクションする場合、ローカル絵文字の正規表現にマッチしなかったらリモート絵文字の正規表現を試す
-			if (custom === null && user.host === null) {
-				custom = reaction.match(isRemoteCustomEmojiRegexp);
-			}
-
-			let localUserUsingRemoteEmoji = custom ? custom.length === 3 : false;
+			const custom = reaction.match(isCustomEmojiRegexp) ?? (user.host === null ? reaction.match(isRemoteCustomEmojiRegexp) : null);
 
 			if (custom) {
 				const reacterHost = this.utilityService.toPunyNullable(user.host);
@@ -151,20 +144,15 @@ export class ReactionService {
 						name,
 					});
 
-				// ローカルユーザーがリモートの絵文字を指定したが同名の絵文字がローカルにある
-				if (emoji !== undefined && localUserUsingRemoteEmoji) {
-					custom = `:${name}:`.match(isCustomEmojiRegexp) as RegExpMatchArray;
-					localUserUsingRemoteEmoji = false;
-				}
+				const localUserUsingRemoteEmoji = custom.length === 3 && emoji == null;
+				const piggyBackReactionHost = localUserUsingRemoteEmoji ? this.utilityService.toPuny(custom[2]) : undefined;
 
 				// ローカルユーザーがリモートの絵文字を使用する
-				if (emoji === undefined && localUserUsingRemoteEmoji) {
-					const reactionHost = this.utilityService.toPuny(custom[2]);
-
+				if (localUserUsingRemoteEmoji) {
 					// リモートの絵文字の使用は既に付いている絵文字リアクションとノート内の絵文字のみに制限しておく
-					if (Object.hasOwn(note.reactions, _reaction) || (note.userHost === reactionHost && note.emojis.includes(name))) {
+					if (Object.hasOwn(note.reactions, _reaction) || (note.userHost === piggyBackReactionHost && note.emojis.includes(name))) {
 						const original = await this.emojisRepository.findOneBy({
-							host: reactionHost,
+							host: piggyBackReactionHost,
 							name,
 						});
 
@@ -175,12 +163,11 @@ export class ReactionService {
 				}
 
 				if (emoji) {
-					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-					if (emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.length === 0 || (await this.roleService.getUserRoles(user.id)).some(r => emoji!.roleIdsThatCanBeUsedThisEmojiAsReaction.includes(r.id))) {
+					if (emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.length === 0 || (await this.roleService.getUserRoles(user.id)).some(r => emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.includes(r.id))) {
 						reaction = reacterHost ? `:${name}@${reacterHost}:` : `:${name}:`;
 
 						if (localUserUsingRemoteEmoji) {
-							reaction = `:${name}@${this.utilityService.toPuny(custom[2])}:`;
+							reaction = `:${name}@${piggyBackReactionHost}:`;
 						}
 
 						// センシティブ
