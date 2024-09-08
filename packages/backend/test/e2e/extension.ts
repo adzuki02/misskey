@@ -25,7 +25,7 @@ describe('独自拡張', () => {
 
 	describe('連合に関する情報を隠す', () => {
 		describe('/api/v1/instance/peers', () => {
-			test('は存在しない', async () => {
+			test('は存在しない。', async () => {
 				const res = await simpleGet('/api/v1/instance/peers', 'application/json');
 				assert.strictEqual(res.status, 404);
 			});
@@ -42,12 +42,12 @@ describe('独自拡張', () => {
 				assert.strictEqual(res.status, 405);
 			});
 
-			test('は認証が必要。', async () => {
+			test('は認証情報がなければアクセスできない。', async () => {
 				const res = await api(endpoint as keyof misskey.Endpoints, {});
 				assert.strictEqual(res.status, 401);
 			});
 
-			test('はトークンがあればアクセスできる。', async () => {
+			test('は認証情報があればアクセスできる。', async () => {
 				const res = await api(endpoint as keyof misskey.Endpoints, param ?? {}, bob);
 				assert.strictEqual(res.status, couldBeEmpty ? 204 : 200);
 			});
@@ -61,12 +61,12 @@ describe('独自拡張', () => {
 				assert.strictEqual(res.status, 405);
 			});
 
-			test('は認証が必要。', async () => {
+			test('は認証情報がなければアクセスできない。', async () => {
 				const res = await api('get-online-users-count', {});
 				assert.strictEqual(res.status, 401);
 			});
 
-			test('はトークンがあればアクセスできる。', async () => {
+			test('は認証情報があればアクセスできる。', async () => {
 				const res = await api('get-online-users-count', {}, bob);
 				assert.strictEqual(res.status, 200);
 			});
@@ -86,7 +86,7 @@ describe('独自拡張', () => {
 				assert.strictEqual(res.status, 405);
 			});
 
-			test('は認証が必要。', async () => {
+			test('は認証情報がなければアクセスできない。', async () => {
 				const res = await api(endpoint as keyof misskey.Endpoints, {});
 				assert.strictEqual(res.status, 401);
 			});
@@ -101,7 +101,7 @@ describe('独自拡張', () => {
 				assert.strictEqual(res.status, 200);
 			});
 
-			test('はモデレータでも本人でもないならアクセスできない。', async () => {
+			test('はモデレータでも本人でもないなら、認証情報があってもアクセスできない。', async () => {
 				const res = await api(endpoint as keyof misskey.Endpoints, { span: 'day', userId: alice.id }, bob);
 				assert.strictEqual(res.status, 400);
 			});
@@ -120,19 +120,19 @@ describe('独自拡張', () => {
 				assert.strictEqual(res.status, 405);
 			});
 
-			test('は認証が必要。', async () => {
+			test('は認証情報がなければアクセスできない。', async () => {
 				const res = await api(endpoint as keyof misskey.Endpoints, param ?? {});
 				assert.strictEqual(res.status, 401);
 			});
 
-			test('はトークンがあればアクセスできる。', async () => {
+			test('は認証情報があればアクセスできる。', async () => {
 				const res = await api(endpoint as keyof misskey.Endpoints, param ?? {}, bob);
 				assert.strictEqual(res.status, 200);
 			});
 		});
 	});
 
-	describe('リモートユーザーのFFは非公開として扱う', () => {
+	describe('リモートユーザーのFFは認証情報がなければ非公開として扱う', () => {
 		beforeAll(async () => {
 			await sendEnvUpdateRequest({ key: 'FORCE_FOLLOW_REMOTE_USER_FOR_TESTING', value: 'true' });
 			await api('following/create', { userId: bob.id }, remoteUser);
@@ -148,13 +148,13 @@ describe('独自拡張', () => {
 		describe.each([
 			{ key: 'followingVisibility' },
 			{ key: 'followersVisibility' }
-		])('$key', ({ key }) => {
-			test('は認証情報がなければprivate', async () => {
+		])('/api/users/showの$key', ({ key }) => {
+			test('は認証情報がなければprivate。', async () => {
 				const res = await api('users/show', { userId: remoteUser.id });
 				assert.strictEqual(res.body[key as 'followingVisibility' | 'followersVisibility'], 'private');
 			});
 
-			test('は認証情報があればpublic', async () => {
+			test('は認証情報があればpublic。', async () => {
 				const res = await api('users/show', { userId: remoteUser.id }, bob);
 				assert.strictEqual(res.body[key as 'followingVisibility' | 'followersVisibility'], 'public');
 			});
@@ -163,13 +163,13 @@ describe('独自拡張', () => {
 		describe.each([
 			{ key: 'followingCount' },
 			{ key: 'followersCount' }
-		])('$key', ({ key }) => {
-			test('は認証情報がなければ0', async () => {
+		])('/api/users/showの$key', ({ key }) => {
+			test('は認証情報がなければ0である。', async () => {
 				const res = await api('users/show', { userId: remoteUser.id });
 				assert.strictEqual(res.body[key as 'followingCount' | 'followersCount'], 0);
 			});
 
-			test('は認証情報があれば0でない', async () => {
+			test('は認証情報があれば0でない。', async () => {
 				const res = await api('users/show', { userId: remoteUser.id }, bob);
 				assert.notStrictEqual(res.body[key as 'followingCount' | 'followersCount'], 0);
 			});
@@ -181,30 +181,30 @@ describe('独自拡張', () => {
 			{ endpoint: 'users/followers' },
 			{ endpoint: 'users/following' },
 		])('/api/$endpoint', ({ endpoint }) => {
-			test('は認証が必要。', async () => {
+			test('は認証情報がなければアクセスできない。', async () => {
 				const res = await api(endpoint as keyof misskey.Endpoints, { userId: remoteUser.id });
 				assert.strictEqual(res.status, 400);
 			});
 
-			test('はトークンがあればアクセスできる。', async () => {
+			test('は認証情報があればアクセスできる。', async () => {
 				const res = await api(endpoint as keyof misskey.Endpoints, { userId: remoteUser.id }, bob);
 				assert.strictEqual(res.status, 200);
 			});
 		});
 	});
 
-	describe('リモートユーザーのユーザーTLはクレデンシャルがないと表示できない', () => {
+	describe('リモートユーザーのユーザーTLの表示をクレデンシャル必須に', () => {
 		beforeAll(async () => {
 			await api('notes/create', { text: 'note' }, remoteUser);
 		});
 
-		describe('users/notes', () => {
-			test('は認証情報がなければ空', async () => {
+		describe('/api/users/notes', () => {
+			test('は認証情報がなければ空配列である。', async () => {
 				const res = await api('users/notes', { userId: remoteUser.id });
 				assert.strictEqual(res.body.length, 0);
 			});
 
-			test('は認証情報があれば空でない', async () => {
+			test('は認証情報があれば空配列でない。', async () => {
 				const res = await api('users/notes', { userId: remoteUser.id }, bob);
 				assert.notStrictEqual(res.body.length, 0);
 			});
@@ -223,17 +223,19 @@ describe('独自拡張', () => {
 				assert.strictEqual(res.status, 405);
 			});
 
-			test('は認証がない場合レスポンスのノート数は1になる。', async () => {
+			test('は認証情報がなければノート数が1である。', async () => {
 				const res = await api('stats', {});
 				assert.strictEqual(res.body.notesCount, 1);
 				assert.strictEqual(res.body.originalNotesCount, 1);
 			});
 
 			// チャートが即時にアップデートされないので保留
-			// test('はトークンがあればレスポンスに正確なノート数を含む。', async () => {
+			// test('は認証情報があればノート数が0でも1でない。', async () => {
 			// 	const res = await api('/stats', {}, bob);
 			// 	assert.notStrictEqual(res.body.notesCount, 0);
+			// 	assert.notStrictEqual(res.body.notesCount, 1);
 			// 	assert.notStrictEqual(res.body.originalNotesCount, 0);
+			// 	assert.notStrictEqual(res.body.originalNotesCount, 1);
 			// });
 		});
 
@@ -257,22 +259,22 @@ describe('独自拡張', () => {
 				assert.strictEqual(res.status, 405);
 			});
 
-			test('は認証がない場合updatedAtがnullになる。', async () => {
+			test('は認証情報がなければupdatedAtがnullである。', async () => {
 				const res = await api('users/show', { userId: alice.id });
 				assert.strictEqual(res.body.updatedAt, null);
 			});
 
-			test('は認証がない場合notesCountが0になる。', async () => {
+			test('は認証情報がなければnotesCountが0である。', async () => {
 				const res = await api('users/show', { userId: alice.id });
 				assert.strictEqual(res.body.notesCount, 0);
 			});
 
-			test('はトークンがあればupdatedAtがnullにならない。', async () => {
+			test('は認証情報があればupdatedAtがnullでない。', async () => {
 				const res = await api('users/show', { userId: alice.id }, bob);
 				assert.notStrictEqual(res.body.updatedAt, null);
 			});
 
-			test('はトークンがあればnotesCountが0にならない。', async () => {
+			test('は認証情報があればnotesCountが0でない。', async () => {
 				const res = await api('users/show', { userId: alice.id }, bob);
 				assert.notStrictEqual(res.body.notesCount, 0);
 			});
@@ -286,12 +288,12 @@ describe('独自拡張', () => {
 				assert.strictEqual(res.status, 405);
 			});
 
-			test('は認証が必要。', async () => {
+			test('は認証情報がなければアクセスできない。', async () => {
 				const res = await api('notes/featured', {});
 				assert.strictEqual(res.status, 401);
 			});
 
-			test('はトークンがあればアクセスできる。', async () => {
+			test('は認証情報があればアクセスできる。', async () => {
 				const res = await api('notes/featured', {}, bob);
 				assert.strictEqual(res.status, 200);
 			});
@@ -303,22 +305,22 @@ describe('独自拡張', () => {
 				assert.strictEqual(res.status, 405);
 			});
 
-			test('はoriginがlocalの場合認証がなくてもよい。', async () => {
+			test('はoriginがlocalの場合、認証情報がなくてもアクセスできる。', async () => {
 				const res = await api('users', { origin: 'local' });
 				assert.strictEqual(res.status, 200);
 			});
 
-			test('はoriginがremoteの場合認証が必要。', async () => {
+			test('はoriginがremoteの場合、認証情報がなければアクセスできない。', async () => {
 				const res = await api('users', { origin: 'remote' });
 				assert.strictEqual(res.status, 400);
 			});
 
-			test('はoriginがcombinedの場合認証が必要。', async () => {
+			test('はoriginがcombinedの場合、認証情報がなければアクセスできない。', async () => {
 				const res = await api('users', { origin: 'combined' });
 				assert.strictEqual(res.status, 400);
 			});
 
-			test('はトークンがあればアクセスできる。', async () => {
+			test('は認証情報があればアクセスできる。', async () => {
 				const res = await api('users', { origin: 'remote' }, bob);
 				assert.strictEqual(res.status, 200);
 			});
@@ -339,7 +341,7 @@ describe('独自拡張', () => {
 			await api('following/delete', { userId: remoteUser.id }, proxy);
 		});
 
-		test('ローカルにフォロワーのいるリモートユーザーをフォローしてもプロキシアカウントからフォローリクエストが飛ばない。', async () => {
+		test('ローカルにフォロワーのいるリモートユーザーをフォローしても、プロキシアカウントからフォローリクエストが飛ばない。', async () => {
 			await api('following/create', { userId: remoteUser.id }, alice);
 			const listCreateRes = await api('users/lists/create', { name: 'list' }, alice);
 			await api('users/lists/push', { listId: listCreateRes.body.id, userId: remoteUser.id }, alice);
