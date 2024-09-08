@@ -161,10 +161,10 @@ describe('独自拡張', () => {
 				assert.strictEqual(res.status, 405);
 			});
 
-			test('は認証がない場合レスポンスのノート数は0になる。', async () => {
+			test('は認証がない場合レスポンスのノート数は1になる。', async () => {
 				const res = await api('stats', {});
-				assert.strictEqual(res.body.notesCount, 0);
-				assert.strictEqual(res.body.originalNotesCount, 0);
+				assert.strictEqual(res.body.notesCount, 1);
+				assert.strictEqual(res.body.originalNotesCount, 1);
 			});
 
 			// チャートが即時にアップデートされないので保留
@@ -179,13 +179,13 @@ describe('独自拡張', () => {
 			{ path: '/nodeinfo/2.1' },
 			{ path: '/nodeinfo/2.0' },
 		])('$path', ({ path }) => {
-			test('のlocalPostsは0である。', async () => {
+			test('のlocalPostsは1である。', async () => {
 				const res = await relativeFetch(path, {
 					headers: {
 						Accept: 'application/json',
 					},
 				});
-				assert.strictEqual((await res.json() as any).usage.localPosts, 0);
+				assert.strictEqual((await res.json() as any).usage.localPosts, 1);
 			});
 		});
 

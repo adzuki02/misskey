@@ -19,8 +19,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span v-else style="opacity: 0.7;">{{ i18n.ts.noAccountDescription }}</span>
 	</div>
 	<div :class="$style.status">
-		<div v-if="$i || user.host" :class="$style.statusItem">
-			<p :class="$style.statusItemLabel">{{ i18n.ts.notes }}</p><span :class="$style.statusItemValue">{{ number(user.notesCount) }}</span>
+		<div :class="$style.statusItem">
+			<p :class="$style.statusItemLabel">{{ i18n.ts.notes }}</p><span :class="$style.statusItemValue">{{ $i ? number(user.notesCount) : '-' }}</span>
 		</div>
 		<div v-if="isFollowingVisibleForMe(user)" :class="$style.statusItem">
 			<p :class="$style.statusItemLabel">{{ i18n.ts.following }}</p><span :class="$style.statusItemValue">{{ number(user.followingCount) }}</span>
