@@ -4,7 +4,7 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-import type { NotesRepository } from '@/models/_.js';
+import type { NotesRepository, UsersRepository } from '@/models/_.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { DI } from '@/di-symbols.js';
@@ -46,11 +46,23 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
 
+		@Inject(DI.usersRepository)
+		private usersRepository: UsersRepository,
+
 		private noteEntityService: NoteEntityService,
 		private featuredService: FeaturedService,
 		private cacheService: CacheService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			const user = await this.cacheService.userByIdCache.fetchMaybe(
+				ps.userId,
+				() => this.usersRepository.findOneBy({ id: ps.userId }).then(x => x ?? undefined),
+			);
+
+			if (user && user.host && !me) {
+				return [];
+			}
+
 			const userIdsWhoBlockingMe = me ? await this.cacheService.userBlockedCache.fetch(me.id) : new Set<string>();
 
 			// early return if me is blocked by requesting user
