@@ -3,17 +3,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import * as os from 'node:os';
+import { readFile } from 'node:fs/promises';
 import { Injectable } from '@nestjs/common';
-import si from 'systeminformation';
 import Xev from 'xev';
-import * as osUtils from 'os-utils';
 import { bindThis } from '@/decorators.js';
 import { MetaService } from '@/core/MetaService.js';
 import type { OnApplicationShutdown } from '@nestjs/common';
 
 const ev = new Xev();
 
-const interval = 10000;
+const interval = 2000;
 
 const roundCpu = (num: number) => Math.round(num * 1000) / 1000;
 const round = (num: number) => Math.round(num * 10) / 10;
@@ -41,15 +41,12 @@ export class ServerStatsService implements OnApplicationShutdown {
 		});
 
 		const tick = async () => {
-			const cpu = await cpuUsage();
-			const memStats = await mem();
-			const netStats = await net();
-			const fsStats = await fs();
+			const [cpu, memStats, netStats, fsStats] = await Promise.all([cpuUsage(), mem(), net(), fs()]);
 
 			const stats = {
 				cpu: roundCpu(cpu),
 				mem: {
-					used: round(memStats.total - memStats.available),
+					used: round(memStats.used),
 					active: round(memStats.active),
 				},
 				net: {
@@ -85,28 +82,75 @@ export class ServerStatsService implements OnApplicationShutdown {
 }
 
 // CPU STAT
+const prevCpuUsage = { idle: 0, sum: 0 };
+
 function cpuUsage(): Promise<number> {
 	return new Promise((res, rej) => {
-		osUtils.cpuUsage((cpuUsage) => {
-			res(cpuUsage);
-		});
+		const current = os.cpus().reduce((acc, cpu) => ({ idle: acc.idle + cpu.times.idle, sum: acc.sum + cpu.times.user + cpu.times.nice + cpu.times.sys + cpu.times.idle + cpu.times.irq }), { idle: 0, sum: 0 });
+
+		const percentage = 1 - (current.idle - prevCpuUsage.idle) / (current.sum - prevCpuUsage.sum);
+
+		prevCpuUsage.idle = current.idle;
+		prevCpuUsage.sum = current.sum;
+
+		res(percentage);
 	});
 }
 
 // MEMORY STAT
-async function mem() {
-	const data = await si.mem();
-	return data;
+async function mem(): Promise<{ used: number, active: number }> {
+	const notFree = os.totalmem() - os.freemem();
+	return { used: notFree, active: notFree };
 }
 
 // NETWORK STAT
+const prevNetBytes = { rx: Number.MAX_SAFE_INTEGER, tx: Number.MAX_SAFE_INTEGER };
+
 async function net() {
-	const iface = await si.networkInterfaceDefault();
-	const data = await si.networkStats(iface);
-	return data[0];
+	const iface = await readFile('/proc/net/route').then(buf => buf.toString().split('\n').filter(str => parseInt(str.split('\t', 4)[3], 16) === 3).map(str => str.split('\t', 1)[0])[0]).catch(() => 'N/A');
+
+	return new Promise<{ rx_sec: number, tx_sec: number }>((res, rej) => {
+		Promise.all([
+			readFile(`/sys/class/net/${iface}/statistics/rx_bytes`).then(buf => parseInt(buf.toString())).catch(() => 0),
+			readFile(`/sys/class/net/${iface}/statistics/tx_bytes`).then(buf => parseInt(buf.toString())).catch(() => 0),
+		]).then(arr => {
+			const netStats = {
+				rx_sec: (arr[0] - prevNetBytes.rx) / (interval / 1000),
+				tx_sec: (arr[1] - prevNetBytes.tx) / (interval / 1000),
+			};
+
+			prevNetBytes.rx = arr[0];
+			prevNetBytes.tx = arr[1];
+
+			res(netStats);
+		}).catch(() => {
+			res({ rx_sec: 0, tx_sec: 0 });
+		});
+	});
 }
 
 // FS STAT
+const prevFsIO = { rIO: Number.MAX_SAFE_INTEGER, wIO: Number.MAX_SAFE_INTEGER };
+
 async function fs() {
-	return await si.disksIO().catch(() => ({ rIO_sec: 0, wIO_sec: 0 }));
+	return new Promise<{ rIO_sec: number, wIO_sec: number }>((res, rej) => {
+		readFile('/sys/block/sda/stat').then(buf => {
+			const stats = buf.toString().split(' ').filter(s => s !== '');
+
+			const rIO = parseInt(stats[0]);
+			const wIO = parseInt(stats[4]);
+
+			const fsStats = {
+				rIO_sec: (rIO - prevFsIO.rIO) / (interval / 1000),
+				wIO_sec: (wIO - prevFsIO.wIO) / (interval / 1000),
+			};
+
+			prevFsIO.rIO = rIO;
+			prevFsIO.wIO = wIO;
+
+			res(fsStats);
+		}).catch(() => {
+			res({ rIO_sec: 0, wIO_sec: 0 });
+		});
+	});
 }

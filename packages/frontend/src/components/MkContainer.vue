@@ -174,6 +174,13 @@ onUnmounted(() => {
 	line-height: 1.4em;
 }
 
+.naked {
+	> .header {
+		background: transparent;
+		box-shadow: none;
+	}
+}
+
 .title {
 	margin: 0;
 	padding: 12px 16px;
