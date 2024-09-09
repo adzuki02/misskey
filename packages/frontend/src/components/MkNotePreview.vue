@@ -12,11 +12,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div>
 			<p v-if="useCw" :class="$style.cw">
-				<Mfm v-if="cw != null && cw != ''" :text="cw" :author="user" :nyaize="'respect'" :i="user" style="margin-right: 8px;"/>
+				<Mfm v-if="cw != null && cw != ''" :text="cw" :author="user" :nyaize="'respect'" :i="user" :forceShowingAnimatedImages="defaultStore.reactiveState.forceShowingAnimatedImagesOnPopup.value" style="margin-right: 8px;"/>
 				<MkCwButton v-model="showContent" :text="text.trim()" :files="files" :poll="poll" style="margin: 4px 0;"/>
 			</p>
 			<div v-show="!useCw || showContent">
-				<Mfm :text="text.trim()" :author="user" :nyaize="'respect'" :i="user"/>
+				<Mfm :text="text.trim()" :author="user" :nyaize="'respect'" :i="user" :forceShowingAnimatedImages="defaultStore.reactiveState.forceShowingAnimatedImagesOnPopup.value"/>
 			</div>
 		</div>
 	</div>
@@ -28,6 +28,7 @@ import { ref } from 'vue';
 import * as Misskey from 'misskey-js';
 import type { PollEditorModelValue } from '@/components/MkPollEditor.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
+import { defaultStore } from '@/store.js';
 
 const showContent = ref(false);
 

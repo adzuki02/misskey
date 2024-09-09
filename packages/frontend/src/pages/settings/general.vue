@@ -127,7 +127,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="useBlurEffect">{{ i18n.ts.useBlurEffect }}</MkSwitch>
 				<MkSwitch v-model="useBlurEffectForModal">{{ i18n.ts.useBlurEffectForModal }}</MkSwitch>
 				<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}</MkSwitch>
-				<MkSwitch v-model="forceAnimatedImagesOnPopup">{{ i18n.ts.forceAnimatedImagesOnPopup }}</MkSwitch>
+				<MkSwitch v-model="forceShowingAnimatedImagesOnPopup">{{ i18n.ts.forceShowingAnimatedImagesOnPopup }}</MkSwitch>
 				<MkSwitch v-model="highlightSensitiveMedia">{{ i18n.ts.highlightSensitiveMedia }}</MkSwitch>
 				<MkSwitch v-model="squareAvatars">{{ i18n.ts.squareAvatars }}</MkSwitch>
 				<MkSwitch v-model="showAvatarDecorations">{{ i18n.ts.showAvatarDecorations }}</MkSwitch>
@@ -298,7 +298,7 @@ const enableQuickAddMfmFunction = computed(defaultStore.makeGetterSetter('enable
 const emojiStyle = computed(defaultStore.makeGetterSetter('emojiStyle'));
 const disableDrawer = computed(defaultStore.makeGetterSetter('disableDrawer'));
 const disableShowingAnimatedImages = computed(defaultStore.makeGetterSetter('disableShowingAnimatedImages'));
-const forceAnimatedImagesOnPopup = computed(defaultStore.makeGetterSetter('forceAnimatedImagesOnPopup'));
+const forceShowingAnimatedImagesOnPopup = computed(defaultStore.makeGetterSetter('forceShowingAnimatedImagesOnPopup'));
 const forceShowAds = computed(defaultStore.makeGetterSetter('forceShowAds'));
 const loadRawImages = computed(defaultStore.makeGetterSetter('loadRawImages'));
 const highlightSensitiveMedia = computed(defaultStore.makeGetterSetter('highlightSensitiveMedia'));

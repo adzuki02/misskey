@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkTooltip ref="tooltip" :showing="showing" :targetElement="targetElement" :maxWidth="340" @closed="emit('closed')">
 	<div :class="$style.root">
-		<MkReactionIcon :reaction="reaction" :class="$style.icon" :noStyle="true" :forceAnimation="defaultStore.reactiveState.forceAnimatedImagesOnPopup.value"/>
+		<MkReactionIcon :reaction="reaction" :class="$style.icon" :noStyle="true" :forceShowingAnimatedImages="defaultStore.reactiveState.forceShowingAnimatedImagesOnPopup.value"/>
 		<div :class="$style.name">{{ reaction.replace('@.', '') }}</div>
 	</div>
 </MkTooltip>

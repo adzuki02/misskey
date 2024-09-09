@@ -46,7 +46,7 @@ const props = defineProps<{
 	menu?: boolean;
 	menuReaction?: boolean;
 	fallbackToImage?: boolean;
-	forceAnimation?: boolean;
+	forceShowingAnimatedImages?: boolean;
 }>();
 
 const react = inject<((name: string) => void) | null>('react', null);
@@ -76,7 +76,7 @@ const url = computed(() => {
 				false,
 				true,
 			);
-	return defaultStore.reactiveState.disableShowingAnimatedImages.value && !props.forceAnimation
+	return defaultStore.reactiveState.disableShowingAnimatedImages.value && !props.forceShowingAnimatedImages
 		? getStaticImageUrl(proxied)
 		: proxied;
 });
@@ -111,17 +111,8 @@ function onClick(ev: MouseEvent) {
 					emoji: isLocal.value ? await misskeyApiGet('emoji', {
 						name: customEmojiName.value,
 					}) : {
-						id: '',
-						aliases: [],
 						name: props.name,
-						category: null,
-						// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-						host: props.host ?? (URL.canParse(rawUrl.value!) ? new URL(rawUrl.value!).host : ''),
-						url: url.value ?? 'null',
-						license: null,
-						isSensitive: false,
-						localOnly: false,
-						roleIdsThatCanBeUsedThisEmojiAsReaction: [],
+						host: props.host ?? '',
 					},
 				}, {
 					closed: () => dispose(),

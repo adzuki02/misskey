@@ -3043,7 +3043,7 @@ export interface Locale extends ILocale {
     /**
      * ポップアップや絵文字ピッカーではアニメーション画像を再生する
      */
-    "forceAnimatedImagesOnPopup": string;
+    "forceShowingAnimatedImagesOnPopup": string;
     /**
      * メディアがセンシティブであることを分かりやすく表示
      */
