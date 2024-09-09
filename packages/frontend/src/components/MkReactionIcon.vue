@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkCustomEmoji v-if="reaction[0] === ':'" ref="elRef" :name="reaction" :normal="true" :noStyle="noStyle" :url="emojiUrl" :fallbackToImage="true"/>
+<MkCustomEmoji v-if="reaction[0] === ':'" ref="elRef" :name="reaction" :normal="true" :noStyle="noStyle" :url="emojiUrl" :fallbackToImage="true" :forceShowingAnimatedImages="forceShowingAnimatedImages"/>
 <MkEmoji v-else ref="elRef" :emoji="reaction" :normal="true" :noStyle="noStyle"/>
 </template>
 
@@ -18,6 +18,7 @@ const props = defineProps<{
 	noStyle?: boolean;
 	emojiUrl?: string;
 	withTooltip?: boolean;
+	forceShowingAnimatedImages?: boolean;
 }>();
 
 const elRef = shallowRef();

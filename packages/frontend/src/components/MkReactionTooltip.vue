@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkTooltip ref="tooltip" :showing="showing" :targetElement="targetElement" :maxWidth="340" @closed="emit('closed')">
 	<div :class="$style.root">
-		<MkReactionIcon :reaction="reaction" :class="$style.icon" :noStyle="true"/>
+		<MkReactionIcon :reaction="reaction" :class="$style.icon" :noStyle="true" :forceShowingAnimatedImages="defaultStore.reactiveState.forceShowingAnimatedImagesOnPopup.value"/>
 		<div :class="$style.name">{{ reaction.replace('@.', '') }}</div>
 	</div>
 </MkTooltip>
@@ -16,6 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { } from 'vue';
 import MkTooltip from './MkTooltip.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
+import { defaultStore } from '@/store.js';
 
 defineProps<{
 	showing: boolean;

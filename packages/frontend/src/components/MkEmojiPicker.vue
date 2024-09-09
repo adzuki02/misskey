@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					tabindex="0"
 					@click="chosen(emoji, $event)"
 				>
-					<MkCustomEmoji class="emoji" :name="emoji.name" :fallbackToImage="true"/>
+					<MkCustomEmoji class="emoji" :name="emoji.name" :fallbackToImage="true" :forceShowingAnimatedImages="defaultStore.reactiveState.forceShowingAnimatedImagesOnPopup.value"/>
 				</button>
 			</div>
 			<div v-if="searchResultUnicode.length > 0" class="body">
@@ -61,7 +61,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						@pointerenter="computeButtonTitle"
 						@click="chosen(emoji, $event)"
 					>
-						<MkCustomEmoji v-if="!emoji.hasOwnProperty('char')" class="emoji" :name="getKey(emoji)" :normal="true"/>
+						<MkCustomEmoji v-if="!emoji.hasOwnProperty('char')" class="emoji" :name="getKey(emoji)" :normal="true" :forceShowingAnimatedImages="defaultStore.reactiveState.forceShowingAnimatedImagesOnPopup.value"/>
 						<MkEmoji v-else class="emoji" :emoji="getKey(emoji)" :normal="true"/>
 					</button>
 				</div>
@@ -79,7 +79,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						@pointerenter="computeButtonTitle"
 						@click="chosen(emoji, $event)"
 					>
-						<MkCustomEmoji v-if="!emoji.hasOwnProperty('char')" class="emoji" :name="getKey(emoji)" :normal="true"/>
+						<MkCustomEmoji v-if="!emoji.hasOwnProperty('char')" class="emoji" :name="getKey(emoji)" :normal="true" :forceShowingAnimatedImages="defaultStore.reactiveState.forceShowingAnimatedImagesOnPopup.value"/>
 						<MkEmoji v-else class="emoji" :emoji="getKey(emoji)" :normal="true"/>
 					</button>
 				</div>

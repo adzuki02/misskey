@@ -756,6 +756,7 @@ lockedAccountInfo: "Unless you set your note visiblity to \"Followers only\", yo
 alwaysMarkSensitive: "Mark as sensitive by default"
 loadRawImages: "Load original images instead of showing thumbnails"
 disableShowingAnimatedImages: "Don't play animated images"
+forceShowingAnimatedImagesOnPopup: "Play animated images on popup and emoji picker"
 highlightSensitiveMedia: "Highlight sensitive media"
 verificationEmailSent: "A verification email has been sent. Please follow the included link to complete verification."
 notSet: "Not set"

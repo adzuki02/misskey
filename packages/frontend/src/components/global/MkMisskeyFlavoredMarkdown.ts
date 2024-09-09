@@ -44,6 +44,7 @@ type MfmProps = {
 	enableEmojiMenu?: boolean;
 	enableEmojiMenuReaction?: boolean;
 	linkNavigationBehavior?: MkABehavior;
+	forceShowingAnimatedImages?: boolean;
 };
 
 type MfmEvents = {
@@ -400,7 +401,6 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 			}
 
 			case 'emojiCode': {
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				if (props.author?.host == null) {
 					return [h(MkCustomEmoji, {
 						key: Math.random(),
@@ -411,6 +411,7 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 						menu: props.enableEmojiMenu,
 						menuReaction: props.enableEmojiMenuReaction,
 						fallbackToImage: false,
+						forceShowingAnimatedImages: props.forceShowingAnimatedImages,
 					})];
 				} else {
 					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -426,6 +427,7 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 							useOriginalSize: scale >= 2.5,
 							menu: props.enableEmojiMenu,
 							menuReaction: props.enableEmojiMenuReaction,
+							forceShowingAnimatedImages: props.forceShowingAnimatedImages,
 						})];
 					}
 				}

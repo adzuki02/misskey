@@ -46,6 +46,7 @@ const props = defineProps<{
 	menu?: boolean;
 	menuReaction?: boolean;
 	fallbackToImage?: boolean;
+	forceShowingAnimatedImages?: boolean;
 }>();
 
 const react = inject<((name: string) => void) | null>('react', null);
@@ -75,7 +76,7 @@ const url = computed(() => {
 				false,
 				true,
 			);
-	return defaultStore.reactiveState.disableShowingAnimatedImages.value
+	return defaultStore.reactiveState.disableShowingAnimatedImages.value && !props.forceShowingAnimatedImages
 		? getStaticImageUrl(proxied)
 		: proxied;
 });
@@ -102,19 +103,22 @@ function onClick(ev: MouseEvent) {
 				react(props.host ? `:${props.name}@${props.host}:` : `:${props.name}:`);
 				sound.playMisskeySfx('reaction');
 			},
-		}] : []), ...(isLocal.value ? [{
+		}] : []), {
 			text: i18n.ts.info,
 			icon: 'ti ti-info-circle',
 			action: async () => {
 				const { dispose } = os.popup(MkCustomEmojiDetailedDialog, {
-					emoji: await misskeyApiGet('emoji', {
+					emoji: isLocal.value ? await misskeyApiGet('emoji', {
 						name: customEmojiName.value,
-					}),
+					}) : {
+						name: props.name,
+						host: props.host ?? '',
+					},
 				}, {
 					closed: () => dispose(),
 				});
 			},
-		}] : [])], ev.currentTarget ?? ev.target);
+		}], ev.currentTarget ?? ev.target);
 	}
 }
 </script>
