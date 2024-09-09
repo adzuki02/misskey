@@ -4,11 +4,10 @@
  */
 
 import * as os from 'node:os';
-import si from 'systeminformation';
+import { statfs } from 'node:fs/promises';
 import { Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { MetaService } from '@/core/MetaService.js';
-import { createHash } from 'node:crypto';
 
 export const meta = {
 	requireCredential: false,
@@ -92,21 +91,20 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				},
 			};
 
-			const memStats = await si.mem();
-			const fsStats = await si.fsSize();
+			const fsStats = await statfs('/').catch(() => ({ blocks: 0, bavail: 0, bsize: 0 }));
 
 			return {
-				machine: createHash('md5').update(os.hostname()).digest('hex'),
+				machine: 'N/A',
 				cpu: {
-					model: os.cpus()[0].model,
+					model: 'N/A',
 					cores: os.cpus().length,
 				},
 				mem: {
-					total: memStats.total,
+					total: os.totalmem(),
 				},
 				fs: {
-					total: fsStats[0].size,
-					used: fsStats[0].used,
+					total: fsStats.blocks * fsStats.bsize,
+					used: (fsStats.blocks - fsStats.bavail) * fsStats.bsize,
 				},
 			};
 		});

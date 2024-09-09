@@ -4,7 +4,7 @@
  */
 
 import * as os from 'node:os';
-import si from 'systeminformation';
+import { statfs, readFile } from 'node:fs/promises';
 import { Inject, Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import * as Redis from 'ioredis';
@@ -112,9 +112,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 	) {
 		super(meta, paramDef, async () => {
-			const memStats = await si.mem();
-			const fsStats = await si.fsSize();
-			const netInterface = await si.networkInterfaceDefault();
+			const fsStats = await statfs('/').catch(() => ({ blocks: 0, bavail: 0, bsize: 0 }));
+			const netInterface = await readFile('/proc/net/route').then(buf => buf.toString().split('\n').filter(str => parseInt(str.split('\t', 4)[3], 16) === 3).map(str => str.split('\t', 1)[0])[0]).catch(() => 'N/A');
 
 			const redisServerInfo = await this.redisClient.info('Server');
 			const m = redisServerInfo.match(new RegExp('^redis_version:(.*)', 'm'));
@@ -131,11 +130,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					cores: os.cpus().length,
 				},
 				mem: {
-					total: memStats.total,
+					total: os.totalmem(),
 				},
 				fs: {
-					total: fsStats[0].size,
-					used: fsStats[0].used,
+					total: fsStats.blocks * fsStats.bsize,
+					used: (fsStats.blocks - fsStats.bavail) * fsStats.bsize,
 				},
 				net: {
 					interface: netInterface,
