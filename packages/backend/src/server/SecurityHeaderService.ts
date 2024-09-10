@@ -15,6 +15,7 @@ const _dirname = dirname(_filename);
 
 @Injectable()
 export class SecurityHeaderService {
+	private readonly isProduction: boolean;
 	private readonly cspEnabled: boolean;
 	private readonly reportEnabled: boolean;
 	private readonly reportTo: string | undefined;
@@ -26,7 +27,9 @@ export class SecurityHeaderService {
 		@Inject(DI.config)
 		private config: Config,
 	) {
-		this.cspEnabled = this.config.contentSecurityPolicy !== undefined && process.env.NODE_ENV === 'production';
+		this.isProduction = process.env.NODE_ENV !== 'development';
+
+		this.cspEnabled = this.config.contentSecurityPolicy !== undefined && this.isProduction;
 
 		this.reportEnabled = this.cspEnabled && this.config.contentSecurityPolicy?.reportTo !== undefined;
 
@@ -89,7 +92,9 @@ export class SecurityHeaderService {
 		fastify.addHook('onRequest', (request, reply, done) => {
 			reply.header('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet, noimageindex, noai, noimageai');
 			reply.header('Cross-Origin-Opener-Policy', 'same-origin');
-			reply.header('Cross-Origin-Resource-Policy', 'same-origin');
+			if (this.isProduction) {
+				reply.header('Cross-Origin-Resource-Policy', 'same-origin');
+			}
 			reply.header('Origin-Agent-Cluster', '?1');
 			reply.header('Referrer-Policy', 'same-origin');
 			reply.header('X-Content-Type-Options', 'nosniff');
@@ -104,7 +109,7 @@ export class SecurityHeaderService {
 			const secFetchMode = request.headers['sec-fetch-mode'];
 			const secFetchDest = request.headers['sec-fetch-dest'];
 
-			if (secFetchSite === 'same-site' || secFetchSite === 'cross-site') {
+			if (this.isProduction && (secFetchSite === 'same-site' || secFetchSite === 'cross-site')) {
 				/* eslint-disable no-empty */
 				if (request.method === 'GET' && secFetchMode === 'navigate' && secFetchDest === 'document') {
 				} else if (request.method === 'GET' && secFetchMode === 'navigate' && secFetchDest === 'empty') {
