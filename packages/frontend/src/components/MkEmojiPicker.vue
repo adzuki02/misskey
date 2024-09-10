@@ -499,7 +499,7 @@ function onKeydown(ev: KeyboardEvent) {
 }
 
 function done(query?: string): boolean | void {
-	if (query == null) query = q.value;
+	if (query == null) query = q.value.trim();
 	if (query == null || typeof query !== 'string') return;
 
 	const q2 = query.replace(/:/g, '');
