@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:value="q"
 		class="search"
 		data-prevent-emoji-insert
-		:class="{ filled: q != null && q != '' }"
+		:class="{ filled: q != null && q != '' && q.trim() != '' }"
 		:placeholder="i18n.ts.search"
 		type="search"
 		autocapitalize="off"
@@ -219,7 +219,13 @@ watch(q, () => {
 		return;
 	}
 
-	const newQ = q.value.replace(/:/g, '').toLowerCase();
+	const newQ = q.value.replace(/:/g, '').toLowerCase().trim();
+
+	if (newQ === '') {
+		searchResultCustom.value = [];
+		searchResultUnicode.value = [];
+		return;
+	}
 
 	const searchCustom = () => {
 		const max = 100;
@@ -230,7 +236,7 @@ watch(q, () => {
 		if (exactMatch) matches.add(exactMatch);
 
 		if (newQ.includes(' ')) { // AND検索
-			const keywords = newQ.split(' ');
+			const keywords = newQ.split(' ').filter(s => s !== '');
 
 			// 名前にキーワードが含まれている
 			for (const emoji of emojis) {
@@ -468,7 +474,7 @@ function input(): void {
 	// Using custom input event instead of v-model to respond immediately on
 	// Android, where composition happens on all languages
 	// (v-model does not update during composition)
-	q.value = searchEl.value?.value.trim() ?? '';
+	q.value = searchEl.value?.value ?? '';
 }
 
 function paste(event: ClipboardEvent): void {
