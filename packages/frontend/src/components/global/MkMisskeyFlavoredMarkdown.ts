@@ -415,7 +415,7 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 					})];
 				} else {
 					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-					if (props.emojiUrls && (props.emojiUrls[token.props.name] == null)) {
+					if (token.props.name.length <= 100 && props.emojiUrls && (props.emojiUrls[token.props.name] == null)) {
 						return [h('span', `:${token.props.name}:`)];
 					} else {
 						return [h(MkCustomEmoji, {
