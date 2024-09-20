@@ -4555,6 +4555,81 @@ export type components = {
       rateLimitFactor: number;
       avatarDecorationLimit: number;
       canMakePureRenoteOfRemoteNotes: boolean;
+      canImportAntennas: boolean;
+      canImportBlocking: boolean;
+      canImportFollowing: boolean;
+      canImportMuting: boolean;
+      canImportUserLists: boolean;
+    };
+    ReversiGameLite: {
+      /** Format: id */
+      id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      startedAt: string | null;
+      /** Format: date-time */
+      endedAt: string | null;
+      isStarted: boolean;
+      isEnded: boolean;
+      /** Format: id */
+      user1Id: string;
+      /** Format: id */
+      user2Id: string;
+      user1: components['schemas']['UserLite'];
+      user2: components['schemas']['UserLite'];
+      /** Format: id */
+      winnerId: string | null;
+      winner: components['schemas']['UserLite'] | null;
+      /** Format: id */
+      surrenderedUserId: string | null;
+      /** Format: id */
+      timeoutUserId: string | null;
+      black: number | null;
+      bw: string;
+      noIrregularRules: boolean;
+      isLlotheo: boolean;
+      canPutEverywhere: boolean;
+      loopedBoard: boolean;
+      timeLimitForEachTurn: number;
+    };
+    ReversiGameDetailed: {
+      /** Format: id */
+      id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      startedAt: string | null;
+      /** Format: date-time */
+      endedAt: string | null;
+      isStarted: boolean;
+      isEnded: boolean;
+      form1: Record<string, never> | null;
+      form2: Record<string, never> | null;
+      user1Ready: boolean;
+      user2Ready: boolean;
+      /** Format: id */
+      user1Id: string;
+      /** Format: id */
+      user2Id: string;
+      user1: components['schemas']['UserLite'];
+      user2: components['schemas']['UserLite'];
+      /** Format: id */
+      winnerId: string | null;
+      winner: components['schemas']['UserLite'] | null;
+      /** Format: id */
+      surrenderedUserId: string | null;
+      /** Format: id */
+      timeoutUserId: string | null;
+      black: number | null;
+      bw: string;
+      noIrregularRules: boolean;
+      isLlotheo: boolean;
+      canPutEverywhere: boolean;
+      loopedBoard: boolean;
+      timeLimitForEachTurn: number;
+      logs: number[][];
+      map: string[];
     };
     MetaLite: {
       maintainerName: string | null;
