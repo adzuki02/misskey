@@ -939,6 +939,10 @@ export type Endpoints = Overwrite<Endpoints_2, {
         req: SigninRequest;
         res: SigninResponse;
     };
+    'signin-with-passkey': {
+        req: SigninWithPasskeyRequest;
+        res: SigninWithPasskeyResponse;
+    };
     'admin/roles/create': {
         req: Overwrite<AdminRolesCreateRequest, {
             policies: PartialRolePolicyOverride;
@@ -967,6 +971,8 @@ declare namespace entities {
         SignupPendingRequest,
         SignupPendingResponse,
         SigninRequest,
+        SigninWithPasskeyRequest,
+        SigninWithPasskeyResponse,
         SigninResponse,
         PartialRolePolicyOverride,
         EmptyRequest,
@@ -2223,6 +2229,19 @@ type SigninRequest = {
 type SigninResponse = {
     id: User['id'];
     i: string;
+};
+
+// @public (undocumented)
+type SigninWithPasskeyRequest = {
+    credential?: object;
+    context?: string;
+};
+
+// @public (undocumented)
+type SigninWithPasskeyResponse = {
+    option?: object;
+    context?: string;
+    signinResponse?: SigninResponse;
 };
 
 // @public (undocumented)
