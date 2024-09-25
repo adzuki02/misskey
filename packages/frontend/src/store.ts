@@ -8,6 +8,8 @@ import { miLocalStorage } from './local-storage.js';
 import type { Note, UserList, UserDetailed } from 'misskey-js/entities.js';
 import type { noteVisibilities } from 'misskey-js/consts.js';
 import type { SoundType } from '@/scripts/sound.js';
+import lightTheme from '@/themes/l-light.json5';
+import darkTheme from '@/themes/d-green-lime.json5';
 import { Storage } from '@/pizzax.js';
 
 interface PostFormAction {
@@ -227,9 +229,9 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'twemoji', // twemoji / native
 	},
-	disableDrawer: {
+	menuStyle: {
 		where: 'device',
-		default: false,
+		default: 'auto' as 'auto' | 'popup' | 'drawer',
 	},
 	useBlurEffectForModal: {
 		where: 'device',
@@ -470,8 +472,6 @@ interface Watcher {
 /**
  * 常にメモリにロードしておく必要がないような設定情報を保管するストレージ(非リアクティブ)
  */
-import lightTheme from '@/themes/l-light.json5';
-import darkTheme from '@/themes/d-green-lime.json5';
 
 export class ColdDeviceStorage {
 	public static default = {

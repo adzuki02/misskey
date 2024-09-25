@@ -75,7 +75,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'disableShowingAnimatedImages',
 	'forceShowingAnimatedImagesOnPopup',
 	'emojiStyle',
-	'disableDrawer',
+	'menuStyle',
 	'useBlurEffectForModal',
 	'useBlurEffect',
 	'showFixedPostForm',
