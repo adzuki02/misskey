@@ -943,7 +943,19 @@ export type Endpoints = Overwrite<Endpoints_2, {
     };
     'signin-with-passkey': {
         req: SigninWithPasskeyRequest;
-        res: SigninWithPasskeyResponse;
+        res: {
+            $switch: {
+                $cases: [
+                [
+                    {
+                    context: string;
+                },
+                SigninWithPasskeyResponse
+                ]
+                ];
+                $default: SigninWithPasskeyInitResponse;
+            };
+        };
     };
     'admin/roles/create': {
         req: Overwrite<AdminRolesCreateRequest, {
@@ -2245,6 +2257,12 @@ type SigninFlowResponse = {
     finished: false;
     next: 'passkey';
     authRequest: PublicKeyCredentialRequestOptionsJSON;
+};
+
+// @public (undocumented)
+type SigninWithPasskeyInitResponse = {
+    option: PublicKeyCredentialRequestOptionsJSON;
+    context: string;
 };
 
 // @public (undocumented)
