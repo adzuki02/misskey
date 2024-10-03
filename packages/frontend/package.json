@@ -99,7 +99,7 @@
 		"rollup": "4.22.5",
 		"sass": "1.79.3",
 		"seedrandom": "3.0.5",
-		"shiki": "1.12.0",
+		"shiki": "1.21.0",
 		"start-server-and-test": "2.0.8",
 		"storybook": "8.3.3",
 		"storybook-addon-misskey-theme": "github:misskey-dev/storybook-addon-misskey-theme",
