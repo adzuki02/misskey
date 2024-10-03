@@ -4043,7 +4043,7 @@ export type operations = {
         'application/json': {
           username: string;
           password: string;
-          initialPassword?: string | null;
+          setupPassword?: string | null;
         };
       };
     };
