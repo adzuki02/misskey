@@ -11,6 +11,7 @@ import { DI } from '@/di-symbols.js';
 import type {
 	SigninsRepository,
 	UserProfilesRepository,
+	UserSecurityKeysRepository,
 	UsersRepository,
 } from '@/models/_.js';
 import type { Config } from '@/config.js';
@@ -22,8 +23,26 @@ import { WebAuthnService } from '@/core/WebAuthnService.js';
 import { UserAuthService } from '@/core/UserAuthService.js';
 import { RateLimiterService } from './RateLimiterService.js';
 import { SigninService } from './SigninService.js';
-import type { AuthenticationResponseJSON } from '@simplewebauthn/types';
+import type { AuthenticationResponseJSON, PublicKeyCredentialRequestOptionsJSON } from '@simplewebauthn/types';
 import type { FastifyReply, FastifyRequest } from 'fastify';
+
+/**
+ * next を指定すると、次にクライアント側で行うべき処理を指定できる。
+ *
+ * - `captcha`: パスワードと、（有効になっている場合は）CAPTCHAを求める
+ * - `password`: パスワードを求める
+ * - `totp`: ワンタイムパスワードを求める
+ * - `passkey`: WebAuthn認証を求める（WebAuthnに対応していないブラウザの場合はワンタイムパスワード）
+ */
+
+type SigninErrorResponse = {
+	id: string;
+	next?: 'captcha' | 'password' | 'totp';
+} | {
+	id: string;
+	next: 'passkey';
+	authRequest: PublicKeyCredentialRequestOptionsJSON;
+};
 
 @Injectable()
 export class SigninApiService {
@@ -36,6 +55,9 @@ export class SigninApiService {
 
 		@Inject(DI.userProfilesRepository)
 		private userProfilesRepository: UserProfilesRepository,
+
+		@Inject(DI.userSecurityKeysRepository)
+		private userSecurityKeysRepository: UserSecurityKeysRepository,
 
 		@Inject(DI.signinsRepository)
 		private signinsRepository: SigninsRepository,
@@ -53,7 +75,7 @@ export class SigninApiService {
 		request: FastifyRequest<{
 			Body: {
 				username: string;
-				password: string;
+				password?: string;
 				token?: string;
 				credential?: AuthenticationResponseJSON;
 			};
@@ -68,7 +90,7 @@ export class SigninApiService {
 		const password = body['password'];
 		const token = body['token'];
 
-		function error(status: number, error: { id: string }) {
+		function error(status: number, error: SigninErrorResponse) {
 			reply.code(status);
 			return { error };
 		}
@@ -88,11 +110,6 @@ export class SigninApiService {
 		}
 
 		if (typeof username !== 'string') {
-			reply.code(400);
-			return;
-		}
-
-		if (typeof password !== 'string') {
 			reply.code(400);
 			return;
 		}
@@ -121,11 +138,36 @@ export class SigninApiService {
 		}
 
 		const profile = await this.userProfilesRepository.findOneByOrFail({ userId: user.id });
+		const securityKeysAvailable = await this.userSecurityKeysRepository.countBy({ userId: user.id }).then(result => result >= 1);
+
+		if (password == null) {
+			reply.code(403);
+			if (profile.twoFactorEnabled) {
+				return {
+					error: {
+						id: '144ff4f8-bd6c-41bc-82c3-b672eb09efbf',
+						next: 'password',
+					},
+				} satisfies { error: SigninErrorResponse };
+			} else {
+				return {
+					error: {
+						id: '144ff4f8-bd6c-41bc-82c3-b672eb09efbf',
+						next: 'captcha',
+					},
+				} satisfies { error: SigninErrorResponse };
+			}
+		}
+
+		if (typeof password !== 'string') {
+			reply.code(400);
+			return;
+		}
 
 		// Compare password
 		const same = await bcrypt.compare(password, profile.password!);
 
-		const fail = async (status?: number, failure?: { id: string }) => {
+		const fail = async (status?: number, failure?: SigninErrorResponse) => {
 			// Append signin history
 			await this.signinsRepository.insert({
 				id: this.idService.gen(),
@@ -180,7 +222,7 @@ export class SigninApiService {
 					id: '93b86c4b-72f9-40eb-9815-798928603d1e',
 				});
 			}
-		} else {
+		} else if (securityKeysAvailable) {
 			if (!same && !profile.usePasswordLessLogin) {
 				return await fail(403, {
 					id: '932c904e-9460-45b7-9ce6-7ed33be7eb2c',
@@ -189,8 +231,28 @@ export class SigninApiService {
 
 			const authRequest = await this.webAuthnService.initiateAuthentication(user.id);
 
-			reply.code(200);
-			return authRequest;
+			reply.code(403);
+			return {
+				error: {
+					id: '06e661b9-8146-4ae3-bde5-47138c0ae0c4',
+					next: 'passkey',
+					authRequest,
+				},
+			} satisfies { error: SigninErrorResponse };
+		} else {
+			if (!same || !profile.twoFactorEnabled) {
+				return await fail(403, {
+					id: '932c904e-9460-45b7-9ce6-7ed33be7eb2c',
+				});
+			} else {
+				reply.code(403);
+				return {
+					error: {
+						id: '144ff4f8-bd6c-41bc-82c3-b672eb09efbf',
+						next: 'totp',
+					},
+				} satisfies { error: SigninErrorResponse };
+			}
 		}
 		// never get here
 	}

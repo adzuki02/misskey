@@ -2221,7 +2221,7 @@ type Signin = components['schemas']['Signin'];
 // @public (undocumented)
 type SigninRequest = {
     username: string;
-    password: string;
+    password?: string;
     token?: string;
 };
 

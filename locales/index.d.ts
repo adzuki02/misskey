@@ -3721,6 +3721,10 @@ export interface Locale extends ILocale {
      */
     "incorrectPassword": string;
     /**
+     * ワンタイムパスワードが間違っているか、期限切れになっています。
+     */
+    "incorrectTotp": string;
+    /**
      * 「{choice}」に投票しますか？
      */
     "voteConfirm": ParameterizedString<"choice">;
