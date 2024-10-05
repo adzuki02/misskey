@@ -4,6 +4,7 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
+import * as Misskey from 'misskey-js';
 import { DI } from '@/di-symbols.js';
 import type { SigninsRepository } from '@/models/_.js';
 import { IdService } from '@/core/IdService.js';
@@ -43,9 +44,10 @@ export class SigninService {
 
 		reply.code(200);
 		return {
+			finished: true,
 			id: user.id,
-			i: user.token,
-		};
+			i: user.token!,
+		} satisfies Misskey.entities.SigninFlowResponse;
 	}
 }
 

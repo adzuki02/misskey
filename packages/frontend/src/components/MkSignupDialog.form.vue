@@ -80,9 +80,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import { toUnicode } from 'punycode/';
-import type { SigninResponse } from 'misskey-js/entities.js';
 import MkButton from './MkButton.vue';
 import MkInput from './MkInput.vue';
+import type { SigninFlowResponse } from 'misskey-js/entities.js';
 import MkCaptcha, { type Captcha } from '@/components/MkCaptcha.vue';
 import * as config from '@/config.js';
 import * as os from '@/os.js';
@@ -98,7 +98,7 @@ const props = withDefaults(defineProps<{
 });
 
 const emit = defineEmits<{
-	(ev: 'signup', user: SigninResponse): void;
+	(ev: 'signup', user: SigninFlowResponse): void;
 	(ev: 'signupEmailPending'): void;
 }>();
 
@@ -268,14 +268,19 @@ async function onSubmit(): Promise<void> {
 			});
 			emit('signupEmailPending');
 		} else {
-			const res = await misskeyApi('signin', {
+			const res = await misskeyApi('signin-flow', {
 				username: username.value,
 				password: password.value,
 			});
 			emit('signup', res);
 
-			if (props.autoSet) {
+			if (props.autoSet && res.finished) {
 				return login(res.i);
+			} else {
+				os.alert({
+					type: 'error',
+					text: i18n.ts.somethingHappened,
+				});
 			}
 		}
 	} catch {

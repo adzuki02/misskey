@@ -132,7 +132,7 @@ export class ApiServerService {
 				credentialId?: string;
 				challengeId?: string;
 			};
-		}>('/signin', (request, reply) => this.signinApiService.signin(request, reply));
+		}>('/signin-flow', (request, reply) => this.signinApiService.signin(request, reply));
 
 		fastify.post<{
 			Body: {
