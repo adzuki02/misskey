@@ -39,7 +39,7 @@ function whatIsNew() {
 	max-width: 480px;
 	box-sizing: border-box;
 	text-align: center;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 	border-radius: var(--radius);
 }
 

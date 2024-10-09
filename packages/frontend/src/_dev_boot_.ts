@@ -49,7 +49,7 @@ async function main() {
 	const theme = localStorage.getItem('theme');
 	if (theme) {
 		for (const [k, v] of Object.entries(JSON.parse(theme))) {
-			document.documentElement.style.setProperty(`--${k}`, (v as any)?.toString());
+			document.documentElement.style.setProperty(`--MI_THEME-${k}`, (v as any).toString());
 
 			// HTMLの theme-color 適用
 			if (k === 'htmlThemeColor') {

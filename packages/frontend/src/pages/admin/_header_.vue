@@ -266,7 +266,7 @@ onMounted(() => {
 			position: absolute;
 			bottom: 0;
 			height: 3px;
-			background: var(--accent);
+			background: var(--MI_THEME-accent);
 			border-radius: 999px;
 			transition: all 0.2s ease;
 			pointer-events: none;

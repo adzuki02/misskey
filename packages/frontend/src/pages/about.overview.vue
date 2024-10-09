@@ -148,7 +148,7 @@ const initStats = () => $i ? misskeyApi('stats', {}) : new Promise<null>(r => { 
 	text-align: center;
 	border-radius: 10px;
 	overflow: clip;
-	background-color: var(--panel);
+	background-color: var(--MI_THEME-panel);
 	background-size: cover;
 	background-position: center center;
 }
@@ -190,8 +190,8 @@ const initStats = () => $i ? misskeyApi('stats', {}) : new Promise<null>(r => { 
 		width: 32px;
 		height: 32px;
 		line-height: 32px;
-		background-color: var(--accentedBg);
-		color: var(--accent);
+		background-color: var(--MI_THEME-accentedBg);
+		color: var(--MI_THEME-accent);
 		font-size: 13px;
 		font-weight: bold;
 		align-items: center;

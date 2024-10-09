@@ -197,7 +197,7 @@ function showFileMenu(file: DriveFile, ev: MouseEvent | KeyboardEvent): void {
 	width: 100%;
 	height: 100%;
 	z-index: 1;
-	color: var(--fg);
+	color: var(--MI_THEME-fg);
 }
 
 .sensitive {

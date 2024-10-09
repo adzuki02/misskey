@@ -218,7 +218,7 @@ definePageMetadata(() => ({
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	color: var(--navFg);
+	color: var(--MI_THEME-navFg);
 }
 
 .pinnedNoteRemove {
