@@ -40,7 +40,7 @@ function whatIsNew() {
 	box-sizing: border-box;
 	text-align: center;
 	background: var(--MI_THEME-panel);
-	border-radius: var(--radius);
+	border-radius: var(--MI-radius);
 }
 
 .title {

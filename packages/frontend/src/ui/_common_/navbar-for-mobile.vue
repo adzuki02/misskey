@@ -93,9 +93,9 @@ function more() {
 	top: 0;
 	z-index: 1;
 	padding: 20px 0;
-	background: var(--X14);
-	-webkit-backdrop-filter: var(--blur, blur(8px));
-	backdrop-filter: var(--blur, blur(8px));
+	background: var(--nav-bg-transparent);
+	-webkit-backdrop-filter: var(--MI-blur, blur(8px));
+	backdrop-filter: var(--MI-blur, blur(8px));
 }
 
 .banner {
@@ -127,9 +127,9 @@ function more() {
 	position: sticky;
 	bottom: 0;
 	padding: 20px 0;
-	background: var(--X14);
-	-webkit-backdrop-filter: var(--blur, blur(8px));
-	backdrop-filter: var(--blur, blur(8px));
+	background: var(--nav-bg-transparent);
+	-webkit-backdrop-filter: var(--MI-blur, blur(8px));
+	backdrop-filter: var(--MI-blur, blur(8px));
 }
 
 .post {

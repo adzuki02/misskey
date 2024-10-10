@@ -408,7 +408,7 @@ definePageMetadata(() => ({
 .rsljpzjq {
 	> .selects {
 		display: flex;
-		gap: 1.5em var(--margin);
+		gap: 1.5em var(--MI-margin);
 		flex-wrap: wrap;
 
 		> .select {
