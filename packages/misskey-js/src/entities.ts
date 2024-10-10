@@ -11,7 +11,6 @@ import type { AuthenticationResponseJSON, PublicKeyCredentialRequestOptionsJSON 
 export * from './autogen/entities.js';
 export * from './autogen/models.js';
 
-
 export type ID = string;
 export type DateString = string;
 
@@ -124,7 +123,7 @@ export type SigninWithPasskeyInitResponse = {
 };
 
 export type SigninWithPasskeyResponse = {
-	signinResponse: SigninFlowResponse;
+	signinResponse: SigninFlowResponse & { finished: true };
 };
 
 type Values<T extends Record<PropertyKey, unknown>> = T[keyof T];

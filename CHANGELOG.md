@@ -1,8 +1,5 @@
 ## Unreleased
 
-### General
-## 2024.10.0
-
 ### Note
 - ユーザーデータを読み込む際の型が一部変更されました。
 	- `twoFactorEnabled`, `usePasswordLessLogin`, `securityKeys`: 自分とモデレーター以外のユーザーからは取得できなくなりました
@@ -13,6 +10,7 @@
 ### Client
 - Enhance: デザインの調整
 - Enhance: ログイン画面の認証フローを改善
+- メールアドレス不要でCaptchaが有効な場合にアカウント登録完了後自動でのログインに失敗する問題を修正
 
 ### Server
 - Enhance: セキュリティ向上のため、ログイン時にメール通知を行うように

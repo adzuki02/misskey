@@ -82,7 +82,7 @@ import XTotp from '@/components/MkSignin.totp.vue';
 import XPasskey from '@/components/MkSignin.passkey.vue';
 
 const emit = defineEmits<{
-	(ev: 'login', v: SigninFlowResponse): void;
+	(ev: 'login', v: SigninFlowResponse & { finished: true }): void;
 }>();
 
 const props = withDefaults(defineProps<{
@@ -138,7 +138,7 @@ function onPasskeyDone(credential: AuthenticationPublicKeyCredential): void {
 			context: passkeyContext.value,
 		}).then((_res) => {
 			const res = _res as unknown as SigninWithPasskeyResponse;
-			if (res.signinResponse == null) {
+			if (res.signinResponse == null || res.signinResponse.finished !== true) {
 				onSigninApiError();
 				return;
 			}
@@ -280,7 +280,7 @@ async function tryLogin(req: Partial<SigninFlowRequest>): Promise<SigninFlowResp
 	});
 }
 
-async function onLoginSucceeded(res: SigninFlowResponse & { finished: true; }) {
+async function onLoginSucceeded(res: SigninFlowResponse & { finished: true }) {
 	if (props.autoSet) {
 		await login(res.i);
 	}
