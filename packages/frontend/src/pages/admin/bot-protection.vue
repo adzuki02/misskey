@@ -13,6 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="mcaptcha">mCaptcha</option>
 				<option value="recaptcha">reCAPTCHA</option>
 				<option value="turnstile">Turnstile</option>
+				<option value="testcaptcha">testCaptcha</option>
 			</MkRadios>
 
 			<template v-if="provider === 'hcaptcha'">
@@ -75,6 +76,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkCaptcha provider="turnstile" :sitekey="turnstileSiteKey || '1x00000000000000000000AA'"/>
 				</FormSlot>
 			</template>
+			<template v-else-if="provider === 'testcaptcha'">
+				<MkInfo warn><span>{{ i18n.ts.testCaptchaWarning }}</span></MkInfo>
+				<FormSlot>
+					<template #label>{{ i18n.ts.preview }}</template>
+					<MkCaptcha provider="testcaptcha" :sitekey="''"/>
+				</FormSlot>
+			</template>
 
 			<MkButton primary @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
 		</div>
@@ -88,6 +96,7 @@ import type { CaptchaProvider } from '@/components/MkCaptcha.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkButton from '@/components/MkButton.vue';
+import MkInfo from '@/components/MkInfo.vue';
 import FormSuspense from '@/components/form/suspense.vue';
 import FormSlot from '@/components/form/slot.vue';
 import * as os from '@/os.js';
@@ -123,7 +132,8 @@ async function init() {
 	provider.value = meta.enableHcaptcha ? 'hcaptcha' :
 		meta.enableRecaptcha ? 'recaptcha' :
 		meta.enableTurnstile ? 'turnstile' :
-		meta.enableMcaptcha ? 'mcaptcha' : null;
+		meta.enableMcaptcha ? 'mcaptcha' :
+		meta.enableTestcaptcha ? 'testcaptcha' : null;
 }
 
 function save() {
@@ -141,6 +151,7 @@ function save() {
 		enableTurnstile: provider.value === 'turnstile',
 		turnstileSiteKey: turnstileSiteKey.value,
 		turnstileSecretKey: turnstileSecretKey.value,
+		enableTestcaptcha: provider.value === 'testcaptcha',
 	}).then(() => {
 		fetchInstance(true);
 	});

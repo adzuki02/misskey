@@ -5194,6 +5194,45 @@ export interface Locale extends ILocale {
      * パスキーの検証に成功しましたが、パスワードレスログインが無効になっています。
      */
     "passkeyVerificationSucceededButPasswordlessLoginDisabled": string;
+    /**
+     * フォロワーへのメッセージ
+     */
+    "messageToFollower": string;
+    /**
+     * 対象
+     */
+    "target": string;
+    /**
+     * CAPTCHAのテストを目的とした機能です。***本番環境で使用しないでください。***
+     */
+    "testCaptchaWarning": string;
+    "_abuseUserReport": {
+        /**
+         * 転送
+         */
+        "forward": string;
+        /**
+         * 匿名のシステムアカウントとして、リモートサーバーに通報を転送します。
+         */
+        "forwardDescription": string;
+        /**
+         * 解決
+         */
+        "resolve": string;
+        /**
+         * 是認
+         */
+        "accept": string;
+        /**
+         * 否認
+         */
+        "reject": string;
+        /**
+         * 内容が正当である通報に対応した場合は「是認」を選択し、肯定的にケースが解決されたことをマークします。
+         * 内容が正当でない通報の場合は「否認」を選択し、否定的にケースが解決されたことをマークします。
+         */
+        "resolveTutorial": string;
+    };
     "_delivery": {
         /**
          * 配信状態
