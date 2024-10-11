@@ -7,6 +7,10 @@
 ### Server
 - Fix: `admin/emoji/update`エンドポイントのidのみ指定した時不正なエラーが発生するバグを修正
 
+### Server
+- Fix: キューのエラーログを簡略化するように  
+  (Cherry-picked from https://activitypub.software/TransFem-org/Sharkey/-/merge_requests/649)
+
 ## 2024.10.0
 
 ### Note
