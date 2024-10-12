@@ -31,7 +31,7 @@ jobs:
         id: previous_version
         run: echo "previous_version=$(jq -r '.version' ./package.json)" >> $GITHUB_OUTPUT
       - name: Checkout main branch
-        run: git checkout develop-mame
+        run: git checkout release-automation
       - name: Check if version changed
         id: version_changed
         run: echo "version_changed=$(if [ '${{ steps.previous_version.outputs.previous_version }}' == '${{ steps.current_version.outputs.current_version }}' ]; then echo false; else echo true; fi)" >> $GITHUB_OUTPUT
