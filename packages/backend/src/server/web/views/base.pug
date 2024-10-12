@@ -99,9 +99,4 @@ html
 				</svg>
 		block content
 		if config.cfWebAnalyticsToken
-				script.
-					const e = document.createElement("script");
-					e.setAttribute("defer", "");
-					e.setAttribute("src", "https://static.cloudflareinsights.com/beacon.min.js");
-					e.dataset.cfBeacon = `{"token":"#{cfWebAnalyticsToken}"}`;
-					document.body.appendChild(e);
+			script(defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon=`{"token":"${config.cfWebAnalyticsToken}"}`)
