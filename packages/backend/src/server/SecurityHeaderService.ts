@@ -77,7 +77,6 @@ export class SecurityHeaderService {
 		const imgSrc = [
 			'\'self\'', 'data:', 'blob:',
 			'https://xn--931a.moe/assets/',
-			'https://avatars.githubusercontent.com/u/',
 			...(this.config.externalMediaProxyEnabled ? [mediaProxyOrigin] : []),
 			...(this.config.contentSecurityPolicy?.imgAndMediaSrc ?? []),
 		].join(' ');
