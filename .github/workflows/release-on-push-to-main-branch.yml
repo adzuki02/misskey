@@ -57,6 +57,6 @@ jobs:
       - name: Archive (tar)
         run: tar -zcvf ./built.tar.gz ./built ./packages/misskey-js/built ./packages/misskey-reversi/built ./packages/misskey-bubble-game/built ./packages/backend/built
       - name: Create release
-        run: gh release create ${{ steps.tag_name.outputs.tag_name }} ./built.tar --latest --title ${{ steps.tag_name.outputs.tag_name }}
+        run: gh release create ${{ steps.tag_name.outputs.tag_name }} ./built.tar.gz --latest --title ${{ steps.tag_name.outputs.tag_name }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
