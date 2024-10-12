@@ -23,7 +23,7 @@ const externalPackages = [
 		path(id: string, pattern: RegExp): string {
 			const match = pattern.exec(id)?.groups;
 			return match
-				? `https://esm.sh/shiki@${packageInfo.dependencies.shiki}/${match['subPkg']}`
+				? `https://esm.sh/shiki@${packageInfo.dependencies.shiki}/${match['subPkg']}?pin=v135&target=es2022`
 				: id;
 		},
 	},
