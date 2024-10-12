@@ -34,6 +34,9 @@ jobs:
       - name: Check if version changed
         id: version_changed
         run: echo "version_changed=$(if [ '${{ steps.previous_version.outputs.previous_version }}' == '${{ steps.current_version.outputs.current_version }}' ]; then echo false; else echo true; fi)" >> $GITHUB_OUTPUT
+      - name: Determine tag name
+        id: tag_name
+        run: echo "tag_name=${{ steps.current_version.outputs.current_version }}$(if [ '${{ steps.version_changed.outputs.version_changed }}' == 'true' ]; then echo ''; else echo ".$(git rev-parse HEAD | awk '{ print substr($1, 0, 7) }')"; fi)" >> $GITHUB_OUTPUT
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
@@ -53,8 +56,5 @@ jobs:
         run: git rev-parse HEAD > ./built/hash
       - name: Archive (tar)
         run: tar -cvf ./built.tar ./built ./packages/misskey-js/built ./packages/misskey-reversi/built ./packages/misskey-bubble-game/built ./packages/backend/built
-      - name: Determine tag name
-        id: tag_name
-        run: echo "tag_name=${{ steps.current_version.outputs.current_version }}$(if [ '${{ steps.version_changed.outputs.version_changed }}' == 'true' ]; then echo ''; else echo ".$(git rev-parse HEAD | awk '{ print substr($1, 0, 7) }')"; fi)" >> $GITHUB_OUTPUT
       - name: Create release
         run: gh release create ${{ steps.tag_name.outputs.tag_name }} ./built.tar --latest --title ${{ steps.tag_name.outputs.tag_name }}
