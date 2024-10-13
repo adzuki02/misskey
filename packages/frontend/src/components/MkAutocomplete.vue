@@ -24,8 +24,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<li v-for="emoji in emojis" :key="emoji.emoji" :class="$style.item" tabindex="-1" @click="complete(type, emoji.emoji)" @keydown="onKeydown">
 			<MkCustomEmoji v-if="'isCustomEmoji' in emoji && emoji.isCustomEmoji" :name="emoji.emoji" :class="$style.emoji" :fallbackToImage="true" :forceShowingAnimatedImages="defaultStore.reactiveState.forceShowingAnimatedImagesOnPopup.value"/>
 			<MkEmoji v-else :emoji="emoji.emoji" :class="$style.emoji"/>
-			<!-- eslint-disable-next-line vue/no-v-html -->
-			<span v-if="q" :class="$style.emojiName" v-html="sanitizeHtml(emoji.name.replace(q, `<b>${q}</b>`))"></span>
+			<template v-if="q && emoji.name.includes(q)">
+				<span :class="$style.emojiName" v-text="emoji.name.substring(0, emoji.name.indexOf(q))"></span>
+				<span :class="$style.emojiName" style="font-weight: bold;" v-text="q"></span>
+				<span :class="$style.emojiName" v-text="emoji.name.substring(emoji.name.indexOf(q) + q.length)"></span>
+			</template>
 			<span v-else v-text="emoji.name"></span>
 			<span v-if="emoji.aliasOf" :class="$style.emojiAlias">({{ emoji.aliasOf }})</span>
 		</li>

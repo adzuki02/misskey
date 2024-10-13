@@ -3,9 +3,10 @@ SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
-<!-- eslint-disable vue/no-v-html -->
 <template>
-<div :class="[$style.codeBlockRoot, { [$style.codeEditor]: codeEditor }, (darkMode ? $style.dark : $style.light)]" v-html="html"></div>
+<div :class="[$style.codeBlockRoot, { [$style.codeEditor]: codeEditor }, (darkMode ? $style.dark : $style.light)]">
+	<MkCodeRenderer :tokensResult="tokensResult"/>
+</div>
 </template>
 
 <script lang="ts" setup>
@@ -14,6 +15,7 @@ import { bundledLanguagesInfo } from 'shiki/langs';
 import type { BundledLanguage } from 'shiki/langs';
 import { getHighlighter, getTheme } from '@/scripts/code-highlighter.js';
 import { defaultStore } from '@/store.js';
+import MkCodeRenderer from '@/components/MkCode.renderer.vue';
 
 const props = defineProps<{
 	code: string;
@@ -30,7 +32,7 @@ const [lightThemeName, darkThemeName] = await Promise.all([
 	getTheme('dark', true),
 ]);
 
-const html = computed(() => highlighter.codeToHtml(props.code, {
+const tokensResult = computed(() => highlighter.codeToTokens(props.code, {
 	lang: codeLang.value,
 	themes: {
 		fallback: 'dark-plus',
@@ -136,7 +138,7 @@ watch(() => props.lang, (to) => {
     white-space: pre;
 
 		& span {
-			display: inline-block;
+			display: inline;
 			min-height: 1em;
 		}
 	}
