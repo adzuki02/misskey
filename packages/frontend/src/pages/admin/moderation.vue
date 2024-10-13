@@ -50,6 +50,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label>{{ i18n.ts.prohibitedWords }}</template>
 						<template #caption>{{ i18n.ts.prohibitedWordsDescription }}<br>{{ i18n.ts.prohibitedWordsDescription2 }}</template>
 					</MkTextarea>
+
+					<MkTextarea v-model="prohibitedWordsForNameOfUser">
+						<template #label>{{ i18n.ts.prohibitedWordsForNameOfUser }}</template>
+						<template #caption>{{ i18n.ts.prohibitedWordsForNameOfUserDescription }}<br>{{ i18n.ts.prohibitedWordsDescription2 }}</template>
+					</MkTextarea>
 				</div>
 			</FormSuspense>
 		</MkSpacer>
@@ -83,6 +88,7 @@ const enableRegistration = ref<boolean>(false);
 const emailRequiredForSignup = ref<boolean>(false);
 const sensitiveWords = ref<string>('');
 const prohibitedWords = ref<string>('');
+const prohibitedWordsForNameOfUser = ref<string>('');
 const preservedUsernames = ref<string>('');
 const tosUrl = ref<string | null>(null);
 const privacyPolicyUrl = ref<string | null>(null);
@@ -98,6 +104,8 @@ async function init() {
 	tosUrl.value = meta.tosUrl;
 	privacyPolicyUrl.value = meta.privacyPolicyUrl;
 	inquiryUrl.value = meta.inquiryUrl;
+	prohibitedWordsForNameOfUser.value = meta.prohibitedWordsForNameOfUser.join('\n');
+	preservedUsernames.value = meta.preservedUsernames.join('\n');
 }
 
 function save() {
@@ -110,6 +118,7 @@ function save() {
 		sensitiveWords: sensitiveWords.value.split('\n'),
 		prohibitedWords: prohibitedWords.value.split('\n'),
 		preservedUsernames: preservedUsernames.value.split('\n'),
+		prohibitedWordsForNameOfUser: prohibitedWordsForNameOfUser.value.split('\n'),
 	}).then(() => {
 		fetchInstance(true);
 	});

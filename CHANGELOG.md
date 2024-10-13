@@ -1,5 +1,8 @@
 ## Unreleased
 
+### General
+- Feat: ユーザーの名前に禁止ワードを設定できるように
+
 ### Client
 - Enhance: l10nの更新
 - Fix: メールアドレス不要でCaptchaが有効な場合にアカウント登録完了後自動でのログインに失敗する問題を修正
