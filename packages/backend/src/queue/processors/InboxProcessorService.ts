@@ -14,7 +14,7 @@ import { FetchInstanceMetadataService } from '@/core/FetchInstanceMetadataServic
 import InstanceChart from '@/core/chart/charts/instance.js';
 import ApRequestChart from '@/core/chart/charts/ap-request.js';
 import FederationChart from '@/core/chart/charts/federation.js';
-import { getApId } from '@/core/activitypub/type.js';
+import { getApId, isLike } from '@/core/activitypub/type.js';
 import type { IActivity } from '@/core/activitypub/type.js';
 import type { MiRemoteUser } from '@/models/User.js';
 import type { MiUserPublickey } from '@/models/UserPublickey.js';
@@ -206,7 +206,9 @@ export class InboxProcessorService {
 		try {
 			const result = await this.apInboxService.performActivity(authUser.user, activity);
 			if (result && !result.startsWith('ok')) {
-				this.logger.warn(`inbox activity ignored (maybe): id=${activity.id} reason=${result}`);
+				if (!isLike(activity)) {
+					this.logger.warn(`inbox activity ignored (maybe): id=${activity.id} reason=${result}`);
+				}
 				return result;
 			}
 		} catch (e) {
