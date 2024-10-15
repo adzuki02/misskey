@@ -8,6 +8,7 @@ export default [
 	{
 		files: ['**/*.cjs'],
 		languageOptions: {
+			sourceType: 'commonjs',
 			parserOptions: {
 				sourceType: 'commonjs',
 			},
@@ -29,6 +30,12 @@ export default [
 		files: ['build.js'],
 		languageOptions: {
 			globals: globals.node,
+		},
+	},
+	{
+		files: ['**/*.js', '**/*.cjs'],
+		rules: {
+			'@typescript-eslint/no-var-requires': 'off',
 		},
 	},
 ];
