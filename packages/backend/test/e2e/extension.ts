@@ -110,6 +110,8 @@ describe('独自拡張', () => {
 
 	describe('サーバーのチャートを隠す', () => {
 		describe.each([
+			{ endpoint: 'charts/federation', param: { span: 'day' } },
+			{ endpoint: 'charts/ap-request', param: { span: 'day' } },
 			{ endpoint: 'charts/active-users', param: { span: 'day' } },
 			{ endpoint: 'charts/drive', param: { span: 'day' } },
 			{ endpoint: 'charts/notes', param: { span: 'day' } },
