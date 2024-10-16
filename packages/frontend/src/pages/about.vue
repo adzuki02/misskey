@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSpacer v-else-if="tab === 'federation' && $i" :contentMax="1000" :marginMin="20">
 			<XFederation/>
 		</MkSpacer>
-		<MkSpacer v-else-if="tab === 'charts'" :contentMax="1000" :marginMin="20">
+		<MkSpacer v-else-if="tab === 'charts' && $i" :contentMax="1000" :marginMin="20">
 			<MkInstanceStats/>
 		</MkSpacer>
 	</MkHorizontalSwipe>
@@ -63,11 +63,11 @@ const headerTabs = computed(() => [{
 	key: 'federation',
 	title: i18n.ts.federation,
 	icon: 'ti ti-whirl',
-}] : [], {
+}] : [], ...$i ? [{
 	key: 'charts',
 	title: i18n.ts.charts,
 	icon: 'ti ti-chart-line',
-}]);
+}] : []]);
 
 definePageMetadata(() => ({
 	title: i18n.ts.instanceInfo,

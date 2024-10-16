@@ -14,8 +14,9 @@ export const meta = {
 
 	res: getJsonSchema(schema),
 
-	allowGet: true,
-	cacheSec: 60 * 60,
+	requireCredential: true,
+
+	kind: 'read:account',
 } as const;
 
 export const paramDef = {
