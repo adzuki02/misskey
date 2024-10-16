@@ -81,13 +81,15 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private metaService: MetaService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			const user = await this.cacheService.userByIdCache.fetchMaybe(
-				ps.userId,
-				() => this.usersRepository.findOneBy({ id: ps.userId }).then(x => x ?? undefined),
-			);
+			if (!me) {
+				const user = await this.cacheService.userByIdCache.fetchMaybe(
+					ps.userId,
+					() => this.usersRepository.findOneBy({ id: ps.userId }).then(x => x ?? undefined),
+				);
 
-			if (user && user.host && !me) {
-				return [];
+				if (user && user.host) {
+					return [];
+				}
 			}
 
 			const untilId = ps.untilId ?? (ps.untilDate ? this.idService.gen(ps.untilDate!) : null);
