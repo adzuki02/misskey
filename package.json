@@ -12,7 +12,6 @@
 		"packages/backend",
 		"packages/sw",
 		"packages/misskey-js",
-		"packages/misskey-reversi",
 		"packages/misskey-bubble-game"
 	],
 	"private": true,
