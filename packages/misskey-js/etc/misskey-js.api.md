@@ -752,43 +752,6 @@ export type Channels = {
         };
         receives: null;
     };
-    reversiGame: {
-        params: {
-            gameId: string;
-        };
-        events: {
-            started: (payload: {
-                game: ReversiGameDetailed;
-            }) => void;
-            ended: (payload: {
-                winnerId: User['id'] | null;
-                game: ReversiGameDetailed;
-            }) => void;
-            canceled: (payload: {
-                userId: User['id'];
-            }) => void;
-            changeReadyStates: (payload: {
-                user1: boolean;
-                user2: boolean;
-            }) => void;
-            updateSettings: <K extends ReversiUpdateKey>(payload: {
-                userId: User['id'];
-                key: K;
-                value: ReversiGameDetailed[K];
-            }) => void;
-            log: (payload: Record<string, unknown>) => void;
-        };
-        receives: {
-            putStone: {
-                pos: number;
-                id: string;
-            };
-            ready: boolean;
-            cancel: null | Record<string, never>;
-            updateSettings: ReversiUpdateSettings<ReversiUpdateKey>;
-            claimTimeIsUp: null | Record<string, never>;
-        };
-    };
 };
 
 // @public (undocumented)
@@ -1751,17 +1714,6 @@ declare namespace entities {
         BubbleGameRegisterRequest,
         BubbleGameRankingRequest,
         BubbleGameRankingResponse,
-        ReversiCancelMatchRequest,
-        ReversiGamesRequest,
-        ReversiGamesResponse,
-        ReversiMatchRequest,
-        ReversiMatchResponse,
-        ReversiInvitationsResponse,
-        ReversiShowGameRequest,
-        ReversiShowGameResponse,
-        ReversiSurrenderRequest,
-        ReversiVerifyRequest,
-        ReversiVerifyResponse,
         Error_2 as Error,
         UserLite,
         UserDetailedNotMeOnly,
@@ -1809,8 +1761,6 @@ declare namespace entities {
         RoleLite,
         Role,
         RolePolicies,
-        ReversiGameLite,
-        ReversiGameDetailed,
         MetaLite,
         MetaDetailedOnly,
         MetaDetailed,
@@ -2832,48 +2782,6 @@ type ResetPasswordRequest = operations['reset-password']['requestBody']['content
 type RetentionResponse = operations['retention']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
-type ReversiCancelMatchRequest = operations['reversi___cancel-match']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type ReversiGameDetailed = components['schemas']['ReversiGameDetailed'];
-
-// @public (undocumented)
-type ReversiGameLite = components['schemas']['ReversiGameLite'];
-
-// @public (undocumented)
-type ReversiGamesRequest = operations['reversi___games']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type ReversiGamesResponse = operations['reversi___games']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type ReversiInvitationsResponse = operations['reversi___invitations']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type ReversiMatchRequest = operations['reversi___match']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type ReversiMatchResponse = operations['reversi___match']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type ReversiShowGameRequest = operations['reversi___show-game']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type ReversiShowGameResponse = operations['reversi___show-game']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type ReversiSurrenderRequest = operations['reversi___surrender']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-export const reversiUpdateKeys: ["map", "bw", "isLlotheo", "canPutEverywhere", "loopedBoard", "timeLimitForEachTurn"];
-
-// @public (undocumented)
-type ReversiVerifyRequest = operations['reversi___verify']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type ReversiVerifyResponse = operations['reversi___verify']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
 type Role = components['schemas']['Role'];
 
 // @public (undocumented)
@@ -3267,8 +3175,6 @@ type UsersUpdateMemoRequest = operations['users___update-memo']['requestBody']['
 // Warnings were encountered during analysis:
 //
 // src/entities.ts:49:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
-// src/streaming.types.ts:220:4 - (ae-forgotten-export) The symbol "ReversiUpdateKey" needs to be exported by the entry point index.d.ts
-// src/streaming.types.ts:230:4 - (ae-forgotten-export) The symbol "ReversiUpdateSettings" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
