@@ -190,10 +190,10 @@ export class SecurityHeaderService {
 					case '/client-assets/*':
 					case '/assets/*':
 					case '/apple-touch-icon.png':
-					case '/fluent-emoji/:path(.*)':
 						reply.header('Content-Security-Policy', this.selfHostedMediaPolicy);
 						break;
 
+					case '/fluent-emoji/:path(.*)':
 					case '/twemoji/:path(.*)':
 					case '/twemoji-badge/:path(.*)':
 						reply.header('Content-Security-Policy', this.strictestPolicy);

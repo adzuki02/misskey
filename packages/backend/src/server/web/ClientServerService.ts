@@ -440,9 +440,9 @@ export class ClientServerService {
 				return;
 			}
 
-			return await reply.sendFile(path, `${_dirname}/../../../../../fluent-emojis/dist/`, {
-				maxAge: ms('30 days'),
-			});
+			reply.header('Cache-Control', 'public, max-age=31536000, immutable');
+
+			return reply.redirect(`https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/72x72/${path}`, 301);
 		});
 
 		fastify.get<{ Params: { path: string } }>('/twemoji/:path(.*)', async (request, reply) => {

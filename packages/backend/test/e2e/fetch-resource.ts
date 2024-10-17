@@ -107,8 +107,6 @@ describe('Webリソース', () => {
 		{ path: '/favicon.ico', type: 'image/vnd.microsoft.icon' },
 		{ path: '/opensearch.xml', type: 'application/opensearchdescription+xml' },
 		{ path: '/apple-touch-icon.png', type: 'image/png' },
-		{ path: '/fluent-emoji/2764.png', type: 'image/png' },
-		{ path: '/fluent-emoji/2764-fe0f-200d-1f525.png', type: 'image/png' },
 	])('$path', (p) => {
 		test('がGETできる。', async () => await ok({ ...p }));
 
@@ -122,6 +120,8 @@ describe('Webリソース', () => {
 		{ path: '/twemoji/2764-fe0f-200d-1f525.svg', type: 'image/svg+xml' },
 		{ path: '/twemoji-badge/2764.png', type: 'image/png' },
 		{ path: '/twemoji-badge/2764-fe0f-200d-1f525.png', type: 'image/png' },
+		{ path: '/fluent-emoji/2764.png', type: 'image/png' },
+		{ path: '/fluent-emoji/2764-fe0f-200d-1f525.png', type: 'image/png' },
 	])('$path', (p) => {
 		test('のGETリクエストがリダイレクトされる', async () => {
 			const res = await simpleGet(p.path);
