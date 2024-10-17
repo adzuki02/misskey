@@ -112,7 +112,7 @@ importers:
         version: 3.0.0
       '@fastify/http-proxy':
         specifier: 9.5.0
-        version: 9.5.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+        version: 9.5.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       '@fastify/multipart':
         specifier: 8.3.0
         version: 8.3.0
@@ -265,7 +265,7 @@ importers:
         version: 4.1.0
       jsdom:
         specifier: 24.1.1
-        version: 24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+        version: 24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       json5:
         specifier: 2.2.3
         version: 2.2.3
@@ -415,7 +415,7 @@ importers:
         version: 3.6.7
       ws:
         specifier: 8.18.0
-        version: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+        version: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       xev:
         specifier: 3.0.2
         version: 3.0.2
@@ -501,9 +501,6 @@ importers:
       slacc-win32-x64-msvc:
         specifier: 0.0.10
         version: 0.0.10
-      utf-8-validate:
-        specifier: 6.0.3
-        version: 6.0.3
     devDependencies:
       '@jest/globals':
         specifier: 29.7.0
@@ -11201,10 +11198,6 @@ packages:
   url-parse@1.5.10:
     resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==}
 
-  utf-8-validate@6.0.3:
-    resolution: {integrity: sha512-uIuGf9TWQ/y+0Lp+KGZCMuJWc3N9BHA+l/UmHd/oUHwJJDeysyTRxNQVkbzsIWfGFbRe3OcgML/i0mvVRPOyDA==}
-    engines: {node: '>=6.14.2'}
-
   utf-8-validate@6.0.4:
     resolution: {integrity: sha512-xu9GQDeFp+eZ6LnCywXN/zBancWvOpUMzgjLPSjy4BRHSmTelvn2E0DG0o1sTiw5hkCKBHo8rwSKncfRfv2EEQ==}
     engines: {node: '>=6.14.2'}
@@ -13734,12 +13727,12 @@ snapshots:
     dependencies:
       fast-json-stringify: 5.8.0
 
-  '@fastify/http-proxy@9.5.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)':
+  '@fastify/http-proxy@9.5.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)':
     dependencies:
       '@fastify/reply-from': 9.0.1
       fast-querystring: 1.1.2
       fastify-plugin: 4.5.0
-      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -20683,34 +20676,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.3):
-    dependencies:
-      cssstyle: 4.0.1
-      data-urls: 5.0.0
-      decimal.js: 10.4.3
-      form-data: 4.0.0
-      html-encoding-sniffer: 4.0.0
-      http-proxy-agent: 7.0.2
-      https-proxy-agent: 7.0.5
-      is-potential-custom-element-name: 1.0.1
-      nwsapi: 2.2.12
-      parse5: 7.1.2
-      rrweb-cssom: 0.7.1
-      saxes: 6.0.0
-      symbol-tree: 3.2.4
-      tough-cookie: 4.1.4
-      w3c-xmlserializer: 5.0.0
-      webidl-conversions: 7.0.0
-      whatwg-encoding: 3.1.1
-      whatwg-mimetype: 4.0.0
-      whatwg-url: 14.0.0
-      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
-      xml-name-validator: 5.0.0
-    transitivePeerDependencies:
-      - bufferutil
-      - supports-color
-      - utf-8-validate
-
   jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4):
     dependencies:
       cssstyle: 4.0.1
@@ -20738,7 +20703,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
   jsesc@0.5.0: {}
 
@@ -24058,11 +24022,6 @@ snapshots:
       querystringify: 2.2.0
       requires-port: 1.0.0
 
-  utf-8-validate@6.0.3:
-    dependencies:
-      node-gyp-build: 4.6.0
-    optional: true
-
   utf-8-validate@6.0.4:
     dependencies:
       node-gyp-build: 4.6.0
@@ -24473,11 +24432,6 @@ snapshots:
     dependencies:
       imurmurhash: 0.1.4
       signal-exit: 3.0.7
-
-  ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.3):
-    optionalDependencies:
-      bufferutil: 4.0.8
-      utf-8-validate: 6.0.3
 
   ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4):
     optionalDependencies:
