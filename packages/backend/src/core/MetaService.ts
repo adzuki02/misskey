@@ -12,8 +12,8 @@ import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { bindThis } from '@/decorators.js';
 import type { GlobalEvents } from '@/core/GlobalEventService.js';
 import { FeaturedService } from '@/core/FeaturedService.js';
-import type { OnApplicationShutdown } from '@nestjs/common';
 import { FanoutTimelineService } from '@/core/FanoutTimelineService.js';
+import type { OnApplicationShutdown } from '@nestjs/common';
 
 @Injectable()
 export class MetaService implements OnApplicationShutdown {
@@ -143,9 +143,7 @@ export class MetaService implements OnApplicationShutdown {
 			});
 		}
 
-		if (data.enableFanoutTimeline === false && (!before || before.enableFanoutTimeline === true)) {
-			this.fanoutTimelineService.purgeAll();
-		} else if (data.enableFanoutTimeline === true && before?.enableFanoutTimeline === false) {
+		if (before !== undefined && updated.enableFanoutTimeline !== before.enableFanoutTimeline) {
 			this.fanoutTimelineService.purgeAll();
 		}
 

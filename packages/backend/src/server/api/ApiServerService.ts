@@ -133,10 +133,6 @@ export class ApiServerService {
 
 		fastify.post<{ Body: { code: string; } }>('/signup-pending', (request, reply) => this.signupApiService.signupPending(request, reply));
 
-		fastify.get('/v1/instance/peers', async (request, reply) => {
-			reply.code(404).send();
-		});
-
 		fastify.post<{ Params: { session: string; } }>('/miauth/:session/check', async (request, reply) => {
 			const token = await this.accessTokensRepository.findOneBy({
 				session: request.params.session,

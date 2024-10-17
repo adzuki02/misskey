@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, ref, shallowRef, watch } from 'vue';
 import { Chart } from 'chart.js';
 import * as Misskey from 'misskey-js';
-import { misskeyApi, misskeyApiGet } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore } from '@/store.js';
 import { useChartTooltip } from '@/scripts/use-chart-tooltip.js';
 import { chartVLine } from '@/scripts/chart-vline.js';
@@ -302,7 +302,7 @@ const exportData = () => {
 };
 
 const fetchFederationChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/federation', { limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/federation', { limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'Received',
@@ -352,7 +352,7 @@ const fetchFederationChart = async (): Promise<typeof chartData> => {
 };
 
 const fetchApRequestChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApiGet('charts/ap-request', { limit: props.limit, span: props.span });
+	const raw = await misskeyApi('charts/ap-request', { limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'In',

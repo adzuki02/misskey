@@ -115,7 +115,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 						}
 					}
 				}
-			} else if (user.host != null && me == null) {
+			} else if (!me && user.host) {
 				throw new ApiError(meta.errors.forbidden);
 			}
 

@@ -116,7 +116,6 @@ export class WebAuthnService {
 				requireUserVerification: true,
 			});
 		} catch (error) {
-			// console.error(error);
 			throw new IdentifiableError('5c1446f8-8ca7-4d31-9f39-656afe9c5d87', 'verification failed');
 		}
 
@@ -226,8 +225,7 @@ export class WebAuthnService {
 				},
 				requireUserVerification: true,
 			});
-		} catch (error) {
-			// console.error(error);
+		} catch (error) {			
 			throw new IdentifiableError('b18c89a7-5b5e-4cec-bb5b-0419f332d430', 'verification failed');
 		}
 

@@ -54,8 +54,8 @@ export class ServerStatsService implements OnApplicationShutdown {
 					tx: round(Math.max(0, netStats.tx_sec)),
 				},
 				fs: {
-					r: round(Math.max(0, fsStats.rIO_sec ?? 0)),
-					w: round(Math.max(0, fsStats.wIO_sec ?? 0)),
+					r: round(Math.max(0, fsStats.rIO_sec)),
+					w: round(Math.max(0, fsStats.wIO_sec)),
 				},
 			};
 			ev.emit('serverStats', stats);

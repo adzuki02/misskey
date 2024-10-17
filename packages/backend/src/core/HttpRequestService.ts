@@ -79,7 +79,7 @@ export class HttpRequestService {
 				maxSockets,
 				maxFreeSockets: 256,
 				scheduling: 'lifo',
-				// @ts-expect-error eslint-disable-line @typescript-eslint/ban-ts-comment
+				// @ts-expect-error hpagent has incorrect index.d.ts that differs from implementation
 				proxy: config.proxy,
 				localAddress: config.outgoingAddress,
 			})
@@ -92,7 +92,7 @@ export class HttpRequestService {
 				maxSockets,
 				maxFreeSockets: 256,
 				scheduling: 'lifo',
-				// @ts-expect-error eslint-disable-line @typescript-eslint/ban-ts-comment
+				// @ts-expect-error hpagent has incorrect index.d.ts that differs from implementation
 				proxy: config.proxy,
 				localAddress: config.outgoingAddress,
 			})

@@ -307,24 +307,24 @@ describe('独自拡張', () => {
 				assert.strictEqual(res.status, 405);
 			});
 
-			test('はoriginがlocalの場合、認証情報がなくてもアクセスできる。', async () => {
+			test('はoriginがlocalの場合、認証情報がなくても取得できる。', async () => {
 				const res = await api('users', { origin: 'local' });
-				assert.strictEqual(res.status, 200);
+				assert.notStrictEqual(res.body.length, 0);
 			});
 
-			test('はoriginがremoteの場合、認証情報がなければアクセスできない。', async () => {
+			test('はoriginがremoteの場合、認証情報がなければ返ってくる配列の長さが0。', async () => {
 				const res = await api('users', { origin: 'remote' });
-				assert.strictEqual(res.status, 400);
+				assert.strictEqual(res.body.length, 0);
 			});
 
-			test('はoriginがcombinedの場合、認証情報がなければアクセスできない。', async () => {
+			test('はoriginがcombinedの場合、認証情報がなければ返ってくる配列の長さが0。', async () => {
 				const res = await api('users', { origin: 'combined' });
-				assert.strictEqual(res.status, 400);
+				assert.strictEqual(res.body.length, 0);
 			});
 
 			test('は認証情報があればアクセスできる。', async () => {
-				const res = await api('users', { origin: 'remote' }, bob);
-				assert.strictEqual(res.status, 200);
+				const res = await api('users', { origin: 'combined' }, bob);
+				assert.notStrictEqual(res.body.length, 0);
 			});
 		});
 	});
