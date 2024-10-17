@@ -233,9 +233,6 @@ importers:
       fluent-ffmpeg:
         specifier: 2.1.3
         version: 2.1.3
-      form-data:
-        specifier: 4.0.0
-        version: 4.0.0
       got:
         specifier: 14.4.2
         version: 14.4.2
