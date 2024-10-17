@@ -59,7 +59,7 @@ jobs:
       - name: Note latest commit hash
         run: git rev-parse HEAD > ./built/hash
       - name: Archive (tar)
-        run: tar -zcvf ./built.tar.gz ./built ./packages/misskey-js/built ./packages/misskey-bubble-game/built ./packages/backend/built
+        run: tar -zcvf ./built.tar.gz ./built ./packages/misskey-js/built ./packages/backend/built
       - name: Create release
         run: gh release create ${{ steps.tag_name.outputs.tag_name }} ./built.tar.gz --latest --generate-notes
         env:

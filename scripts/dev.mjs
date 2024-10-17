@@ -34,14 +34,6 @@ await Promise.all([
 	}),
 ]);
 
-await Promise.all([
-	execa('pnpm', ['--filter', 'misskey-bubble-game', 'build'], {
-		cwd: _dirname + '/../',
-		stdout: process.stdout,
-		stderr: process.stderr,
-	}),
-]);
-
 execa('pnpm', ['build-pre', '--watch'], {
 	cwd: _dirname + '/../',
 	stdout: process.stdout,
@@ -73,12 +65,6 @@ execa('pnpm', ['--filter', 'sw', 'watch'], {
 });
 
 execa('pnpm', ['--filter', 'misskey-js', 'watch'], {
-	cwd: _dirname + '/../',
-	stdout: process.stdout,
-	stderr: process.stderr,
-});
-
-execa('pnpm', ['--filter', 'misskey-bubble-game', 'watch'], {
 	cwd: _dirname + '/../',
 	stdout: process.stdout,
 	stderr: process.stderr,
