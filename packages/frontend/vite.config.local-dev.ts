@@ -56,6 +56,12 @@ const devConfig: UserConfig = {
 					return path.replace('@localhost:5173', '');
 				},
 			},
+			'/avatar': {
+				target: httpUrl,
+				rewrite(path) {
+					return path.replace('@localhost:5173', '');
+				}
+			},
 			'/url': httpUrl,
 			'/proxy': httpUrl,
 			'/_info_card_': httpUrl,
