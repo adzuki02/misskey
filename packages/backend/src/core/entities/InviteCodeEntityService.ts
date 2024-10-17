@@ -46,8 +46,8 @@ export class InviteCodeEntityService {
 			code: target.code,
 			expiresAt: target.expiresAt ? target.expiresAt.toISOString() : null,
 			createdAt: this.idService.parse(target.id).date.toISOString(),
-			createdBy: target.createdBy ? hints?.packedCreatedBy ?? await this.userEntityService.pack(target.createdBy, me) : null,
-			usedBy: target.usedBy ? hints?.packedUsedBy ?? await this.userEntityService.pack(target.usedBy, me) : null,
+			createdBy: target.createdBy ? hints?.packedCreatedBy ?? this.userEntityService.pack(target.createdBy, me) : null,
+			usedBy: target.usedBy ? hints?.packedUsedBy ?? this.userEntityService.pack(target.usedBy, me) : null,
 			usedAt: target.usedAt ? target.usedAt.toISOString() : null,
 			used: !!target.usedAt,
 		});

@@ -7,7 +7,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Brackets } from 'typeorm';
 import { DI } from '@/di-symbols.js';
 import type { RoleAssignmentsRepository, RolesRepository } from '@/models/_.js';
-import { awaitAll } from '@/misc/prelude/await-all.js';
 import type { MiUser } from '@/models/User.js';
 import type { MiRole } from '@/models/Role.js';
 import { bindThis } from '@/decorators.js';
@@ -52,7 +51,7 @@ export class RoleEntityService {
 			};
 		}
 
-		return await awaitAll({
+		return {
 			id: role.id,
 			createdAt: this.idService.parse(role.id).date.toISOString(),
 			updatedAt: role.updatedAt.toISOString(),
@@ -71,7 +70,7 @@ export class RoleEntityService {
 			displayOrder: role.displayOrder,
 			policies: policies,
 			usersCount: assignedCount,
-		});
+		};
 	}
 
 	@bindThis
