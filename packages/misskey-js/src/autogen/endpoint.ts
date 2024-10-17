@@ -557,9 +557,6 @@ import type {
 	FetchExternalResourcesRequest,
 	FetchExternalResourcesResponse,
 	RetentionResponse,
-	BubbleGameRegisterRequest,
-	BubbleGameRankingRequest,
-	BubbleGameRankingResponse,
 } from './entities.js';
 
 export type Endpoints = {
@@ -933,8 +930,6 @@ export type Endpoints = {
 	'fetch-rss': { req: FetchRssRequest; res: FetchRssResponse };
 	'fetch-external-resources': { req: FetchExternalResourcesRequest; res: FetchExternalResourcesResponse };
 	'retention': { req: EmptyRequest; res: RetentionResponse };
-	'bubble-game/register': { req: BubbleGameRegisterRequest; res: EmptyResponse };
-	'bubble-game/ranking': { req: BubbleGameRankingRequest; res: BubbleGameRankingResponse };
 }
 
 export const endpointReqTypes: Record<keyof Endpoints, 'application/json' | 'multipart/form-data'> = {
@@ -1308,6 +1303,4 @@ export const endpointReqTypes: Record<keyof Endpoints, 'application/json' | 'mul
 	'fetch-rss': 'application/json',
 	'fetch-external-resources': 'application/json',
 	'retention': 'application/json',
-	'bubble-game/register': 'application/json',
-	'bubble-game/ranking': 'application/json',
 };
