@@ -107,10 +107,6 @@ describe('Webリソース', () => {
 		{ path: '/favicon.ico', type: 'image/vnd.microsoft.icon' },
 		{ path: '/opensearch.xml', type: 'application/opensearchdescription+xml' },
 		{ path: '/apple-touch-icon.png', type: 'image/png' },
-		{ path: '/twemoji/2764.svg', type: 'image/svg+xml' },
-		{ path: '/twemoji/2764-fe0f-200d-1f525.svg', type: 'image/svg+xml' },
-		{ path: '/twemoji-badge/2764.png', type: 'image/png' },
-		{ path: '/twemoji-badge/2764-fe0f-200d-1f525.png', type: 'image/png' },
 		{ path: '/fluent-emoji/2764.png', type: 'image/png' },
 		{ path: '/fluent-emoji/2764-fe0f-200d-1f525.png', type: 'image/png' },
 	])('$path', (p) => {
@@ -119,6 +115,18 @@ describe('Webリソース', () => {
 		// 注意: Webページが200で取得できても、実際のHTMLが正しく表示できるとは限らない
 		//      例えば、 /@xxx/pages/yyy に存在しないIDを渡した場合、HTTPレスポンスではエラーを区別できない
 		//      こういったアサーションはフロントエンドE2EやAPI Endpointのテストで担保する。
+	});
+
+	describe.each([
+		{ path: '/twemoji/2764.svg', type: 'image/svg+xml' },
+		{ path: '/twemoji/2764-fe0f-200d-1f525.svg', type: 'image/svg+xml' },
+		{ path: '/twemoji-badge/2764.png', type: 'image/png' },
+		{ path: '/twemoji-badge/2764-fe0f-200d-1f525.png', type: 'image/png' },
+	])('$path', (p) => {
+		test('のGETリクエストがリダイレクトされる', async () => {
+			const res = await simpleGet(p.path);
+			assert.strictEqual(res.status, 301);
+		});
 	});
 
 	describe.each([
