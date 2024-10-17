@@ -42,14 +42,14 @@ const Base = {
 		msw: {
 			handlers: [
 				...commonHandlers,
-				http.get('/api/charts/federation', getChartResolver(
+				http.post('/api/charts/federation', getChartResolver(
 					['deliveredInstances', 'inboxInstances', 'stalled', 'sub', 'pub', 'pubsub', 'subActive', 'pubActive'],
 				)),
-				http.get('/api/charts/notes', getChartResolver(
+				http.post('/api/charts/notes', getChartResolver(
 					['local.total', 'remote.total'],
 					{ accumulate: true },
 				)),
-				http.get('/api/charts/drive', getChartResolver(
+				http.post('/api/charts/drive', getChartResolver(
 					['local.incSize', 'local.decSize', 'remote.incSize', 'remote.decSize'],
 					{ mulMap: { 'local.incSize': 1e7, 'local.decSize': 5e6, 'remote.incSize': 1e6, 'remote.decSize': 5e5 } },
 				)),
