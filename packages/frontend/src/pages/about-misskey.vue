@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSpacer :contentMax="600" :marginMin="20">
 			<div class="_gaps_m znqjceqz">
 				<div v-panel class="about">
-					<div ref="containerEl" class="container">
+					<div class="container">
 						<img src="/client-assets/about-icon.png" alt="" class="icon" draggable="false"/>
 						<div class="misskey">Misskey</div>
 						<div class="version">v{{ version }}</div>
