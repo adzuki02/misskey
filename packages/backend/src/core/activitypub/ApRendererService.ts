@@ -275,13 +275,13 @@ export class ApRendererService {
 			id: `${this.config.url}/likes/${noteReaction.id}`,
 			actor: `${this.config.url}/users/${noteReaction.userId}`,
 			object: note.uri ? note.uri : `${this.config.url}/notes/${noteReaction.noteId}`,
-			content: piggyBacking ? `${reaction.split('@')[0]}:` : reaction,
-			_misskey_reaction: piggyBacking ? `${reaction.split('@')[0]}:` : reaction,
+			content: piggyBacking ? `${reaction.slice(0, reaction.indexOf('@'))}:` : reaction,
+			_misskey_reaction: piggyBacking ? `${reaction.slice(0, reaction.indexOf('@'))}:` : reaction,
 		};
 
 		if (reaction.startsWith(':')) {
 			const name = reaction.replaceAll(':', '');
-			const emoji = piggyBacking ? (await this.emojisRepository.findOneBy({ name: name.split('@')[0], host: name.split('@')[1] })) : (await this.customEmojiService.localEmojisCache.fetch()).get(name);
+			const emoji = piggyBacking ? (await this.emojisRepository.findOneBy({ name: name.slice(0, name.indexOf('@')), host: name.slice(name.indexOf('@') + 1) })) : (await this.customEmojiService.localEmojisCache.fetch()).get(name);
 
 			if (emoji && !emoji.localOnly) object.tag = [this.renderEmoji(emoji, piggyBacking)];
 		}

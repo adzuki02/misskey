@@ -10,6 +10,7 @@ import PerUserPvChart from '@/core/chart/charts/per-user-pv.js';
 import { schema } from '@/core/chart/charts/entities/per-user-pv.js';
 import type { UsersRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
+import { CacheService } from '@/core/CacheService.js';
 import { RoleService } from '@/core/RoleService.js';
 import { ApiError } from '../../../error.js';
 
@@ -23,12 +24,6 @@ export const meta = {
 	kind: 'read:account',
 
 	errors: {
-		noSuchUser: {
-			message: 'No such user.',
-			code: 'NO_SUCH_USER',
-			id: '3b4cc707-d0b3-493d-b722-85bae07eac17',
-		},
-
 		accessDenied: {
 			message: 'Access denied.',
 			code: 'ACCESS_DENIED',
@@ -55,17 +50,19 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private usersRepository: UsersRepository,
 
 		private perUserPvChart: PerUserPvChart,
+		private cacheService: CacheService,
 		private roleService: RoleService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			const user = await this.usersRepository.findOneBy({ id: ps.userId });
+			if (!await this.roleService.isModerator(me)) {
+				const user = await this.cacheService.userByIdCache.fetchMaybe(
+					ps.userId,
+					() => this.usersRepository.findOneBy({ id: ps.userId }).then(x => x ?? undefined),
+				);
 
-			if (user == null) {
-				throw new ApiError(meta.errors.noSuchUser);
-			}
-
-			if (!await this.roleService.isModerator(me) && (user.id !== me.id)) {
-				throw new ApiError(meta.errors.accessDenied);
+				if (user?.id !== me.id) {
+					throw new ApiError(meta.errors.accessDenied);
+				}
 			}
 
 			return await this.perUserPvChart.getChart(ps.span, ps.limit, ps.offset ? new Date(ps.offset) : null, ps.userId);

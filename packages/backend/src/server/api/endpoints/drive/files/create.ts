@@ -108,9 +108,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				});
 				return await this.driveFileEntityService.pack(driveFile, { self: true });
 			} catch (err) {
-				if (err instanceof Error || typeof err === 'string') {
-					// console.error(err);
-				}
 				if (err instanceof IdentifiableError) {
 					if (err.id === '282f77bf-5816-4f72-9264-aa14d8261a21') throw new ApiError(meta.errors.inappropriate);
 					if (err.id === 'c6244ed2-a39a-4e1c-bf93-f0fbd7764fa6') throw new ApiError(meta.errors.noFreeSpace);
