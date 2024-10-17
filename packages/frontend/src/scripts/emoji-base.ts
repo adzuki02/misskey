@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-const twemojiSvgBase = '/twemoji';
+const twemojiSvgBase = 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg';
 const fluentEmojiPngBase = '/fluent-emoji';
 
 export function char2twemojiFilePath(char: string): string {

@@ -77,6 +77,7 @@ export class SecurityHeaderService {
 		const imgSrc = [
 			'\'self\'', 'data:', 'blob:',
 			'https://xn--931a.moe/assets/',
+			'https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/',
 			...(this.config.externalMediaProxyEnabled ? [mediaProxyOrigin] : []),
 			...(this.config.contentSecurityPolicy?.imgAndMediaSrc ?? []),
 		].join(' ');
@@ -190,9 +191,12 @@ export class SecurityHeaderService {
 					case '/assets/*':
 					case '/apple-touch-icon.png':
 					case '/fluent-emoji/:path(.*)':
+						reply.header('Content-Security-Policy', this.selfHostedMediaPolicy);
+						break;
+
 					case '/twemoji/:path(.*)':
 					case '/twemoji-badge/:path(.*)':
-						reply.header('Content-Security-Policy', this.selfHostedMediaPolicy);
+						reply.header('Content-Security-Policy', this.strictestPolicy);
 						break;
 
 					case '/favicon.ico':

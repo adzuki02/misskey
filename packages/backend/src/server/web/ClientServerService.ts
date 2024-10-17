@@ -12,7 +12,6 @@ import { createBullBoard } from '@bull-board/api';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter.js';
 import { FastifyAdapter } from '@bull-board/fastify';
 import ms from 'ms';
-import sharp from 'sharp';
 import pug from 'pug';
 import { In, IsNull } from 'typeorm';
 import fastifyStatic from '@fastify/static';
@@ -454,9 +453,9 @@ export class ClientServerService {
 				return;
 			}
 
-			return await reply.sendFile(path, `${_dirname}/../../../node_modules/@discordapp/twemoji/dist/svg/`, {
-				maxAge: ms('30 days'),
-			});
+			reply.header('Cache-Control', 'public, max-age=31536000, immutable');
+
+			return reply.redirect(`https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/${path}`, 301);
 		});
 
 		fastify.get<{ Params: { path: string } }>('/twemoji-badge/:path(.*)', async (request, reply) => {
@@ -467,38 +466,9 @@ export class ClientServerService {
 				return;
 			}
 
-			const mask = await sharp(
-				`${_dirname}/../../../node_modules/@discordapp/twemoji/dist/svg/${path.replace('.png', '')}.svg`,
-				{ density: 1000 },
-			)
-				.resize(488, 488)
-				.greyscale()
-				.normalise()
-				.linear(1.75, -(128 * 1.75) + 128) // 1.75x contrast
-				.flatten({ background: '#000' })
-				.extend({
-					top: 12,
-					bottom: 12,
-					left: 12,
-					right: 12,
-					background: '#000',
-				})
-				.toColorspace('b-w')
-				.png()
-				.toBuffer();
+			reply.header('Cache-Control', 'public, max-age=31536000, immutable');
 
-			const buffer = await sharp({
-				create: { width: 512, height: 512, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
-			})
-				.pipelineColorspace('b-w')
-				.boolean(mask, 'eor')
-				.resize(96, 96)
-				.png()
-				.toBuffer();
-
-			reply.header('Cache-Control', 'max-age=2592000');
-			reply.header('Content-Type', 'image/png');
-			return buffer;
+			return reply.redirect(`https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/72x72/${path}`, 301);
 		});
 
 		// ServiceWorker
