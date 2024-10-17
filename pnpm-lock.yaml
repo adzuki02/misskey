@@ -787,9 +787,6 @@ importers:
       json5:
         specifier: 2.2.3
         version: 2.2.3
-      matter-js:
-        specifier: 0.19.0
-        version: 0.19.0
       mfm-js:
         specifier: 0.24.0
         version: 0.24.0
@@ -920,9 +917,6 @@ importers:
       '@types/estree':
         specifier: 1.0.5
         version: 1.0.5
-      '@types/matter-js':
-        specifier: 0.19.7
-        version: 0.19.7
       '@types/micromatch':
         specifier: 4.0.9
         version: 4.0.9
@@ -4863,9 +4857,6 @@ packages:
   '@types/long@4.0.2':
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
 
-  '@types/matter-js@0.19.7':
-    resolution: {integrity: sha512-dlh50YEh1lQS4fiCDGBnK75ocHQIq/1E371Qk6hASJImICIivdZQC2GkOqnfBm0Hac2xLk5+yrqRFDAEfj/yLA==}
-
   '@types/mdast@4.0.3':
     resolution: {integrity: sha512-LsjtqsyF+d2/yFOYaN22dHZI1Cpwkrj+g06G8+qtUKlhovPW89YhqSnfKtMbkgmEtYpH2gydRNULd6y8mciAFg==}
 
@@ -8510,9 +8501,6 @@ packages:
     engines: {node: '>= 10'}
     peerDependencies:
       react: '>= 0.14.0'
-
-  matter-js@0.19.0:
-    resolution: {integrity: sha512-v2huwvQGOHTGOkMqtHd2hercCG3f6QAObTisPPHg8TZqq2lz7eIY/5i/5YUV8Ibf3mEioFEmwibcPUF2/fnKKQ==}
 
   mdast-util-find-and-replace@3.0.1:
     resolution: {integrity: sha512-SG21kZHGC3XRTSUhtofZkBzZTJNM5ecCi0SK2IMKmSXR8vO3peL+kb1O0z7Zl83jKtutG4k5Wv/W7V3/YHvzPA==}
@@ -16633,8 +16621,6 @@ snapshots:
 
   '@types/long@4.0.2': {}
 
-  '@types/matter-js@0.19.7': {}
-
   '@types/mdast@4.0.3':
     dependencies:
       '@types/unist': 3.0.2
@@ -21146,8 +21132,6 @@ snapshots:
   markdown-to-jsx@7.4.7(react@18.3.1):
     dependencies:
       react: 18.3.1
-
-  matter-js@0.19.0: {}
 
   mdast-util-find-and-replace@3.0.1:
     dependencies:
