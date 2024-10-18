@@ -144,7 +144,6 @@ describe('ユーザー', () => {
 			mutingNotificationTypes: user.mutingNotificationTypes,
 			notificationRecieveConfig: user.notificationRecieveConfig,
 			emailNotificationTypes: user.emailNotificationTypes,
-			loggedInDays: user.loggedInDays,
 			policies: user.policies,
 			...(security ? {
 				email: user.email,
@@ -378,7 +377,6 @@ describe('ユーザー', () => {
 		assert.deepStrictEqual(response.mutingNotificationTypes, []);
 		assert.deepStrictEqual(response.notificationRecieveConfig, {});
 		assert.deepStrictEqual(response.emailNotificationTypes, ['follow', 'receiveFollowRequest']);
-		assert.deepStrictEqual(response.loggedInDays, 0);
 		assert.deepStrictEqual(response.policies, DEFAULT_POLICIES);
 		assert.notStrictEqual(response.email, undefined);
 		assert.strictEqual(response.emailVerified, false);
@@ -395,7 +393,6 @@ describe('ユーザー', () => {
 			user: userNoNote,
 		});
 		const expected = meDetailed(userNoNote, true);
-		expected.loggedInDays = 1; // iはloggedInDaysを更新する
 		assert.deepStrictEqual(response, expected);
 	});
 
