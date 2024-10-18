@@ -208,8 +208,6 @@ describe('UserEntityService', () => {
 			expect(actual.memo).toBeUndefined();
 			// no detail and me
 			expect(actual.birthday).toBeUndefined();
-			// no detail and me
-			expect(actual.achievements).toBeUndefined();
 		});
 
 		test('UserDetailedNotMe', async() => {
@@ -223,15 +221,11 @@ describe('UserEntityService', () => {
 			expect(actual.memo).toBe('memo');
 			// is detail
 			expect(actual.birthday).toBe('2000-01-01');
-			// no detail and me
-			expect(actual.achievements).toBeUndefined();
 		});
 
 		test('MeDetailed', async() => {
-			const achievements = [{ name: 'achievement', unlockedAt: new Date().getTime() }];
 			const me = await createUser({}, {
 				birthday: '2000-01-01',
-				achievements: achievements,
 			});
 			await memo(me, me, 'memo');
 
@@ -240,8 +234,6 @@ describe('UserEntityService', () => {
 			expect(actual.memo).toBe('memo');
 			// is detail
 			expect(actual.birthday).toBe('2000-01-01');
-			// is detail and me
-			expect(actual.achievements).toEqual(achievements);
 		});
 
 		describe('packManyによるpreloadがある時、preloadが無い時とpackの結果が同じになるか見たい', () => {

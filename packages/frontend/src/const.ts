@@ -66,10 +66,9 @@ export const notificationTypes = [
 	'receiveFollowRequest',
 	'followRequestAccepted',
 	'roleAssigned',
-	'achievementEarned',
 	'app',
 ] as const;
-export const obsoleteNotificationTypes = ['pollVote', 'groupInvited'] as const;
+export const obsoleteNotificationTypes = ['pollVote', 'groupInvited', 'achievementEarned'] as const;
 
 export const ROLE_POLICIES = [
 	'gtlAvailable',

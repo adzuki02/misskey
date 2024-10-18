@@ -67,10 +67,6 @@ export const Default = {
 					action('POST /api/i/registry/set')(await request.json());
 					return HttpResponse.json(undefined, { status: 204 });
 				}),
-				http.post('/api/i/claim-achievement', async ({ request }) => {
-					action('POST /api/i/claim-achievement')(await request.json());
-					return HttpResponse.json(undefined, { status: 204 });
-				}),
 			],
 		},
 	},

@@ -318,7 +318,6 @@ import type {
 	IAppsResponse,
 	IAuthorizedAppsRequest,
 	IAuthorizedAppsResponse,
-	IClaimAchievementRequest,
 	IChangePasswordRequest,
 	IDeleteAccountRequest,
 	IExportFollowingRequest,
@@ -549,8 +548,6 @@ import type {
 	UsersSearchResponse,
 	UsersShowRequest,
 	UsersShowResponse,
-	UsersAchievementsRequest,
-	UsersAchievementsResponse,
 	UsersUpdateMemoRequest,
 	FetchRssRequest,
 	FetchRssResponse,
@@ -766,7 +763,6 @@ export type Endpoints = {
 	'i/2fa/unregister': { req: I2faUnregisterRequest; res: EmptyResponse };
 	'i/apps': { req: IAppsRequest; res: IAppsResponse };
 	'i/authorized-apps': { req: IAuthorizedAppsRequest; res: IAuthorizedAppsResponse };
-	'i/claim-achievement': { req: IClaimAchievementRequest; res: EmptyResponse };
 	'i/change-password': { req: IChangePasswordRequest; res: EmptyResponse };
 	'i/delete-account': { req: IDeleteAccountRequest; res: EmptyResponse };
 	'i/export-blocking': { req: EmptyRequest; res: EmptyResponse };
@@ -925,7 +921,6 @@ export type Endpoints = {
 	'users/search-by-username-and-host': { req: UsersSearchByUsernameAndHostRequest; res: UsersSearchByUsernameAndHostResponse };
 	'users/search': { req: UsersSearchRequest; res: UsersSearchResponse };
 	'users/show': { req: UsersShowRequest; res: UsersShowResponse };
-	'users/achievements': { req: UsersAchievementsRequest; res: UsersAchievementsResponse };
 	'users/update-memo': { req: UsersUpdateMemoRequest; res: EmptyResponse };
 	'fetch-rss': { req: FetchRssRequest; res: FetchRssResponse };
 	'fetch-external-resources': { req: FetchExternalResourcesRequest; res: FetchExternalResourcesResponse };
@@ -1139,7 +1134,6 @@ export const endpointReqTypes: Record<keyof Endpoints, 'application/json' | 'mul
 	'i/2fa/unregister': 'application/json',
 	'i/apps': 'application/json',
 	'i/authorized-apps': 'application/json',
-	'i/claim-achievement': 'application/json',
 	'i/change-password': 'application/json',
 	'i/delete-account': 'application/json',
 	'i/export-blocking': 'application/json',
@@ -1298,7 +1292,6 @@ export const endpointReqTypes: Record<keyof Endpoints, 'application/json' | 'mul
 	'users/search-by-username-and-host': 'application/json',
 	'users/search': 'application/json',
 	'users/show': 'application/json',
-	'users/achievements': 'application/json',
 	'users/update-memo': 'application/json',
 	'fetch-rss': 'application/json',
 	'fetch-external-resources': 'application/json',

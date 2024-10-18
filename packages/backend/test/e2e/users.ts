@@ -144,7 +144,6 @@ describe('ユーザー', () => {
 			mutingNotificationTypes: user.mutingNotificationTypes,
 			notificationRecieveConfig: user.notificationRecieveConfig,
 			emailNotificationTypes: user.emailNotificationTypes,
-			achievements: user.achievements,
 			loggedInDays: user.loggedInDays,
 			policies: user.policies,
 			...(security ? {
@@ -379,7 +378,6 @@ describe('ユーザー', () => {
 		assert.deepStrictEqual(response.mutingNotificationTypes, []);
 		assert.deepStrictEqual(response.notificationRecieveConfig, {});
 		assert.deepStrictEqual(response.emailNotificationTypes, ['follow', 'receiveFollowRequest']);
-		assert.deepStrictEqual(response.achievements, []);
 		assert.deepStrictEqual(response.loggedInDays, 0);
 		assert.deepStrictEqual(response.policies, DEFAULT_POLICIES);
 		assert.notStrictEqual(response.email, undefined);
