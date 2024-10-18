@@ -52,7 +52,6 @@ export const Default = {
 		if (recentUsedSection == null) throw new Error(); // NOTE: not called
 		await expect(within(recentUsedSection).getByAltText('😀')).toBeInTheDocument();
 		await expect(within(recentUsedSection).queryByAltText('😬')).toEqual(null);
-		await expect(within(recentUsedSection).queryByAltText('😀')).toEqual(null);
 	},
 	parameters: {
 		layout: 'centered',
