@@ -42,16 +42,16 @@ export const Default = {
 		await expect(grinning).toBeInTheDocument();
 		if (grinning == null) throw new Error(); // NOTE: not called
 		await waitFor(() => userEvent.click(grinning));
-		await waitFor(() => new Promise(resolve => {
-			setTimeout(resolve, 2000);
-		}), {
-			timeout: 3000,
-		});
 		const recentUsedSection = canvas.getByText(new RegExp(i18n.ts.recentUsed)).parentElement;
 		await expect(recentUsedSection).toBeInTheDocument();
 		if (recentUsedSection == null) throw new Error(); // NOTE: not called
 		await expect(within(recentUsedSection).getByAltText('😀')).toBeInTheDocument();
 		await expect(within(recentUsedSection).queryByAltText('😬')).toEqual(null);
+		await waitFor(() => new Promise(resolve => {
+			setTimeout(resolve, 3000);
+		}), {
+			timeout: 6000,
+		});
 	},
 	parameters: {
 		layout: 'centered',
