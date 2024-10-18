@@ -288,7 +288,6 @@ export const packedNotificationSchema = {
 			...baseSchema.properties,
 			type: {
 				type: 'string',
-				optional: false, nullable: false,
 				enum: ['app'],
 			},
 			body: {
