@@ -41,6 +41,11 @@ export const Default = {
 		const grinning = canvasElement.querySelector('[data-emoji="😀"]');
 		await expect(grinning).toBeInTheDocument();
 		if (grinning == null) throw new Error(); // NOTE: not called
+		await new Promise<void>(resolve => {
+			grinning.children[0].addEventListener('load', () => {
+				resolve();
+			});
+		});
 		await waitFor(() => userEvent.click(grinning));
 		const recentUsedSection = canvas.getByText(new RegExp(i18n.ts.recentUsed)).parentElement;
 		await expect(recentUsedSection).toBeInTheDocument();
