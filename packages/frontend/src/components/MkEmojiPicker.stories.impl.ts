@@ -47,6 +47,11 @@ export const Default = {
 		if (recentUsedSection == null) throw new Error(); // NOTE: not called
 		await expect(within(recentUsedSection).getByAltText('😀')).toBeInTheDocument();
 		await expect(within(recentUsedSection).queryByAltText('😬')).toEqual(null);
+		await waitFor(() => new Promise(resolve => {
+			setTimeout(resolve, 3000);
+		}), {
+			timeout: 6000,
+		});
 	},
 	parameters: {
 		layout: 'centered',
