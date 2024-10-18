@@ -594,10 +594,6 @@ export const packedMeDetailedOnlySchema = {
 				nullable: false, optional: false,
 			},
 		},
-		loggedInDays: {
-			type: 'number',
-			nullable: false, optional: false,
-		},
 		policies: {
 			type: 'object',
 			nullable: false, optional: false,

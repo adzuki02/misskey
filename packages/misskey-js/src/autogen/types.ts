@@ -3710,7 +3710,6 @@ export type components = {
         }]>;
       };
       emailNotificationTypes: string[];
-      loggedInDays: number;
       policies: components['schemas']['RolePolicies'];
       email?: string | null;
       emailVerified?: boolean | null;
