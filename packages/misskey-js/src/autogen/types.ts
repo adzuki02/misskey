@@ -1896,15 +1896,6 @@ export type paths = {
      */
     post: operations['i___authorized-apps'];
   };
-  '/i/claim-achievement': {
-    /**
-     * i/claim-achievement
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:account*
-     */
-    post: operations['i___claim-achievement'];
-  };
   '/i/change-password': {
     /**
      * i/change-password
@@ -3388,15 +3379,6 @@ export type paths = {
      */
     post: operations['users___show'];
   };
-  '/users/achievements': {
-    /**
-     * users/achievements
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['users___achievements'];
-  };
   '/users/update-memo': {
     /**
      * users/update-memo
@@ -3708,15 +3690,6 @@ export type components = {
           /** Format: misskey:id */
           userListId: string;
         }]>;
-        achievementEarned?: OneOf<[{
-          /** @enum {string} */
-          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
-        }, {
-          /** @enum {string} */
-          type: 'list';
-          /** Format: misskey:id */
-          userListId: string;
-        }]>;
         app?: OneOf<[{
           /** @enum {string} */
           type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
@@ -3737,10 +3710,6 @@ export type components = {
         }]>;
       };
       emailNotificationTypes: string[];
-      achievements: {
-          name: string;
-          unlockedAt: number;
-        }[];
       loggedInDays: number;
       policies: components['schemas']['RolePolicies'];
       email?: string | null;
@@ -4037,14 +4006,6 @@ export type components = {
       /** @enum {string} */
       type: 'roleAssigned';
       role: components['schemas']['Role'];
-    } | {
-      /** Format: id */
-      id: string;
-      /** Format: date-time */
-      createdAt: string;
-      /** @enum {string} */
-      type: 'achievementEarned';
-      achievement: string;
     } | {
       /** Format: id */
       id: string;
@@ -8722,15 +8683,6 @@ export type operations = {
                 userListId: string;
               }]>;
               roleAssigned?: OneOf<[{
-                /** @enum {string} */
-                type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
-              }, {
-                /** @enum {string} */
-                type: 'list';
-                /** Format: misskey:id */
-                userListId: string;
-              }]>;
-              achievementEarned?: OneOf<[{
                 /** @enum {string} */
                 type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
               }, {
@@ -17092,58 +17044,6 @@ export type operations = {
     };
   };
   /**
-   * i/claim-achievement
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:account*
-   */
-  'i___claim-achievement': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @enum {string} */
-          name: 'notes1' | 'notes10' | 'notes100' | 'notes500' | 'notes1000' | 'notes5000' | 'notes10000' | 'notes20000' | 'notes30000' | 'notes40000' | 'notes50000' | 'notes60000' | 'notes70000' | 'notes80000' | 'notes90000' | 'notes100000' | 'login3' | 'login7' | 'login15' | 'login30' | 'login60' | 'login100' | 'login200' | 'login300' | 'login400' | 'login500' | 'login600' | 'login700' | 'login800' | 'login900' | 'login1000' | 'passedSinceAccountCreated1' | 'passedSinceAccountCreated2' | 'passedSinceAccountCreated3' | 'loggedInOnBirthday' | 'loggedInOnNewYearsDay' | 'noteClipped1' | 'noteFavorited1' | 'myNoteFavorited1' | 'profileFilled' | 'markedAsCat' | 'following1' | 'following10' | 'following50' | 'following100' | 'following300' | 'followers1' | 'followers10' | 'followers50' | 'followers100' | 'followers300' | 'followers500' | 'followers1000' | 'collectAchievements30' | 'viewAchievements3min' | 'iLoveMisskey' | 'foundTreasure' | 'client30min' | 'client60min' | 'noteDeletedWithin1min' | 'postedAtLateNight' | 'postedAt0min0sec' | 'selfQuote' | 'htl20npm' | 'viewInstanceChart' | 'outputHelloWorldOnScratchpad' | 'open3windows' | 'driveFolderCircularReference' | 'reactWithoutRead' | 'clickedClickHere' | 'justPlainLucky' | 'setNameToSyuilo' | 'cookieClicked' | 'brainDiver' | 'smashTestNotificationButton' | 'tutorialCompleted' | 'bubbleGameExplodingHead' | 'bubbleGameDoubleExplodingHead';
-        };
-      };
-    };
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
    * i/change-password
    * @description No description provided.
    *
@@ -18160,8 +18060,8 @@ export type operations = {
           untilId?: string;
           /** @default true */
           markAsRead?: boolean;
-          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'achievementEarned' | 'app' | 'test' | 'pollVote' | 'groupInvited')[];
-          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'achievementEarned' | 'app' | 'test' | 'pollVote' | 'groupInvited')[];
+          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'app' | 'test' | 'pollVote' | 'groupInvited' | 'achievementEarned')[];
+          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'app' | 'test' | 'pollVote' | 'groupInvited' | 'achievementEarned')[];
         };
       };
     };
@@ -18228,8 +18128,8 @@ export type operations = {
           untilId?: string;
           /** @default true */
           markAsRead?: boolean;
-          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'achievementEarned' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'pollVote' | 'groupInvited')[];
-          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'achievementEarned' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'pollVote' | 'groupInvited')[];
+          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'pollVote' | 'groupInvited' | 'achievementEarned')[];
+          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'pollVote' | 'groupInvited' | 'achievementEarned')[];
         };
       };
     };
@@ -19417,15 +19317,6 @@ export type operations = {
               userListId: string;
             }]>;
             roleAssigned?: OneOf<[{
-              /** @enum {string} */
-              type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
-            }, {
-              /** @enum {string} */
-              type: 'list';
-              /** Format: misskey:id */
-              userListId: string;
-            }]>;
-            achievementEarned?: OneOf<[{
               /** @enum {string} */
               type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
             }, {
@@ -26405,63 +26296,6 @@ export type operations = {
       200: {
         content: {
           'application/json': components['schemas']['UserDetailed'] | components['schemas']['UserDetailed'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * users/achievements
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  users___achievements: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** Format: misskey:id */
-          userId: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': {
-              name: string;
-              unlockedAt: number;
-            }[];
         };
       };
       /** @description Client error */

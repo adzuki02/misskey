@@ -19,7 +19,6 @@ import { AiService } from './AiService.js';
 import { AnnouncementService } from './AnnouncementService.js';
 import { AntennaService } from './AntennaService.js';
 import { AppLockService } from './AppLockService.js';
-import { AchievementService } from './AchievementService.js';
 import { AvatarDecorationService } from './AvatarDecorationService.js';
 import { CaptchaService } from './CaptchaService.js';
 import { CreateSystemUserService } from './CreateSystemUserService.js';
@@ -159,7 +158,6 @@ const $AiService: Provider = { provide: 'AiService', useExisting: AiService };
 const $AnnouncementService: Provider = { provide: 'AnnouncementService', useExisting: AnnouncementService };
 const $AntennaService: Provider = { provide: 'AntennaService', useExisting: AntennaService };
 const $AppLockService: Provider = { provide: 'AppLockService', useExisting: AppLockService };
-const $AchievementService: Provider = { provide: 'AchievementService', useExisting: AchievementService };
 const $AvatarDecorationService: Provider = { provide: 'AvatarDecorationService', useExisting: AvatarDecorationService };
 const $CaptchaService: Provider = { provide: 'CaptchaService', useExisting: CaptchaService };
 const $CreateSystemUserService: Provider = { provide: 'CreateSystemUserService', useExisting: CreateSystemUserService };
@@ -305,7 +303,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		AnnouncementService,
 		AntennaService,
 		AppLockService,
-		AchievementService,
 		AvatarDecorationService,
 		CaptchaService,
 		CreateSystemUserService,
@@ -447,7 +444,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$AnnouncementService,
 		$AntennaService,
 		$AppLockService,
-		$AchievementService,
 		$AvatarDecorationService,
 		$CaptchaService,
 		$CreateSystemUserService,
@@ -590,7 +586,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		AnnouncementService,
 		AntennaService,
 		AppLockService,
-		AchievementService,
 		AvatarDecorationService,
 		CaptchaService,
 		CreateSystemUserService,
@@ -731,7 +726,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$AnnouncementService,
 		$AntennaService,
 		$AppLockService,
-		$AchievementService,
 		$AvatarDecorationService,
 		$CaptchaService,
 		$CreateSystemUserService,

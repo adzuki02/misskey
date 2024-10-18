@@ -1463,7 +1463,6 @@ declare namespace entities {
         IAppsResponse,
         IAuthorizedAppsRequest,
         IAuthorizedAppsResponse,
-        IClaimAchievementRequest,
         IChangePasswordRequest,
         IDeleteAccountRequest,
         IExportFollowingRequest,
@@ -1694,8 +1693,6 @@ declare namespace entities {
         UsersSearchResponse,
         UsersShowRequest,
         UsersShowResponse,
-        UsersAchievementsRequest,
-        UsersAchievementsResponse,
         UsersUpdateMemoRequest,
         FetchRssRequest,
         FetchRssResponse,
@@ -2056,9 +2053,6 @@ type IAuthorizedAppsResponse = operations['i___authorized-apps']['responses']['2
 
 // @public (undocumented)
 type IChangePasswordRequest = operations['i___change-password']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type IClaimAchievementRequest = operations['i___claim-achievement']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type ID = string;
@@ -2997,12 +2991,6 @@ type UsernameAvailableRequest = operations['username___available']['requestBody'
 
 // @public (undocumented)
 type UsernameAvailableResponse = operations['username___available']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type UsersAchievementsRequest = operations['users___achievements']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type UsersAchievementsResponse = operations['users___achievements']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type UsersClipsRequest = operations['users___clips']['requestBody']['content']['application/json'];

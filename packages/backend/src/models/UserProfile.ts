@@ -262,14 +262,6 @@ export class MiUserProfile {
 	})
 	public loggedInDates: string[];
 
-	@Column('jsonb', {
-		default: [],
-	})
-	public achievements: {
-		name: string;
-		unlockedAt: number;
-	}[];
-
 	//#region Denormalized fields
 	@Index()
 	@Column('varchar', {

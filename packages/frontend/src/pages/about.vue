@@ -26,7 +26,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import { i18n } from '@/i18n.js';
-import { claimAchievement } from '@/scripts/achievements.js';
 import { $i } from '@/account.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
@@ -43,12 +42,6 @@ const props = withDefaults(defineProps<{
 });
 
 const tab = ref(props.initialTab);
-
-watch(tab, () => {
-	if (tab.value === 'charts') {
-		claimAchievement('viewInstanceChart');
-	}
-});
 
 const headerActions = computed(() => []);
 

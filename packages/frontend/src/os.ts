@@ -29,8 +29,6 @@ import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
 import { getHTMLElementOrNull } from '@/scripts/get-dom-node-or-null.js';
 import { focusParent } from '@/scripts/focus.js';
 
-export const openingWindowsCount = ref(0);
-
 export const apiWithDialog = (<E extends keyof Misskey.Endpoints = keyof Misskey.Endpoints, P extends Misskey.Endpoints[E]['req'] = Misskey.Endpoints[E]['req']>(
 	endpoint: E,
 	data: P = {} as any,
