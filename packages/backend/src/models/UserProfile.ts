@@ -146,20 +146,6 @@ export class MiUserProfile {
 	})
 	public moderationNote: string | null;
 
-	// TODO: そのうち消す
-	@Column('jsonb', {
-		default: {},
-		comment: 'The client-specific data of the User.',
-	})
-	public clientData: Record<string, any>;
-
-	// TODO: そのうち消す
-	@Column('jsonb', {
-		default: {},
-		comment: 'The room data of the User.',
-	})
-	public room: Record<string, any>;
-
 	@Column('boolean', {
 		default: false,
 	})
