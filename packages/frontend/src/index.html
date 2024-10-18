@@ -19,7 +19,8 @@
 		content="default-src 'self' https://newassets.hcaptcha.com/ https://challenges.cloudflare.com/ http://localhost:7493/;
 			worker-src 'self';
 			script-src 'self' 'unsafe-eval' https://*.hcaptcha.com https://challenges.cloudflare.com https://esm.sh;
-			style-src 'self' 'unsafe-inline';
+			style-src 'self' 'unsafe-inline' cdn.jsdelivr.net;
+			font-src 'self' cdn.jsdelivr.net;
 			img-src 'self' data: blob: www.google.com xn--931a.moe cdn.jsdelivr.net localhost:3000 localhost:5173 127.0.0.1:5173 127.0.0.1:3000;
 			media-src 'self' localhost:3000 localhost:5173 127.0.0.1:5173 127.0.0.1:3000;
 			connect-src 'self' localhost:3000 localhost:5173 127.0.0.1:5173 127.0.0.1:3000 https://newassets.hcaptcha.com;
@@ -27,6 +28,8 @@
 	/>
 	<meta property="og:site_name" content="[DEV BUILD] Misskey" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.12.0/dist/tabler-icons.min.css" />
 </head>
 
 <body>

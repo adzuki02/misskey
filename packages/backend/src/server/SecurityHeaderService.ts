@@ -97,7 +97,7 @@ export class SecurityHeaderService {
 			...(this.config.contentSecurityPolicy?.frameSrc ?? []),
 		].join(' ');
 
-		this.basePolicy = `default-src 'self'; script-src ${baseScriptSrc}; style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com; img-src ${imgSrc}; media-src ${mediaSrc}; connect-src 'self' https://hcaptcha.com https://*.hcaptcha.com https://cloudflareinsights.com/cdn-cgi/rum; frame-src ${frameSrc}; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none';${this.reportEnabled ? ' report-to csp;' : ''}`;
+		this.basePolicy = `default-src 'self'; script-src ${baseScriptSrc}; style-src 'self' 'unsafe-inline' https://hcaptcha.com https://*.hcaptcha.com https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.12.0/dist/tabler-icons.min.css; font-src 'self' https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.12.0/dist/fonts/; img-src ${imgSrc}; media-src ${mediaSrc}; connect-src 'self' https://hcaptcha.com https://*.hcaptcha.com https://cloudflareinsights.com/cdn-cgi/rum; frame-src ${frameSrc}; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none';${this.reportEnabled ? ' report-to csp;' : ''}`;
 		//#endregion
 
 		//#region bios.pug, cli.pug, flush.pug
