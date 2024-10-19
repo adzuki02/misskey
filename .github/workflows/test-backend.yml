@@ -42,7 +42,7 @@ jobs:
       uses: pnpm/action-setup@v4
     - name: Install FFmpeg
       uses: FedericoCarboni/setup-ffmpeg@v3
-    - uses: actions/setup-node@v4.0.3
+    - uses: actions/setup-node@v4.0.4
       with:
         node-version-file: '.node-version'
         cache: 'pnpm'
@@ -84,7 +84,12 @@ jobs:
           submodules: true
       - name: Install pnpm
         uses: pnpm/action-setup@v4
+<<<<<<< HEAD
       - uses: actions/setup-node@v4.0.3
+=======
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4.0.4
+>>>>>>> d3f1b0f0909483f724c6a72ac33c2febaa330e7c
         with:
           node-version-file: '.node-version'
           cache: 'pnpm'
