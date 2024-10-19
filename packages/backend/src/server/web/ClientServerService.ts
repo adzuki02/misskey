@@ -108,11 +108,6 @@ export class ClientServerService {
 		private galleryPostEntityService: GalleryPostEntityService,
 		private clipEntityService: ClipEntityService,
 		private channelEntityService: ChannelEntityService,
-<<<<<<< HEAD
-		private metaService: MetaService,
-=======
-		private reversiGameEntityService: ReversiGameEntityService,
->>>>>>> 023fa30280e561e9921a2c83138af4cac01068ab
 		private urlPreviewService: UrlPreviewService,
 		private feedService: FeedService,
 		private roleService: RoleService,
