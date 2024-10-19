@@ -22,25 +22,8 @@ on:
       - packages/shared/eslint.config.js
       - .github/workflows/lint.yml
 jobs:
-  pnpm_install:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4.1.1
-      with:
-        fetch-depth: 0
-        submodules: true
-    - uses: pnpm/action-setup@v4
-    - uses: actions/setup-node@v4.0.3
-      with:
-        node-version-file: '.node-version'
-        cache: 'pnpm'
-    - run: corepack enable
-    - run: pnpm i --frozen-lockfile
-
   lint:
-    needs: [pnpm_install]
     runs-on: ubuntu-latest
-    continue-on-error: true
     env:
       eslint-cache-version: v1
     strategy:
@@ -53,7 +36,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4.1.1
       with:
-        fetch-depth: 0
         submodules: true
     - uses: pnpm/action-setup@v4
     - uses: actions/setup-node@v4.0.3
@@ -62,6 +44,7 @@ jobs:
         cache: 'pnpm'
     - run: corepack enable
     - run: pnpm i --frozen-lockfile
+    - run: git diff --exit-code pnpm-lock.yaml
     - name: Restore eslint cache
       uses: actions/cache@v4.0.2
       with:
@@ -72,9 +55,7 @@ jobs:
     - run: pnpm --filter ${{ matrix.workspace }} run eslint --cache --cache-location node_modules/.cache/eslint --cache-strategy content
 
   typecheck:
-    needs: [pnpm_install]
     runs-on: ubuntu-latest
-    continue-on-error: true
     strategy:
       matrix:
         workspace:
@@ -83,7 +64,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4.1.1
       with:
-        fetch-depth: 0
         submodules: true
     - uses: pnpm/action-setup@v4
     - uses: actions/setup-node@v4.0.3
@@ -92,6 +72,7 @@ jobs:
         cache: 'pnpm'
     - run: corepack enable
     - run: pnpm i --frozen-lockfile
+    - run: git diff --exit-code pnpm-lock.yaml
     - run: pnpm --filter misskey-js run build
       if: ${{ matrix.workspace == 'backend' }}
     - run: pnpm --filter ${{ matrix.workspace }} run typecheck

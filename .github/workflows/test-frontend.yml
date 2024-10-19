@@ -1,4 +1,4 @@
-name: Test (frontend)
+name: Test
 
 on:
   push:
@@ -22,7 +22,8 @@ on:
       - packages/backend/**
       - .github/workflows/test-frontend.yml
 jobs:
-  unit:
+  vitest:
+    name: vitest (frontend)
     runs-on: ubuntu-latest
 
     steps:
@@ -52,6 +53,7 @@ jobs:
         files: ./packages/frontend/coverage/coverage-final.json
 
   e2e:
+    name: e2e (frontend)
     runs-on: ubuntu-latest
 
     strategy:
@@ -83,6 +85,8 @@ jobs:
         cache: 'pnpm'
     - run: corepack enable
     - run: pnpm i --frozen-lockfile
+    - name: Check pnpm-lock.yaml
+      run: git diff --exit-code pnpm-lock.yaml
     - name: Copy Configure
       run: cp .github/misskey/test.yml .config
     - name: Build

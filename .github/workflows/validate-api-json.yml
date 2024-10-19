@@ -1,4 +1,4 @@
-name: Test (validate api.json)
+name: Validate api.json
 
 on:
   push:

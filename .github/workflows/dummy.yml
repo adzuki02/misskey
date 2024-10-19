@@ -45,28 +45,48 @@ jobs:
     steps:
       - run: echo dummy
 
-  unit:
-    runs-on: ubuntu-latest
-
-    if: ${{ false }}
-
-    steps:
-      - name: Dummy
-        run: echo dummy
-
-  e2e:
+  unit_backend:
+    name: unit (backend)
     runs-on: ubuntu-latest
     if: ${{ false }}
     steps:
       - run: echo dummy
 
-  test_misskey_js:
+  vitest_frontend:
+    name: vitest (frontend)
+    runs-on: ubuntu-latest
+    if: ${{ false }}
+    steps:
+      - run: echo dummy
+
+  e2e_backend:
+    name: e2e (backend)
+    runs-on: ubuntu-latest
+    if: ${{ false }}
+    steps:
+      - run: echo dummy
+
+  e2e_frontend:
+    name: e2e (frontend)
+    runs-on: ubuntu-latest
+    if: ${{ false }}
+    steps:
+      - run: echo dummy
+
+  test_misskey-js:
+    name: test (misskey-js)
     runs-on: ubuntu-latest
     if: ${{ false }}
     steps:
       - run: echo dummy
 
   validate-api-json:
+    runs-on: ubuntu-latest
+    if: ${{ false }}
+    steps:
+      - run: echo dummy
+
+  locale_verify:
     runs-on: ubuntu-latest
     if: ${{ false }}
     steps:
