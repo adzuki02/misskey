@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
 
+      - name: Check pnpm-lock.yaml
+        run: git diff --exit-code pnpm-lock.yaml
+
       - name: Build
         run: pnpm --filter misskey-js build
 

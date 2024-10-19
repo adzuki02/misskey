@@ -25,4 +25,5 @@ jobs:
         cache: 'pnpm'
     - run: corepack enable
     - run: pnpm i --frozen-lockfile
+    - run: git diff --exit-code pnpm-lock.yaml
     - run: cd locales && node verify.js

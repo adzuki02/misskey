@@ -36,6 +36,7 @@ jobs:
         cache: 'pnpm'
     - run: corepack enable
     - run: pnpm i --frozen-lockfile
+    - run: git diff --exit-code pnpm-lock.yaml
 
   lint:
     needs: [pnpm_install]
@@ -62,6 +63,7 @@ jobs:
         cache: 'pnpm'
     - run: corepack enable
     - run: pnpm i --frozen-lockfile
+    - run: git diff --exit-code pnpm-lock.yaml
     - name: Restore eslint cache
       uses: actions/cache@v4.0.2
       with:
@@ -92,6 +94,7 @@ jobs:
         cache: 'pnpm'
     - run: corepack enable
     - run: pnpm i --frozen-lockfile
+    - run: git diff --exit-code pnpm-lock.yaml
     - run: pnpm --filter misskey-js run build
       if: ${{ matrix.workspace == 'backend' }}
     - run: pnpm --filter ${{ matrix.workspace }} run typecheck
