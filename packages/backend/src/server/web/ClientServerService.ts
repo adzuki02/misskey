@@ -10,7 +10,7 @@ import { Buffer } from 'node:buffer';
 import { Inject, Injectable } from '@nestjs/common';
 import { createBullBoard } from '@bull-board/api';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter.js';
-import { FastifyAdapter } from '@bull-board/fastify';
+import { FastifyAdapter as BullBoardFastifyAdapter } from '@bull-board/fastify';
 import ms from 'ms';
 import pug from 'pug';
 import { In, IsNull } from 'typeorm';
@@ -325,7 +325,7 @@ export class ClientServerService {
 			reply.code(200).send('Logged out');
 		});
 
-		const serverAdapter = new FastifyAdapter();
+		const bullBoardServerAdapter = new BullBoardFastifyAdapter();
 
 		createBullBoard({
 			queues: [
@@ -338,7 +338,7 @@ export class ClientServerService {
 				this.userWebhookDeliverQueue,
 				this.systemWebhookDeliverQueue,
 			].map(q => new BullMQAdapter(q)),
-			serverAdapter,
+			serverAdapter: bullBoardServerAdapter,
 			options: {
 				uiConfig: {
 					miscLinks: [
@@ -351,8 +351,8 @@ export class ClientServerService {
 			},
 		});
 
-		serverAdapter.setBasePath(bullBoardPath);
-		(fastify.register as any)(serverAdapter.registerPlugin(), { prefix: bullBoardPath });
+		bullBoardServerAdapter.setBasePath(bullBoardPath);
+		//(fastify.register as any)(bullBoardServerAdapter.registerPlugin(), { prefix: bullBoardPath });
 		//#endregion
 
 		fastify.register(fastifyView, {

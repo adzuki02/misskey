@@ -188,6 +188,7 @@ describe('Webリソース', () => {
 		}));
 	});
 
+	/* queueは一時的に無効化されている
 	describe.each([{ path: '/queue' }])('$path', ({ path }) => {
 		test('はログインしないとGETできない。', async () => await notOk({
 			path,
@@ -224,6 +225,7 @@ describe('Webリソース', () => {
 			cookie: await getBullCookie(alice),
 		}));
 	});
+	*/
 
 	describe.each([{ path: '/streaming' }])('$path', ({ path }) => {
 		test('はGETできない。', async () => await notOk({
