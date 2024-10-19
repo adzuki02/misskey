@@ -6766,7 +6766,7 @@ export interface Locale extends ILocale {
              * リモートのノートの引用でないリノート
              */
             "canMakePureRenoteOfRemoteNotes": string;
-						/**
+            /**
              * アンテナのインポートを許可
              */
             "canImportAntennas": string;
