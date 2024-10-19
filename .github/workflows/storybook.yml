@@ -15,7 +15,7 @@ on:
       - master
 
 jobs:
-  build_and_publish_storybook:
+  build_storybook:
     runs-on: ubuntu-latest
 
     env:

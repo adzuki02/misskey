@@ -1,4 +1,4 @@
-name: Test (frontend)
+name: Test
 
 on:
   push:
@@ -22,7 +22,8 @@ on:
       - packages/backend/**
       - .github/workflows/test-frontend.yml
 jobs:
-  unit:
+  vitest:
+    name: vitest (frontend)
     runs-on: ubuntu-latest
 
     steps:
@@ -52,6 +53,7 @@ jobs:
         files: ./packages/frontend/coverage/coverage-final.json
 
   e2e:
+    name: e2e (frontend)
     runs-on: ubuntu-latest
 
     strategy:

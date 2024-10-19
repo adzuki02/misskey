@@ -1,4 +1,4 @@
-name: API report (misskey.js)
+name: API report (misskey-js)
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - packages/misskey-js/**
       - .github/workflows/api-misskey-js.yml
 jobs:
-  api_report:
+  report:
 
     runs-on: ubuntu-latest
 
