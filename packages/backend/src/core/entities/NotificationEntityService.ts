@@ -159,6 +159,10 @@ export class NotificationEntityService implements OnModuleInit {
 			...(notification.type === 'roleAssigned' ? {
 				role: role,
 			} : {}),
+			...(notification.type === 'exportCompleted' ? {
+				exportedEntity: notification.exportedEntity,
+				fileId: notification.fileId,
+			} : {}),
 			...(notification.type === 'app' ? {
 				body: notification.customBody,
 				header: notification.customHeader,
