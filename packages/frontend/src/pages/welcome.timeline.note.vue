@@ -26,9 +26,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="note.poll">
 			<MkPoll :noteId="note.id" :poll="note.poll" :readOnly="true"/>
 		</div>
-		<div v-if="note.reactionCount > 0" :class="$style.reactions">
-			<MkReactionsViewer :note="note" :maxNumber="16"/>
-		</div>
 	</div>
 </div>
 </template>

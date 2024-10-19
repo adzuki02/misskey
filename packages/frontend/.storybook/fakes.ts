@@ -201,7 +201,6 @@ export function note(id = 'somenoteid'): entities.Note {
 		reactionEmojis: {},
 		reactions: {},
 		myReaction: null,
-		reactionCount: 0,
 		renoteCount: 0,
 		repliesCount: 0,
 	};
