@@ -54,7 +54,7 @@ export class MetaService implements OnApplicationShutdown {
 			switch (type) {
 				case 'metaUpdated': {
 					this.cache = { // TODO: このあたりのデシリアライズ処理は各modelファイル内に関数としてexportしたい
-						...body,
+						...(body.after),
 						proxyAccount: null, // joinなカラムは通常取ってこないので
 					};
 					break;
@@ -147,7 +147,7 @@ export class MetaService implements OnApplicationShutdown {
 			this.fanoutTimelineService.purgeAll();
 		}
 
-		this.globalEventService.publishInternalEvent('metaUpdated', updated);
+		this.globalEventService.publishInternalEvent('metaUpdated', { before, after: updated });
 
 		return updated;
 	}
