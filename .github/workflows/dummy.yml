@@ -60,14 +60,14 @@ jobs:
       - run: echo dummy
 
   e2e_backend:
-    name: unit (backend)
+    name: e2e (backend)
     runs-on: ubuntu-latest
     if: ${{ false }}
     steps:
       - run: echo dummy
 
   e2e_frontend:
-    name: unit (frontend)
+    name: e2e (frontend)
     runs-on: ubuntu-latest
     if: ${{ false }}
     steps:
