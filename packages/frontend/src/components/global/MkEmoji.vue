@@ -17,6 +17,7 @@ import * as os from '@/os.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import * as sound from '@/scripts/sound.js';
 import { i18n } from '@/i18n.js';
+import type { MenuItem } from '@/types/menu.js';
 
 const props = defineProps<{
 	emoji: string;
@@ -37,7 +38,9 @@ function computeTitle(event: PointerEvent): void {
 
 function onClick(ev: MouseEvent) {
 	if (props.menu) {
-		os.popupMenu([{
+		const menuItems: MenuItem[] = [];
+
+		menuItems.push({
 			type: 'label',
 			text: props.emoji,
 		}, {
@@ -47,14 +50,20 @@ function onClick(ev: MouseEvent) {
 				copyToClipboard(props.emoji);
 				os.success();
 			},
-		}, ...(props.menuReaction && react ? [{
-			text: i18n.ts.doReaction,
-			icon: 'ti ti-plus',
-			action: () => {
-				react(props.emoji);
-				sound.playMisskeySfx('reaction');
-			},
-		}] : [])], ev.currentTarget ?? ev.target);
+		});
+
+		if (props.menuReaction && react) {
+			menuItems.push({
+				text: i18n.ts.doReaction,
+				icon: 'ti ti-plus',
+				action: () => {
+					react(props.emoji);
+					sound.playMisskeySfx('reaction');
+				},
+			});
+		}
+
+		os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 	}
 }
 </script>
