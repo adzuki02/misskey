@@ -1,0 +1,126 @@
+name: Report api.json diff (experimental)
+
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+      - develop-mame
+    paths:
+      - packages/backend/**
+      - .github/workflows/get-api-diff-experimental.yml
+
+jobs:
+  get-base-api-json:
+    runs-on: ubuntu-latest
+
+    outputs:
+      base-api-json: ${{ steps.get-api-json.outputs.api-json }}
+
+    steps:
+    - uses: actions/checkout@v4.1.1
+      with:
+        ref: ${{ github.base_ref }}
+        submodules: true
+    - uses: pnpm/action-setup@v4
+    - uses: actions/setup-node@v4.0.3
+      with:
+        node-version-file: '.node-version'
+        cache: 'pnpm'
+    - run: corepack enable
+    - run: pnpm i --frozen-lockfile
+    - run: git diff --exit-code pnpm-lock.yaml
+    - run: pnpm run build-pre
+    - run: pnpm --filter backend generate-api-json
+    - id: get-api-json
+      uses: actions/github-script@v7.0.1
+      with:
+        script: |
+          const { spawn } = require('child_process');
+          let out = '';
+          const child = spawn('jq', ['.', 'packages/backend/built/api.json']);
+          child.stdout.on('data', chunk => { out += chunk.toString(); });
+          core.setOutput('api-json', out);
+
+  get-head-api-json:
+    runs-on: ubuntu-latest
+
+    outputs:
+      head-api-json: ${{ steps.get-api-json.outputs.api-json }}
+
+    steps:
+    - uses: actions/checkout@v4.1.1
+      with:
+        ref: refs/pull/${{ github.event.number }}/merge
+        submodules: true
+    - uses: pnpm/action-setup@v4
+    - uses: actions/setup-node@v4.0.3
+      with:
+        node-version-file: '.node-version'
+        cache: 'pnpm'
+    - run: corepack enable
+    - run: pnpm i --frozen-lockfile
+    - run: git diff --exit-code pnpm-lock.yaml
+    - run: pnpm run build-pre
+    - run: pnpm --filter backend generate-api-json
+    - id: get-api-json
+      uses: actions/github-script@v7.0.1
+      with:
+        script: |
+          const { spawn } = require('child_process');
+          let out = '';
+          const child = spawn('jq', ['.', 'packages/backend/built/api.json']);
+          child.stdout.on('data', chunk => { out += chunk.toString(); });
+          core.setOutput('api-json', out);
+
+  get-api-json-diff:
+    runs-on: ubuntu-latest
+    needs: [get-base-api-json, get-head-api-json]
+
+    steps:
+      - run: |
+          cat <<-EOF > api-base.json
+          ${{ needs.get-base-api-json.outputs.base-api-json}}
+          EOF
+      - run: |
+          cat <<-EOF > api-head.json
+          ${{ needs.get-head-api-json.outputs.head-api-json }}
+          EOF
+      - name: Get full diff
+        run: diff --label=base --label=head --new-line-format='+%L' --old-line-format='-%L' --unchanged-line-format=' %L' ./api-base.json ./api-head.json | cat > api-full.json.diff
+      - name: Upload full diff to Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-artifact
+          path: |
+            api-full.json.diff
+            api-base.json
+            api-head.json
+      - id: out-diff
+        name: Build diff Comment
+        run: |
+          cat <<- EOF > ./output.md
+          このPRによるapi.jsonの差分
+          <details>
+          <summary>差分はこちら</summary>
+
+          \`\`\`diff
+          $(cat ./api.json.diff)
+          \`\`\`
+          </details>
+
+          [Get diff files from Workflow Page](https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID})
+          EOF
+      - uses: thollander/actions-comment-pull-request@v2
+        with:
+          pr_number: ${{ github.event.number }}
+          comment_tag: show_diff
+          filePath: ./output.md
+      - name: Tell error to PR
+        uses: thollander/actions-comment-pull-request@v2
+        if: failure() && ${{ github.event.number }}
+        with:
+          pr_number: ${{ github.event.number }}
+          comment_tag: show_diff_error
+          message: |
+            api.jsonの差分作成中にエラーが発生しました。詳細は[Workflowのログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})を確認してください。
