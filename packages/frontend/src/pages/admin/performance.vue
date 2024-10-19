@@ -37,13 +37,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkSwitch>
 				</div>
 
-				<MkFolder :defaultOpen="true" :withFooter="true">
+				<MkFolder :defaultOpen="true">
 					<template #icon><i class="ti ti-bolt"></i></template>
 					<template #label>Misskey® Fan-out Timeline Technology™ (FTT)</template>
 					<template v-if="enableFanoutTimeline" #suffix>Enabled</template>
 					<template v-else #suffix>Disabled</template>
-					<template #footer>
-						<MkButton primary rounded :disabled="!isFttModified" @click="saveFtt">{{ i18n.ts.save }}</MkButton>
+					<template v-if="isFttModified" #footer>
+						<MkButton primary rounded @click="saveFtt">{{ i18n.ts.save }}</MkButton>
 					</template>
 
 					<div class="_gaps_m">
@@ -110,8 +110,6 @@ const perUserHomeTimelineCacheMax = ref<number>(0);
 const perUserListTimelineCacheMax = ref<number>(0);
 
 const isFttModified = ref<boolean>(false);
-
-const isRbtModified = ref<boolean>(false);
 
 async function init() {
 	const meta = await misskeyApi('admin/meta');
