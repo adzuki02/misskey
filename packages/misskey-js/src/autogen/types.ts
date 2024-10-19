@@ -4013,8 +4013,8 @@ export type components = {
       /** @enum {string} */
       type: 'app';
       body: string;
-      header: string;
-      icon: string;
+      header: string | null;
+      icon: string | null;
     } | {
       /** Format: id */
       id: string;
