@@ -59,6 +59,11 @@ export type RolePolicies = {
 	rateLimitFactor: number;
 	avatarDecorationLimit: number;
 	canMakePureRenoteOfRemoteNotes: boolean;
+	canImportAntennas: boolean;
+	canImportBlocking: boolean;
+	canImportFollowing: boolean;
+	canImportMuting: boolean;
+	canImportUserLists: boolean;
 };
 
 export const DEFAULT_POLICIES: RolePolicies = {
@@ -89,6 +94,11 @@ export const DEFAULT_POLICIES: RolePolicies = {
 	rateLimitFactor: 1,
 	avatarDecorationLimit: 1,
 	canMakePureRenoteOfRemoteNotes: true,
+	canImportAntennas: true,
+	canImportBlocking: true,
+	canImportFollowing: true,
+	canImportMuting: true,
+	canImportUserLists: true,
 };
 
 @Injectable()
@@ -390,6 +400,11 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 			rateLimitFactor: calc('rateLimitFactor', vs => Math.max(...vs)),
 			avatarDecorationLimit: calc('avatarDecorationLimit', vs => Math.max(...vs)),
 			canMakePureRenoteOfRemoteNotes: calc('canMakePureRenoteOfRemoteNotes', vs => vs.some(v => v === true)),
+			canImportAntennas: calc('canImportAntennas', vs => vs.some(v => v === true)),
+			canImportBlocking: calc('canImportBlocking', vs => vs.some(v => v === true)),
+			canImportFollowing: calc('canImportFollowing', vs => vs.some(v => v === true)),
+			canImportMuting: calc('canImportMuting', vs => vs.some(v => v === true)),
+			canImportUserLists: calc('canImportUserLists', vs => vs.some(v => v === true)),
 		};
 	}
 

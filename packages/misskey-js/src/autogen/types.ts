@@ -4575,6 +4575,11 @@ export type components = {
       rateLimitFactor: number;
       avatarDecorationLimit: number;
       canMakePureRenoteOfRemoteNotes: boolean;
+      canImportAntennas: boolean;
+      canImportBlocking: boolean;
+      canImportFollowing: boolean;
+      canImportMuting: boolean;
+      canImportUserLists: boolean;
     };
     MetaLite: {
       maintainerName: string | null;

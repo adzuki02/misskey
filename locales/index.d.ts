@@ -6766,6 +6766,26 @@ export interface Locale extends ILocale {
              * リモートのノートの引用でないリノート
              */
             "canMakePureRenoteOfRemoteNotes": string;
+						/**
+             * アンテナのインポートを許可
+             */
+            "canImportAntennas": string;
+            /**
+             * ブロックのインポートを許可
+             */
+            "canImportBlocking": string;
+            /**
+             * フォローのインポートを許可
+             */
+            "canImportFollowing": string;
+            /**
+             * ミュートのインポートを許可
+             */
+            "canImportMuting": string;
+            /**
+             * リストのインポートを許可
+             */
+            "canImportUserLists": string;
         };
         "_condition": {
             /**
