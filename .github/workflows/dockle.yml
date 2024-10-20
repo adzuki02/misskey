@@ -39,15 +39,14 @@ jobs:
           path: dockle-docker-images
           key: dockle-docker-images-${{ github.ref_name }}-${{ github.sha }}
           restore-keys: dockle-docker-images-
-      - name: Pull docker images
+      - name: Pull and save docker images
         if: steps.docker-images-cache.outputs.cache-hit != 'true'
         run: |
           docker pull redis:7-alpine
           docker pull postgres:15-alpine
           docker pull node:20.16.0-bullseye-slim
           docker pull node:20.16.0-bullseye
-      - name: Save docker images
-        run: docker save -o dockle-docker-images redis:7-alpine postgres:15-alpine node:20.16.0-bullseye-slim node:20.16.0-bullseye
+          docker save -o dockle-docker-images redis:7-alpine postgres:15-alpine node:20.16.0-bullseye-slim node:20.16.0-bullseye
       - name: Load docker images from cache
         run: docker load -i dockle-docker-images
       - name: Run container
