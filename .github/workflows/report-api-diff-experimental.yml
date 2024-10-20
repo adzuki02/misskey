@@ -40,6 +40,11 @@ jobs:
           let out = '';
           const child = spawn('jq', ['.', 'packages/backend/built/api.json']);
           child.stdout.on('data', chunk => { out += chunk.toString(); });
+          await new Promise(resolve => {
+            child.stdout.on('close', () => {
+              resolve();
+            });
+          });
           core.setOutput('api-json', out);
 
   get-head-api-json:
@@ -71,6 +76,11 @@ jobs:
           let out = '';
           const child = spawn('jq', ['.', 'packages/backend/built/api.json']);
           child.stdout.on('data', chunk => { out += chunk.toString(); });
+          await new Promise(resolve => {
+            child.stdout.on('close', () => {
+              resolve();
+            });
+          });
           core.setOutput('api-json', out);
 
   get-api-json-diff:

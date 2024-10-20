@@ -1,4 +1,4 @@
-name: "Release on push to main branch"
+name: Release
 
 on:
   push:
