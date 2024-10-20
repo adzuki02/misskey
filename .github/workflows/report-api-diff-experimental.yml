@@ -14,9 +14,6 @@ jobs:
   get-base-api-json:
     runs-on: ubuntu-latest
 
-    outputs:
-      base-api-json: ${{ steps.get-api-json.outputs.api-json }}
-
     steps:
     - uses: actions/checkout@v4.1.1
       with:
@@ -33,20 +30,14 @@ jobs:
     - run: cp .config/example.yml .config/default.yml
     - run: pnpm run build-pre
     - run: pnpm --filter backend generate-api-json
-    - id: get-api-json
-      uses: actions/github-script@v7.0.1
+    - run: cp packages/backend/built/api.json api-base.json
+    - uses: actions/upload-artifact@v4
       with:
-        script: |
-          const { readFile } = require('node:fs/promises');
-          const buf = await readFile('packages/backend/built/api.json');
-          const out = buf.toString();
-          core.setOutput('api-json', out);
+        name: api-base.json.zip
+        path: api-base.json
 
   get-head-api-json:
     runs-on: ubuntu-latest
-
-    outputs:
-      head-api-json: ${{ steps.get-api-json.outputs.api-json }}
 
     steps:
     - uses: actions/checkout@v4.1.1
@@ -64,28 +55,26 @@ jobs:
     - run: cp .config/example.yml .config/default.yml
     - run: pnpm run build-pre
     - run: pnpm --filter backend generate-api-json
-    - id: get-api-json
-      uses: actions/github-script@v7.0.1
+    - run: cp packages/backend/built/api.json api-head.json
+    - uses: actions/upload-artifact@v4
       with:
-        script: |
-          const { readFile } = require('node:fs/promises');
-          const buf = await readFile('packages/backend/built/api.json');
-          const out = buf.toString();
-          core.setOutput('api-json', out);
+        name: api-head.json.zip
+        path: api-head.json
 
   get-api-json-diff:
     runs-on: ubuntu-latest
     needs: [get-base-api-json, get-head-api-json]
 
     steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
       - run: |
-          cat <<-EOF > api-base.json
-          ${{ needs.get-base-api-json.outputs.base-api-json}}
-          EOF
+          unzip artifacts/api-base.json.zip -d artifacts
+          unzip artifacts/api-head.json.zip -d artifacts
       - run: |
-          cat <<-EOF > api-head.json
-          ${{ needs.get-head-api-json.outputs.head-api-json }}
-          EOF
+          jq '.' ./artifacts/api-base.json > ./api-base.json
+          jq '.' ./artifacts/api-head.json > ./api-head.json
       - name: Get full diff
         run: diff --label=base --label=head --new-line-format='+%L' --old-line-format='-%L' --unchanged-line-format=' %L' ./api-base.json ./api-head.json | cat > api-full.json.diff
       - name: Upload full diff to Artifact
