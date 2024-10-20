@@ -31,13 +31,39 @@ jobs:
       - name: Copy config files
         run: |
           cp .config/docker_example.env .config/docker.env
-          cp ./compose_example.yml ./compose.yml
+          cp ./compose.ci.yml ./compose.yml
+      - name: Setup Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: dockle-docker-cache-web-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            dockle-docker-cache-web-${{ github.ref_name }}-
+            refs/head/develop-mame
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: false
+          builder: ${{ steps.buildx.outputs.name }}
+          tags: web-cached:latest
+          load: true
+          context: .
+          file: Dockerfile
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
       - name: Run container
-        run: |
-          docker compose up -d web
-          docker tag "$(docker compose images web | awk 'OFS=":" {print $4}' | tail -n +2)" misskey-web:latest
+        run: docker compose up -d web
+      - name: Tagging
+        run: docker tag "$(docker compose images web | awk 'OFS=":" {print $4}' | tail -n +2)" misskey-web:latest
       - name: Run dockle
         run: |
           cmd="dockle --exit-code 1 misskey-web:latest ${image_name}"
           echo "> ${cmd}"
           eval "${cmd}"
+      - name: Update cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
