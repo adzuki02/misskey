@@ -12,8 +12,7 @@ on:
       - .github/workflows/check-misskey-js-autogen.yml
       - .node-version
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   generate-misskey-js:
@@ -28,7 +27,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.1
         with:
-          submodules: true
           ref: refs/pull/${{ github.event.number }}/merge
       - name: Setup pnpm
         uses: pnpm/action-setup@v4

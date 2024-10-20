@@ -3,8 +3,7 @@ name: Dummy
 on:
   pull_request:
 
-permissions:
-  contents: none
+permissions: {}
 
 jobs:
   lint_backend:

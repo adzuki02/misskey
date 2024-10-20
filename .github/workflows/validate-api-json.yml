@@ -16,18 +16,18 @@ on:
       - .github/workflows/validate-api-json.yml
       - .node-version
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   validate-api-json:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.1
-      with:
-        submodules: true
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
     - name: Setup Node.js

@@ -14,8 +14,7 @@ on:
       # This is a waste of chromatic build quota, so we don't run storybook CI on pull requests targets master.
       - master
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   build_storybook:
@@ -33,13 +32,11 @@ jobs:
       if: github.event_name == 'push'
       with:
         fetch-depth: 0
-        submodules: true
     - name: Checkout
       uses: actions/checkout@v4.1.1
       if: github.event_name == 'pull_request'
       with:
         fetch-depth: 0
-        submodules: true
         ref: "refs/pull/${{ github.event.number }}/merge"
     - name: Checkout actual HEAD
       if: github.event_name == 'pull_request'

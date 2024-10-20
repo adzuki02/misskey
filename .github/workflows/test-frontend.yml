@@ -24,8 +24,7 @@ on:
       - .github/workflows/test-frontend.yml
       - .node-version
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   vitest:
@@ -33,11 +32,12 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.1
-      with:
-        submodules: true
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
     - name: Setup Node.js
@@ -87,9 +87,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.1
-      with:
-        submodules: true
-    # https://github.com/cypress-io/cypress-docker-images/issues/150
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
     - name: Setup Node.js

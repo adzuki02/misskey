@@ -8,8 +8,7 @@ on:
       - develop-mame
   pull_request:
 
-permissions:
-  contents: read
+permissions: {}
 
 env:
   NODE_ENV: production
@@ -18,11 +17,12 @@ jobs:
   production:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.1
-      with:
-        submodules: true
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
     - name: Setup Node.js

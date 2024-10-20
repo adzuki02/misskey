@@ -11,8 +11,7 @@ on:
       - .github/workflows/report-api-diff.yml
       - .node-version
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   get-api-json:
@@ -35,7 +34,6 @@ jobs:
       uses: actions/checkout@v4.1.1
       with:
         ref: ${{ matrix.ref }}
-        submodules: true
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
     - name: Setup Node.js
@@ -110,13 +108,13 @@ jobs:
           fi
           echo "$FOOTER" >> ./output.md
       - name: Send comment
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@fabd468d3a1a0b97feee5f6b9e499eab0dd903f6
         with:
           pr_number: ${{ github.event.number }}
           comment_tag: show_diff
           filePath: ./output.md
       - name: Tell error to PR
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@fabd468d3a1a0b97feee5f6b9e499eab0dd903f6
         if: failure() && github.event.number
         with:
           pr_number: ${{ github.event.number }}
@@ -125,7 +123,7 @@ jobs:
             api.jsonの差分作成中にエラーが発生しました。詳細は[Workflowのログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})を確認してください。
       - name: Tell no error to PR
         if: !failure()
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@fabd468d3a1a0b97feee5f6b9e499eab0dd903f6
         with:
           comment_tag: show_diff_error
           message: "api.jsonの差分作成は正常に行われました。"
