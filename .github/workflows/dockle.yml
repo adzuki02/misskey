@@ -42,7 +42,7 @@ jobs:
           key: dockle-docker-cache-web-${{ github.ref }}-${{ github.sha }}
           restore-keys: |
             dockle-docker-cache-web-${{ github.ref }}-
-            dockle-docker-cache-web-refs/head/develop-mame-
+            dockle-docker-cache-web-refs/heads/develop-mame-
       - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
