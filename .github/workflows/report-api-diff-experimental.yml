@@ -66,15 +66,24 @@ jobs:
     needs: [get-base-api-json, get-head-api-json]
 
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
         with:
           path: ${{ github.workspace }}/artifacts
       - run: |
+          pwd
+          ls -alhF
+          ls -alhF ${{ github.workspace }}
+      - name: Extract artifacts
+        run: |
           unzip artifacts/api-base.json.zip -d artifacts
           unzip artifacts/api-head.json.zip -d artifacts
-      - run: |
+      - name: Arrange json files
+        run: |
           jq '.' ./artifacts/api-base.json > ./api-base.json
           jq '.' ./artifacts/api-head.json > ./api-head.json
+      - name: Get diff of 2 files
+        run: diff -u --label=base --label=head ./api-base.json ./api-head.json | cat > api.json.diff
       - name: Get full diff
         run: diff --label=base --label=head --new-line-format='+%L' --old-line-format='-%L' --unchanged-line-format=' %L' ./api-base.json ./api-head.json | cat > api-full.json.diff
       - name: Upload full diff to Artifact
