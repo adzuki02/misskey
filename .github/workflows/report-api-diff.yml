@@ -11,13 +11,22 @@ on:
       - .github/workflows/report-api-diff.yml
 
 jobs:
-  get-base-api-json:
+  get-api-json:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        api-json-name: [api-base.json, api-head.json]
+        include:
+          - api-json-name: api-base.json
+            ref: ${{ github.base_ref }}
+          - api-json-name: api-head.json
+            ref: refs/pull/${{ github.event.number }}/merge
 
     steps:
     - uses: actions/checkout@v4.1.1
       with:
-        ref: ${{ github.base_ref }}
+        ref: ${{ matrix.ref }}
         submodules: true
     - uses: pnpm/action-setup@v4
     - uses: actions/setup-node@v4.0.3
@@ -30,40 +39,15 @@ jobs:
     - run: cp .config/example.yml .config/default.yml
     - run: pnpm run build-pre
     - run: pnpm --filter backend generate-api-json
-    - run: cp packages/backend/built/api.json api-base.json
+    - run: cp packages/backend/built/api.json ${{ matrix.api-json-name }}
     - uses: actions/upload-artifact@v4
       with:
-        name: api-base.json
-        path: api-base.json
-
-  get-head-api-json:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4.1.1
-      with:
-        ref: refs/pull/${{ github.event.number }}/merge
-        submodules: true
-    - uses: pnpm/action-setup@v4
-    - uses: actions/setup-node@v4.0.3
-      with:
-        node-version-file: '.node-version'
-        cache: 'pnpm'
-    - run: corepack enable
-    - run: pnpm i --frozen-lockfile
-    - run: git diff --exit-code pnpm-lock.yaml
-    - run: cp .config/example.yml .config/default.yml
-    - run: pnpm run build-pre
-    - run: pnpm --filter backend generate-api-json
-    - run: cp packages/backend/built/api.json api-head.json
-    - uses: actions/upload-artifact@v4
-      with:
-        name: api-head.json
-        path: api-head.json
+        name: ${{ matrix.api-json-name }}
+        path: ${{ matrix.api-json-name }}
 
   get-api-json-diff:
     runs-on: ubuntu-latest
-    needs: [get-base-api-json, get-head-api-json]
+    needs: get-api-json
 
     steps:
       - name: Download artifacts
