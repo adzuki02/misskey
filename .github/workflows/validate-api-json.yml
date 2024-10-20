@@ -48,6 +48,6 @@ jobs:
     - name: Pre-build
       run: pnpm run build-pre
     - name: Generate api.json
-      run: pnpm --filter backend generate-api-json
+      run: pnpm --filter backend run generate-api-json
     - name: Validate api.json
       run: npx @redocly/cli lint --extends=minimal ./packages/backend/built/api.json

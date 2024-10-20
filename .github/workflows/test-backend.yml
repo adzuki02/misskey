@@ -64,9 +64,9 @@ jobs:
     - name: Copy config file
       run: cp .github/misskey/test.yml .config
     - name: Build
-      run: pnpm build
+      run: pnpm run build
     - name: Test
-      run: pnpm --filter backend test-and-coverage
+      run: pnpm --filter backend run test-and-coverage
     - name: Upload coverage
       uses: codecov/codecov-action@v4
       with:
@@ -111,9 +111,9 @@ jobs:
       - name: Copy config file
         run: cp .github/misskey/test.yml .config
       - name: Build
-        run: pnpm build
+        run: pnpm run build
       - name: Test
-        run: pnpm --filter backend test-and-coverage:e2e
+        run: pnpm --filter backend run test-and-coverage:e2e
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:

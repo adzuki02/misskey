@@ -40,11 +40,11 @@ jobs:
       - name: Check if lock file is not modified
         run: git diff --exit-code pnpm-lock.yaml
       - name: Build misskey-js
-        run: pnpm --filter run misskey-js build
+        run: pnpm --filter misskey-js run build
       - name: Check files
         run: ls packages/misskey-js/built
       - name: API report
-        run: pnpm --filter run misskey-js api-prod
+        run: pnpm --filter misskey-js run api-prod
       - name: Show report
         if: always()
         run: cat packages/misskey-js/temp/misskey-js.api.md

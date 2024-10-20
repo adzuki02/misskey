@@ -39,4 +39,4 @@ jobs:
     - name: Copy config file
       run: cp .github/misskey/test.yml .config/default.yml
     - name: Build
-      run: pnpm build
+      run: pnpm run build

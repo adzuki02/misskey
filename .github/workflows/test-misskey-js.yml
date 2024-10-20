@@ -41,9 +41,9 @@ jobs:
       - name: Check if lock file is not modified
         run: git diff --exit-code pnpm-lock.yaml
       - name: Build misskey-js
-        run: pnpm --filter misskey-js build
+        run: pnpm --filter misskey-js run build
       - name: Test
-        run: pnpm --filter misskey-js test
+        run: pnpm --filter misskey-js run test
         env:
           CI: true
       - name: Upload coverage

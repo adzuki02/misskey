@@ -54,9 +54,9 @@ jobs:
     - name: Copy config file
       run: cp .github/misskey/test.yml .config
     - name: Build
-      run: pnpm build
+      run: pnpm run build
     - name: Test
-      run: pnpm --filter frontend test-and-coverage
+      run: pnpm --filter frontend run test-and-coverage
     - name: Upload coverage
       uses: codecov/codecov-action@v4
       with:
@@ -106,7 +106,7 @@ jobs:
     - name: Copy config file
       run: cp .github/misskey/test.yml .config
     - name: Build
-      run: pnpm build
+      run: pnpm run build
     # https://github.com/cypress-io/cypress/issues/4351#issuecomment-559489091
     - name: ALSA Env
       run: echo -e 'pcm.!default {\n type hw\n card 0\n}\n\nctl.!default {\n type hw\n card 0\n}' > ~/.asoundrc
@@ -119,7 +119,7 @@ jobs:
       timeout-minutes: 15
       with:
         install: false
-        start: pnpm start:test
+        start: pnpm run start:test
         wait-on: 'http://localhost:61812'
         headed: true
         browser: chrome

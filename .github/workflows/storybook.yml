@@ -58,12 +58,12 @@ jobs:
     - name: Check if lock file is not modified
       run: git diff --exit-code pnpm-lock.yaml
     - name: Build misskey-js
-      run: pnpm --filter misskey-js build
+      run: pnpm --filter misskey-js run build
     - name: Build Storybook
-      run: pnpm --filter frontend build-storybook
+      run: pnpm --filter frontend run build-storybook
     - name: Publish to Chromatic
       if: github.event_name != 'pull_request_target' && github.ref == 'refs/heads/master'
-      run: pnpm --filter frontend chromatic --exit-once-uploaded -d storybook-static
+      run: pnpm --filter frontend run chromatic --exit-once-uploaded -d storybook-static
       env:
         CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
     - name: Publish to Chromatic
@@ -78,7 +78,7 @@ jobs:
         if [ "$CHROMATIC_PARAMETER" = " --skip" ]; then
           echo "skip=true" >> $GITHUB_OUTPUT
         fi
-        if pnpm --filter frontend chromatic -d storybook-static $(echo "$CHROMATIC_PARAMETER"); then
+        if pnpm --filter frontend run chromatic -d storybook-static $(echo "$CHROMATIC_PARAMETER"); then
           echo "success=true" >> $GITHUB_OUTPUT
         else
           echo "success=false" >> $GITHUB_OUTPUT
@@ -101,7 +101,7 @@ jobs:
         if [ "$BRANCH" = "adzukimame:$HEAD_REF" ]; then
           BRANCH="$HEAD_REF"
         fi
-        pnpm --filter frontend chromatic --exit-once-uploaded -d storybook-static --branch-name "$BRANCH" $(echo "$CHROMATIC_PARAMETER")
+        pnpm --filter frontend run chromatic --exit-once-uploaded -d storybook-static --branch-name "$BRANCH" $(echo "$CHROMATIC_PARAMETER")
       env:
         HEAD_REF: ${{ github.event.pull_request.head.ref }}
         CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
