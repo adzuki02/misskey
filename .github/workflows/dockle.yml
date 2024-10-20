@@ -39,10 +39,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
-          key: dockle-docker-cache-web-${{ github.ref }}-${{ github.sha }}
+          key: dockle-docker-cache-web-${{ github.ref_name }}-${{ github.sha }}
           restore-keys: |
-            dockle-docker-cache-web-${{ github.ref }}-
-            dockle-docker-cache-web-refs/head/develop-mame-
+            dockle-docker-cache-web-${{ github.ref_name }}-
+            refs/head/develop-mame
       - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
