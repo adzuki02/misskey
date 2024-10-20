@@ -50,9 +50,9 @@ jobs:
       - name: Load docker images from cache
         run: docker load -i dockle-docker-images
       - name: Run container
-        run: |
-          docker compose up -d web
-          docker tag "$(docker compose images web | awk 'OFS=":" {print $4}' | tail -n +2)" misskey-web:latest
+        run: docker compose up -d web
+      - name: Tagging
+        run: docker tag "$(docker compose images web | awk 'OFS=":" {print $4}' | tail -n +2)" misskey-web:latest
       - name: Run dockle
         run: |
           cmd="dockle --exit-code 1 misskey-web:latest ${image_name}"
