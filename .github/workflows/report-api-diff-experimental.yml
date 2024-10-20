@@ -8,7 +8,7 @@ on:
       - develop-mame
     paths:
       - packages/backend/**
-      - .github/workflows/get-api-diff-experimental.yml
+      - .github/workflows/report-api-diff-experimental.yml
 
 jobs:
   get-base-api-json:
