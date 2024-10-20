@@ -106,7 +106,7 @@ jobs:
           filePath: ./output.md
       - name: Tell error to PR
         uses: thollander/actions-comment-pull-request@v2
-        if: failure() && ${{ github.event.number }}
+        if: failure() && github.event.number
         with:
           pr_number: ${{ github.event.number }}
           comment_tag: show_diff_error
