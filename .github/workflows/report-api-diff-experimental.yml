@@ -33,7 +33,7 @@ jobs:
     - run: cp packages/backend/built/api.json api-base.json
     - uses: actions/upload-artifact@v4
       with:
-        name: api-base.json.zip
+        name: api-base.json
         path: api-base.json
 
   get-head-api-json:
@@ -58,7 +58,7 @@ jobs:
     - run: cp packages/backend/built/api.json api-head.json
     - uses: actions/upload-artifact@v4
       with:
-        name: api-head.json.zip
+        name: api-head.json
         path: api-head.json
 
   get-api-json-diff:
@@ -71,13 +71,6 @@ jobs:
         with:
           path: artifacts
           merge-multiple: true
-      - run: |
-          pwd
-          ls -alhFR
-      - name: Extract artifacts
-        run: |
-          unzip artifacts/api-base.json.zip -d artifacts
-          unzip artifacts/api-head.json.zip -d artifacts
       - name: Arrange json files
         run: |
           jq '.' ./artifacts/api-base.json > ./api-base.json
@@ -92,8 +85,6 @@ jobs:
           name: api-artifact
           path: |
             api-full.json.diff
-            api-base.json
-            api-head.json
       - id: out-diff
         name: Build diff Comment
         run: |
