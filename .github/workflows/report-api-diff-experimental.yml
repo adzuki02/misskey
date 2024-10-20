@@ -69,11 +69,11 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          path: ${{ github.workspace }}/artifacts
+          path: artifacts
       - run: |
           pwd
           ls -alhF
-          ls -alhF ${{ github.workspace }}
+          ls -alhF artifacts
       - name: Extract artifacts
         run: |
           unzip artifacts/api-base.json.zip -d artifacts
