@@ -32,6 +32,24 @@ jobs:
         run: |
           cp .config/docker_example.env .config/docker.env
           cp ./compose_example.yml ./compose.yml
+      - name: Restore docker images cache
+        id: docker-images-cache
+        uses: actions/cache@v4
+        with:
+          path: dockle-docker-images
+          key: dockle-docker-images-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: dockle-docker-images-
+      - name: Pull docker images
+        if: steps.docker-images-cache.outputs.cache-hit != 'true'
+        run: |
+          docker pull redis:7-alpine
+          docker pull postgres:15-alpine
+          docker pull node:20.16.0-bullseye-slim
+          docker pull node:20.16.0-bullseye
+      - name: Save docker images
+        run: docker save -o dockle-docker-images redis:7-alpine postgres:15-alpine node:20.16.0-bullseye-slim node:20.16.0-bullseye
+      - name: Load docker images from cache
+        run: docker load -i dockle-docker-images
       - name: Run container
         run: |
           docker compose up -d web
