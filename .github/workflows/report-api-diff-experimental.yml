@@ -82,9 +82,8 @@ jobs:
       - name: Upload full diff to Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: api-artifact
-          path: |
-            api-full.json.diff
+          name: api-full.json.diff
+          path: api-full.json.diff
       - id: out-diff
         name: Build diff Comment
         run: |
