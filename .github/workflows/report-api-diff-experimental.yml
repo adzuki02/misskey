@@ -70,10 +70,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: artifacts
+          merge-multiple: true
       - run: |
           pwd
-          ls -alhF
-          ls -alhF artifacts
+          ls -alhFR
       - name: Extract artifacts
         run: |
           unzip artifacts/api-base.json.zip -d artifacts
