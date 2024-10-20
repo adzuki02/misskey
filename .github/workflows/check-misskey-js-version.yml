@@ -1,0 +1,38 @@
+name: Check misskey-js version
+
+on:
+  push:
+    branches:
+      - develop-mame
+    paths:
+      - packages/misskey-js/package.json
+      - package.json
+      - .github/workflows/check-misskey-js-version.yml
+  pull_request:
+    branches:
+      - develop-mame
+    paths:
+      - packages/misskey-js/package.json
+      - package.json
+      - .github/workflows/check-misskey-js-version.yml
+
+permissions:
+  contents: read
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+        with:
+          sparse-checkout: |
+            packages/misskey-js/package.json
+            package.json
+      - name: Check version
+        run: |
+          if [ "$(jq -r '.version' package.json)" != "$(jq -r '.version' packages/misskey-js/package.json)" ]; then
+            echo "Version mismatch!"
+            exit 1
+          fi

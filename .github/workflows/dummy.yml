@@ -1,6 +1,10 @@
 name: Dummy
+
 on:
   pull_request:
+
+permissions:
+  contents: none
 
 jobs:
   lint_backend:

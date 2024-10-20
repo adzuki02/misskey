@@ -9,42 +9,42 @@ on:
     paths:
       - packages/misskey-js/**
       - .github/workflows/api-misskey-js.yml
+      - .node-version
   pull_request:
     paths:
       - packages/misskey-js/**
       - .github/workflows/api-misskey-js.yml
+      - .node-version
+
+permissions:
+  contents: read
+
 jobs:
   report:
-
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
-
-      - run: corepack enable
-
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4.0.3
         with:
           node-version-file: '.node-version'
           cache: 'pnpm'
-
+      - name: Enable Corepack
+        run: corepack enable
       - name: Install dependencies
-        run: pnpm i --frozen-lockfile
-
-      - name: Check pnpm-lock.yaml
+        run: pnpm install --frozen-lockfile
+      - name: Check if lock file is not modified
         run: git diff --exit-code pnpm-lock.yaml
-
-      - name: Build
-        run: pnpm --filter misskey-js build
-
+      - name: Build misskey-js
+        run: pnpm --filter misskey-js run build
       - name: Check files
         run: ls packages/misskey-js/built
-
       - name: API report
-        run: pnpm --filter misskey-js api-prod
-
+        run: pnpm --filter misskey-js run api-prod
       - name: Show report
         if: always()
         run: cat packages/misskey-js/temp/misskey-js.api.md

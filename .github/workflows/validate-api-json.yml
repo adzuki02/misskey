@@ -9,33 +9,45 @@ on:
     paths:
       - packages/backend/**
       - .github/workflows/validate-api-json.yml
+      - .node-version
   pull_request:
     paths:
       - packages/backend/**
       - .github/workflows/validate-api-json.yml
+      - .node-version
+
+permissions:
+  contents: read
+
 jobs:
   validate-api-json:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4.1.1
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
       with:
         submodules: true
-    - name: Install pnpm
+    - name: Setup pnpm
       uses: pnpm/action-setup@v4
-    - uses: actions/setup-node@v4.0.3
+    - name: Setup Node.js
+      uses: actions/setup-node@v4.0.3
       with:
         node-version-file: '.node-version'
         cache: 'pnpm'
     - name: Install Redocly CLI
       run: npm i -g @redocly/cli
-    - run: corepack enable
-    - run: pnpm i --frozen-lockfile
-    - name: Check pnpm-lock.yaml
+    - name: Enable Corepack
+      run: corepack enable
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    - name: Check if lock file is not modified
       run: git diff --exit-code pnpm-lock.yaml
-    - name: Copy Configure
+    - name: Copy config file
       run: cp .config/example.yml .config/default.yml
-    - name: Build and generate
-      run: pnpm build && pnpm --filter backend generate-api-json
-    - name: Validation
+    - name: Pre-build
+      run: pnpm run build-pre
+    - name: Generate api.json
+      run: pnpm --filter backend run generate-api-json
+    - name: Validate api.json
       run: npx @redocly/cli lint --extends=minimal ./packages/backend/built/api.json

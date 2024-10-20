@@ -1,4 +1,3 @@
----
 name: Dockle
 
 on:
@@ -9,25 +8,34 @@ on:
       - develop-mame
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   dockle:
     runs-on: ubuntu-latest
+
     env:
       DOCKER_CONTENT_TRUST: 1
       DOCKLE_VERSION: 0.4.14
+
     steps:
-      - uses: actions/checkout@v4.1.1
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
       - name: Download and install dockle v${{ env.DOCKLE_VERSION }}
         run: |
           curl -L -o dockle.deb "https://github.com/goodwithtech/dockle/releases/download/v${DOCKLE_VERSION}/dockle_${DOCKLE_VERSION}_Linux-64bit.deb"
           sudo dpkg -i dockle.deb
-      - run: |
+      - name: Copy config files
+        run: |
           cp .config/docker_example.env .config/docker.env
           cp ./compose_example.yml ./compose.yml
-      - run: |
+      - name: Run container
+        run: |
           docker compose up -d web
           docker tag "$(docker compose images web | awk 'OFS=":" {print $4}' | tail -n +2)" misskey-web:latest
-      - run: |
+      - name: Run dockle
+        run: |
           cmd="dockle --exit-code 1 misskey-web:latest ${image_name}"
           echo "> ${cmd}"
           eval "${cmd}"

@@ -7,60 +7,70 @@ on:
       - develop
       - develop-mame
       - dev/storybook8 # for testing
-  pull_request_target:
+  pull_request:
     branches-ignore:
       # Since pull requests targets master mostly is the "develop" branch.
       # Storybook CI is checked on the "push" event of "develop" branch so it would cause a duplicate build.
       # This is a waste of chromatic build quota, so we don't run storybook CI on pull requests targets master.
       - master
 
+permissions:
+  contents: read
+
 jobs:
   build_storybook:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
 
     env:
       NODE_OPTIONS: "--max_old_space_size=7168"
 
     steps:
-    - uses: actions/checkout@v4.1.1
-      if: github.event_name != 'pull_request_target'
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
+      if: github.event_name == 'push'
       with:
         fetch-depth: 0
         submodules: true
-    - uses: actions/checkout@v4.1.1
-      if: github.event_name == 'pull_request_target'
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
+      if: github.event_name == 'pull_request'
       with:
         fetch-depth: 0
         submodules: true
         ref: "refs/pull/${{ github.event.number }}/merge"
     - name: Checkout actual HEAD
-      if: github.event_name == 'pull_request_target'
+      if: github.event_name == 'pull_request'
       id: rev
       run: |
         echo "base=$(git rev-list --parents -n1 HEAD | cut -d" " -f2)" >> $GITHUB_OUTPUT
         git checkout $(git rev-list --parents -n1 HEAD | cut -d" " -f3)
-    - name: Install pnpm
+    - name: Setup pnpm
       uses: pnpm/action-setup@v4
-    - name: Use Node.js 20.x
+    - name: Setup Node.js
       uses: actions/setup-node@v4.0.3
       with:
         node-version-file: '.node-version'
         cache: 'pnpm'
-    - run: corepack enable
-    - run: pnpm i --frozen-lockfile
-    - name: Check pnpm-lock.yaml
+    - name: Enable Corepack
+      run: corepack enable
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    - name: Check if lock file is not modified
       run: git diff --exit-code pnpm-lock.yaml
     - name: Build misskey-js
-      run: pnpm --filter misskey-js build
-    - name: Build storybook
-      run: pnpm --filter frontend build-storybook
+      run: pnpm --filter misskey-js run build
+    - name: Build Storybook
+      run: pnpm --filter frontend run build-storybook
     - name: Publish to Chromatic
-      if: github.event_name != 'pull_request_target' && github.ref == 'refs/heads/master'
-      run: pnpm --filter frontend chromatic --exit-once-uploaded -d storybook-static
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      run: pnpm --filter frontend run chromatic --exit-once-uploaded -d storybook-static
       env:
         CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
     - name: Publish to Chromatic
-      if: github.event_name != 'pull_request_target' && github.ref != 'refs/heads/master'
+      if: github.event_name == 'push' && github.ref != 'refs/heads/master'
       id: chromatic_push
       run: |
         DIFF="${{ github.event.before }} HEAD"
@@ -71,7 +81,7 @@ jobs:
         if [ "$CHROMATIC_PARAMETER" = " --skip" ]; then
           echo "skip=true" >> $GITHUB_OUTPUT
         fi
-        if pnpm --filter frontend chromatic -d storybook-static $(echo "$CHROMATIC_PARAMETER"); then
+        if pnpm --filter frontend run chromatic -d storybook-static $(echo "$CHROMATIC_PARAMETER"); then
           echo "success=true" >> $GITHUB_OUTPUT
         else
           echo "success=false" >> $GITHUB_OUTPUT
@@ -79,7 +89,7 @@ jobs:
       env:
         CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
     - name: Publish to Chromatic
-      if: github.event_name == 'pull_request_target'
+      if: github.event_name == 'pull_request'
       id: chromatic_pull_request
       run: |
         DIFF="${{ steps.rev.outputs.base }} HEAD"
@@ -94,13 +104,13 @@ jobs:
         if [ "$BRANCH" = "adzukimame:$HEAD_REF" ]; then
           BRANCH="$HEAD_REF"
         fi
-        pnpm --filter frontend chromatic --exit-once-uploaded -d storybook-static --branch-name "$BRANCH" $(echo "$CHROMATIC_PARAMETER")
+        pnpm --filter frontend run chromatic --exit-once-uploaded -d storybook-static --branch-name "$BRANCH" $(echo "$CHROMATIC_PARAMETER")
       env:
         HEAD_REF: ${{ github.event.pull_request.head.ref }}
         CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
     - name: Notify that Chromatic detects changes
       uses: actions/github-script@v7.0.1
-      if: github.event_name != 'pull_request_target' && steps.chromatic_push.outputs.success == 'false'
+      if: github.event_name == 'push' && steps.chromatic_push.outputs.success == 'false'
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
