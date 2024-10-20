@@ -13,6 +13,7 @@ on:
       - packages/misskey-js/**
       - packages/shared/eslint.config.js
       - .github/workflows/lint.yml
+      - .node-version
   pull_request:
     paths:
       - packages/backend/**
@@ -21,9 +22,15 @@ on:
       - packages/misskey-js/**
       - packages/shared/eslint.config.js
       - .github/workflows/lint.yml
+      - .node-version
+
+permissions:
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         workspace:
@@ -31,48 +38,67 @@ jobs:
         - frontend
         - sw
         - misskey-js
+
     env:
       eslint-cache-version: v1
       eslint-cache-path: ${{ github.workspace }}/node_modules/.cache/eslint-${{ matrix.workspace }}
+
     steps:
-    - uses: actions/checkout@v4.1.1
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
       with:
         submodules: true
-    - uses: pnpm/action-setup@v4
-    - uses: actions/setup-node@v4.0.3
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4.0.3
       with:
         node-version-file: '.node-version'
         cache: 'pnpm'
-    - run: corepack enable
-    - run: pnpm i --frozen-lockfile
-    - run: git diff --exit-code pnpm-lock.yaml
+    - name: Enable Corepack
+      run: corepack enable
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    - name: Check if lock file is not modified
+      run: git diff --exit-code pnpm-lock.yaml
     - name: Restore eslint cache
       uses: actions/cache@v4.0.2
       with:
         path: ${{ env.eslint-cache-path }}
         key: eslint-${{ env.eslint-cache-version }}-${{ matrix.workspace }}-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ github.ref_name }}-${{ github.sha }}
         restore-keys: eslint-${{ env.eslint-cache-version }}-${{ matrix.workspace }}-${{ hashFiles('**/pnpm-lock.yaml') }}-
-    - run: pnpm --filter ${{ matrix.workspace }} run eslint --cache --cache-location ${{ env.eslint-cache-path }} --cache-strategy content
+    - name: Run lint
+      run: pnpm --filter ${{ matrix.workspace }} run eslint --cache --cache-location ${{ env.eslint-cache-path }} --cache-strategy content
 
   typecheck:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         workspace:
         - backend
         - misskey-js
+
     steps:
-    - uses: actions/checkout@v4.1.1
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
       with:
         submodules: true
-    - uses: pnpm/action-setup@v4
-    - uses: actions/setup-node@v4.0.3
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4.0.3
       with:
         node-version-file: '.node-version'
         cache: 'pnpm'
-    - run: corepack enable
-    - run: pnpm i --frozen-lockfile
-    - run: git diff --exit-code pnpm-lock.yaml
-    - run: pnpm --filter misskey-js run build
+    - name: Enable Corepack
+      run: corepack enable
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    - name: Check if lock file is not modified
+      run: git diff --exit-code pnpm-lock.yaml
+    - name: Build misskey-js
+      run: pnpm --filter misskey-js run build
       if: ${{ matrix.workspace == 'backend' }}
-    - run: pnpm --filter ${{ matrix.workspace }} run typecheck
+    - name: Run typecheck
+      run: pnpm --filter ${{ matrix.workspace }} run typecheck

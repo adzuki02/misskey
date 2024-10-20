@@ -16,7 +16,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4.1.1
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
         with:
           submodules: true
           fetch-tags: true
@@ -48,18 +49,18 @@ jobs:
         run: |
           START_TAG=$(if [ '${{ steps.version_changed.outputs.version_changed }}' == 'true' ]; then echo '${{ steps.previous_version.outputs.previous_version }}'; else echo '${{ steps.current_version.outputs.current_version }}'; fi)
           echo "notes_start_tag=$START_TAG" >> $GITHUB_OUTPUT
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
-          run_install: false
-      - uses: actions/setup-node@v4.0.2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.3
         with:
           node-version-file: '.node-version'
           cache: 'pnpm'
-      - run: corepack enable
-      - run: pnpm i --frozen-lockfile
-      - name: Check pnpm-lock.yaml
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Check if lock file is not modified
         run: git diff --exit-code pnpm-lock.yaml
       - name: Build
         run: pnpm run build

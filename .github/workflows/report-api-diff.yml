@@ -9,10 +9,17 @@ on:
     paths:
       - packages/backend/**
       - .github/workflows/report-api-diff.yml
+      - .node-version
+
+permissions:
+  contents: read
 
 jobs:
   get-api-json:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     strategy:
       matrix:
@@ -24,30 +31,45 @@ jobs:
             ref: refs/pull/${{ github.event.number }}/merge
 
     steps:
-    - uses: actions/checkout@v4.1.1
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
       with:
         ref: ${{ matrix.ref }}
         submodules: true
-    - uses: pnpm/action-setup@v4
-    - uses: actions/setup-node@v4.0.3
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4.0.3
       with:
         node-version-file: '.node-version'
         cache: 'pnpm'
-    - run: corepack enable
-    - run: pnpm i --frozen-lockfile
-    - run: git diff --exit-code pnpm-lock.yaml
-    - run: cp .config/example.yml .config/default.yml
-    - run: pnpm run build-pre
-    - run: pnpm --filter backend generate-api-json
-    - run: cp packages/backend/built/api.json ${{ matrix.api-json-name }}
-    - uses: actions/upload-artifact@v4
+    - name: Enable Corepack
+      run: corepack enable
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    - name: Check if lock file is not modified
+      run: git diff --exit-code pnpm-lock.yaml
+    - name: Copy config file
+      run: cp .config/example.yml .config/default.yml
+    - name: Pre-build
+      run: pnpm run build-pre
+    - name: Generate api.json
+      run: pnpm --filter backend run generate-api-json
+    - name: Copy api.json
+      run: cp packages/backend/built/api.json ${{ matrix.api-json-name }}
+    - name: Upload api.json
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.api-json-name }}
         path: ${{ matrix.api-json-name }}
 
   get-api-json-diff:
     runs-on: ubuntu-latest
+
     needs: get-api-json
+
+    permissions:
+      pull-requests: write
 
     steps:
       - name: Download artifacts
@@ -68,8 +90,8 @@ jobs:
         with:
           name: api-full.json.diff
           path: api-full.json.diff
-      - id: out-diff
-        name: Build diff Comment
+      - name: Build diff Comment
+        id: out-diff
         run: |
           HEADER="このPRによるapi.jsonの差分"
           FOOTER="[Get diff files from Workflow Page](https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID})"
@@ -87,7 +109,8 @@ jobs:
             echo '</details>' >> .output.md
           fi
           echo "$FOOTER" >> ./output.md
-      - uses: thollander/actions-comment-pull-request@v2
+      - name: Send comment
+        uses: thollander/actions-comment-pull-request@v2
         with:
           pr_number: ${{ github.event.number }}
           comment_tag: show_diff

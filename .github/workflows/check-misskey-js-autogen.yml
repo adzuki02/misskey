@@ -1,0 +1,134 @@
+name: Check misskey-js autogen
+
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+      - develop-mame
+      - improve-misskey-js-autogen-check
+    paths:
+      - packages/backend/**
+      - .github/workflows/check-misskey-js-autogen.yml
+      - .node-version
+
+permissions:
+  contents: read
+
+jobs:
+  generate-misskey-js:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    if: ${{ github.event.pull_request.mergeable == null || github.event.pull_request.mergeable == true }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+        with:
+          submodules: true
+          ref: refs/pull/${{ github.event.number }}/merge
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.4
+        with:
+          node-version-file: '.node-version'
+          cache: pnpm
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Check if lock file is not modified
+        run: git diff --exit-code pnpm-lock.yaml
+      - name: Copy config file
+        run: cp .config/example.yml .config/default.yml
+      - name: Pre-build
+        run: pnpm run build-pre
+      - name: Generate API JSON
+        run: pnpm --filter backend run generate-api-json
+      - name: Build misskey-js
+        run: |
+          cp packages/backend/built/api.json packages/misskey-js/generator/api.json
+          pnpm --filter misskey-js-type-generator run generate
+      - name: Upload Generated
+        uses: actions/upload-artifact@v4
+        with:
+          name: misskey-js-generated
+          path: packages/misskey-js/generator/built/autogen
+
+  get-actual-misskey-js:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    if: ${{ github.event.pull_request.mergeable == null || github.event.pull_request.mergeable == true }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+        with:
+          ref: refs/pull/${{ github.event.number }}/merge
+          sparse-checkout: |
+            packages/misskey-js/src/autogen
+      - name: Upload Actual
+        uses: actions/upload-artifact@v4
+        with:
+          name: misskey-js-actual
+          path: packages/misskey-js/src/autogen
+
+  comment-misskey-js-autogen:
+    runs-on: ubuntu-latest
+
+    needs: [generate-misskey-js, get-actual-misskey-js]
+
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Download generated misskey-js
+        uses: actions/download-artifact@v4
+        with:
+          name: misskey-js-generated
+          path: misskey-js-generated
+      - name: Download actual misskey-js
+        uses: actions/download-artifact@v4
+        with:
+          name: misskey-js-actual
+          path: misskey-js-actual
+      - name: check misskey-js changes
+        id: check-changes
+        run: |
+          diff -r -u --label=generated --label=on-tree ./misskey-js-generated ./misskey-js-actual > misskey-js.diff || true
+          if [ -s misskey-js.diff ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Send message
+        if: steps.check-changes.outputs.changes == 'true'
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: check-misskey-js-autogen
+          message: |-
+            Changes are detected on misskey-js type definitions.
+            Please regenerate misskey-js type definitions.
+
+            example:
+            ```sh
+            pnpm run build-misskey-js-with-types
+            ```
+      - name: Send message
+        if: steps.check-changes.outputs.changes == 'false'
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: check-misskey-js-autogen
+          mode: delete
+          message: "Changes on misskey-js type definitions are solved."
+          create_if_not_exists: false
+      - name: Fail if changes are detected
+        if: steps.check-changes.outputs.changes == 'true'
+        run: exit 1

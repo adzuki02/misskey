@@ -13,6 +13,7 @@ on:
       # for e2e
       - packages/backend/**
       - .github/workflows/test-frontend.yml
+      - .node-version
   pull_request:
     paths:
       - packages/frontend/**
@@ -21,32 +22,42 @@ on:
       # for e2e
       - packages/backend/**
       - .github/workflows/test-frontend.yml
+      - .node-version
+
+permissions:
+  contents: read
+
 jobs:
   vitest:
     name: vitest (frontend)
+
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4.1.1
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
       with:
         submodules: true
-    - name: Install pnpm
+    - name: Setup pnpm
       uses: pnpm/action-setup@v4
-    - uses: actions/setup-node@v4.0.3
+    - name: Setup Node.js
+      uses: actions/setup-node@v4.0.3
       with:
         node-version-file: '.node-version'
         cache: 'pnpm'
-    - run: corepack enable
-    - run: pnpm i --frozen-lockfile
-    - name: Check pnpm-lock.yaml
+    - name: Enable Corepack
+      run: corepack enable
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    - name: Check if lock file is not modified
       run: git diff --exit-code pnpm-lock.yaml
-    - name: Copy Configure
+    - name: Copy config file
       run: cp .github/misskey/test.yml .config
     - name: Build
       run: pnpm build
     - name: Test
       run: pnpm --filter frontend test-and-coverage
-    - name: Upload Coverage
+    - name: Upload coverage
       uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
@@ -54,6 +65,7 @@ jobs:
 
   e2e:
     name: e2e (frontend)
+
     runs-on: ubuntu-latest
 
     strategy:
@@ -73,21 +85,25 @@ jobs:
           - 56312:6379
 
     steps:
-    - uses: actions/checkout@v4.1.1
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
       with:
         submodules: true
     # https://github.com/cypress-io/cypress-docker-images/issues/150
-    - name: Install pnpm
+    - name: Setup pnpm
       uses: pnpm/action-setup@v4
-    - uses: actions/setup-node@v4.0.3
+    - name: Setup Node.js
+      uses: actions/setup-node@v4.0.3
       with:
         node-version-file: '.node-version'
         cache: 'pnpm'
-    - run: corepack enable
-    - run: pnpm i --frozen-lockfile
-    - name: Check pnpm-lock.yaml
+    - name: Enable Corepack
+      run: corepack enable
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    - name: Check if lock file is not modified
       run: git diff --exit-code pnpm-lock.yaml
-    - name: Copy Configure
+    - name: Copy config file
       run: cp .github/misskey/test.yml .config
     - name: Build
       run: pnpm build
@@ -96,9 +112,9 @@ jobs:
       run: echo -e 'pcm.!default {\n type hw\n card 0\n}\n\nctl.!default {\n type hw\n card 0\n}' > ~/.asoundrc
     # XXX: This tries reinstalling Cypress if the binary is not cached
     # Remove this when the cache issue is fixed
-    - name: Cypress install
+    - name: Install Cypress
       run: pnpm exec cypress install
-    - name: Cypress run
+    - name: Run Cypress
       uses: cypress-io/github-action@v6
       timeout-minutes: 15
       with:
@@ -107,12 +123,14 @@ jobs:
         wait-on: 'http://localhost:61812'
         headed: true
         browser: chrome
-    - uses: actions/upload-artifact@v4
+    - name: Upload screenshots
+      uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: chrome-cypress-screenshots
         path: cypress/screenshots
-    - uses: actions/upload-artifact@v4
+    - name: Upload videos
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: chrome-cypress-videos
