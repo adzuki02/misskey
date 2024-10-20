@@ -21,25 +21,28 @@ jobs:
   build_storybook:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     env:
       NODE_OPTIONS: "--max_old_space_size=7168"
 
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.1
-      if: github.event_name != 'pull_request_target'
+      if: github.event_name == 'push'
       with:
         fetch-depth: 0
         submodules: true
     - name: Checkout
       uses: actions/checkout@v4.1.1
-      if: github.event_name == 'pull_request_target'
+      if: github.event_name == 'pull_request'
       with:
         fetch-depth: 0
         submodules: true
         ref: "refs/pull/${{ github.event.number }}/merge"
     - name: Checkout actual HEAD
-      if: github.event_name == 'pull_request_target'
+      if: github.event_name == 'pull_request'
       id: rev
       run: |
         echo "base=$(git rev-list --parents -n1 HEAD | cut -d" " -f2)" >> $GITHUB_OUTPUT
@@ -62,12 +65,12 @@ jobs:
     - name: Build Storybook
       run: pnpm --filter frontend run build-storybook
     - name: Publish to Chromatic
-      if: github.event_name != 'pull_request_target' && github.ref == 'refs/heads/master'
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       run: pnpm --filter frontend run chromatic --exit-once-uploaded -d storybook-static
       env:
         CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
     - name: Publish to Chromatic
-      if: github.event_name != 'pull_request_target' && github.ref != 'refs/heads/master'
+      if: github.event_name == 'push' && github.ref != 'refs/heads/master'
       id: chromatic_push
       run: |
         DIFF="${{ github.event.before }} HEAD"
@@ -86,7 +89,7 @@ jobs:
       env:
         CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
     - name: Publish to Chromatic
-      if: github.event_name == 'pull_request_target'
+      if: github.event_name == 'pull_request'
       id: chromatic_pull_request
       run: |
         DIFF="${{ steps.rev.outputs.base }} HEAD"
@@ -107,7 +110,7 @@ jobs:
         CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
     - name: Notify that Chromatic detects changes
       uses: actions/github-script@v7.0.1
-      if: github.event_name != 'pull_request_target' && steps.chromatic_push.outputs.success == 'false'
+      if: github.event_name == 'push' && steps.chromatic_push.outputs.success == 'false'
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
