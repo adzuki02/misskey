@@ -15,14 +15,16 @@ on:
       - .github/workflows/test-misskey-js.yml
       - .node-version
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   test:
     name: test (misskey-js)
 
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout

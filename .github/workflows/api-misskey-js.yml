@@ -16,12 +16,14 @@ on:
       - .github/workflows/api-misskey-js.yml
       - .node-version
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   report:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout

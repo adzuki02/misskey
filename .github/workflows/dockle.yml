@@ -8,12 +8,14 @@ on:
       - develop-mame
   pull_request:
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   dockle:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     env:
       DOCKER_CONTENT_TRUST: 1

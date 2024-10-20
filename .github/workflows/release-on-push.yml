@@ -5,8 +5,7 @@ on:
     branches:
       - develop-mame
 
-permissions:
-  contents: write
+permissions: {}
 
 env:
   NODE_ENV: production
@@ -15,11 +14,13 @@ jobs:
   release:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
         with:
-          submodules: true
           fetch-tags: true
           fetch-depth: 2
       - name: Save current version
