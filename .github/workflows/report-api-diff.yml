@@ -123,3 +123,10 @@ jobs:
           comment_tag: show_diff_error
           message: |
             api.jsonの差分作成中にエラーが発生しました。詳細は[Workflowのログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})を確認してください。
+      - name: Tell no error to PR
+        if: !failure()
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: show_diff_error
+          message: "api.jsonの差分作成は正常に行われました。"
+          create_if_not_exists: false

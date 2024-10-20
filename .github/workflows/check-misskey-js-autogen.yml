@@ -113,11 +113,11 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           comment_tag: check-misskey-js-autogen
-          message: |-
-            Changes are detected on misskey-js type definitions.
-            Please regenerate misskey-js type definitions.
+          message: |
+            misskey-jsの型定義の変更を検知しました。
+            misskey-jsの型定義を再生成してください。
 
-            example:
+            例:
             ```sh
             pnpm run build-misskey-js-with-types
             ```
@@ -127,7 +127,7 @@ jobs:
         with:
           comment_tag: check-misskey-js-autogen
           mode: delete
-          message: "Changes on misskey-js type definitions are solved."
+          message: "misskey-jsの型定義に問題はありません。"
           create_if_not_exists: false
       - name: Fail if changes are detected
         if: steps.check-changes.outputs.changes == 'true'
