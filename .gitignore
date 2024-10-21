@@ -45,6 +45,7 @@ compose.yml
 /build
 built
 built-test
+js-built
 /data
 /.cache-loader
 /db
@@ -64,6 +65,10 @@ temp
 tsdoc-metadata.json
 misskey-assets
 fluent-emojis
+
+# Vite temporary files
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
 
 # blender backups
 *.blend1
