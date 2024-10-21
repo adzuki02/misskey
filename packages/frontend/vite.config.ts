@@ -103,6 +103,11 @@ export function getConfig(): UserConfig {
 					}
 				},
 			},
+			preprocessorOptions: {
+				scss: {
+					api: 'modern-compiler',
+				},
+			},
 		},
 
 		define: {
