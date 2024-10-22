@@ -1,3 +1,4 @@
+import globals from 'globals';
 import tsParser from '@typescript-eslint/parser';
 import sharedConfig from '../shared/eslint.config.js';
 
@@ -41,6 +42,15 @@ export default [
 				name: '__filename',
 				message: 'Not in ESModule. Use `import.meta.url` instead.',
 			}],
+		},
+	},
+	{
+		files: ['src/server/web/{bios,boot,cli}.js'],
+		languageOptions: {
+			globals: {
+				...Object.fromEntries(Object.entries(globals.node).map(([key]) => [key, 'off'])),
+				...globals.browser,
+			},
 		},
 	},
 ];
