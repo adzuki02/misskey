@@ -39,8 +39,8 @@ export default abstract class Channel {
 		return this.connection.userIdsWhoMeMuting;
 	}
 
-	protected get userIdsWhoMeMutingButExcludingNotification() {
-		return this.connection.userIdsWhoMeMutingButExcludingNotification;
+	protected get userIdsWhoMeStronglyMuting() {
+		return this.connection.userIdsWhoMeStronglyMuting;
 	}
 
 	protected get userIdsWhoMeMutingRenotes() {

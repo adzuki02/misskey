@@ -22,7 +22,7 @@ export class CacheService implements OnApplicationShutdown {
 	public uriPersonCache: MemoryKVCache<MiUser | null>;
 	public userProfileCache: RedisKVCache<MiUserProfile>;
 	public userMutingsCache: RedisKVCache<Set<string>>;
-	public userMutingsNotificationExclusionsCache: RedisKVCache<Set<string>>;
+	public userStrongMutingsCache: RedisKVCache<Set<string>>;
 	public userBlockingCache: RedisKVCache<Set<string>>;
 	public userBlockedCache: RedisKVCache<Set<string>>; // NOTE: 「被」Blockキャッシュ
 	public renoteMutingsCache: RedisKVCache<Set<string>>;
@@ -78,10 +78,10 @@ export class CacheService implements OnApplicationShutdown {
 			fromRedisConverter: (value) => new Set(JSON.parse(value)),
 		});
 
-		this.userMutingsNotificationExclusionsCache = new RedisKVCache<Set<string>>(this.redisClient, 'userMutingsNotificationExclusions', {
+		this.userStrongMutingsCache = new RedisKVCache<Set<string>>(this.redisClient, 'userStrongMutings', {
 			lifetime: 1000 * 60 * 30, // 30m
 			memoryCacheLifetime: 1000 * 60, // 1m
-			fetcher: (key) => this.mutingsRepository.find({ where: { muterId: key, excludeNotification: true }, select: ['muteeId'] }).then(xs => new Set(xs.map(x => x.muteeId))),
+			fetcher: (key) => this.mutingsRepository.find({ where: { muterId: key, excludeNotification: false }, select: ['muteeId'] }).then(xs => new Set(xs.map(x => x.muteeId))),
 			toRedisConverter: (value) => JSON.stringify(Array.from(value)),
 			fromRedisConverter: (value) => new Set(JSON.parse(value)),
 		});
@@ -197,7 +197,7 @@ export class CacheService implements OnApplicationShutdown {
 		this.uriPersonCache.dispose();
 		this.userProfileCache.dispose();
 		this.userMutingsCache.dispose();
-		this.userMutingsNotificationExclusionsCache.dispose();
+		this.userStrongMutingsCache.dispose();
 		this.userBlockingCache.dispose();
 		this.userBlockedCache.dispose();
 		this.renoteMutingsCache.dispose();

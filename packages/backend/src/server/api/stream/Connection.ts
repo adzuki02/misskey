@@ -38,7 +38,7 @@ export default class Connection {
 	public following: Record<string, Pick<MiFollowing, 'withReplies'> | undefined> = {};
 	public followingChannels: Set<string> = new Set();
 	public userIdsWhoMeMuting: Set<string> = new Set();
-	public userIdsWhoMeMutingButExcludingNotification: Set<string> = new Set();
+	public userIdsWhoMeStronglyMuting: Set<string> = new Set();
 	public userIdsWhoBlockingMe: Set<string> = new Set();
 	public userIdsWhoMeMutingRenotes: Set<string> = new Set();
 	public userMutedInstances: Set<string> = new Set();
@@ -61,12 +61,12 @@ export default class Connection {
 	@bindThis
 	public async fetch() {
 		if (this.user == null) return;
-		const [userProfile, following, followingChannels, userIdsWhoMeMuting, userIdsWhoMeMutingButExcludingNotification, userIdsWhoBlockingMe, userIdsWhoMeMutingRenotes] = await Promise.all([
+		const [userProfile, following, followingChannels, userIdsWhoMeMuting, userIdsWhoMeStronglyMuting, userIdsWhoBlockingMe, userIdsWhoMeMutingRenotes] = await Promise.all([
 			this.cacheService.userProfileCache.fetch(this.user.id),
 			this.cacheService.userFollowingsCache.fetch(this.user.id),
 			this.channelFollowingService.userFollowingChannelsCache.fetch(this.user.id),
 			this.cacheService.userMutingsCache.fetch(this.user.id),
-			this.cacheService.userMutingsNotificationExclusionsCache.fetch(this.user.id),
+			this.cacheService.userStrongMutingsCache.fetch(this.user.id),
 			this.cacheService.userBlockedCache.fetch(this.user.id),
 			this.cacheService.renoteMutingsCache.fetch(this.user.id),
 		]);
@@ -74,7 +74,7 @@ export default class Connection {
 		this.following = following;
 		this.followingChannels = followingChannels;
 		this.userIdsWhoMeMuting = userIdsWhoMeMuting;
-		this.userIdsWhoMeMutingButExcludingNotification = userIdsWhoMeMutingButExcludingNotification;
+		this.userIdsWhoMeStronglyMuting = userIdsWhoMeStronglyMuting;
 		this.userIdsWhoBlockingMe = userIdsWhoBlockingMe;
 		this.userIdsWhoMeMutingRenotes = userIdsWhoMeMutingRenotes;
 		this.userMutedInstances = new Set(userProfile.mutedInstances);
