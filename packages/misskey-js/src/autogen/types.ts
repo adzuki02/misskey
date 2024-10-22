@@ -3388,22 +3388,6 @@ export type paths = {
      */
     post: operations['users___update-memo'];
   };
-  '/fetch-rss': {
-    /**
-     * fetch-rss
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    get: operations['fetch-rss'];
-    /**
-     * fetch-rss
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['fetch-rss'];
-  };
   '/fetch-external-resources': {
     /**
      * fetch-external-resources
@@ -4560,76 +4544,6 @@ export type components = {
       canImportFollowing: boolean;
       canImportMuting: boolean;
       canImportUserLists: boolean;
-    };
-    ReversiGameLite: {
-      /** Format: id */
-      id: string;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      startedAt: string | null;
-      /** Format: date-time */
-      endedAt: string | null;
-      isStarted: boolean;
-      isEnded: boolean;
-      /** Format: id */
-      user1Id: string;
-      /** Format: id */
-      user2Id: string;
-      user1: components['schemas']['UserLite'];
-      user2: components['schemas']['UserLite'];
-      /** Format: id */
-      winnerId: string | null;
-      winner: components['schemas']['UserLite'] | null;
-      /** Format: id */
-      surrenderedUserId: string | null;
-      /** Format: id */
-      timeoutUserId: string | null;
-      black: number | null;
-      bw: string;
-      noIrregularRules: boolean;
-      isLlotheo: boolean;
-      canPutEverywhere: boolean;
-      loopedBoard: boolean;
-      timeLimitForEachTurn: number;
-    };
-    ReversiGameDetailed: {
-      /** Format: id */
-      id: string;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      startedAt: string | null;
-      /** Format: date-time */
-      endedAt: string | null;
-      isStarted: boolean;
-      isEnded: boolean;
-      form1: Record<string, never> | null;
-      form2: Record<string, never> | null;
-      user1Ready: boolean;
-      user2Ready: boolean;
-      /** Format: id */
-      user1Id: string;
-      /** Format: id */
-      user2Id: string;
-      user1: components['schemas']['UserLite'];
-      user2: components['schemas']['UserLite'];
-      /** Format: id */
-      winnerId: string | null;
-      winner: components['schemas']['UserLite'] | null;
-      /** Format: id */
-      surrenderedUserId: string | null;
-      /** Format: id */
-      timeoutUserId: string | null;
-      black: number | null;
-      bw: string;
-      noIrregularRules: boolean;
-      isLlotheo: boolean;
-      canPutEverywhere: boolean;
-      loopedBoard: boolean;
-      timeLimitForEachTurn: number;
-      logs: number[][];
-      map: string[];
     };
     MetaLite: {
       maintainerName: string | null;
@@ -26426,106 +26340,6 @@ export type operations = {
       /** @description OK (without any results) */
       204: {
         content: never;
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * fetch-rss
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  'fetch-rss': {
-    requestBody: {
-      content: {
-        'application/json': {
-          url: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': {
-            image?: {
-              link?: string;
-              url: string;
-              title?: string;
-            };
-            paginationLinks?: {
-              self?: string;
-              first?: string;
-              next?: string;
-              last?: string;
-              prev?: string;
-            };
-            link?: string;
-            title?: string;
-            items: {
-                link?: string;
-                guid?: string;
-                title?: string;
-                pubDate?: string;
-                creator?: string;
-                summary?: string;
-                content?: string;
-                isoDate?: string;
-                categories?: string[];
-                contentSnippet?: string;
-                enclosure?: {
-                  url: string;
-                  length?: number;
-                  type?: string;
-                };
-              }[];
-            feedUrl?: string;
-            description?: string;
-            itunes?: {
-              image?: string;
-              owner?: {
-                name?: string;
-                email?: string;
-              };
-              author?: string;
-              summary?: string;
-              explicit?: string;
-              categories?: string[];
-              keywords?: string[];
-              [key: string]: unknown;
-            };
-          };
-        };
       };
       /** @description Client error */
       400: {

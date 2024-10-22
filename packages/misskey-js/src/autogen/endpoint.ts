@@ -549,8 +549,6 @@ import type {
 	UsersShowRequest,
 	UsersShowResponse,
 	UsersUpdateMemoRequest,
-	FetchRssRequest,
-	FetchRssResponse,
 	FetchExternalResourcesRequest,
 	FetchExternalResourcesResponse,
 	RetentionResponse,
@@ -922,7 +920,6 @@ export type Endpoints = {
 	'users/search': { req: UsersSearchRequest; res: UsersSearchResponse };
 	'users/show': { req: UsersShowRequest; res: UsersShowResponse };
 	'users/update-memo': { req: UsersUpdateMemoRequest; res: EmptyResponse };
-	'fetch-rss': { req: FetchRssRequest; res: FetchRssResponse };
 	'fetch-external-resources': { req: FetchExternalResourcesRequest; res: FetchExternalResourcesResponse };
 	'retention': { req: EmptyRequest; res: RetentionResponse };
 }
