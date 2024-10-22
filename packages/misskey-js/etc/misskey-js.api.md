@@ -1694,8 +1694,6 @@ declare namespace entities {
         UsersShowRequest,
         UsersShowResponse,
         UsersUpdateMemoRequest,
-        FetchExternalResourcesRequest,
-        FetchExternalResourcesResponse,
         RetentionResponse,
         Error_2 as Error,
         UserLite,
@@ -1797,12 +1795,6 @@ type FederationUsersRequest = operations['federation___users']['requestBody']['c
 
 // @public (undocumented)
 type FederationUsersResponse = operations['federation___users']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type FetchExternalResourcesRequest = operations['fetch-external-resources']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type FetchExternalResourcesResponse = operations['fetch-external-resources']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type FetchLike = (input: string, init?: {

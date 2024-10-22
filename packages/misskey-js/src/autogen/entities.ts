@@ -552,6 +552,4 @@ export type UsersSearchResponse = operations['users___search']['responses']['200
 export type UsersShowRequest = operations['users___show']['requestBody']['content']['application/json'];
 export type UsersShowResponse = operations['users___show']['responses']['200']['content']['application/json'];
 export type UsersUpdateMemoRequest = operations['users___update-memo']['requestBody']['content']['application/json'];
-export type FetchExternalResourcesRequest = operations['fetch-external-resources']['requestBody']['content']['application/json'];
-export type FetchExternalResourcesResponse = operations['fetch-external-resources']['responses']['200']['content']['application/json'];
 export type RetentionResponse = operations['retention']['responses']['200']['content']['application/json'];

@@ -355,14 +355,6 @@ const routes: RouteDef[] = [{
 	path: '/registry',
 	component: page(() => import('@/pages/registry.vue')),
 }, {
-	path: '/install-extentions',
-	redirect: '/install-extensions',
-	loginRequired: true,
-}, {
-	path: '/install-extensions',
-	component: page(() => import('@/pages/install-extensions.vue')),
-	loginRequired: true,
-}, {
 	path: '/admin/user/:userId',
 	component: iAmModerator ? page(() => import('@/pages/admin-user.vue')) : page(() => import('@/pages/not-found.vue')),
 }, {
