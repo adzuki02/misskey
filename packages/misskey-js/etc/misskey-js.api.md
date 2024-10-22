@@ -1694,8 +1694,6 @@ declare namespace entities {
         UsersShowRequest,
         UsersShowResponse,
         UsersUpdateMemoRequest,
-        FetchRssRequest,
-        FetchRssResponse,
         FetchExternalResourcesRequest,
         FetchExternalResourcesResponse,
         RetentionResponse,
@@ -1819,12 +1817,6 @@ type FetchLike = (input: string, init?: {
     status: number;
     json(): Promise<any>;
 }>;
-
-// @public (undocumented)
-type FetchRssRequest = operations['fetch-rss']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type FetchRssResponse = operations['fetch-rss']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type Flash = components['schemas']['Flash'];
