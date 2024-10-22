@@ -269,7 +269,7 @@ export class ClientServerService {
 				signed: true,
 				maxAge: 600,
 			});
-			return reply.redirect(302, `/miauth/${uuid}?${miauthParams}`);
+			return reply.redirect(`/miauth/${uuid}?${miauthParams}`, 302);
 		});
 
 		fastify.get<{
@@ -306,7 +306,7 @@ export class ClientServerService {
 								signed: true,
 								maxAge: 31536000,
 							});
-							return reply.redirect(302, bullBoardPath);
+							return reply.redirect(bullBoardPath, 302);
 						}
 					} catch {}
 				}
