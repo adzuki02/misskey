@@ -6,7 +6,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import * as Redis from 'ioredis';
 import { DI } from '@/di-symbols.js';
-import type { EmojisRepository, NoteReactionsRepository, UsersRepository, NotesRepository } from '@/models/_.js';
+import type { EmojisRepository, NoteReactionsRepository, UsersRepository, NotesRepository, MiMeta } from '@/models/_.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
 import type { MiRemoteUser, MiUser } from '@/models/User.js';
 import type { MiNote } from '@/models/Note.js';
@@ -21,7 +21,6 @@ import { ApDeliverManagerService } from '@/core/activitypub/ApDeliverManagerServ
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { ApRendererService } from '@/core/activitypub/ApRendererService.js';
-import { MetaService } from '@/core/MetaService.js';
 import { bindThis } from '@/decorators.js';
 import { UtilityService } from '@/core/UtilityService.js';
 import { UserBlockingService } from '@/core/UserBlockingService.js';
@@ -72,8 +71,8 @@ const decodeCustomEmojiRegexp = /^:([\w+-]+)(?:@([\w.-]+))?:$/;
 @Injectable()
 export class ReactionService {
 	constructor(
-		@Inject(DI.redis)
-		private redisClient: Redis.Redis,
+		@Inject(DI.meta)
+		private meta: MiMeta,
 
 		@Inject(DI.usersRepository)
 		private usersRepository: UsersRepository,
@@ -88,7 +87,6 @@ export class ReactionService {
 		private emojisRepository: EmojisRepository,
 
 		private utilityService: UtilityService,
-		private metaService: MetaService,
 		private customEmojiService: CustomEmojiService,
 		private roleService: RoleService,
 		private userEntityService: UserEntityService,
@@ -106,8 +104,6 @@ export class ReactionService {
 
 	@bindThis
 	public async create(user: { id: MiUser['id']; host: MiUser['host']; isBot: MiUser['isBot'] }, note: MiNote, _reaction?: string | null) {
-		const meta = await this.metaService.fetch();
-
 		// Check blocking
 		if (note.userId !== user.id) {
 			const blocked = await this.userBlockingService.checkBlocked(note.userId, user.id);
@@ -176,7 +172,7 @@ export class ReactionService {
 						}
 
 						// for media silenced host, custom emoji reactions are not allowed
-						if (reacterHost != null && this.utilityService.isMediaSilencedHost(meta.mediaSilencedHosts, reacterHost)) {
+						if (reacterHost != null && this.utilityService.isMediaSilencedHost(this.meta.mediaSilencedHosts, reacterHost)) {
 							reaction = FALLBACK;
 						}
 					} else {
@@ -251,7 +247,7 @@ export class ReactionService {
 			}
 		}
 
-		if (meta.enableChartsForRemoteUser || (user.host == null)) {
+		if (this.meta.enableChartsForRemoteUser || (user.host == null)) {
 			this.perUserReactionsChart.update(user, note);
 		}
 
