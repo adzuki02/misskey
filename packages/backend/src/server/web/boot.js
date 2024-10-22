@@ -34,7 +34,11 @@
 	}
 
 	//#region Detect language & fetch translations
+	// localStorageはwindowの値なので気にする必要はない
+	// eslint-disable-next-line no-prototype-builtins
 	if (!localStorage.hasOwnProperty('locale')) {
+		// LANGSはbuild-assetsで適切な値に置き換えられる
+		// eslint-disable-next-line no-undef
 		const supportedLangs = LANGS;
 		let lang = localStorage.getItem('lang');
 		if (lang == null || !supportedLangs.includes(lang)) {
@@ -89,6 +93,8 @@
 
 	//#region Script
 	async function importAppScript() {
+		// CLIENT_ENTRYはbase.pugで設定される
+		// eslint-disable-next-line no-undef
 		await import(`/vite/${CLIENT_ENTRY}`)
 			.catch(async e => {
 				console.error(e);
@@ -321,6 +327,6 @@
 			#errorInfo {
 				width: 50%;
 			}
-		}`)
+		}`);
 	}
 })();

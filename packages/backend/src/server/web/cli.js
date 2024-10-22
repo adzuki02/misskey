@@ -17,13 +17,13 @@ window.onload = async () => {
 			// Send request
 			fetch(endpoint.indexOf('://') > -1 ? endpoint : `/api/${endpoint}`, {
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
 				},
 				method: 'POST',
 				body: JSON.stringify(data),
 				credentials: 'same-origin',
 				mode: 'same-origin',
-				cache: 'no-cache'
+				cache: 'no-cache',
 			}).then(async (res) => {
 				const body = res.status === 204 ? null : await res.json();
 
@@ -42,7 +42,7 @@ window.onload = async () => {
 
 	document.getElementById('submit').addEventListener('click', () => {
 		api('notes/create', {
-			text: document.getElementById('text').value
+			text: document.getElementById('text').value,
 		}).then(() => {
 			location.reload();
 		});
