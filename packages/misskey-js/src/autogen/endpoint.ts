@@ -276,20 +276,6 @@ import type {
 	FollowingRequestsListRequest,
 	FollowingRequestsListResponse,
 	FollowingRequestsRejectRequest,
-	GalleryFeaturedRequest,
-	GalleryFeaturedResponse,
-	GalleryPopularResponse,
-	GalleryPostsRequest,
-	GalleryPostsResponse,
-	GalleryPostsCreateRequest,
-	GalleryPostsCreateResponse,
-	GalleryPostsDeleteRequest,
-	GalleryPostsLikeRequest,
-	GalleryPostsShowRequest,
-	GalleryPostsShowResponse,
-	GalleryPostsUnlikeRequest,
-	GalleryPostsUpdateRequest,
-	GalleryPostsUpdateResponse,
 	GetOnlineUsersCountResponse,
 	GetAvatarDecorationsResponse,
 	HashtagsListRequest,
@@ -323,10 +309,6 @@ import type {
 	IExportFollowingRequest,
 	IFavoritesRequest,
 	IFavoritesResponse,
-	IGalleryLikesRequest,
-	IGalleryLikesResponse,
-	IGalleryPostsRequest,
-	IGalleryPostsResponse,
 	IImportBlockingRequest,
 	IImportFollowingRequest,
 	IImportMutingRequest,
@@ -505,8 +487,6 @@ import type {
 	UsersFollowersResponse,
 	UsersFollowingRequest,
 	UsersFollowingResponse,
-	UsersGalleryPostsRequest,
-	UsersGalleryPostsResponse,
 	UsersGetFrequentlyRepliedUsersRequest,
 	UsersGetFrequentlyRepliedUsersResponse,
 	UsersFeaturedNotesRequest,
@@ -732,15 +712,6 @@ export type Endpoints = {
 	'following/requests/cancel': { req: FollowingRequestsCancelRequest; res: FollowingRequestsCancelResponse };
 	'following/requests/list': { req: FollowingRequestsListRequest; res: FollowingRequestsListResponse };
 	'following/requests/reject': { req: FollowingRequestsRejectRequest; res: EmptyResponse };
-	'gallery/featured': { req: GalleryFeaturedRequest; res: GalleryFeaturedResponse };
-	'gallery/popular': { req: EmptyRequest; res: GalleryPopularResponse };
-	'gallery/posts': { req: GalleryPostsRequest; res: GalleryPostsResponse };
-	'gallery/posts/create': { req: GalleryPostsCreateRequest; res: GalleryPostsCreateResponse };
-	'gallery/posts/delete': { req: GalleryPostsDeleteRequest; res: EmptyResponse };
-	'gallery/posts/like': { req: GalleryPostsLikeRequest; res: EmptyResponse };
-	'gallery/posts/show': { req: GalleryPostsShowRequest; res: GalleryPostsShowResponse };
-	'gallery/posts/unlike': { req: GalleryPostsUnlikeRequest; res: EmptyResponse };
-	'gallery/posts/update': { req: GalleryPostsUpdateRequest; res: GalleryPostsUpdateResponse };
 	'get-online-users-count': { req: EmptyRequest; res: GetOnlineUsersCountResponse };
 	'get-avatar-decorations': { req: EmptyRequest; res: GetAvatarDecorationsResponse };
 	'hashtags/list': { req: HashtagsListRequest; res: HashtagsListResponse };
@@ -770,8 +741,6 @@ export type Endpoints = {
 	'i/export-user-lists': { req: EmptyRequest; res: EmptyResponse };
 	'i/export-antennas': { req: EmptyRequest; res: EmptyResponse };
 	'i/favorites': { req: IFavoritesRequest; res: IFavoritesResponse };
-	'i/gallery/likes': { req: IGalleryLikesRequest; res: IGalleryLikesResponse };
-	'i/gallery/posts': { req: IGalleryPostsRequest; res: IGalleryPostsResponse };
 	'i/import-blocking': { req: IImportBlockingRequest; res: EmptyResponse };
 	'i/import-following': { req: IImportFollowingRequest; res: EmptyResponse };
 	'i/import-muting': { req: IImportMutingRequest; res: EmptyResponse };
@@ -892,7 +861,6 @@ export type Endpoints = {
 	'users/clips': { req: UsersClipsRequest; res: UsersClipsResponse };
 	'users/followers': { req: UsersFollowersRequest; res: UsersFollowersResponse };
 	'users/following': { req: UsersFollowingRequest; res: UsersFollowingResponse };
-	'users/gallery/posts': { req: UsersGalleryPostsRequest; res: UsersGalleryPostsResponse };
 	'users/get-frequently-replied-users': { req: UsersGetFrequentlyRepliedUsersRequest; res: UsersGetFrequentlyRepliedUsersResponse };
 	'users/featured-notes': { req: UsersFeaturedNotesRequest; res: UsersFeaturedNotesResponse };
 	'users/lists/create': { req: UsersListsCreateRequest; res: UsersListsCreateResponse };

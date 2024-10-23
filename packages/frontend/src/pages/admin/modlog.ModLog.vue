@@ -39,7 +39,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					'deleteAccount',
 					'deletePage',
 					'deleteFlash',
-					'deleteGalleryPost',
 				].includes(log.type)
 			}"
 		>{{ i18n.ts._moderationLogTypes[log.type] }}</b>
@@ -79,7 +78,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span v-else-if="log.type === 'deleteAccount'">: @{{ log.info.userUsername }}{{ log.info.userHost ? '@' + log.info.userHost : '' }}</span>
 		<span v-else-if="log.type === 'deletePage'">: @{{ log.info.pageUserUsername }}</span>
 		<span v-else-if="log.type === 'deleteFlash'">: @{{ log.info.flashUserUsername }}</span>
-		<span v-else-if="log.type === 'deleteGalleryPost'">: @{{ log.info.postUserUsername }}</span>
 	</template>
 	<template #icon>
 		<MkAvatar :user="log.user" :class="$style.avatar"/>

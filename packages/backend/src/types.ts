@@ -97,7 +97,6 @@ export const moderationLogTypes = [
 	'deleteAccount',
 	'deletePage',
 	'deleteFlash',
-	'deleteGalleryPost',
 ] as const;
 
 export type ModerationLogPayloads = {
@@ -332,12 +331,6 @@ export type ModerationLogPayloads = {
 		flashUserId: string;
 		flashUserUsername: string;
 		flash: any;
-	};
-	deleteGalleryPost: {
-		postId: string;
-		postUserId: string;
-		postUserUsername: string;
-		post: any;
 	};
 };
 

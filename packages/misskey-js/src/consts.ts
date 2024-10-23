@@ -5,7 +5,6 @@ import type {
 	Announcement,
 	EmojiDetailed,
 	Flash,
-	GalleryPost,
 	InviteCode,
 	MetaDetailed,
 	Note,
@@ -54,10 +53,6 @@ export const permissions = [
 	'write:user-groups',
 	'read:channels',
 	'write:channels',
-	'read:gallery',
-	'write:gallery',
-	'read:gallery-likes',
-	'write:gallery-likes',
 	'read:flash',
 	'write:flash',
 	'read:flash-likes',
@@ -159,7 +154,6 @@ export const moderationLogTypes = [
 	'deleteAccount',
 	'deletePage',
 	'deleteFlash',
-	'deleteGalleryPost',
 ] as const;
 
 type AvatarDecoration = UserLite['avatarDecorations'][number];
@@ -402,11 +396,5 @@ export type ModerationLogPayloads = {
 		flashUserId: string;
 		flashUserUsername: string;
 		flash: Flash;
-	};
-	deleteGalleryPost: {
-		postId: string;
-		postUserId: string;
-		postUserUsername: string;
-		post: GalleryPost;
 	};
 };
