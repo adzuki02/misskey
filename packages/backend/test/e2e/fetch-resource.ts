@@ -140,46 +140,6 @@ describe('Webリソース', () => {
 		test('はGETできない。', async () => await notFound({ path }));
 	});
 
-	describe.each([
-		{ ext: 'rss', type: 'application/rss+xml; charset=utf-8' },
-		{ ext: 'atom', type: 'application/atom+xml; charset=utf-8' },
-		{ ext: 'json', type: 'application/json; charset=utf-8' },
-	])('/@:username.$ext', ({ ext, type }) => {
-		const path = (username: string): string => `/@${username}.${ext}`;
-
-		test('がGETできる。', async () => await ok({
-			path: path(alice.username),
-			type,
-		}));
-
-		test('がGETできる。(ノートが存在しない場合でも。)', async () => await ok({
-			path: path(bob.username),
-			type,
-		}));
-
-		test('は存在しないユーザーはGETできない。', async () => await notOk({
-			path: path('nonexisting'),
-			status: 404,
-		}));
-
-		describe(' has entry such ', () => {
-			beforeEach(() => {
-				post(alice, { text: "**a**" })
-			});
-
-			test('MFMを含まない。', async () => {
-				const content = await simpleGet(path(alice.username), "*/*", undefined, res => res.text());
-				const _body: unknown = content.body;
-				// JSONフィードのときは改めて文字列化する
-				const body: string = typeof (_body) === "object" ? JSON.stringify(_body) : _body as string;
-
-				if (body.includes("**a**")) {
-					throw new Error("MFM shouldn't be included");
-				}
-			});
-		})
-	});
-
 	describe.each([{ path: '/api/foo' }])('$path', ({ path }) => {
 		test('はGETできない。', async () => await notOk({
 			path,

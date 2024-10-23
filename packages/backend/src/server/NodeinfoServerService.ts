@@ -84,7 +84,7 @@ export class NodeinfoServerService {
 				protocols: ['activitypub'],
 				services: {
 					inbound: [] as string[],
-					outbound: ['atom1.0', 'rss2.0'],
+					outbound: [],
 				},
 				openRegistrations: !meta.disableRegistration,
 				usage: {
