@@ -7,7 +7,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="_gaps_m">
 	<MkSelect v-model="statusbar.type" placeholder="Please select">
 		<template #label>{{ i18n.ts.type }}</template>
-		<option value="rss">RSS</option>
 		<option value="federation">Federation</option>
 		<option value="userList">User list timeline</option>
 	</MkSelect>
@@ -29,25 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<option value="veryLarge">{{ i18n.ts.large }}+</option>
 	</MkRadios>
 
-	<template v-if="statusbar.type === 'rss'">
-		<MkInput v-model="statusbar.props.url" manualSave type="url">
-			<template #label>URL</template>
-		</MkInput>
-		<MkSwitch v-model="statusbar.props.shuffle">
-			<template #label>{{ i18n.ts.shuffle }}</template>
-		</MkSwitch>
-		<MkInput v-model="statusbar.props.refreshIntervalSec" manualSave type="number" min="1">
-			<template #label>{{ i18n.ts.refreshInterval }}</template>
-		</MkInput>
-		<MkRange v-model="statusbar.props.marqueeDuration" :min="5" :max="150" :step="1">
-			<template #label>{{ i18n.ts.speed }}</template>
-			<template #caption>{{ i18n.ts.fast }} &lt;-&gt; {{ i18n.ts.slow }}</template>
-		</MkRange>
-		<MkSwitch v-model="statusbar.props.marqueeReverse">
-			<template #label>{{ i18n.ts.reverse }}</template>
-		</MkSwitch>
-	</template>
-	<template v-else-if="statusbar.type === 'federation'">
+	<template v-if="statusbar.type === 'federation'">
 		<MkInput v-model="statusbar.props.refreshIntervalSec" manualSave type="number" min="1">
 			<template #label>{{ i18n.ts.refreshInterval }}</template>
 		</MkInput>
@@ -103,18 +84,10 @@ const props = defineProps<{
 	userLists: Misskey.entities.UserList[] | null;
 }>();
 
-const statusbar = reactive(deepClone(defaultStore.state.statusbars.find(x => x.id === props._id)));
+const statusbar = reactive(deepClone(defaultStore.state.statusbars.find(x => x.id === props._id))!);
 
 watch(() => statusbar.type, () => {
-	if (statusbar.type === 'rss') {
-		statusbar.name = 'NEWS';
-		statusbar.props.url = 'http://feeds.afpbb.com/rss/afpbb/afpbbnews';
-		statusbar.props.shuffle = true;
-		statusbar.props.refreshIntervalSec = 120;
-		statusbar.props.display = 'marquee';
-		statusbar.props.marqueeDuration = 100;
-		statusbar.props.marqueeReverse = false;
-	} else if (statusbar.type === 'federation') {
+	if (statusbar.type === 'federation') {
 		statusbar.name = 'FEDERATION';
 		statusbar.props.refreshIntervalSec = 120;
 		statusbar.props.display = 'marquee';
