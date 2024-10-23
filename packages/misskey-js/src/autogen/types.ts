@@ -2445,15 +2445,6 @@ export type paths = {
      */
     post: operations['notes___favorites___delete'];
   };
-  '/notes/featured': {
-    /**
-     * notes/featured
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:account*
-     */
-    post: operations['notes___featured'];
-  };
   '/notes/global-timeline': {
     /**
      * notes/global-timeline
@@ -3057,22 +3048,6 @@ export type paths = {
      */
     post: operations['users___get-frequently-replied-users'];
   };
-  '/users/featured-notes': {
-    /**
-     * users/featured-notes
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    get: operations['users___featured-notes'];
-    /**
-     * users/featured-notes
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['users___featured-notes'];
-  };
   '/users/lists/create': {
     /**
      * users/lists/create
@@ -3431,7 +3406,6 @@ export type components = {
       bannerId: string | null;
       isModerator: boolean | null;
       isAdmin: boolean | null;
-      injectFeaturedNote: boolean;
       receiveAnnouncementEmail: boolean;
       alwaysMarkNsfw: boolean;
       autoSensitive: boolean;
@@ -8436,7 +8410,6 @@ export type operations = {
             alwaysMarkNsfw: boolean;
             autoSensitive: boolean;
             carefulBot: boolean;
-            injectFeaturedNote: boolean;
             receiveAnnouncementEmail: boolean;
             mutedWords: (string | string[])[];
             mutedInstances: string[];
@@ -18443,7 +18416,6 @@ export type operations = {
           preventAiLearning?: boolean;
           isBot?: boolean;
           isCat?: boolean;
-          injectFeaturedNote?: boolean;
           receiveAnnouncementEmail?: boolean;
           alwaysMarkNsfw?: boolean;
           autoSensitive?: boolean;
@@ -20271,64 +20243,6 @@ export type operations = {
       /** @description OK (without any results) */
       204: {
         content: never;
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * notes/featured
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:account*
-   */
-  notes___featured: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default 10 */
-          limit?: number;
-          /** Format: misskey:id */
-          untilId?: string;
-          /** Format: misskey:id */
-          channelId?: string | null;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Note'][];
-        };
       };
       /** @description Client error */
       400: {
@@ -24121,64 +24035,6 @@ export type operations = {
               user: components['schemas']['UserDetailed'];
               weight: number;
             }[];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * users/featured-notes
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  'users___featured-notes': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default 10 */
-          limit?: number;
-          /** Format: misskey:id */
-          untilId?: string;
-          /** Format: misskey:id */
-          userId: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Note'][];
         };
       };
       /** @description Client error */

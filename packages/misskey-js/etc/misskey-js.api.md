@@ -1537,8 +1537,6 @@ declare namespace entities {
         NotesDeleteRequest,
         NotesFavoritesCreateRequest,
         NotesFavoritesDeleteRequest,
-        NotesFeaturedRequest,
-        NotesFeaturedResponse,
         NotesGlobalTimelineRequest,
         NotesGlobalTimelineResponse,
         NotesHybridTimelineRequest,
@@ -1634,8 +1632,6 @@ declare namespace entities {
         UsersFollowingResponse,
         UsersGetFrequentlyRepliedUsersRequest,
         UsersGetFrequentlyRepliedUsersResponse,
-        UsersFeaturedNotesRequest,
-        UsersFeaturedNotesResponse,
         UsersListsCreateRequest,
         UsersListsCreateResponse,
         UsersListsDeleteRequest,
@@ -2411,12 +2407,6 @@ type NotesFavoritesCreateRequest = operations['notes___favorites___create']['req
 type NotesFavoritesDeleteRequest = operations['notes___favorites___delete']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
-type NotesFeaturedRequest = operations['notes___featured']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type NotesFeaturedResponse = operations['notes___featured']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
 type NotesGlobalTimelineRequest = operations['notes___global-timeline']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -2900,12 +2890,6 @@ type UsersClipsRequest = operations['users___clips']['requestBody']['content']['
 
 // @public (undocumented)
 type UsersClipsResponse = operations['users___clips']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type UsersFeaturedNotesRequest = operations['users___featured-notes']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type UsersFeaturedNotesResponse = operations['users___featured-notes']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type UsersFlashsRequest = operations['users___flashs']['requestBody']['content']['application/json'];

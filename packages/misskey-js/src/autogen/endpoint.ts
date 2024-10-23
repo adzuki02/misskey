@@ -392,8 +392,6 @@ import type {
 	NotesDeleteRequest,
 	NotesFavoritesCreateRequest,
 	NotesFavoritesDeleteRequest,
-	NotesFeaturedRequest,
-	NotesFeaturedResponse,
 	NotesGlobalTimelineRequest,
 	NotesGlobalTimelineResponse,
 	NotesHybridTimelineRequest,
@@ -489,8 +487,6 @@ import type {
 	UsersFollowingResponse,
 	UsersGetFrequentlyRepliedUsersRequest,
 	UsersGetFrequentlyRepliedUsersResponse,
-	UsersFeaturedNotesRequest,
-	UsersFeaturedNotesResponse,
 	UsersListsCreateRequest,
 	UsersListsCreateResponse,
 	UsersListsDeleteRequest,
@@ -796,7 +792,6 @@ export type Endpoints = {
 	'notes/delete': { req: NotesDeleteRequest; res: EmptyResponse };
 	'notes/favorites/create': { req: NotesFavoritesCreateRequest; res: EmptyResponse };
 	'notes/favorites/delete': { req: NotesFavoritesDeleteRequest; res: EmptyResponse };
-	'notes/featured': { req: NotesFeaturedRequest; res: NotesFeaturedResponse };
 	'notes/global-timeline': { req: NotesGlobalTimelineRequest; res: NotesGlobalTimelineResponse };
 	'notes/hybrid-timeline': { req: NotesHybridTimelineRequest; res: NotesHybridTimelineResponse };
 	'notes/local-timeline': { req: NotesLocalTimelineRequest; res: NotesLocalTimelineResponse };
@@ -862,7 +857,6 @@ export type Endpoints = {
 	'users/followers': { req: UsersFollowersRequest; res: UsersFollowersResponse };
 	'users/following': { req: UsersFollowingRequest; res: UsersFollowingResponse };
 	'users/get-frequently-replied-users': { req: UsersGetFrequentlyRepliedUsersRequest; res: UsersGetFrequentlyRepliedUsersResponse };
-	'users/featured-notes': { req: UsersFeaturedNotesRequest; res: UsersFeaturedNotesResponse };
 	'users/lists/create': { req: UsersListsCreateRequest; res: UsersListsCreateResponse };
 	'users/lists/delete': { req: UsersListsDeleteRequest; res: EmptyResponse };
 	'users/lists/list': { req: UsersListsListRequest; res: UsersListsListResponse };
