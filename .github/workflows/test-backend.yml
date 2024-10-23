@@ -64,8 +64,8 @@ jobs:
       run: git diff --exit-code pnpm-lock.yaml
     - name: Copy config file
       run: cp .github/misskey/test.yml .config
-    - name: Build
-      run: pnpm run build
+    - name: Pre-build
+      run: pnpm run build-pre
     - name: Test
       run: pnpm --filter backend run test-and-coverage
     - name: Upload coverage
@@ -113,8 +113,8 @@ jobs:
         run: git diff --exit-code pnpm-lock.yaml
       - name: Copy config file
         run: cp .github/misskey/test.yml .config
-      - name: Build
-        run: pnpm run build
+      - name: Pre-build and Build misskey-js
+        run: pnpm run build-pre && pnpm --filter misskey-js run build
       - name: Test
         run: pnpm --filter backend run test-and-coverage:e2e
       - name: Upload coverage
