@@ -201,10 +201,6 @@ describe('UserSearchService', () => {
 				root,
 			);
 
-			// 見る用
-			// const users = await usersRepository.findBy({ id: In(result) }).then(it => new Map(it.map(x => [x.id, x])));
-			// console.log(result.map(x => users.get(x as any)).map(it => it?.username));
-
 			// フォローしててアクティブなので先頭: alyssa, bob, bobbi
 			// フォローしてて非アクティブなので次: alyson, bobbie
 			// フォローしてないけどアクティブなので次: alyce, alycia, root(アルファベット順的にここになる)
