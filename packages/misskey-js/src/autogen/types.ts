@@ -978,15 +978,6 @@ export type paths = {
      */
     post: operations['channels___create'];
   };
-  '/channels/featured': {
-    /**
-     * channels/featured
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['channels___featured'];
-  };
   '/channels/follow': {
     /**
      * channels/follow
@@ -10938,52 +10929,6 @@ export type operations = {
       };
       /** @description To many requests */
       429: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * channels/featured
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  channels___featured: {
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Channel'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
         content: {
           'application/json': components['schemas']['Error'];
         };

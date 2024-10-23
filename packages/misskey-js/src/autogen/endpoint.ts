@@ -154,7 +154,6 @@ import type {
 	BlockingListResponse,
 	ChannelsCreateRequest,
 	ChannelsCreateResponse,
-	ChannelsFeaturedResponse,
 	ChannelsFollowRequest,
 	ChannelsFollowedRequest,
 	ChannelsFollowedResponse,
@@ -632,7 +631,6 @@ export type Endpoints = {
 	'blocking/delete': { req: BlockingDeleteRequest; res: BlockingDeleteResponse };
 	'blocking/list': { req: BlockingListRequest; res: BlockingListResponse };
 	'channels/create': { req: ChannelsCreateRequest; res: ChannelsCreateResponse };
-	'channels/featured': { req: EmptyRequest; res: ChannelsFeaturedResponse };
 	'channels/follow': { req: ChannelsFollowRequest; res: EmptyResponse };
 	'channels/followed': { req: ChannelsFollowedRequest; res: ChannelsFollowedResponse };
 	'channels/owned': { req: ChannelsOwnedRequest; res: ChannelsOwnedResponse };

@@ -755,9 +755,6 @@ type ChannelsCreateResponse = operations['channels___create']['responses']['200'
 type ChannelsFavoriteRequest = operations['channels___favorite']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
-type ChannelsFeaturedResponse = operations['channels___featured']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
 type ChannelsFollowedRequest = operations['channels___followed']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1299,7 +1296,6 @@ declare namespace entities {
         BlockingListResponse,
         ChannelsCreateRequest,
         ChannelsCreateResponse,
-        ChannelsFeaturedResponse,
         ChannelsFollowRequest,
         ChannelsFollowedRequest,
         ChannelsFollowedResponse,

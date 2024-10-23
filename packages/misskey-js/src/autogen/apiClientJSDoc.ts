@@ -1184,17 +1184,6 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
-     */
-    request<E extends 'channels/featured', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
      * **Credential required**: *Yes* / **Permission**: *write:channels*
      */
     request<E extends 'channels/follow', P extends Endpoints[E]['req']>(

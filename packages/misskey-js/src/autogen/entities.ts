@@ -157,7 +157,6 @@ export type BlockingListRequest = operations['blocking___list']['requestBody']['
 export type BlockingListResponse = operations['blocking___list']['responses']['200']['content']['application/json'];
 export type ChannelsCreateRequest = operations['channels___create']['requestBody']['content']['application/json'];
 export type ChannelsCreateResponse = operations['channels___create']['responses']['200']['content']['application/json'];
-export type ChannelsFeaturedResponse = operations['channels___featured']['responses']['200']['content']['application/json'];
 export type ChannelsFollowRequest = operations['channels___follow']['requestBody']['content']['application/json'];
 export type ChannelsFollowedRequest = operations['channels___followed']['requestBody']['content']['application/json'];
 export type ChannelsFollowedResponse = operations['channels___followed']['responses']['200']['content']['application/json'];
