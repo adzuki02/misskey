@@ -1429,7 +1429,6 @@ declare namespace entities {
         HashtagsSearchResponse,
         HashtagsShowRequest,
         HashtagsShowResponse,
-        HashtagsTrendResponse,
         HashtagsUsersRequest,
         HashtagsUsersResponse,
         IResponse,
@@ -1907,9 +1906,6 @@ type HashtagsShowRequest = operations['hashtags___show']['requestBody']['content
 
 // @public (undocumented)
 type HashtagsShowResponse = operations['hashtags___show']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type HashtagsTrendResponse = operations['hashtags___trend']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type HashtagsUsersRequest = operations['hashtags___users']['requestBody']['content']['application/json'];

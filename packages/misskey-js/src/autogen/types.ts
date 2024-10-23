@@ -1681,22 +1681,6 @@ export type paths = {
      */
     post: operations['hashtags___show'];
   };
-  '/hashtags/trend': {
-    /**
-     * hashtags/trend
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    get: operations['hashtags___trend'];
-    /**
-     * hashtags/trend
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['hashtags___trend'];
-  };
   '/hashtags/users': {
     /**
      * hashtags/users
@@ -4557,7 +4541,6 @@ export type operations = {
             silencedHosts?: string[];
             mediaSilencedHosts: string[];
             pinnedUsers: string[];
-            hiddenTags: string[];
             blockedHosts: string[];
             sensitiveWords: string[];
             prohibitedWords: string[];
@@ -8772,7 +8755,6 @@ export type operations = {
         'application/json': {
           disableRegistration?: boolean | null;
           pinnedUsers?: string[] | null;
-          hiddenTags?: string[] | null;
           blockedHosts?: string[] | null;
           sensitiveWords?: string[] | null;
           prohibitedWords?: string[] | null;
@@ -15559,56 +15541,6 @@ export type operations = {
       200: {
         content: {
           'application/json': components['schemas']['Hashtag'];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * hashtags/trend
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  hashtags___trend: {
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': {
-              tag: string;
-              chart: number[];
-              usersCount: number;
-            }[];
         };
       };
       /** @description Client error */

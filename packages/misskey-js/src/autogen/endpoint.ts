@@ -284,7 +284,6 @@ import type {
 	HashtagsSearchResponse,
 	HashtagsShowRequest,
 	HashtagsShowResponse,
-	HashtagsTrendResponse,
 	HashtagsUsersRequest,
 	HashtagsUsersResponse,
 	IResponse,
@@ -713,7 +712,6 @@ export type Endpoints = {
 	'hashtags/list': { req: HashtagsListRequest; res: HashtagsListResponse };
 	'hashtags/search': { req: HashtagsSearchRequest; res: HashtagsSearchResponse };
 	'hashtags/show': { req: HashtagsShowRequest; res: HashtagsShowResponse };
-	'hashtags/trend': { req: EmptyRequest; res: HashtagsTrendResponse };
 	'hashtags/users': { req: HashtagsUsersRequest; res: HashtagsUsersResponse };
 	'i': { req: EmptyRequest; res: IResponse };
 	'i/2fa/done': { req: I2faDoneRequest; res: I2faDoneResponse };

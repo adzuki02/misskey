@@ -287,7 +287,6 @@ export type HashtagsSearchRequest = operations['hashtags___search']['requestBody
 export type HashtagsSearchResponse = operations['hashtags___search']['responses']['200']['content']['application/json'];
 export type HashtagsShowRequest = operations['hashtags___show']['requestBody']['content']['application/json'];
 export type HashtagsShowResponse = operations['hashtags___show']['responses']['200']['content']['application/json'];
-export type HashtagsTrendResponse = operations['hashtags___trend']['responses']['200']['content']['application/json'];
 export type HashtagsUsersRequest = operations['hashtags___users']['requestBody']['content']['application/json'];
 export type HashtagsUsersResponse = operations['hashtags___users']['responses']['200']['content']['application/json'];
 export type IResponse = operations['i']['responses']['200']['content']['application/json'];
