@@ -23,7 +23,7 @@ describe('Note', () => {
 
 	beforeAll(async () => {
 		await new Promise<void>(resolve => {
-			setTimeout(() => resolve(), 1000 * 1);
+			setTimeout(() => resolve(), 1000 * 5);
 		});
 		const connection = await initTestDb(true);
 		Notes = connection.getRepository(MiNote);
