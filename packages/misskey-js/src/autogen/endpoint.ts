@@ -432,7 +432,6 @@ import type {
 	PagesCreateRequest,
 	PagesCreateResponse,
 	PagesDeleteRequest,
-	PagesFeaturedResponse,
 	PagesLikeRequest,
 	PagesShowRequest,
 	PagesShowResponse,
@@ -818,7 +817,6 @@ export type Endpoints = {
 	'page-push': { req: PagePushRequest; res: EmptyResponse };
 	'pages/create': { req: PagesCreateRequest; res: PagesCreateResponse };
 	'pages/delete': { req: PagesDeleteRequest; res: EmptyResponse };
-	'pages/featured': { req: EmptyRequest; res: PagesFeaturedResponse };
 	'pages/like': { req: PagesLikeRequest; res: EmptyResponse };
 	'pages/show': { req: PagesShowRequest; res: PagesShowResponse };
 	'pages/unlike': { req: PagesUnlikeRequest; res: EmptyResponse };

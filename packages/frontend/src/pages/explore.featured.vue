@@ -27,5 +27,5 @@ const paginationForPolls = {
 	},
 };
 
-const tab = ref('notes');
+const tab = ref('polls');
 </script>

@@ -302,7 +302,6 @@ import * as ep___notifications_testNotification from './endpoints/notifications/
 import * as ep___pagePush from './endpoints/page-push.js';
 import * as ep___pages_create from './endpoints/pages/create.js';
 import * as ep___pages_delete from './endpoints/pages/delete.js';
-import * as ep___pages_featured from './endpoints/pages/featured.js';
 import * as ep___pages_like from './endpoints/pages/like.js';
 import * as ep___pages_show from './endpoints/pages/show.js';
 import * as ep___pages_unlike from './endpoints/pages/unlike.js';
@@ -655,7 +654,6 @@ const eps = [
 	['page-push', ep___pagePush],
 	['pages/create', ep___pages_create],
 	['pages/delete', ep___pages_delete],
-	['pages/featured', ep___pages_featured],
 	['pages/like', ep___pages_like],
 	['pages/show', ep___pages_show],
 	['pages/unlike', ep___pages_unlike],
