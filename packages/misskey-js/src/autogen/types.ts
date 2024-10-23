@@ -2743,15 +2743,6 @@ export type paths = {
      */
     post: operations['flash___delete'];
   };
-  '/flash/featured': {
-    /**
-     * flash/featured
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['flash___featured'];
-  };
   '/flash/like': {
     /**
      * flash/like
@@ -22207,52 +22198,6 @@ export type operations = {
       /** @description OK (without any results) */
       204: {
         content: never;
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * flash/featured
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  flash___featured: {
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Flash'][];
-        };
       };
       /** @description Client error */
       400: {
