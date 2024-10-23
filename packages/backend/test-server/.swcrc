@@ -1,5 +1,6 @@
 {
 	"$schema": "https://json.schemastore.org/swcrc",
+	"exclude": ["eslint\\.config\\.js"],
 	"jsc": {
 		"parser": {
 			"syntax": "typescript",

@@ -119,8 +119,6 @@ describe('[シナリオ] ユーザ通報', () => {
 				await createAbuseReport(abuse, bob);
 			});
 
-			console.log(JSON.stringify(webhookBody, null, 2));
-
 			expect(webhookBody.hookId).toBe(webhook.id);
 			expect(webhookBody.type).toBe('abuseReport');
 			expect(webhookBody.body.targetUserId).toBe(alice.id);
@@ -144,7 +142,6 @@ describe('[シナリオ] ユーザ通報', () => {
 				await createAbuseReport(abuse, bob);
 			});
 
-			console.log(JSON.stringify(webhookBody1, null, 2));
 			expect(webhookBody1.hookId).toBe(webhook.id);
 			expect(webhookBody1.type).toBe('abuseReport');
 			expect(webhookBody1.body.targetUserId).toBe(alice.id);
@@ -161,7 +158,6 @@ describe('[シナリオ] ユーザ通報', () => {
 				}, admin);
 			});
 
-			console.log(JSON.stringify(webhookBody2, null, 2));
 			expect(webhookBody2.hookId).toBe(webhook.id);
 			expect(webhookBody2.type).toBe('abuseReportResolved');
 			expect(webhookBody2.body.targetUserId).toBe(alice.id);
@@ -218,7 +214,6 @@ describe('[シナリオ] ユーザ通報', () => {
 				}, admin);
 			});
 
-			console.log(JSON.stringify(webhookBody2, null, 2));
 			expect(webhookBody2.hookId).toBe(webhook.id);
 			expect(webhookBody2.type).toBe('abuseReportResolved');
 			expect(webhookBody2.body.targetUserId).toBe(alice.id);
@@ -244,7 +239,6 @@ describe('[シナリオ] ユーザ通報', () => {
 				await createAbuseReport(abuse, bob);
 			});
 
-			console.log(JSON.stringify(webhookBody1, null, 2));
 			expect(webhookBody1.hookId).toBe(webhook.id);
 			expect(webhookBody1.type).toBe('abuseReport');
 			expect(webhookBody1.body.targetUserId).toBe(alice.id);

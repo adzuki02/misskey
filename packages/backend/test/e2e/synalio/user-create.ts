@@ -75,9 +75,6 @@ describe('[シナリオ] ユーザ作成', () => {
 			// webhookの送出後にいろいろやってるのでちょっと待つ必要がある
 			await setTimeout(2000);
 
-			console.log(alice);
-			console.log(JSON.stringify(webhookBody, null, 2));
-
 			expect(webhookBody.hookId).toBe(webhook.id);
 			expect(webhookBody.type).toBe('userCreated');
 
