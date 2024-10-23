@@ -6,7 +6,7 @@
 process.env.NODE_ENV = 'test';
 
 import * as assert from 'assert';
-import { api, channel, clip, galleryPost, page, play, post, relativeFetch, signup, simpleGet, uploadFile } from '../utils.js';
+import { api, channel, clip, page, play, post, relativeFetch, signup, simpleGet, uploadFile } from '../utils.js';
 import type { SimpleGetResponse } from '../utils.js';
 import type * as misskey from 'misskey-js';
 
@@ -28,7 +28,6 @@ describe('Webリソース', () => {
 	let alicePage: misskey.entities.Page;
 	let alicePlay: misskey.entities.Flash;
 	let aliceClip: misskey.entities.Clip;
-	let aliceGalleryPost: misskey.entities.GalleryPost;
 	let aliceChannel: misskey.entities.Channel;
 
 	let bob: misskey.entities.SignupResponse;
@@ -84,9 +83,6 @@ describe('Webリソース', () => {
 		alicePage = await page(alice, {});
 		alicePlay = await play(alice, {});
 		aliceClip = await clip(alice, {});
-		aliceGalleryPost = await galleryPost(alice, {
-			fileIds: [aliceUploadedFile!.id],
-		});
 		aliceChannel = await channel(alice, {});
 
 		bob = await signup({ username: 'bob' });
@@ -247,7 +243,6 @@ describe('Webリソース', () => {
 		{ sub: 'reactions' },
 		{ sub: 'clips' },
 		{ sub: 'pages' },
-		{ sub: 'gallery' },
 	])('/@:username/$sub', ({ sub }) => {
 		const path = (username: string): string => `/@${username}/${sub}`;
 
@@ -431,26 +426,6 @@ describe('Webリソース', () => {
 
 			// TODO ogタグの検証
 			// TODO profile.noCrawleの検証
-		});
-
-		test('がGETできる。(存在しないIDでも。)', async () => await ok({
-			path: path('xxxxxxxxxx'),
-		}));
-	});
-
-	describe('/gallery/:post', () => {
-		const path = (post: string): string => `/gallery/${post}`;
-
-		test('がGETできる。', async () => {
-			const res = await ok({
-				path: path(aliceGalleryPost.id),
-			});
-			assert.strictEqual(metaTag(res, 'misskey:user-username'), alice.username);
-			assert.strictEqual(metaTag(res, 'misskey:user-id'), alice.id);
-
-			// FIXME: misskey:gallery-post-idみたいなmetaタグの設定がない
-			// TODO profile.noCrawleの検証
-			// TODO twitter:creatorの検証
 		});
 
 		test('がGETできる。(存在しないIDでも。)', async () => await ok({

@@ -1421,20 +1421,6 @@ declare namespace entities {
         FollowingRequestsListRequest,
         FollowingRequestsListResponse,
         FollowingRequestsRejectRequest,
-        GalleryFeaturedRequest,
-        GalleryFeaturedResponse,
-        GalleryPopularResponse,
-        GalleryPostsRequest,
-        GalleryPostsResponse,
-        GalleryPostsCreateRequest,
-        GalleryPostsCreateResponse,
-        GalleryPostsDeleteRequest,
-        GalleryPostsLikeRequest,
-        GalleryPostsShowRequest,
-        GalleryPostsShowResponse,
-        GalleryPostsUnlikeRequest,
-        GalleryPostsUpdateRequest,
-        GalleryPostsUpdateResponse,
         GetOnlineUsersCountResponse,
         GetAvatarDecorationsResponse,
         HashtagsListRequest,
@@ -1468,10 +1454,6 @@ declare namespace entities {
         IExportFollowingRequest,
         IFavoritesRequest,
         IFavoritesResponse,
-        IGalleryLikesRequest,
-        IGalleryLikesResponse,
-        IGalleryPostsRequest,
-        IGalleryPostsResponse,
         IImportBlockingRequest,
         IImportFollowingRequest,
         IImportMutingRequest,
@@ -1650,8 +1632,6 @@ declare namespace entities {
         UsersFollowersResponse,
         UsersFollowingRequest,
         UsersFollowingResponse,
-        UsersGalleryPostsRequest,
-        UsersGalleryPostsResponse,
         UsersGetFrequentlyRepliedUsersRequest,
         UsersGetFrequentlyRepliedUsersResponse,
         UsersFeaturedNotesRequest,
@@ -1726,7 +1706,6 @@ declare namespace entities {
         Antenna,
         Clip,
         FederationInstance,
-        GalleryPost,
         EmojiSimple,
         EmojiDetailed,
         Flash,
@@ -1907,51 +1886,6 @@ type FollowingUpdateResponse = operations['following___update']['responses']['20
 export const followingVisibilities: readonly ["public", "followers", "private"];
 
 // @public (undocumented)
-type GalleryFeaturedRequest = operations['gallery___featured']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type GalleryFeaturedResponse = operations['gallery___featured']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type GalleryPopularResponse = operations['gallery___popular']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type GalleryPost = components['schemas']['GalleryPost'];
-
-// @public (undocumented)
-type GalleryPostsCreateRequest = operations['gallery___posts___create']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type GalleryPostsCreateResponse = operations['gallery___posts___create']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type GalleryPostsDeleteRequest = operations['gallery___posts___delete']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type GalleryPostsLikeRequest = operations['gallery___posts___like']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type GalleryPostsRequest = operations['gallery___posts']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type GalleryPostsResponse = operations['gallery___posts']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type GalleryPostsShowRequest = operations['gallery___posts___show']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type GalleryPostsShowResponse = operations['gallery___posts___show']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type GalleryPostsUnlikeRequest = operations['gallery___posts___unlike']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type GalleryPostsUpdateRequest = operations['gallery___posts___update']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type GalleryPostsUpdateResponse = operations['gallery___posts___update']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
 type GetAvatarDecorationsResponse = operations['get-avatar-decorations']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
@@ -2052,18 +1986,6 @@ type IFavoritesRequest = operations['i___favorites']['requestBody']['content']['
 
 // @public (undocumented)
 type IFavoritesResponse = operations['i___favorites']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type IGalleryLikesRequest = operations['i___gallery___likes']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type IGalleryLikesResponse = operations['i___gallery___likes']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type IGalleryPostsRequest = operations['i___gallery___posts']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type IGalleryPostsResponse = operations['i___gallery___posts']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type IImportAntennasRequest = operations['i___import-antennas']['requestBody']['content']['application/json'];
@@ -2410,13 +2332,10 @@ type ModerationLog = {
 } | {
     type: 'deleteFlash';
     info: ModerationLogPayloads['deleteFlash'];
-} | {
-    type: 'deleteGalleryPost';
-    info: ModerationLogPayloads['deleteGalleryPost'];
 });
 
 // @public (undocumented)
-export const moderationLogTypes: readonly ["updateServerSettings", "suspend", "unsuspend", "updateUserNote", "addCustomEmoji", "updateCustomEmoji", "deleteCustomEmoji", "assignRole", "unassignRole", "createRole", "updateRole", "deleteRole", "clearQueue", "promoteQueue", "deleteDriveFile", "deleteNote", "createGlobalAnnouncement", "createUserAnnouncement", "updateGlobalAnnouncement", "updateUserAnnouncement", "deleteGlobalAnnouncement", "deleteUserAnnouncement", "resetPassword", "suspendRemoteInstance", "unsuspendRemoteInstance", "updateRemoteInstanceNote", "markSensitiveDriveFile", "unmarkSensitiveDriveFile", "resolveAbuseReport", "createInvitation", "createAd", "updateAd", "deleteAd", "createAvatarDecoration", "updateAvatarDecoration", "deleteAvatarDecoration", "unsetUserAvatar", "unsetUserBanner", "createSystemWebhook", "updateSystemWebhook", "deleteSystemWebhook", "createAbuseReportNotificationRecipient", "updateAbuseReportNotificationRecipient", "deleteAbuseReportNotificationRecipient", "deleteAccount", "deletePage", "deleteFlash", "deleteGalleryPost"];
+export const moderationLogTypes: readonly ["updateServerSettings", "suspend", "unsuspend", "updateUserNote", "addCustomEmoji", "updateCustomEmoji", "deleteCustomEmoji", "assignRole", "unassignRole", "createRole", "updateRole", "deleteRole", "clearQueue", "promoteQueue", "deleteDriveFile", "deleteNote", "createGlobalAnnouncement", "createUserAnnouncement", "updateGlobalAnnouncement", "updateUserAnnouncement", "deleteGlobalAnnouncement", "deleteUserAnnouncement", "resetPassword", "suspendRemoteInstance", "unsuspendRemoteInstance", "updateRemoteInstanceNote", "markSensitiveDriveFile", "unmarkSensitiveDriveFile", "resolveAbuseReport", "createInvitation", "createAd", "updateAd", "deleteAd", "createAvatarDecoration", "updateAvatarDecoration", "deleteAvatarDecoration", "unsetUserAvatar", "unsetUserBanner", "createSystemWebhook", "updateSystemWebhook", "deleteSystemWebhook", "createAbuseReportNotificationRecipient", "updateAbuseReportNotificationRecipient", "deleteAbuseReportNotificationRecipient", "deleteAccount", "deletePage", "deleteFlash"];
 
 // @public (undocumented)
 type MuteCreateRequest = operations['mute___create']['requestBody']['content']['application/json'];
@@ -2681,7 +2600,7 @@ type PartialRolePolicyOverride = Partial<{
 }>;
 
 // @public (undocumented)
-export const permissions: readonly ["read:account", "write:account", "read:blocks", "write:blocks", "read:drive", "write:drive", "read:favorites", "write:favorites", "read:following", "write:following", "read:messaging", "write:messaging", "read:mutes", "write:mutes", "write:notes", "read:notifications", "write:notifications", "read:reactions", "write:reactions", "write:votes", "read:pages", "write:pages", "write:page-likes", "read:page-likes", "read:user-groups", "write:user-groups", "read:channels", "write:channels", "read:gallery", "write:gallery", "read:gallery-likes", "write:gallery-likes", "read:flash", "write:flash", "read:flash-likes", "write:flash-likes", "read:admin:abuse-user-reports", "write:admin:delete-account", "write:admin:delete-all-files-of-a-user", "read:admin:index-stats", "read:admin:table-stats", "read:admin:user-ips", "read:admin:meta", "write:admin:reset-password", "write:admin:resolve-abuse-user-report", "write:admin:send-email", "read:admin:server-info", "read:admin:show-moderation-log", "read:admin:show-user", "write:admin:suspend-user", "write:admin:unset-user-avatar", "write:admin:unset-user-banner", "write:admin:unsuspend-user", "write:admin:meta", "write:admin:user-note", "write:admin:roles", "read:admin:roles", "write:admin:relays", "read:admin:relays", "write:admin:invite-codes", "read:admin:invite-codes", "write:admin:announcements", "read:admin:announcements", "write:admin:avatar-decorations", "read:admin:avatar-decorations", "write:admin:federation", "write:admin:account", "read:admin:account", "write:admin:emoji", "read:admin:emoji", "write:admin:queue", "read:admin:queue", "write:admin:promo", "write:admin:drive", "read:admin:drive", "write:admin:ad", "read:admin:ad", "write:invite-codes", "read:invite-codes", "write:clip-favorite", "read:clip-favorite", "read:federation", "write:report-abuse"];
+export const permissions: readonly ["read:account", "write:account", "read:blocks", "write:blocks", "read:drive", "write:drive", "read:favorites", "write:favorites", "read:following", "write:following", "read:messaging", "write:messaging", "read:mutes", "write:mutes", "write:notes", "read:notifications", "write:notifications", "read:reactions", "write:reactions", "write:votes", "read:pages", "write:pages", "write:page-likes", "read:page-likes", "read:user-groups", "write:user-groups", "read:channels", "write:channels", "read:flash", "write:flash", "read:flash-likes", "write:flash-likes", "read:admin:abuse-user-reports", "write:admin:delete-account", "write:admin:delete-all-files-of-a-user", "read:admin:index-stats", "read:admin:table-stats", "read:admin:user-ips", "read:admin:meta", "write:admin:reset-password", "write:admin:resolve-abuse-user-report", "write:admin:send-email", "read:admin:server-info", "read:admin:show-moderation-log", "read:admin:show-user", "write:admin:suspend-user", "write:admin:unset-user-avatar", "write:admin:unset-user-banner", "write:admin:unsuspend-user", "write:admin:meta", "write:admin:user-note", "write:admin:roles", "read:admin:roles", "write:admin:relays", "read:admin:relays", "write:admin:invite-codes", "read:admin:invite-codes", "write:admin:announcements", "read:admin:announcements", "write:admin:avatar-decorations", "read:admin:avatar-decorations", "write:admin:federation", "write:admin:account", "read:admin:account", "write:admin:emoji", "read:admin:emoji", "write:admin:queue", "read:admin:queue", "write:admin:promo", "write:admin:drive", "read:admin:drive", "write:admin:ad", "read:admin:ad", "write:invite-codes", "read:invite-codes", "write:clip-favorite", "read:clip-favorite", "read:federation", "write:report-abuse"];
 
 // @public (undocumented)
 type PingResponse = operations['ping']['responses']['200']['content']['application/json'];
@@ -3005,12 +2924,6 @@ type UsersFollowingRequest = operations['users___following']['requestBody']['con
 
 // @public (undocumented)
 type UsersFollowingResponse = operations['users___following']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type UsersGalleryPostsRequest = operations['users___gallery___posts']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type UsersGalleryPostsResponse = operations['users___gallery___posts']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type UsersGetFrequentlyRepliedUsersRequest = operations['users___get-frequently-replied-users']['requestBody']['content']['application/json'];

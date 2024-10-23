@@ -30,7 +30,6 @@ export type QueueCount = components['schemas']['QueueCount'];
 export type Antenna = components['schemas']['Antenna'];
 export type Clip = components['schemas']['Clip'];
 export type FederationInstance = components['schemas']['FederationInstance'];
-export type GalleryPost = components['schemas']['GalleryPost'];
 export type EmojiSimple = components['schemas']['EmojiSimple'];
 export type EmojiDetailed = components['schemas']['EmojiDetailed'];
 export type Flash = components['schemas']['Flash'];

@@ -31,8 +31,6 @@ import { MiDriveFolder } from '@/models/DriveFolder.js';
 import { MiEmoji } from '@/models/Emoji.js';
 import { MiFollowing } from '@/models/Following.js';
 import { MiFollowRequest } from '@/models/FollowRequest.js';
-import { MiGalleryLike } from '@/models/GalleryLike.js';
-import { MiGalleryPost } from '@/models/GalleryPost.js';
 import { MiHashtag } from '@/models/Hashtag.js';
 import { MiInstance } from '@/models/Instance.js';
 import { MiMeta } from '@/models/Meta.js';
@@ -144,8 +142,6 @@ export {
 	MiEmoji,
 	MiFollowing,
 	MiFollowRequest,
-	MiGalleryLike,
-	MiGalleryPost,
 	MiHashtag,
 	MiInstance,
 	MiMeta,
@@ -213,8 +209,6 @@ export type DriveFoldersRepository = Repository<MiDriveFolder> & MiRepository<Mi
 export type EmojisRepository = Repository<MiEmoji> & MiRepository<MiEmoji>;
 export type FollowingsRepository = Repository<MiFollowing> & MiRepository<MiFollowing>;
 export type FollowRequestsRepository = Repository<MiFollowRequest> & MiRepository<MiFollowRequest>;
-export type GalleryLikesRepository = Repository<MiGalleryLike> & MiRepository<MiGalleryLike>;
-export type GalleryPostsRepository = Repository<MiGalleryPost> & MiRepository<MiGalleryPost>;
 export type HashtagsRepository = Repository<MiHashtag> & MiRepository<MiHashtag>;
 export type InstancesRepository = Repository<MiInstance> & MiRepository<MiInstance>;
 export type MetasRepository = Repository<MiMeta> & MiRepository<MiMeta>;
