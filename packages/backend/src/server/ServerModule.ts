@@ -25,7 +25,6 @@ import { SignupApiService } from './api/SignupApiService.js';
 import { StreamingApiServerService } from './api/StreamingApiServerService.js';
 import { OpenApiServerService } from './api/openapi/OpenApiServerService.js';
 import { ClientServerService } from './web/ClientServerService.js';
-import { FeedService } from './web/FeedService.js';
 import { UrlPreviewService } from './web/UrlPreviewService.js';
 import { ClientLoggerService } from './web/ClientLoggerService.js';
 import { OAuth2ProviderService } from './oauth/OAuth2ProviderService.js';
@@ -54,7 +53,6 @@ import { RoleTimelineChannelService } from './api/stream/channels/role-timeline.
 	providers: [
 		ClientServerService,
 		ClientLoggerService,
-		FeedService,
 		HealthServerService,
 		UrlPreviewService,
 		ActivityPubServerService,

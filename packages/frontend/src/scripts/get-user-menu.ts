@@ -204,13 +204,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		action: () => {
 			router.push(`/admin/user/${user.id}`);
 		},
-	}] : []), {
-		icon: 'ti ti-rss',
-		text: i18n.ts.copyRSS,
-		action: () => {
-			copyToClipboard(`${user.host ?? host}/@${user.username}.atom`);
-		},
-	}, ...(user.host != null && user.url != null ? [{
+	}] : []), ...(user.host != null && user.url != null ? [{
 		icon: 'ti ti-external-link',
 		text: i18n.ts.showOnRemote,
 		action: () => {
