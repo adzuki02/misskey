@@ -78,7 +78,7 @@ async function startControllerEndpoints(port = config.port + 1000) {
 		await serverService.dispose();
 		await app.close();
 
-		await killTestServer();
+		// await killTestServer();
 
 		console.log('starting application...');
 

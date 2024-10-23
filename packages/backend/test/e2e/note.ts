@@ -22,9 +22,6 @@ describe('Note', () => {
 	let tom: misskey.entities.SignupResponse;
 
 	beforeAll(async () => {
-		await new Promise<void>(resolve => {
-			setTimeout(() => resolve(), 1000 * 5);
-		});
 		const connection = await initTestDb(true);
 		Notes = connection.getRepository(MiNote);
 		root = await signup({ username: 'root' });
