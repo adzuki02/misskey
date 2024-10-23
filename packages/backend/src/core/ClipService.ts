@@ -116,7 +116,7 @@ export class ClipService {
 			if (e instanceof QueryFailedError) {
 				if (isDuplicateKeyValueError(e)) {
 					throw new ClipService.AlreadyAddedError();
-				} else if (e.driverError.detail.includes('is not present in table "note".')) {
+				} else if (e.driverError.code === '23503' && e.driverError.constraint === 'FK_a012eaf5c87c65da1deb5fdbfa3') {
 					throw new ClipService.NoSuchNoteError();
 				}
 			}
