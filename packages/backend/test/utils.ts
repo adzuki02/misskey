@@ -592,7 +592,7 @@ export async function testPaginationConsistency<Entity extends { id: string, cre
 }
 
 export async function initTestDb(justBorrow = false, initEntities?: any[]) {
-	process.stdout.write('initTestDb called\n');
+	process.stdout.write('initTestDb called (utils.ts:initTestDb)\n');
 	if (process.env.NODE_ENV !== 'test') throw new Error('NODE_ENV is not a test');
 
 	const db = new DataSource({
@@ -610,9 +610,9 @@ export async function initTestDb(justBorrow = false, initEntities?: any[]) {
 		dropSchema: true && !justBorrow,
 		entities: initEntities ?? entities,
 	});
-	process.stdout.write('start awaiting for DataSource initializing\n');
+	process.stdout.write('start awaiting for DataSource initializing (utils.ts:initTestDb)\n');
 	await db.initialize();
-	process.stdout.write('initTestDb returns\n');
+	process.stdout.write('initTestDb returns (utils.ts:initTestDb)\n');
 	return db;
 }
 
@@ -634,6 +634,7 @@ export async function sendEnvUpdateRequest(params: { key: string, value?: string
 }
 
 export async function sendEnvResetRequest() {
+	process.stdout.write('sending env reset request (utils.ts:initTestDb)\n');
 	const res = await fetch(
 		`http://localhost:${port + 1000}/env-reset`,
 		{
@@ -641,6 +642,7 @@ export async function sendEnvResetRequest() {
 			body: JSON.stringify({}),
 		},
 	);
+	process.stdout.write('sent env reset request (utils.ts:initTestDb)\n');
 
 	if (res.status !== 200) {
 		throw new Error('server env update failed.');
