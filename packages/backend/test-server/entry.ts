@@ -90,7 +90,7 @@ async function startControllerEndpoints(port = config.port + 1000) {
 			const timerId = setTimeout(() => {
 				console.log('force exiting server service');
 				resolve();
-			}, 1000 * 20);
+			}, 1000 * 10);
 			serverService.dispose().then(() => {
 				clearTimeout(timerId);
 				resolve();
@@ -102,7 +102,7 @@ async function startControllerEndpoints(port = config.port + 1000) {
 			const timerId = setTimeout(() => {
 				console.log('force exiting application');
 				resolve();
-			}, 1000 * 20);
+			}, 1000 * 10);
 			app.close().then(() => {
 				clearTimeout(timerId);
 				resolve();
