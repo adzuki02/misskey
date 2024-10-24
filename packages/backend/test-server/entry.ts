@@ -42,9 +42,18 @@ async function launch() {
  * 既に重複したポートで待ち受けしているサーバがある場合はkillする
  */
 async function killTestServer() {
-	//
 	try {
 		const pid = await portToPid(config.port);
+		if (pid) {
+			await fkill(pid, { force: true });
+		}
+	} catch {
+		// NOP;
+	}
+
+	// kill env update/reset server
+	try {
+		const pid = await portToPid(config.port + 1000);
 		if (pid) {
 			await fkill(pid, { force: true });
 		}
@@ -78,7 +87,7 @@ async function startControllerEndpoints(port = config.port + 1000) {
 		await serverService.dispose();
 		await app.close();
 
-		// await killTestServer();
+		await killTestServer();
 
 		console.log('starting application...');
 
