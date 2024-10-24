@@ -88,7 +88,7 @@ async function startControllerEndpoints(port = config.port + 1000) {
 		// FIXME: dispose()のPromiseが返ってくるのを待たないと、killTestServerで強制的にプロセスを終了することになるのでなんとかしたい
 		await new Promise<void>(resolve => {
 			const timerId = setTimeout(() => {
-				console.log('Force exiting ServerService');
+				console.log('force exiting server service');
 				resolve();
 			}, 1000 * 20);
 			serverService.dispose().then(() => {
@@ -100,7 +100,7 @@ async function startControllerEndpoints(port = config.port + 1000) {
 		// FIXME: 上と同じ
 		await new Promise<void>(resolve => {
 			const timerId = setTimeout(() => {
-				console.log('Force exiting Nest app');
+				console.log('force exiting application');
 				resolve();
 			}, 1000 * 20);
 			app.close().then(() => {
