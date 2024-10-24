@@ -841,17 +841,6 @@ describe('ユーザー', () => {
 	test.todo('をハッシュタグ指定で取得することができる(リモート)');
 
 	//#endregion
-	//#region オススメユーザー(users/recommendation)
-
-	// BUG users/recommendationは壊れている？ > QueryFailedError: missing FROM-clause entry for table "note"
-	test.skip('のオススメを取得することができる', async () => {
-		const parameters = {};
-		const response = await successfulApiCall({ endpoint: 'users/recommendation', parameters, user: alice });
-		const expected = await Promise.all(response.map(u => show(u.id)));
-		assert.deepStrictEqual(response, expected);
-	});
-
-	//#endregion
 	//#region ピン止めユーザー(pinned-users)
 
 	test('のピン止めユーザーを取得することができる', async () => {

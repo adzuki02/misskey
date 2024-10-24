@@ -1649,8 +1649,6 @@ declare namespace entities {
         UsersFlashsResponse,
         UsersReactionsRequest,
         UsersReactionsResponse,
-        UsersRecommendationRequest,
-        UsersRecommendationResponse,
         UsersRelationRequest,
         UsersRelationResponse,
         UsersReportAbuseRequest,
@@ -2962,12 +2960,6 @@ type UsersReactionsRequest = operations['users___reactions']['requestBody']['con
 
 // @public (undocumented)
 type UsersReactionsResponse = operations['users___reactions']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type UsersRecommendationRequest = operations['users___recommendation']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type UsersRecommendationResponse = operations['users___recommendation']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type UsersRelationRequest = operations['users___relation']['requestBody']['content']['application/json'];

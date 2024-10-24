@@ -345,7 +345,6 @@ import * as ep___users_notes from './endpoints/users/notes.js';
 import * as ep___users_pages from './endpoints/users/pages.js';
 import * as ep___users_flashs from './endpoints/users/flashs.js';
 import * as ep___users_reactions from './endpoints/users/reactions.js';
-import * as ep___users_recommendation from './endpoints/users/recommendation.js';
 import * as ep___users_relation from './endpoints/users/relation.js';
 import * as ep___users_reportAbuse from './endpoints/users/report-abuse.js';
 import * as ep___users_searchByUsernameAndHost from './endpoints/users/search-by-username-and-host.js';
@@ -696,7 +695,6 @@ const $users_notes: Provider = { provide: 'ep:users/notes', useClass: ep___users
 const $users_pages: Provider = { provide: 'ep:users/pages', useClass: ep___users_pages.default };
 const $users_flashs: Provider = { provide: 'ep:users/flashs', useClass: ep___users_flashs.default };
 const $users_reactions: Provider = { provide: 'ep:users/reactions', useClass: ep___users_reactions.default };
-const $users_recommendation: Provider = { provide: 'ep:users/recommendation', useClass: ep___users_recommendation.default };
 const $users_relation: Provider = { provide: 'ep:users/relation', useClass: ep___users_relation.default };
 const $users_reportAbuse: Provider = { provide: 'ep:users/report-abuse', useClass: ep___users_reportAbuse.default };
 const $users_searchByUsernameAndHost: Provider = { provide: 'ep:users/search-by-username-and-host', useClass: ep___users_searchByUsernameAndHost.default };
@@ -1051,7 +1049,6 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_pages,
 		$users_flashs,
 		$users_reactions,
-		$users_recommendation,
 		$users_relation,
 		$users_reportAbuse,
 		$users_searchByUsernameAndHost,
@@ -1398,7 +1395,6 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_pages,
 		$users_flashs,
 		$users_reactions,
-		$users_recommendation,
 		$users_relation,
 		$users_reportAbuse,
 		$users_searchByUsernameAndHost,

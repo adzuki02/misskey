@@ -351,7 +351,6 @@ import * as ep___users_notes from './endpoints/users/notes.js';
 import * as ep___users_pages from './endpoints/users/pages.js';
 import * as ep___users_flashs from './endpoints/users/flashs.js';
 import * as ep___users_reactions from './endpoints/users/reactions.js';
-import * as ep___users_recommendation from './endpoints/users/recommendation.js';
 import * as ep___users_relation from './endpoints/users/relation.js';
 import * as ep___users_reportAbuse from './endpoints/users/report-abuse.js';
 import * as ep___users_searchByUsernameAndHost from './endpoints/users/search-by-username-and-host.js';
@@ -700,7 +699,6 @@ const eps = [
 	['users/pages', ep___users_pages],
 	['users/flashs', ep___users_flashs],
 	['users/reactions', ep___users_reactions],
-	['users/recommendation', ep___users_recommendation],
 	['users/relation', ep___users_relation],
 	['users/report-abuse', ep___users_reportAbuse],
 	['users/search-by-username-and-host', ep___users_searchByUsernameAndHost],

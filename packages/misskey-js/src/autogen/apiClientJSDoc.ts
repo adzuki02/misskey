@@ -3782,17 +3782,6 @@ declare module '../api.js' {
     ): Promise<SwitchCaseResponseType<E, P>>;
 
     /**
-     * Show users that the authenticated user might be interested to follow.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *read:account*
-     */
-    request<E extends 'users/recommendation', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
      * Show the different kinds of relations between the authenticated user and the specified user(s).
      * 
      * **Credential required**: *Yes* / **Permission**: *read:account*

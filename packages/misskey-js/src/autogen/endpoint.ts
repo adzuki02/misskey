@@ -507,8 +507,6 @@ import type {
 	UsersFlashsResponse,
 	UsersReactionsRequest,
 	UsersReactionsResponse,
-	UsersRecommendationRequest,
-	UsersRecommendationResponse,
 	UsersRelationRequest,
 	UsersRelationResponse,
 	UsersReportAbuseRequest,
@@ -862,7 +860,6 @@ export type Endpoints = {
 	'users/pages': { req: UsersPagesRequest; res: UsersPagesResponse };
 	'users/flashs': { req: UsersFlashsRequest; res: UsersFlashsResponse };
 	'users/reactions': { req: UsersReactionsRequest; res: UsersReactionsResponse };
-	'users/recommendation': { req: UsersRecommendationRequest; res: UsersRecommendationResponse };
 	'users/relation': { req: UsersRelationRequest; res: UsersRelationResponse };
 	'users/report-abuse': { req: UsersReportAbuseRequest; res: EmptyResponse };
 	'users/search-by-username-and-host': { req: UsersSearchByUsernameAndHostRequest; res: UsersSearchByUsernameAndHostResponse };
