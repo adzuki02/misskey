@@ -85,7 +85,15 @@ async function startControllerEndpoints(port = config.port + 1000) {
 		process.stdout.write('got env reset request (entry.ts:/env-reset)\n');
 		process.env = JSON.parse(originEnv);
 
-		await serverService.dispose();
+		await new Promise<void>(resolve => {
+			const timerId = setTimeout(() => resolve(), 1000 * 15);
+			serverService.dispose().then(() => {
+				clearTimeout(timerId);
+				resolve();
+			});
+		});
+
+		// await serverService.dispose();
 		process.stdout.write('disposed ServerService (entry.ts:/env-reset)\n');
 		await app.close();
 		process.stdout.write('Closed Nest app (entry.ts:/env-reset)\n');
