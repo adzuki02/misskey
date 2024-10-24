@@ -592,6 +592,7 @@ export async function testPaginationConsistency<Entity extends { id: string, cre
 }
 
 export async function initTestDb(justBorrow = false, initEntities?: any[]) {
+	process.stdout.write('initTestDb called');
 	if (process.env.NODE_ENV !== 'test') throw new Error('NODE_ENV is not a test');
 
 	const db = new DataSource({
@@ -608,10 +609,11 @@ export async function initTestDb(justBorrow = false, initEntities?: any[]) {
 		synchronize: true && !justBorrow,
 		dropSchema: true && !justBorrow,
 		entities: initEntities ?? entities,
+		logging: 'all',
 	});
-
+	process.stdout.write('start awaiting for DataSource initializing');
 	await db.initialize();
-
+	process.stdout.write('initTestDb returns');
 	return db;
 }
 
