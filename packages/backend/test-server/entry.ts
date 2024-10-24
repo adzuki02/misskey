@@ -42,6 +42,7 @@ async function launch() {
  * 既に重複したポートで待ち受けしているサーバがある場合はkillする
  */
 async function killTestServer() {
+	//
 	try {
 		const pid = await portToPid(config.port);
 		if (pid) {
@@ -82,43 +83,42 @@ async function startControllerEndpoints(port = config.port + 1000) {
 	});
 
 	fastify.post<{ Body: { key?: string, value?: string } }>('/env-reset', async (req, res) => {
-		process.stdout.write('got env reset request (entry.ts:/env-reset)\n');
 		process.env = JSON.parse(originEnv);
 
+		// FIXME: dispose()のPromiseが返ってくるのを待たないと、killTestServerで強制的にプロセスを終了することになるのでなんとかしたい
 		await new Promise<void>(resolve => {
-			const timerId = setTimeout(() => resolve(), 1000 * 15);
+			const timerId = setTimeout(() => {
+				console.log('Force exiting ServerService');
+				resolve();
+			}, 1000 * 20);
 			serverService.dispose().then(() => {
 				clearTimeout(timerId);
 				resolve();
 			});
 		});
 
-		// await serverService.dispose();
-		process.stdout.write('disposed ServerService (entry.ts:/env-reset)\n');
-
+		// FIXME: 上と同じ
 		await new Promise<void>(resolve => {
-			const timerId = setTimeout(() => resolve(), 1000 * 15);
+			const timerId = setTimeout(() => {
+				console.log('Force exiting Nest app');
+				resolve();
+			}, 1000 * 20);
 			app.close().then(() => {
 				clearTimeout(timerId);
 				resolve();
 			});
 		});
 
-		// await app.close();
-		process.stdout.write('Closed Nest app (entry.ts:/env-reset)\n');
-
 		await killTestServer();
-		process.stdout.write('killed test server (entry.ts:/env-reset)\n');
 
 		console.log('starting application...');
 
 		app = await NestFactory.createApplicationContext(MainModule, {
 			logger: new NestLogger(),
 		});
-		process.stdout.write('created Nest app (entry.ts:/env-reset)\n');
+
 		serverService = app.get(ServerService);
 		await serverService.launch();
-		process.stdout.write('launched ServerService (entry.ts:/env-reset)\n');
 
 		res.code(200).send({ success: true });
 	});
