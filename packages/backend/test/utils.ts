@@ -634,7 +634,7 @@ export async function sendEnvUpdateRequest(params: { key: string, value?: string
 }
 
 export async function sendEnvResetRequest() {
-	process.stdout.write('sending env reset request (utils.ts:initTestDb)\n');
+	process.stdout.write('sending env reset request (utils.ts:sendEnvResetRequest)\n');
 	const res = await fetch(
 		`http://localhost:${port + 1000}/env-reset`,
 		{
@@ -642,7 +642,7 @@ export async function sendEnvResetRequest() {
 			body: JSON.stringify({}),
 		},
 	);
-	process.stdout.write('sent env reset request (utils.ts:initTestDb)\n');
+	process.stdout.write('sent env reset request (utils.ts:sendEnvResetRequest)\n');
 
 	if (res.status !== 200) {
 		throw new Error('server env update failed.');
