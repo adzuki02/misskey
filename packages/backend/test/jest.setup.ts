@@ -6,9 +6,9 @@
 import { initTestDb, sendEnvResetRequest } from './utils.js';
 
 beforeAll(async () => {
-	process.stdout.write('calling initTestDb');
+	process.stdout.write('calling initTestDb\n');
 	await initTestDb(false);
-	process.stdout.write('initTestDb returned');
+	process.stdout.write('initTestDb returned\n');
 	await sendEnvResetRequest();
-	process.stdout.write('env reset request sent');
+	process.stdout.write('env reset request sent\n');
 });

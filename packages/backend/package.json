@@ -25,7 +25,7 @@
 		"jest": "cross-env NODE_ENV=test node --experimental-vm-modules --experimental-import-meta-resolve node_modules/jest/bin/jest.js --forceExit --config jest.config.unit.cjs",
 		"jest:e2e": "cross-env NODE_ENV=test node --experimental-vm-modules --experimental-import-meta-resolve node_modules/jest/bin/jest.js --forceExit --config jest.config.e2e.cjs",
 		"jest-and-coverage": "cross-env NODE_ENV=test node --experimental-vm-modules --experimental-import-meta-resolve node_modules/jest/bin/jest.js --coverage --forceExit --config jest.config.unit.cjs",
-		"jest-and-coverage:e2e": "cross-env NODE_ENV=test node --experimental-vm-modules --experimental-import-meta-resolve node_modules/jest/bin/jest.js --coverage --forceExit --config jest.config.e2e.cjs",
+		"jest-and-coverage:e2e": "cross-env NODE_ENV=test node --no-warnings --experimental-vm-modules --experimental-import-meta-resolve node_modules/jest/bin/jest.js --coverage --forceExit --config jest.config.e2e.cjs",
 		"jest-clear": "cross-env NODE_ENV=test node --experimental-vm-modules --experimental-import-meta-resolve node_modules/jest/bin/jest.js --clearCache",
 		"test": "pnpm jest",
 		"test:e2e": "pnpm build && pnpm build:test && pnpm jest:e2e",
