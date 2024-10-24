@@ -1540,8 +1540,6 @@ declare namespace entities {
         NotesLocalTimelineResponse,
         NotesMentionsRequest,
         NotesMentionsResponse,
-        NotesPollsRecommendationRequest,
-        NotesPollsRecommendationResponse,
         NotesPollsVoteRequest,
         NotesReactionsRequest,
         NotesReactionsResponse,
@@ -2416,12 +2414,6 @@ type NotesMentionsRequest = operations['notes___mentions']['requestBody']['conte
 
 // @public (undocumented)
 type NotesMentionsResponse = operations['notes___mentions']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type NotesPollsRecommendationRequest = operations['notes___polls___recommendation']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type NotesPollsRecommendationResponse = operations['notes___polls___recommendation']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type NotesPollsVoteRequest = operations['notes___polls___vote']['requestBody']['content']['application/json'];

@@ -271,7 +271,6 @@ import * as ep___notes_globalTimeline from './endpoints/notes/global-timeline.js
 import * as ep___notes_hybridTimeline from './endpoints/notes/hybrid-timeline.js';
 import * as ep___notes_localTimeline from './endpoints/notes/local-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
-import * as ep___notes_polls_recommendation from './endpoints/notes/polls/recommendation.js';
 import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
 import * as ep___notes_reactions from './endpoints/notes/reactions.js';
 import * as ep___notes_reactions_create from './endpoints/notes/reactions/create.js';
@@ -623,7 +622,6 @@ const $notes_globalTimeline: Provider = { provide: 'ep:notes/global-timeline', u
 const $notes_hybridTimeline: Provider = { provide: 'ep:notes/hybrid-timeline', useClass: ep___notes_hybridTimeline.default };
 const $notes_localTimeline: Provider = { provide: 'ep:notes/local-timeline', useClass: ep___notes_localTimeline.default };
 const $notes_mentions: Provider = { provide: 'ep:notes/mentions', useClass: ep___notes_mentions.default };
-const $notes_polls_recommendation: Provider = { provide: 'ep:notes/polls/recommendation', useClass: ep___notes_polls_recommendation.default };
 const $notes_polls_vote: Provider = { provide: 'ep:notes/polls/vote', useClass: ep___notes_polls_vote.default };
 const $notes_reactions: Provider = { provide: 'ep:notes/reactions', useClass: ep___notes_reactions.default };
 const $notes_reactions_create: Provider = { provide: 'ep:notes/reactions/create', useClass: ep___notes_reactions_create.default };
@@ -979,7 +977,6 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$notes_hybridTimeline,
 		$notes_localTimeline,
 		$notes_mentions,
-		$notes_polls_recommendation,
 		$notes_polls_vote,
 		$notes_reactions,
 		$notes_reactions_create,
@@ -1329,7 +1326,6 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$notes_hybridTimeline,
 		$notes_localTimeline,
 		$notes_mentions,
-		$notes_polls_recommendation,
 		$notes_polls_vote,
 		$notes_reactions,
 		$notes_reactions_create,

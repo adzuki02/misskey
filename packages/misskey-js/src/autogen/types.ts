@@ -2456,15 +2456,6 @@ export type paths = {
      */
     post: operations['notes___mentions'];
   };
-  '/notes/polls/recommendation': {
-    /**
-     * notes/polls/recommendation
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:account*
-     */
-    post: operations['notes___polls___recommendation'];
-  };
   '/notes/polls/vote': {
     /**
      * notes/polls/vote
@@ -20360,64 +20351,6 @@ export type operations = {
           /** Format: misskey:id */
           untilId?: string;
           visibility?: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Note'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * notes/polls/recommendation
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:account*
-   */
-  notes___polls___recommendation: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default 10 */
-          limit?: number;
-          /** @default 0 */
-          offset?: number;
-          /** @default false */
-          excludeChannels?: boolean;
         };
       };
     };
