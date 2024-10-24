@@ -82,20 +82,26 @@ async function startControllerEndpoints(port = config.port + 1000) {
 	});
 
 	fastify.post<{ Body: { key?: string, value?: string } }>('/env-reset', async (req, res) => {
+		process.stdout.write('got env reset request (entry.ts:/env-reset)\n');
 		process.env = JSON.parse(originEnv);
 
 		await serverService.dispose();
+		process.stdout.write('disposed ServerService (entry.ts:/env-reset)\n');
 		await app.close();
+		process.stdout.write('Closed Nest app (entry.ts:/env-reset)\n');
 
 		await killTestServer();
+		process.stdout.write('killed test server (entry.ts:/env-reset)\n');
 
 		console.log('starting application...');
 
 		app = await NestFactory.createApplicationContext(MainModule, {
 			logger: new NestLogger(),
 		});
+		process.stdout.write('created Nest app (entry.ts:/env-reset)\n');
 		serverService = app.get(ServerService);
 		await serverService.launch();
+		process.stdout.write('launched ServerService (entry.ts:/env-reset)\n');
 
 		res.code(200).send({ success: true });
 	});
