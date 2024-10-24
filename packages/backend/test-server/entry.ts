@@ -116,7 +116,6 @@ async function startControllerEndpoints(port = config.port + 1000) {
 		app = await NestFactory.createApplicationContext(MainModule, {
 			logger: new NestLogger(),
 		});
-
 		serverService = app.get(ServerService);
 		await serverService.launch();
 
