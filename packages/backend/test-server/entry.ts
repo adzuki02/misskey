@@ -51,6 +51,16 @@ async function killTestServer() {
 	} catch {
 		// NOP;
 	}
+
+	// kill env update/reset server
+	try {
+		const pid = await portToPid(config.port + 1000);
+		if (pid) {
+			await fkill(pid, { force: true });
+		}
+	} catch {
+		// NOP;
+	}
 }
 
 /**
@@ -75,8 +85,29 @@ async function startControllerEndpoints(port = config.port + 1000) {
 	fastify.post<{ Body: { key?: string, value?: string } }>('/env-reset', async (req, res) => {
 		process.env = JSON.parse(originEnv);
 
-		await serverService.dispose();
-		await app.close();
+		// FIXME: dispose()のPromiseが返ってくるのを待たないと、killTestServerで強制的にプロセスを終了することになるのでなんとかしたい
+		await new Promise<void>(resolve => {
+			const timerId = setTimeout(() => {
+				console.log('force exiting server service');
+				resolve();
+			}, 1000 * 10);
+			serverService.dispose().then(() => {
+				clearTimeout(timerId);
+				resolve();
+			});
+		});
+
+		// FIXME: 上と同じ
+		await new Promise<void>(resolve => {
+			const timerId = setTimeout(() => {
+				console.log('force exiting application');
+				resolve();
+			}, 1000 * 10);
+			app.close().then(() => {
+				clearTimeout(timerId);
+				resolve();
+			});
+		});
 
 		await killTestServer();
 
