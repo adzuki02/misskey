@@ -609,7 +609,6 @@ export async function initTestDb(justBorrow = false, initEntities?: any[]) {
 		synchronize: true && !justBorrow,
 		dropSchema: true && !justBorrow,
 		entities: initEntities ?? entities,
-		logging: 'all',
 	});
 	process.stdout.write('start awaiting for DataSource initializing\n');
 	await db.initialize();

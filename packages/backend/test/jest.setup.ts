@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import nodeConsole from 'node:console';
 import { initTestDb, sendEnvResetRequest } from './utils.js';
 
 beforeAll(async () => {
