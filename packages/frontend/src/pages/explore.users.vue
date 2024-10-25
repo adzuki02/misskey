@@ -59,8 +59,7 @@ const tagUsers = computed(() => ({
 const pinnedUsers = { endpoint: 'pinned-users', noPaging: true, limit: 10 };
 
 misskeyApi('hashtags/list', {
-	sort: '+attachedLocalUsers',
-	attachedToLocalUserOnly: true,
+	sort: '+attachedUsers',
 	limit: 30,
 }).then(tags => {
 	tagsList.value = tags;
