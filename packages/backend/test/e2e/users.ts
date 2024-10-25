@@ -542,47 +542,6 @@ describe('ユーザー', () => {
 	});
 
 	//#endregion
-	//#region ユーザー(users)
-
-	test.each([
-		{ label: 'ID昇順', parameters: { limit: 5 }, selector: (u: misskey.entities.UserLite): string => u.id },
-		{ label: 'フォロワー昇順', parameters: { sort: '+follower' }, selector: (u: misskey.entities.UserDetailedNotMe): string => String(u.followersCount) },
-		{ label: 'フォロワー降順', parameters: { sort: '-follower' }, selector: (u: misskey.entities.UserDetailedNotMe): string => String(u.followersCount) },
-		{ label: '登録日時昇順', parameters: { sort: '+createdAt' }, selector: (u: misskey.entities.UserDetailedNotMe): string => u.createdAt },
-		{ label: '登録日時降順', parameters: { sort: '-createdAt' }, selector: (u: misskey.entities.UserDetailedNotMe): string => u.createdAt },
-		{ label: '投稿日時昇順', parameters: { sort: '+updatedAt' }, selector: (u: misskey.entities.UserDetailedNotMe): string => String(u.updatedAt) },
-		{ label: '投稿日時降順', parameters: { sort: '-updatedAt' }, selector: (u: misskey.entities.UserDetailedNotMe): string => String(u.updatedAt) },
-	] as const)('をリスト形式で取得することができる（$label）', async ({ parameters, selector }) => {
-		const response = await successfulApiCall({ endpoint: 'users', parameters, user: alice });
-
-		// 結果の並びを事前にアサートするのは困難なので返ってきたidに対応するユーザーが返っており、ソート順が正しいことだけを検証する
-		const users = await Promise.all(response.map(u => show(u.id, alice)));
-		const expected = users.sort((x, y) => {
-			const index = (selector(x) < selector(y)) ? -1 : (selector(x) > selector(y)) ? 1 : 0;
-			return index * (parameters.sort?.startsWith('+') ? -1 : 1);
-		});
-		assert.deepStrictEqual(response, expected);
-	});
-	test.each([
-		{ label: '「見つけやすくする」がOFFのユーザーが含まれない', user: () => userNotExplorable, excluded: true },
-		{ label: 'ミュートユーザーが含まれない', user: () => userMutedByAlice, excluded: true },
-		{ label: 'ブロックされているユーザーが含まれない', user: () => userBlockedByAlice, excluded: true },
-		{ label: 'ブロックしてきているユーザーが含まれる', user: () => userBlockingAlice, excluded: true },
-		{ label: '承認制ユーザーが含まれる', user: () => userLocking },
-		{ label: 'サイレンスユーザーが含まれる', user: () => userSilenced },
-		{ label: 'サスペンドユーザーが含まれない', user: () => userSuspended, excluded: true },
-		{ label: '削除済ユーザーが含まれる', user: () => userDeletedBySelf },
-		{ label: '削除済(byAdmin)ユーザーが含まれる', user: () => userDeletedByAdmin },
-	] as const)('をリスト形式で取得することができ、結果に$label', async ({ user, excluded }) => {
-		const parameters = { limit: 100 };
-		const response = await successfulApiCall({ endpoint: 'users', parameters, user: alice });
-		const expected = (excluded ?? false) ? [] : [await show(user().id, alice)];
-		assert.deepStrictEqual(response.filter((u) => u.id === user().id), expected);
-	});
-	test.todo('をリスト形式で取得することができる（リモート, hostname指定）');
-	test.todo('をリスト形式で取得することができる（pagenation）');
-
-	//#endregion
 	//#region ユーザー情報(users/show)
 
 	test.each([

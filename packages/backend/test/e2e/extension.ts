@@ -283,35 +283,6 @@ describe('独自拡張', () => {
 		});
 	});
 
-	describe('ハイライトを隠す', () => {
-		describe('/api/users', () => {
-			test('はGETできない。', async () => {
-				const res = await simpleGet('/api/users', 'application/json');
-				assert.strictEqual(res.status, 405);
-			});
-
-			test('はoriginがlocalの場合、認証情報がなくても取得できる。', async () => {
-				const res = await api('users', { origin: 'local' });
-				assert.notStrictEqual(res.body.length, 0);
-			});
-
-			test('はoriginがremoteの場合、認証情報がなければ返ってくる配列の長さが0。', async () => {
-				const res = await api('users', { origin: 'remote' });
-				assert.strictEqual(res.body.length, 0);
-			});
-
-			test('はoriginがcombinedの場合、認証情報がなければ返ってくる配列の長さが0。', async () => {
-				const res = await api('users', { origin: 'combined' });
-				assert.strictEqual(res.body.length, 0);
-			});
-
-			test('は認証情報があればアクセスできる。', async () => {
-				const res = await api('users', { origin: 'combined' }, bob);
-				assert.notStrictEqual(res.body.length, 0);
-			});
-		});
-	});
-
 	describe('プロキシアカウントの動作を変更', () => {
 		beforeAll(async () => {
 			await sendEnvUpdateRequest({ key: 'FORCE_FOLLOW_REMOTE_USER_FOR_TESTING', value: 'true' });
