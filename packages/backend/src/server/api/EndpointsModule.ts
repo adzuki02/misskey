@@ -324,7 +324,6 @@ import * as ep___sw_register from './endpoints/sw/register.js';
 import * as ep___sw_unregister from './endpoints/sw/unregister.js';
 import * as ep___test from './endpoints/test.js';
 import * as ep___username_available from './endpoints/username/available.js';
-import * as ep___users from './endpoints/users.js';
 import * as ep___users_clips from './endpoints/users/clips.js';
 import * as ep___users_followers from './endpoints/users/followers.js';
 import * as ep___users_following from './endpoints/users/following.js';
@@ -674,7 +673,6 @@ const $sw_register: Provider = { provide: 'ep:sw/register', useClass: ep___sw_re
 const $sw_unregister: Provider = { provide: 'ep:sw/unregister', useClass: ep___sw_unregister.default };
 const $test: Provider = { provide: 'ep:test', useClass: ep___test.default };
 const $username_available: Provider = { provide: 'ep:username/available', useClass: ep___username_available.default };
-const $users: Provider = { provide: 'ep:users', useClass: ep___users.default };
 const $users_clips: Provider = { provide: 'ep:users/clips', useClass: ep___users_clips.default };
 const $users_followers: Provider = { provide: 'ep:users/followers', useClass: ep___users_followers.default };
 const $users_following: Provider = { provide: 'ep:users/following', useClass: ep___users_following.default };
@@ -1028,7 +1026,6 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$sw_unregister,
 		$test,
 		$username_available,
-		$users,
 		$users_clips,
 		$users_followers,
 		$users_following,
@@ -1374,7 +1371,6 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$sw_unregister,
 		$test,
 		$username_available,
-		$users,
 		$users_clips,
 		$users_followers,
 		$users_following,

@@ -1613,8 +1613,6 @@ declare namespace entities {
         TestResponse,
         UsernameAvailableRequest,
         UsernameAvailableResponse,
-        UsersRequest,
-        UsersResponse,
         UsersClipsRequest,
         UsersClipsResponse,
         UsersFollowersRequest,
@@ -2969,12 +2967,6 @@ type UsersRelationResponse = operations['users___relation']['responses']['200'][
 
 // @public (undocumented)
 type UsersReportAbuseRequest = operations['users___report-abuse']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type UsersRequest = operations['users']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type UsersResponse = operations['users']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type UsersSearchByUsernameAndHostRequest = operations['users___search-by-username-and-host']['requestBody']['content']['application/json'];

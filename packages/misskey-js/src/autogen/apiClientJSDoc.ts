@@ -3551,17 +3551,6 @@ declare module '../api.js' {
     ): Promise<SwitchCaseResponseType<E, P>>;
 
     /**
-     * No description provided.
-     * 
-     * **Credential required**: *No*
-     */
-    request<E extends 'users', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
      * Show all clips this user owns.
      * 
      * **Credential required**: *No*

@@ -471,8 +471,6 @@ import type {
 	TestResponse,
 	UsernameAvailableRequest,
 	UsernameAvailableResponse,
-	UsersRequest,
-	UsersResponse,
 	UsersClipsRequest,
 	UsersClipsResponse,
 	UsersFollowersRequest,
@@ -839,7 +837,6 @@ export type Endpoints = {
 	'sw/unregister': { req: SwUnregisterRequest; res: EmptyResponse };
 	'test': { req: TestRequest; res: TestResponse };
 	'username/available': { req: UsernameAvailableRequest; res: UsernameAvailableResponse };
-	'users': { req: UsersRequest; res: UsersResponse };
 	'users/clips': { req: UsersClipsRequest; res: UsersClipsResponse };
 	'users/followers': { req: UsersFollowersRequest; res: UsersFollowersResponse };
 	'users/following': { req: UsersFollowingRequest; res: UsersFollowingResponse };
