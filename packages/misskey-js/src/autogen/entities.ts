@@ -265,7 +265,6 @@ export type FollowingRequestsCancelResponse = operations['following___requests__
 export type FollowingRequestsListRequest = operations['following___requests___list']['requestBody']['content']['application/json'];
 export type FollowingRequestsListResponse = operations['following___requests___list']['responses']['200']['content']['application/json'];
 export type FollowingRequestsRejectRequest = operations['following___requests___reject']['requestBody']['content']['application/json'];
-export type GetOnlineUsersCountResponse = operations['get-online-users-count']['responses']['200']['content']['application/json'];
 export type GetAvatarDecorationsResponse = operations['get-avatar-decorations']['responses']['200']['content']['application/json'];
 export type HashtagsListRequest = operations['hashtags___list']['requestBody']['content']['application/json'];
 export type HashtagsListResponse = operations['hashtags___list']['responses']['200']['content']['application/json'];

@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div v-adaptive-bg class="_panel" style="position: relative;">
 	<div :class="$style.banner" :style="user.bannerUrl ? `background-image: url(${user.bannerUrl})` : ''"></div>
-	<MkAvatar :class="$style.avatar" :user="user" indicator/>
+	<MkAvatar :class="$style.avatar" :user="user"/>
 	<div :class="$style.title">
 		<div :class="$style.name"><MkUserName :user="user" :nowrap="false"/></div>
 		<p :class="$style.username"><MkAcct :user="user"/></p>

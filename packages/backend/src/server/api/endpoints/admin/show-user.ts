@@ -114,14 +114,6 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
-			isHibernated: {
-				type: 'boolean',
-				optional: false, nullable: false,
-			},
-			lastActiveDate: {
-				type: 'string',
-				optional: false, nullable: true,
-			},
 			moderationNote: {
 				type: 'string',
 				optional: false, nullable: false,
@@ -234,8 +226,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				isModerator: isModerator,
 				isSilenced: isSilenced,
 				isSuspended: user.isSuspended,
-				isHibernated: user.isHibernated,
-				lastActiveDate: user.lastActiveDate ? user.lastActiveDate.toISOString() : null,
 				moderationNote: profile.moderationNote ?? '',
 				signins,
 				policies: await this.roleService.getUserPolicies(user.id),

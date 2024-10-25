@@ -1564,15 +1564,6 @@ export type paths = {
      */
     post: operations['following___requests___reject'];
   };
-  '/get-online-users-count': {
-    /**
-     * get-online-users-count
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:account*
-     */
-    post: operations['get-online-users-count'];
-  };
   '/get-avatar-decorations': {
     /**
      * get-avatar-decorations
@@ -3174,8 +3165,6 @@ export type components = {
       emojis: {
         [key: string]: string;
       };
-      /** @enum {string} */
-      onlineStatus: 'unknown' | 'online' | 'active' | 'offline';
       badgeRoles?: ({
           name: string;
           iconUrl: string | null;
@@ -3266,7 +3255,6 @@ export type components = {
       isDeleted: boolean;
       /** @enum {string} */
       twoFactorBackupCodesStock: 'full' | 'partial' | 'none';
-      hideOnlineStatus: boolean;
       hasUnreadSpecifiedNotes: boolean;
       hasUnreadMentions: boolean;
       hasUnreadAnnouncement: boolean;
@@ -8330,8 +8318,6 @@ export type operations = {
             isModerator: boolean;
             isSilenced: boolean;
             isSuspended: boolean;
-            isHibernated: boolean;
-            lastActiveDate: string | null;
             moderationNote: string;
             signins: components['schemas']['Signin'][];
             policies: components['schemas']['RolePolicies'];
@@ -8391,7 +8377,7 @@ export type operations = {
           /** @default 0 */
           offset?: number;
           /** @enum {string} */
-          sort?: '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+updatedAt' | '-updatedAt' | '+lastActiveDate' | '-lastActiveDate';
+          sort?: '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+updatedAt' | '-updatedAt';
           /**
            * @default all
            * @enum {string}
@@ -14640,54 +14626,6 @@ export type operations = {
     };
   };
   /**
-   * get-online-users-count
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:account*
-   */
-  'get-online-users-count': {
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': {
-            count: number;
-          };
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
    * get-avatar-decorations
    * @description No description provided.
    *
@@ -17680,7 +17618,6 @@ export type operations = {
             }[];
           isLocked?: boolean;
           isExplorable?: boolean;
-          hideOnlineStatus?: boolean;
           publicReactions?: boolean;
           carefulBot?: boolean;
           autoAcceptFollowed?: boolean;

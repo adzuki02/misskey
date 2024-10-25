@@ -366,18 +366,6 @@ export class UserEntityService implements OnModuleInit {
 	}
 
 	@bindThis
-	public getOnlineStatus(user: MiUser): 'unknown' | 'online' | 'active' | 'offline' {
-		if (user.hideOnlineStatus) return 'unknown';
-		if (user.lastActiveDate == null) return 'unknown';
-		const elapsed = Date.now() - user.lastActiveDate.getTime();
-		return (
-			elapsed < USER_ONLINE_THRESHOLD ? 'online' :
-			elapsed < USER_ACTIVE_THRESHOLD ? 'active' :
-			'offline'
-		);
-	}
-
-	@bindThis
 	public getIdenticonUrl(user: MiUser): string {
 		return `${this.config.url}/identicon/${user.username.toLowerCase()}@${user.host ?? this.config.host}`;
 	}
@@ -501,7 +489,6 @@ export class UserEntityService implements OnModuleInit {
 				themeColor: instance.themeColor,
 			} : undefined) : undefined,
 			emojis: this.customEmojiService.populateEmojis(user.emojis, user.host),
-			onlineStatus: this.getOnlineStatus(user),
 			// パフォーマンス上の理由でローカルユーザーのみ
 			badgeRoles: user.host == null ? this.roleService.getUserBadgeRoles(user.id).then((rs) => rs
 				.filter((r) => r.isPublic || iAmModerator)
@@ -581,7 +568,6 @@ export class UserEntityService implements OnModuleInit {
 				isExplorable: user.isExplorable,
 				isDeleted: user.isDeleted,
 				twoFactorBackupCodesStock: profile?.twoFactorBackupSecret?.length === 5 ? 'full' : (profile?.twoFactorBackupSecret?.length ?? 0) > 0 ? 'partial' : 'none',
-				hideOnlineStatus: user.hideOnlineStatus,
 				hasUnreadSpecifiedNotes: this.noteUnreadsRepository.count({
 					where: { userId: user.id, isSpecified: true },
 					take: 1,

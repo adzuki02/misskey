@@ -46,15 +46,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div class="label">Custom emojis</div>
 				</div>
 			</div>
-			<div class="item _panel online">
-				<div class="icon"><i class="ti ti-access-point"></i></div>
-				<div class="body">
-					<div class="value">
-						<MkNumber :value="onlineUsersCount" style="margin-right: 0.5em;"/>
-					</div>
-					<div class="label">Online</div>
-				</div>
-			</div>
 		</div>
 	</Transition>
 </div>
@@ -73,23 +64,18 @@ import { defaultStore } from '@/store.js';
 const stats = ref<Misskey.entities.StatsResponse | null>(null);
 const usersComparedToThePrevDay = ref<number>();
 const notesComparedToThePrevDay = ref<number>();
-const onlineUsersCount = ref(0);
 const fetching = ref(true);
 
 onMounted(async () => {
-	const [_stats, _onlineUsersCount] = await Promise.all([
-		misskeyApi('stats', {}),
-		misskeyApi('get-online-users-count').then(res => res.count),
-	]);
+	const _stats = await misskeyApi('stats', {});
 	stats.value = _stats;
-	onlineUsersCount.value = _onlineUsersCount;
 
 	misskeyApi('charts/users', { limit: 2, span: 'day' }).then(chart => {
-		usersComparedToThePrevDay.value = stats.value.originalUsersCount - chart.local.total[1];
+		usersComparedToThePrevDay.value = stats.value!.originalUsersCount - chart.local.total[1];
 	});
 
 	misskeyApi('charts/notes', { limit: 2, span: 'day' }).then(chart => {
-		notesComparedToThePrevDay.value = stats.value.originalNotesCount - chart.local.total[1];
+		notesComparedToThePrevDay.value = stats.value!.originalNotesCount - chart.local.total[1];
 	});
 
 	fetching.value = false;

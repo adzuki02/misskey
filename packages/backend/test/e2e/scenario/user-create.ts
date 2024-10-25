@@ -90,7 +90,6 @@ describe('[シナリオ] ユーザ作成', () => {
 			expect(alice.isCat).toBe(body.isCat);
 			expect(alice.instance).toEqual(body.instance);
 			expect(alice.emojis).toEqual(body.emojis);
-			expect(alice.onlineStatus).toBe(body.onlineStatus);
 			expect(alice.badgeRoles).toEqual(body.badgeRoles);
 		});
 

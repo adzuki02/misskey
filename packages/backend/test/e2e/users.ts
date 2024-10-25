@@ -42,7 +42,6 @@ describe('ユーザー', () => {
 			isCat: user.isCat,
 			instance: user.instance,
 			emojis: user.emojis,
-			onlineStatus: user.onlineStatus,
 			badgeRoles: user.badgeRoles,
 
 			// BUG isAdmin/isModeratorはUserLiteではなくMeDetailedOnlyに含まれる。
@@ -126,7 +125,6 @@ describe('ユーザー', () => {
 			isExplorable: user.isExplorable,
 			isDeleted: user.isDeleted,
 			twoFactorBackupCodesStock: user.twoFactorBackupCodesStock,
-			hideOnlineStatus: user.hideOnlineStatus,
 			hasUnreadSpecifiedNotes: user.hasUnreadSpecifiedNotes,
 			hasUnreadMentions: user.hasUnreadMentions,
 			hasUnreadAnnouncement: user.hasUnreadAnnouncement,
@@ -307,7 +305,6 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.isCat, false);
 		assert.strictEqual(response.instance, undefined);
 		assert.deepStrictEqual(response.emojis, {});
-		assert.strictEqual(response.onlineStatus, 'unknown');
 		assert.deepStrictEqual(response.badgeRoles, []);
 		// UserDetailedNotMeOnly
 		assert.strictEqual(response.url, null);
@@ -359,7 +356,6 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.isExplorable, true);
 		assert.strictEqual(response.isDeleted, false);
 		assert.strictEqual(response.twoFactorBackupCodesStock, 'none');
-		assert.strictEqual(response.hideOnlineStatus, false);
 		assert.strictEqual(response.hasUnreadSpecifiedNotes, false);
 		assert.strictEqual(response.hasUnreadMentions, false);
 		assert.strictEqual(response.hasUnreadAnnouncement, false);
@@ -421,8 +417,6 @@ describe('ユーザー', () => {
 		{ parameters: () => ({ isLocked: false }) },
 		{ parameters: () => ({ isExplorable: false }) },
 		{ parameters: () => ({ isExplorable: true }) },
-		{ parameters: () => ({ hideOnlineStatus: true }) },
-		{ parameters: () => ({ hideOnlineStatus: false }) },
 		{ parameters: () => ({ publicReactions: false }) },
 		{ parameters: () => ({ publicReactions: true }) },
 		{ parameters: () => ({ autoAcceptFollowed: true }) },

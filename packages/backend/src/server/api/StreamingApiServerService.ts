@@ -138,19 +138,11 @@ export class StreamingApiServerService {
 
 			this.#connections.set(connection, Date.now());
 
-			const userUpdateIntervalId = user ? setInterval(() => {
-				this.usersService.updateLastActiveDate(user);
-			}, 1000 * 60 * 5) : null;
-			if (user) {
-				this.usersService.updateLastActiveDate(user);
-			}
-
 			connection.once('close', () => {
 				ev.removeAllListeners();
 				stream.dispose();
 				globalEv.off('message', onRedisMessage);
 				this.#connections.delete(connection);
-				if (userUpdateIntervalId) clearInterval(userUpdateIntervalId);
 			});
 
 			connection.on('pong', () => {

@@ -25,17 +25,6 @@ export class MiUser {
 	})
 	public lastFetchedAt: Date | null;
 
-	@Index()
-	@Column('timestamp with time zone', {
-		nullable: true,
-	})
-	public lastActiveDate: Date | null;
-
-	@Column('boolean', {
-		default: false,
-	})
-	public hideOnlineStatus: boolean;
-
 	@Column('varchar', {
 		length: 128,
 		comment: 'The username of the User.',
@@ -191,11 +180,6 @@ export class MiUser {
 		comment: 'Whether the User is explorable.',
 	})
 	public isExplorable: boolean;
-
-	@Column('boolean', {
-		default: false,
-	})
-	public isHibernated: boolean;
 
 	// アカウントが削除されたかどうかのフラグだが、完全に削除される際は物理削除なので実質削除されるまでの「削除が進行しているかどうか」のフラグ
 	@Column('boolean', {

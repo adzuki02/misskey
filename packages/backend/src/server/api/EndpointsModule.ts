@@ -177,7 +177,6 @@ import * as ep___following_requests_accept from './endpoints/following/requests/
 import * as ep___following_requests_cancel from './endpoints/following/requests/cancel.js';
 import * as ep___following_requests_list from './endpoints/following/requests/list.js';
 import * as ep___following_requests_reject from './endpoints/following/requests/reject.js';
-import * as ep___getOnlineUsersCount from './endpoints/get-online-users-count.js';
 import * as ep___getAvatarDecorations from './endpoints/get-avatar-decorations.js';
 import * as ep___hashtags_list from './endpoints/hashtags/list.js';
 import * as ep___hashtags_search from './endpoints/hashtags/search.js';
@@ -517,7 +516,6 @@ const $following_requests_accept: Provider = { provide: 'ep:following/requests/a
 const $following_requests_cancel: Provider = { provide: 'ep:following/requests/cancel', useClass: ep___following_requests_cancel.default };
 const $following_requests_list: Provider = { provide: 'ep:following/requests/list', useClass: ep___following_requests_list.default };
 const $following_requests_reject: Provider = { provide: 'ep:following/requests/reject', useClass: ep___following_requests_reject.default };
-const $getOnlineUsersCount: Provider = { provide: 'ep:get-online-users-count', useClass: ep___getOnlineUsersCount.default };
 const $getAvatarDecorations: Provider = { provide: 'ep:get-avatar-decorations', useClass: ep___getAvatarDecorations.default };
 const $hashtags_list: Provider = { provide: 'ep:hashtags/list', useClass: ep___hashtags_list.default };
 const $hashtags_search: Provider = { provide: 'ep:hashtags/search', useClass: ep___hashtags_search.default };
@@ -861,7 +859,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$following_requests_cancel,
 		$following_requests_list,
 		$following_requests_reject,
-		$getOnlineUsersCount,
 		$getAvatarDecorations,
 		$hashtags_list,
 		$hashtags_search,
@@ -1199,7 +1196,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$following_requests_cancel,
 		$following_requests_list,
 		$following_requests_reject,
-		$getOnlineUsersCount,
 		$getAvatarDecorations,
 		$hashtags_list,
 		$hashtags_search,

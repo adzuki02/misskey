@@ -53,7 +53,6 @@ const exampleNote = reactive<Misskey.entities.Note>({
 		isBot: false,
 		isCat: true,
 		emojis: {},
-		onlineStatus: 'unknown',
 		badgeRoles: [],
 	},
 	text: 'just setting up my msky',

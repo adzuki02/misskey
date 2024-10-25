@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</div>
 				<div :class="$style.user">
-					<MkAvatar :user="clip.user" :class="$style.avatar" indicator link preview/> <MkUserName :user="clip.user" :nowrap="false"/>
+					<MkAvatar :user="clip.user" :class="$style.avatar" link preview/> <MkUserName :user="clip.user" :nowrap="false"/>
 				</div>
 			</div>
 
