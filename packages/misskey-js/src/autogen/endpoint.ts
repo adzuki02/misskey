@@ -505,7 +505,6 @@ import type {
 	UsersShowRequest,
 	UsersShowResponse,
 	UsersUpdateMemoRequest,
-	RetentionResponse,
 } from './entities.js';
 
 export type Endpoints = {
@@ -848,7 +847,6 @@ export type Endpoints = {
 	'users/search': { req: UsersSearchRequest; res: UsersSearchResponse };
 	'users/show': { req: UsersShowRequest; res: UsersShowResponse };
 	'users/update-memo': { req: UsersUpdateMemoRequest; res: EmptyResponse };
-	'retention': { req: EmptyRequest; res: RetentionResponse };
 }
 
 /**

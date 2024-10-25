@@ -56,16 +56,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkFoldableSection>
 
 	<MkFoldableSection class="item">
-		<template #header>Retention rate</template>
-		<div class="_panel" :class="$style.retentionHeatmap">
-			<MkRetentionHeatmap/>
-		</div>
-		<div class="_panel" :class="$style.retentionLine">
-			<MkRetentionLineChart/>
-		</div>
-	</MkFoldableSection>
-
-	<MkFoldableSection class="item">
 		<template #header>Federation</template>
 		<div :class="$style.federation">
 			<div class="pies">
@@ -94,8 +84,6 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import MkHeatmap, { type HeatmapSource } from '@/components/MkHeatmap.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
-import MkRetentionHeatmap from '@/components/MkRetentionHeatmap.vue';
-import MkRetentionLineChart from '@/components/MkRetentionLineChart.vue';
 import { initChart } from '@/scripts/init-chart.js';
 import { $i } from '@/account.js';
 
@@ -234,16 +222,6 @@ onMounted(() => {
 }
 
 .heatmap {
-	padding: 16px;
-	margin-bottom: 16px;
-}
-
-.retentionHeatmap {
-	padding: 16px;
-	margin-bottom: 16px;
-}
-
-.retentionLine {
 	padding: 16px;
 	margin-bottom: 16px;
 }

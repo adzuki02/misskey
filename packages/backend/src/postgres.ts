@@ -68,7 +68,6 @@ import { MiUserSecurityKey } from '@/models/UserSecurityKey.js';
 import { MiWebhook } from '@/models/Webhook.js';
 import { MiSystemWebhook } from '@/models/SystemWebhook.js';
 import { MiChannel } from '@/models/Channel.js';
-import { MiRetentionAggregation } from '@/models/RetentionAggregation.js';
 import { MiRole } from '@/models/Role.js';
 import { MiRoleAssignment } from '@/models/RoleAssignment.js';
 import { MiFlash } from '@/models/Flash.js';
@@ -201,7 +200,6 @@ export const entities = [
 	MiWebhook,
 	MiSystemWebhook,
 	MiUserIp,
-	MiRetentionAggregation,
 	MiRole,
 	MiRoleAssignment,
 	MiFlash,

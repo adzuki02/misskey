@@ -54,7 +54,6 @@ import {
 	MiRenoteMuting,
 	MiRepository,
 	miRepository,
-	MiRetentionAggregation,
 	MiRole,
 	MiRoleAssignment,
 	MiSignin,
@@ -431,12 +430,6 @@ const $passwordResetRequestsRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $retentionAggregationsRepository: Provider = {
-	provide: DI.retentionAggregationsRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiRetentionAggregation).extend(miRepository as MiRepository<MiRetentionAggregation>),
-	inject: [DI.db],
-};
-
 const $flashsRepository: Provider = {
 	provide: DI.flashsRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiFlash).extend(miRepository as MiRepository<MiFlash>),
@@ -529,7 +522,6 @@ const $userMemosRepository: Provider = {
 		$systemWebhooksRepository,
 		$adsRepository,
 		$passwordResetRequestsRepository,
-		$retentionAggregationsRepository,
 		$rolesRepository,
 		$roleAssignmentsRepository,
 		$flashsRepository,
@@ -596,7 +588,6 @@ const $userMemosRepository: Provider = {
 		$systemWebhooksRepository,
 		$adsRepository,
 		$passwordResetRequestsRepository,
-		$retentionAggregationsRepository,
 		$rolesRepository,
 		$roleAssignmentsRepository,
 		$flashsRepository,

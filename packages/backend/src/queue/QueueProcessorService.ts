@@ -40,7 +40,6 @@ import { ResyncChartsProcessorService } from './processors/ResyncChartsProcessor
 import { CleanChartsProcessorService } from './processors/CleanChartsProcessorService.js';
 import { CheckExpiredMutingsProcessorService } from './processors/CheckExpiredMutingsProcessorService.js';
 import { CleanProcessorService } from './processors/CleanProcessorService.js';
-import { AggregateRetentionProcessorService } from './processors/AggregateRetentionProcessorService.js';
 import { QueueLoggerService } from './QueueLoggerService.js';
 import { QUEUE, baseQueueOptions } from './const.js';
 
@@ -116,7 +115,6 @@ export class QueueProcessorService implements OnApplicationShutdown {
 		private tickChartsProcessorService: TickChartsProcessorService,
 		private resyncChartsProcessorService: ResyncChartsProcessorService,
 		private cleanChartsProcessorService: CleanChartsProcessorService,
-		private aggregateRetentionProcessorService: AggregateRetentionProcessorService,
 		private checkExpiredMutingsProcessorService: CheckExpiredMutingsProcessorService,
 		private cleanProcessorService: CleanProcessorService,
 	) {
@@ -145,7 +143,6 @@ export class QueueProcessorService implements OnApplicationShutdown {
 					case 'tickCharts': return this.tickChartsProcessorService.process();
 					case 'resyncCharts': return this.resyncChartsProcessorService.process();
 					case 'cleanCharts': return this.cleanChartsProcessorService.process();
-					case 'aggregateRetention': return this.aggregateRetentionProcessorService.process();
 					case 'checkExpiredMutings': return this.checkExpiredMutingsProcessorService.process();
 					case 'clean': return this.cleanProcessorService.process();
 					default: throw new Error(`unrecognized job type ${job.name} for system`);
