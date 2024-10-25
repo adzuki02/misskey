@@ -27,7 +27,7 @@ const fetching = ref(true);
 
 onMounted(async () => {
 	moderators.value = await misskeyApi('admin/show-users', {
-		sort: '+lastActiveDate',
+		sort: '-createdAt',
 		state: 'adminOrModerator',
 		limit: 30,
 	});

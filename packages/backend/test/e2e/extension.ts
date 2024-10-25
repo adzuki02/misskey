@@ -54,25 +54,6 @@ describe('独自拡張', () => {
 		});
 	});
 
-	describe('オンラインユーザー数を隠す', () => {
-		describe('/api/get-online-users-count', () => {
-			test('はGETできない。', async () => {
-				const res = await simpleGet('/api/get-online-users-count', 'application/json');
-				assert.strictEqual(res.status, 405);
-			});
-
-			test('は認証情報がなければアクセスできない。', async () => {
-				const res = await api('get-online-users-count', {});
-				assert.strictEqual(res.status, 401);
-			});
-
-			test('は認証情報があればアクセスできる。', async () => {
-				const res = await api('get-online-users-count', {}, bob);
-				assert.strictEqual(res.status, 200);
-			});
-		});
-	});
-
 	describe('サーバーのチャートを隠す', () => {
 		describe.each([
 			{ endpoint: 'charts/federation', param: { span: 'day' } },

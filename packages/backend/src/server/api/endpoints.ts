@@ -183,7 +183,6 @@ import * as ep___following_requests_accept from './endpoints/following/requests/
 import * as ep___following_requests_cancel from './endpoints/following/requests/cancel.js';
 import * as ep___following_requests_list from './endpoints/following/requests/list.js';
 import * as ep___following_requests_reject from './endpoints/following/requests/reject.js';
-import * as ep___getOnlineUsersCount from './endpoints/get-online-users-count.js';
 import * as ep___getAvatarDecorations from './endpoints/get-avatar-decorations.js';
 import * as ep___hashtags_list from './endpoints/hashtags/list.js';
 import * as ep___hashtags_search from './endpoints/hashtags/search.js';
@@ -521,7 +520,6 @@ const eps = [
 	['following/requests/cancel', ep___following_requests_cancel],
 	['following/requests/list', ep___following_requests_list],
 	['following/requests/reject', ep___following_requests_reject],
-	['get-online-users-count', ep___getOnlineUsersCount],
 	['get-avatar-decorations', ep___getAvatarDecorations],
 	['hashtags/list', ep___hashtags_list],
 	['hashtags/search', ep___hashtags_search],

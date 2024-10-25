@@ -23,37 +23,6 @@ export class UserService {
 	) {
 	}
 
-	@bindThis
-	public async updateLastActiveDate(user: MiUser): Promise<void> {
-		if (user.isHibernated) {
-			const result = await this.usersRepository.createQueryBuilder().update()
-				.set({
-					lastActiveDate: new Date(),
-				})
-				.where('id = :id', { id: user.id })
-				.returning('*')
-				.execute()
-				.then((response) => {
-					return response.raw[0];
-				});
-			const wokeUp = result.isHibernated;
-			if (wokeUp) {
-				this.usersRepository.update(user.id, {
-					isHibernated: false,
-				});
-				this.followingsRepository.update({
-					followerId: user.id,
-				}, {
-					isFollowerHibernated: false,
-				});
-			}
-		} else {
-			this.usersRepository.update(user.id, {
-				lastActiveDate: new Date(),
-			});
-		}
-	}
-
 	/**
 	 * SystemWebhookを用いてユーザに関する操作内容を管理者各位に通知する.
 	 * ここではJobQueueへのエンキューのみを行うため、即時実行されない.

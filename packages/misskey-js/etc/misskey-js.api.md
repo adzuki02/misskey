@@ -1365,7 +1365,6 @@ declare namespace entities {
         FollowingRequestsListRequest,
         FollowingRequestsListResponse,
         FollowingRequestsRejectRequest,
-        GetOnlineUsersCountResponse,
         GetAvatarDecorationsResponse,
         HashtagsListRequest,
         HashtagsListResponse,
@@ -1813,9 +1812,6 @@ export const followingVisibilities: readonly ["public", "followers", "private"];
 
 // @public (undocumented)
 type GetAvatarDecorationsResponse = operations['get-avatar-decorations']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type GetOnlineUsersCountResponse = operations['get-online-users-count']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type Hashtag = components['schemas']['Hashtag'];

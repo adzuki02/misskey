@@ -262,7 +262,6 @@ import type {
 	FollowingRequestsListRequest,
 	FollowingRequestsListResponse,
 	FollowingRequestsRejectRequest,
-	GetOnlineUsersCountResponse,
 	GetAvatarDecorationsResponse,
 	HashtagsListRequest,
 	HashtagsListResponse,
@@ -675,7 +674,6 @@ export type Endpoints = {
 	'following/requests/cancel': { req: FollowingRequestsCancelRequest; res: FollowingRequestsCancelResponse };
 	'following/requests/list': { req: FollowingRequestsListRequest; res: FollowingRequestsListResponse };
 	'following/requests/reject': { req: FollowingRequestsRejectRequest; res: EmptyResponse };
-	'get-online-users-count': { req: EmptyRequest; res: GetOnlineUsersCountResponse };
 	'get-avatar-decorations': { req: EmptyRequest; res: GetAvatarDecorationsResponse };
 	'hashtags/list': { req: HashtagsListRequest; res: HashtagsListResponse };
 	'hashtags/search': { req: HashtagsSearchRequest; res: HashtagsSearchResponse };
