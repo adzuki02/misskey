@@ -1617,7 +1617,6 @@ declare namespace entities {
         UsersShowRequest,
         UsersShowResponse,
         UsersUpdateMemoRequest,
-        RetentionResponse,
         Error_2 as Error,
         UserLite,
         UserDetailedNotMeOnly,
@@ -2584,9 +2583,6 @@ type RequestResetPasswordRequest = operations['request-reset-password']['request
 
 // @public (undocumented)
 type ResetPasswordRequest = operations['reset-password']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type RetentionResponse = operations['retention']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type Role = components['schemas']['Role'];

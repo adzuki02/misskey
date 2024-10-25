@@ -73,7 +73,6 @@ export const DI = {
 	systemWebhooksRepository: Symbol('systemWebhooksRepository'),
 	adsRepository: Symbol('adsRepository'),
 	passwordResetRequestsRepository: Symbol('passwordResetRequestsRepository'),
-	retentionAggregationsRepository: Symbol('retentionAggregationsRepository'),
 	rolesRepository: Symbol('rolesRepository'),
 	roleAssignmentsRepository: Symbol('roleAssignmentsRepository'),
 	flashsRepository: Symbol('flashsRepository'),

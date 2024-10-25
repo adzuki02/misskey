@@ -22,11 +22,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkFoldableSection>
 
 		<MkFoldableSection class="item">
-			<template #header>Retention rate</template>
-			<XRetention/>
-		</MkFoldableSection>
-
-		<MkFoldableSection class="item">
 			<template #header>Moderators</template>
 			<XModerators/>
 		</MkFoldableSection>
@@ -74,7 +69,6 @@ import XApRequests from './overview.ap-requests.vue';
 import XUsers from './overview.users.vue';
 import XActiveUsers from './overview.active-users.vue';
 import XStats from './overview.stats.vue';
-import XRetention from './overview.retention.vue';
 import XModerators from './overview.moderators.vue';
 import XHeatmap from './overview.heatmap.vue';
 import type { InstanceForPie } from './overview.pie.vue';
