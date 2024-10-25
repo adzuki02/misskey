@@ -9,7 +9,6 @@ import { bindThis } from '@/decorators.js';
 import FederationChart from './charts/federation.js';
 import NotesChart from './charts/notes.js';
 import UsersChart from './charts/users.js';
-import ActiveUsersChart from './charts/active-users.js';
 import InstanceChart from './charts/instance.js';
 import DriveChart from './charts/drive.js';
 import ApRequestChart from './charts/ap-request.js';
@@ -24,7 +23,6 @@ export class ChartManagementService implements OnApplicationShutdown {
 		private federationChart: FederationChart,
 		private notesChart: NotesChart,
 		private usersChart: UsersChart,
-		private activeUsersChart: ActiveUsersChart,
 		private instanceChart: InstanceChart,
 		private driveChart: DriveChart,
 		private apRequestChart: ApRequestChart,
@@ -33,7 +31,6 @@ export class ChartManagementService implements OnApplicationShutdown {
 			this.federationChart,
 			this.notesChart,
 			this.usersChart,
-			this.activeUsersChart,
 			this.instanceChart,
 			this.driveChart,
 			this.apRequestChart,

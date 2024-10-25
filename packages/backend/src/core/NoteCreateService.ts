@@ -30,7 +30,6 @@ import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import NotesChart from '@/core/chart/charts/notes.js';
 import InstanceChart from '@/core/chart/charts/instance.js';
-import ActiveUsersChart from '@/core/chart/charts/active-users.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { NotificationService } from '@/core/NotificationService.js';
 import { UserWebhookService } from '@/core/UserWebhookService.js';
@@ -207,7 +206,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 		private roleService: RoleService,
 		private searchService: SearchService,
 		private notesChart: NotesChart,
-		private activeUsersChart: ActiveUsersChart,
 		private instanceChart: InstanceChart,
 		private utilityService: UtilityService,
 		private userBlockingService: UserBlockingService,
@@ -555,8 +553,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 		}
 
 		if (!silent) {
-			if (this.userEntityService.isLocalUser(user)) this.activeUsersChart.write(user);
-
 			// 未読通知を作成
 			if (data.visibility === 'specified') {
 				if (data.visibleUsers == null) throw new Error('invalid param');

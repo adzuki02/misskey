@@ -8,7 +8,6 @@ import type Logger from '@/logger.js';
 import FederationChart from '@/core/chart/charts/federation.js';
 import NotesChart from '@/core/chart/charts/notes.js';
 import UsersChart from '@/core/chart/charts/users.js';
-import ActiveUsersChart from '@/core/chart/charts/active-users.js';
 import InstanceChart from '@/core/chart/charts/instance.js';
 import DriveChart from '@/core/chart/charts/drive.js';
 import ApRequestChart from '@/core/chart/charts/ap-request.js';
@@ -24,7 +23,6 @@ export class CleanChartsProcessorService {
 		private federationChart: FederationChart,
 		private notesChart: NotesChart,
 		private usersChart: UsersChart,
-		private activeUsersChart: ActiveUsersChart,
 		private instanceChart: InstanceChart,
 		private driveChart: DriveChart,
 		private apRequestChart: ApRequestChart,
@@ -42,7 +40,6 @@ export class CleanChartsProcessorService {
 			this.federationChart.clean(),
 			this.notesChart.clean(),
 			this.usersChart.clean(),
-			this.activeUsersChart.clean(),
 			this.instanceChart.clean(),
 			this.driveChart.clean(),
 			this.apRequestChart.clean(),

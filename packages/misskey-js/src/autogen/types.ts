@@ -1077,15 +1077,6 @@ export type paths = {
      */
     post: operations['channels___search'];
   };
-  '/charts/active-users': {
-    /**
-     * charts/active-users
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:account*
-     */
-    post: operations['charts___active-users'];
-  };
   '/charts/ap-request': {
     /**
      * charts/ap-request
@@ -11441,74 +11432,6 @@ export type operations = {
       200: {
         content: {
           'application/json': components['schemas']['Channel'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * charts/active-users
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:account*
-   */
-  'charts___active-users': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @enum {string} */
-          span: 'day' | 'hour';
-          /** @default 30 */
-          limit?: number;
-          /** @default null */
-          offset?: number | null;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': {
-            readWrite: number[];
-            read: number[];
-            write: number[];
-            registeredWithinWeek: number[];
-            registeredWithinMonth: number[];
-            registeredWithinYear: number[];
-            registeredOutsideWeek: number[];
-            registeredOutsideMonth: number[];
-            registeredOutsideYear: number[];
-          };
         };
       };
       /** @description Client error */

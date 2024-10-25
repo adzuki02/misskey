@@ -24,7 +24,7 @@ import { initChart } from '@/scripts/init-chart.js';
 
 initChart();
 
-export type HeatmapSource = 'active-users' | 'notes' | 'ap-requests-inbox-received' | 'ap-requests-deliver-succeeded' | 'ap-requests-deliver-failed';
+export type HeatmapSource = 'notes' | 'ap-requests-inbox-received' | 'ap-requests-deliver-succeeded' | 'ap-requests-deliver-failed';
 
 const props = withDefaults(defineProps<{
 	src: HeatmapSource;
@@ -78,10 +78,7 @@ async function renderChart() {
 
 	let values: number[] = [];
 
-	if (props.src === 'active-users') {
-		const raw = await misskeyApi('charts/active-users', { limit: chartLimit, span: 'day' });
-		values = raw.readWrite;
-	} else if (props.src === 'notes') {
+	if (props.src === 'notes') {
 		const raw = await misskeyApi('charts/notes', { limit: chartLimit, span: 'day' });
 		values = raw.local.inc;
 	} else if (props.src === 'ap-requests-inbox-received') {

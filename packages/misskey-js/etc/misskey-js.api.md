@@ -803,12 +803,6 @@ type ChannelsUpdateRequest = operations['channels___update']['requestBody']['con
 type ChannelsUpdateResponse = operations['channels___update']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
-type ChartsActiveUsersRequest = operations['charts___active-users']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type ChartsActiveUsersResponse = operations['charts___active-users']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
 type ChartsApRequestRequest = operations['charts___ap-request']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1283,8 +1277,6 @@ declare namespace entities {
         ChannelsMyFavoritesResponse,
         ChannelsSearchRequest,
         ChannelsSearchResponse,
-        ChartsActiveUsersRequest,
-        ChartsActiveUsersResponse,
         ChartsApRequestRequest,
         ChartsApRequestResponse,
         ChartsDriveRequest,
