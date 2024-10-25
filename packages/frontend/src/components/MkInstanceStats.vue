@@ -17,7 +17,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<optgroup :label="i18n.ts.users">
 						<option value="users">{{ i18n.ts._charts.usersIncDec }}</option>
 						<option value="users-total">{{ i18n.ts._charts.usersTotal }}</option>
-						<option value="active-users">{{ i18n.ts._charts.activeUsers }}</option>
 					</optgroup>
 					<optgroup :label="i18n.ts.notes">
 						<option value="notes">{{ i18n.ts._charts.notesIncDec }}</option>
@@ -44,7 +43,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkFoldableSection class="item">
 		<template #header>Active users heatmap</template>
 		<MkSelect v-model="heatmapSrc" style="margin: 0 0 12px 0;">
-			<option value="active-users">Active users</option>
 			<option value="notes">Notes</option>
 			<option value="ap-requests-inbox-received">AP Requests: inboxReceived</option>
 			<option value="ap-requests-deliver-succeeded">AP Requests: deliverSucceeded</option>
@@ -91,8 +89,8 @@ initChart();
 
 const chartLimit = 500;
 const chartSpan = ref<'hour' | 'day'>('hour');
-const chartSrc = ref('active-users');
-const heatmapSrc = ref<HeatmapSource>('active-users');
+const chartSrc = ref('notes');
+const heatmapSrc = ref<HeatmapSource>('notes');
 const subDoughnutEl = shallowRef<HTMLCanvasElement>();
 const pubDoughnutEl = shallowRef<HTMLCanvasElement>();
 

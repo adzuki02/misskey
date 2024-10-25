@@ -171,8 +171,6 @@ import type {
 	ChannelsMyFavoritesResponse,
 	ChannelsSearchRequest,
 	ChannelsSearchResponse,
-	ChartsActiveUsersRequest,
-	ChartsActiveUsersResponse,
 	ChartsApRequestRequest,
 	ChartsApRequestResponse,
 	ChartsDriveRequest,
@@ -625,7 +623,6 @@ export type Endpoints = {
 	'channels/unfavorite': { req: ChannelsUnfavoriteRequest; res: EmptyResponse };
 	'channels/my-favorites': { req: EmptyRequest; res: ChannelsMyFavoritesResponse };
 	'channels/search': { req: ChannelsSearchRequest; res: ChannelsSearchResponse };
-	'charts/active-users': { req: ChartsActiveUsersRequest; res: ChartsActiveUsersResponse };
 	'charts/ap-request': { req: ChartsApRequestRequest; res: ChartsApRequestResponse };
 	'charts/drive': { req: ChartsDriveRequest; res: ChartsDriveResponse };
 	'charts/federation': { req: ChartsFederationRequest; res: ChartsFederationResponse };

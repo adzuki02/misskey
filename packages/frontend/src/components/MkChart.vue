@@ -19,7 +19,6 @@ export type ChartSrc =
 	| 'ap-request'
 	| 'users'
 	| 'users-total'
-	| 'active-users'
 	| 'notes'
 	| 'local-notes'
 	| 'remote-notes'
@@ -37,11 +36,6 @@ export type ChartSrc =
 	| 'instance-drive-usage-total'
 	| 'instance-drive-files'
 	| 'instance-drive-files-total'
-	| 'per-user-notes'
-	| 'per-user-pv'
-	| 'per-user-following'
-	| 'per-user-followers'
-	| 'per-user-drive';
 </script>
 
 <script lang="ts" setup>
@@ -469,58 +463,6 @@ const fetchUsersChart = async (total: boolean): Promise<typeof chartData> => {
 	};
 };
 
-const fetchActiveUsersChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApi('charts/active-users', { limit: props.limit, span: props.span });
-	return {
-		series: [{
-			name: 'Read & Write',
-			type: 'area',
-			data: format(raw.readWrite),
-			color: colors.orange,
-		}, {
-			name: 'Write',
-			type: 'area',
-			data: format(raw.write),
-			color: colors.lime,
-		}, {
-			name: 'Read',
-			type: 'area',
-			data: format(raw.read),
-			color: colors.blue,
-		}, {
-			name: '< Week',
-			type: 'area',
-			data: format(raw.registeredWithinWeek),
-			color: colors.green,
-		}, {
-			name: '< Month',
-			type: 'area',
-			data: format(raw.registeredWithinMonth),
-			color: colors.yellow,
-		}, {
-			name: '< Year',
-			type: 'area',
-			data: format(raw.registeredWithinYear),
-			color: colors.red,
-		}, {
-			name: '> Week',
-			type: 'area',
-			data: format(raw.registeredOutsideWeek),
-			color: colors.yellow,
-		}, {
-			name: '> Month',
-			type: 'area',
-			data: format(raw.registeredOutsideMonth),
-			color: colors.red,
-		}, {
-			name: '> Year',
-			type: 'area',
-			data: format(raw.registeredOutsideYear),
-			color: colors.purple,
-		}],
-	};
-};
-
 const fetchDriveChart = async (): Promise<typeof chartData> => {
 	const raw = await misskeyApi('charts/drive', { limit: props.limit, span: props.span });
 	return {
@@ -705,7 +647,6 @@ const fetchAndRender = async () => {
 			case 'ap-request': return fetchApRequestChart();
 			case 'users': return fetchUsersChart(false);
 			case 'users-total': return fetchUsersChart(true);
-			case 'active-users': return fetchActiveUsersChart();
 			case 'notes': return fetchNotesChart('combined');
 			case 'local-notes': return fetchNotesChart('local');
 			case 'remote-notes': return fetchNotesChart('remote');

@@ -6,7 +6,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_panel" :class="$style.root">
 	<MkSelect v-model="src" style="margin: 0 0 12px 0;" small>
-		<option value="active-users">Active users</option>
 		<option value="notes">Notes</option>
 		<option value="ap-requests-inbox-received">AP Requests: inboxReceived</option>
 		<option value="ap-requests-deliver-succeeded">AP Requests: deliverSucceeded</option>
@@ -18,10 +17,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import MkHeatmap from '@/components/MkHeatmap.vue';
+import MkHeatmap, { HeatmapSource } from '@/components/MkHeatmap.vue';
 import MkSelect from '@/components/MkSelect.vue';
 
-const src = ref('active-users');
+const src = ref<HeatmapSource>('notes');
 </script>
 
 <style lang="scss" module>

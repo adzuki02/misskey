@@ -78,7 +78,6 @@ import { ChartLoggerService } from './chart/ChartLoggerService.js';
 import FederationChart from './chart/charts/federation.js';
 import NotesChart from './chart/charts/notes.js';
 import UsersChart from './chart/charts/users.js';
-import ActiveUsersChart from './chart/charts/active-users.js';
 import InstanceChart from './chart/charts/instance.js';
 import DriveChart from './chart/charts/drive.js';
 import ApRequestChart from './chart/charts/ap-request.js';
@@ -212,7 +211,6 @@ const $ChartLoggerService: Provider = { provide: 'ChartLoggerService', useExisti
 const $FederationChart: Provider = { provide: 'FederationChart', useExisting: FederationChart };
 const $NotesChart: Provider = { provide: 'NotesChart', useExisting: NotesChart };
 const $UsersChart: Provider = { provide: 'UsersChart', useExisting: UsersChart };
-const $ActiveUsersChart: Provider = { provide: 'ActiveUsersChart', useExisting: ActiveUsersChart };
 const $InstanceChart: Provider = { provide: 'InstanceChart', useExisting: InstanceChart };
 const $DriveChart: Provider = { provide: 'DriveChart', useExisting: DriveChart };
 const $ApRequestChart: Provider = { provide: 'ApRequestChart', useExisting: ApRequestChart };
@@ -349,7 +347,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		FederationChart,
 		NotesChart,
 		UsersChart,
-		ActiveUsersChart,
 		InstanceChart,
 		DriveChart,
 		ApRequestChart,
@@ -482,7 +479,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$FederationChart,
 		$NotesChart,
 		$UsersChart,
-		$ActiveUsersChart,
 		$InstanceChart,
 		$DriveChart,
 		$ApRequestChart,
@@ -615,7 +611,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		FederationChart,
 		NotesChart,
 		UsersChart,
-		ActiveUsersChart,
 		InstanceChart,
 		DriveChart,
 		ApRequestChart,
@@ -747,7 +742,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$FederationChart,
 		$NotesChart,
 		$UsersChart,
-		$ActiveUsersChart,
 		$InstanceChart,
 		$DriveChart,
 		$ApRequestChart,
