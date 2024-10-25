@@ -5,7 +5,7 @@
 
 import { execa, execaNode } from 'execa';
 
-/** @type {import('execa').ExecaChildProcess | undefined} */
+/** @type {ReturnType<typeof execaNode> | undefined} */
 let backendProcess;
 
 async function execBuildAssets() {
@@ -13,7 +13,7 @@ async function execBuildAssets() {
 		cwd: '../../',
 		stdout: process.stdout,
 		stderr: process.stderr,
-	})
+	});
 }
 
 function execStart() {
@@ -25,6 +25,7 @@ function execStart() {
 		env: {
 			'NODE_ENV': 'development',
 		},
+		reject: false,
 	});
 }
 
@@ -32,7 +33,9 @@ async function killProc() {
 	if (backendProcess) {
 		backendProcess.catch(() => {}); // backendProcess.kill()によって発生する例外を無視するためにcatch()を呼び出す
 		backendProcess.kill();
-		await new Promise(resolve => backendProcess.on('exit', resolve));
+		if (backendProcess.exitCode === null) {
+			await new Promise(resolve => backendProcess.on('exit', resolve));
+		}
 		backendProcess = undefined;
 	}
 }
@@ -47,7 +50,7 @@ async function killProc() {
 		],
 		{
 			stdio: [process.stdin, process.stdout, process.stderr, 'ipc'],
-			serialization: "json",
+			serialization: 'json',
 		})
 		.on('message', async (message) => {
 			if (message.type === 'exit') {
@@ -59,5 +62,5 @@ async function killProc() {
 				await execBuildAssets();
 				execStart();
 			}
-		})
+		});
 })();
