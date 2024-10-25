@@ -591,13 +591,6 @@ function focusAfter() {
 	focusNext(rootEl.value);
 }
 
-function readPromo() {
-	misskeyApi('promo/read', {
-		noteId: appearNote.value.id,
-	});
-	isDeleted.value = true;
-}
-
 function emitUpdReaction(emoji: string, delta: number) {
 	if (delta < 0) {
 		emit('removeReaction', emoji);

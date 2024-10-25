@@ -46,8 +46,6 @@ import {
 	MiPasswordResetRequest,
 	MiPoll,
 	MiPollVote,
-	MiPromoNote,
-	MiPromoRead,
 	MiRegistrationTicket,
 	MiRegistryItem,
 	MiRelay,
@@ -364,18 +362,6 @@ const $antennasRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $promoNotesRepository: Provider = {
-	provide: DI.promoNotesRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiPromoNote).extend(miRepository as MiRepository<MiPromoNote>),
-	inject: [DI.db],
-};
-
-const $promoReadsRepository: Provider = {
-	provide: DI.promoReadsRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiPromoRead).extend(miRepository as MiRepository<MiPromoRead>),
-	inject: [DI.db],
-};
-
 const $relaysRepository: Provider = {
 	provide: DI.relaysRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiRelay).extend(miRepository as MiRepository<MiRelay>),
@@ -511,8 +497,6 @@ const $userMemosRepository: Provider = {
 		$clipNotesRepository,
 		$clipFavoritesRepository,
 		$antennasRepository,
-		$promoNotesRepository,
-		$promoReadsRepository,
 		$relaysRepository,
 		$channelsRepository,
 		$channelFollowingsRepository,
@@ -577,8 +561,6 @@ const $userMemosRepository: Provider = {
 		$clipNotesRepository,
 		$clipFavoritesRepository,
 		$antennasRepository,
-		$promoNotesRepository,
-		$promoReadsRepository,
 		$relaysRepository,
 		$channelsRepository,
 		$channelFollowingsRepository,

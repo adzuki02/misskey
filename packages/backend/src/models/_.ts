@@ -47,8 +47,6 @@ import { MiPageLike } from '@/models/PageLike.js';
 import { MiPasswordResetRequest } from '@/models/PasswordResetRequest.js';
 import { MiPoll } from '@/models/Poll.js';
 import { MiPollVote } from '@/models/PollVote.js';
-import { MiPromoNote } from '@/models/PromoNote.js';
-import { MiPromoRead } from '@/models/PromoRead.js';
 import { MiRegistrationTicket } from '@/models/RegistrationTicket.js';
 import { MiRegistryItem } from '@/models/RegistryItem.js';
 import { MiRelay } from '@/models/Relay.js';
@@ -157,8 +155,6 @@ export {
 	MiPasswordResetRequest,
 	MiPoll,
 	MiPollVote,
-	MiPromoNote,
-	MiPromoRead,
 	MiRegistrationTicket,
 	MiRegistryItem,
 	MiRelay,
@@ -223,8 +219,6 @@ export type PageLikesRepository = Repository<MiPageLike> & MiRepository<MiPageLi
 export type PasswordResetRequestsRepository = Repository<MiPasswordResetRequest> & MiRepository<MiPasswordResetRequest>;
 export type PollsRepository = Repository<MiPoll> & MiRepository<MiPoll>;
 export type PollVotesRepository = Repository<MiPollVote> & MiRepository<MiPollVote>;
-export type PromoNotesRepository = Repository<MiPromoNote> & MiRepository<MiPromoNote>;
-export type PromoReadsRepository = Repository<MiPromoRead> & MiRepository<MiPromoRead>;
 export type RegistrationTicketsRepository = Repository<MiRegistrationTicket> & MiRepository<MiRegistrationTicket>;
 export type RegistryItemsRepository = Repository<MiRegistryItem> & MiRepository<MiRegistryItem>;
 export type RelaysRepository = Repository<MiRelay> & MiRepository<MiRelay>;

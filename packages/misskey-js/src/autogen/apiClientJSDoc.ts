@@ -573,17 +573,6 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin:promo*
-     */
-    request<E extends 'admin/promo/create', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
      * **Credential required**: *Yes* / **Permission**: *write:admin:queue*
      */
     request<E extends 'admin/queue/clear', P extends Endpoints[E]['req']>(
@@ -3300,17 +3289,6 @@ declare module '../api.js' {
      * **Credential required**: *No*
      */
     request<E extends 'pinned-users', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *write:account*
-     */
-    request<E extends 'promo/read', P extends Endpoints[E]['req']>(
       endpoint: E,
       params: P,
       credential?: string | null,

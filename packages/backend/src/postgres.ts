@@ -46,8 +46,6 @@ import { MiPageLike } from '@/models/PageLike.js';
 import { MiPasswordResetRequest } from '@/models/PasswordResetRequest.js';
 import { MiPoll } from '@/models/Poll.js';
 import { MiPollVote } from '@/models/PollVote.js';
-import { MiPromoNote } from '@/models/PromoNote.js';
-import { MiPromoRead } from '@/models/PromoRead.js';
 import { MiRegistrationTicket } from '@/models/RegistrationTicket.js';
 import { MiRegistryItem } from '@/models/RegistryItem.js';
 import { MiRelay } from '@/models/Relay.js';
@@ -187,8 +185,6 @@ export const entities = [
 	MiClipNote,
 	MiClipFavorite,
 	MiAntenna,
-	MiPromoNote,
-	MiPromoRead,
 	MiRelay,
 	MiChannel,
 	MiChannelFollowing,
