@@ -839,36 +839,6 @@ type ChartsNotesRequest = operations['charts___notes']['requestBody']['content']
 type ChartsNotesResponse = operations['charts___notes']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
-type ChartsUserDriveRequest = operations['charts___user___drive']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type ChartsUserDriveResponse = operations['charts___user___drive']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type ChartsUserFollowingRequest = operations['charts___user___following']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type ChartsUserFollowingResponse = operations['charts___user___following']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type ChartsUserNotesRequest = operations['charts___user___notes']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type ChartsUserNotesResponse = operations['charts___user___notes']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type ChartsUserPvRequest = operations['charts___user___pv']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type ChartsUserPvResponse = operations['charts___user___pv']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type ChartsUserReactionsRequest = operations['charts___user___reactions']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type ChartsUserReactionsResponse = operations['charts___user___reactions']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
 type ChartsUsersRequest = operations['charts___users']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1325,16 +1295,6 @@ declare namespace entities {
         ChartsInstanceResponse,
         ChartsNotesRequest,
         ChartsNotesResponse,
-        ChartsUserDriveRequest,
-        ChartsUserDriveResponse,
-        ChartsUserFollowingRequest,
-        ChartsUserFollowingResponse,
-        ChartsUserNotesRequest,
-        ChartsUserNotesResponse,
-        ChartsUserPvRequest,
-        ChartsUserPvResponse,
-        ChartsUserReactionsRequest,
-        ChartsUserReactionsResponse,
         ChartsUsersRequest,
         ChartsUsersResponse,
         ClipsAddNoteRequest,

@@ -13,7 +13,6 @@ import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import NotesChart from '@/core/chart/charts/notes.js';
-import PerUserNotesChart from '@/core/chart/charts/per-user-notes.js';
 import InstanceChart from '@/core/chart/charts/instance.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { ApRendererService } from '@/core/activitypub/ApRendererService.js';
@@ -51,7 +50,6 @@ export class NoteDeleteService {
 		private searchService: SearchService,
 		private moderationLogService: ModerationLogService,
 		private notesChart: NotesChart,
-		private perUserNotesChart: PerUserNotesChart,
 		private instanceChart: InstanceChart,
 	) {}
 
@@ -102,9 +100,6 @@ export class NoteDeleteService {
 			//#endregion
 
 			this.notesChart.update(note, false);
-			if (this.meta.enableChartsForRemoteUser || (user.host == null)) {
-				this.perUserNotesChart.update(user, note, false);
-			}
 
 			if (this.userEntityService.isRemoteUser(user)) {
 				this.federatedInstanceService.fetch(user.host).then(async i => {

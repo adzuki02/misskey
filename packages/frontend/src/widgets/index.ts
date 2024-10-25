@@ -13,7 +13,6 @@ export default function(app: App) {
 	app.component('WidgetTimeline', defineAsyncComponent(() => import('./WidgetTimeline.vue')));
 	app.component('WidgetCalendar', defineAsyncComponent(() => import('./WidgetCalendar.vue')));
 	app.component('WidgetClock', defineAsyncComponent(() => import('./WidgetClock.vue')));
-	app.component('WidgetActivity', defineAsyncComponent(() => import('./WidgetActivity.vue')));
 	app.component('WidgetPhotos', defineAsyncComponent(() => import('./WidgetPhotos.vue')));
 	app.component('WidgetDigitalClock', defineAsyncComponent(() => import('./WidgetDigitalClock.vue')));
 	app.component('WidgetUnixClock', defineAsyncComponent(() => import('./WidgetUnixClock.vue')));
@@ -40,7 +39,6 @@ export const widgets = [
 	'timeline',
 	'calendar',
 	'clock',
-	'activity',
 	'photos',
 	'digitalClock',
 	'unixClock',

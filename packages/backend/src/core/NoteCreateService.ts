@@ -29,7 +29,6 @@ import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import NotesChart from '@/core/chart/charts/notes.js';
-import PerUserNotesChart from '@/core/chart/charts/per-user-notes.js';
 import InstanceChart from '@/core/chart/charts/instance.js';
 import ActiveUsersChart from '@/core/chart/charts/active-users.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
@@ -208,7 +207,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 		private roleService: RoleService,
 		private searchService: SearchService,
 		private notesChart: NotesChart,
-		private perUserNotesChart: PerUserNotesChart,
 		private activeUsersChart: ActiveUsersChart,
 		private instanceChart: InstanceChart,
 		private utilityService: UtilityService,
@@ -498,9 +496,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 		isBot: MiUser['isBot'];
 	}, data: Option, silent: boolean, tags: string[], mentionedUsers: MinimumUser[]) {
 		this.notesChart.update(note, true);
-		if (note.visibility !== 'specified' && (this.meta.enableChartsForRemoteUser || (user.host == null))) {
-			this.perUserNotesChart.update(user, note, true);
-		}
 
 		// Register host
 		if (this.userEntityService.isRemoteUser(user)) {

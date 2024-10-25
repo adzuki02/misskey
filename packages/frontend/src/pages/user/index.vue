@@ -13,7 +13,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSpacer v-else-if="tab === 'notes'" key="notes" :contentMax="800" style="padding-top: 0">
 					<XTimeline :user="user"/>
 				</MkSpacer>
-				<XActivity v-else-if="tab === 'activity' && (iAmModerator || $i?.id === user.id)" key="activity" :user="user"/>
 				<XReactions v-else-if="tab === 'reactions' && (iAmModerator || $i?.id === user.id || user.publicReactions)" key="reactions" :user="user"/>
 				<XClips v-else-if="tab === 'clips' && user.host === null" key="clips" :user="user"/>
 				<XLists v-else-if="tab === 'lists' && user.host === null" key="lists" :user="user"/>
@@ -40,7 +39,6 @@ import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));
 const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
-const XActivity = defineAsyncComponent(() => import('./activity.vue'));
 const XReactions = defineAsyncComponent(() => import('./reactions.vue'));
 const XClips = defineAsyncComponent(() => import('./clips.vue'));
 const XLists = defineAsyncComponent(() => import('./lists.vue'));
@@ -84,11 +82,7 @@ const headerTabs = computed(() => user.value ? [{
 	key: 'notes',
 	title: i18n.ts.notes,
 	icon: 'ti ti-pencil',
-}, ...(iAmModerator || $i?.id === user.value.id ? [{
-	key: 'activity',
-	title: i18n.ts.activity,
-	icon: 'ti ti-chart-line',
-}] : []), ...($i && ($i.id === user.value.id || $i.isAdmin || $i.isModerator)) || user.value.publicReactions ? [{
+}, ...($i && ($i.id === user.value.id || $i.isAdmin || $i.isModerator)) || user.value.publicReactions ? [{
 	key: 'reactions',
 	title: i18n.ts.reaction,
 	icon: 'ti ti-mood-happy',

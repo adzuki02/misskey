@@ -28,10 +28,8 @@ export type HeatmapSource = 'active-users' | 'notes' | 'ap-requests-inbox-receiv
 
 const props = withDefaults(defineProps<{
 	src: HeatmapSource;
-	user?: Misskey.entities.User;
 	label?: string;
 }>(), {
-	user: undefined,
 	label: '',
 });
 
@@ -84,13 +82,8 @@ async function renderChart() {
 		const raw = await misskeyApi('charts/active-users', { limit: chartLimit, span: 'day' });
 		values = raw.readWrite;
 	} else if (props.src === 'notes') {
-		if (props.user) {
-			const raw = await misskeyApi('charts/user/notes', { userId: props.user.id, limit: chartLimit, span: 'day' });
-			values = raw.inc;
-		} else {
-			const raw = await misskeyApi('charts/notes', { limit: chartLimit, span: 'day' });
-			values = raw.local.inc;
-		}
+		const raw = await misskeyApi('charts/notes', { limit: chartLimit, span: 'day' });
+		values = raw.local.inc;
 	} else if (props.src === 'ap-requests-inbox-received') {
 		const raw = await misskeyApi('charts/ap-request', { limit: chartLimit, span: 'day' });
 		values = raw.inboxReceived;

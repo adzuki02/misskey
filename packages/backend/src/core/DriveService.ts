@@ -29,7 +29,6 @@ import { QueueService } from '@/core/QueueService.js';
 import type { MiDriveFolder } from '@/models/DriveFolder.js';
 import { createTemp } from '@/misc/create-temp.js';
 import DriveChart from '@/core/chart/charts/drive.js';
-import PerUserDriveChart from '@/core/chart/charts/per-user-drive.js';
 import InstanceChart from '@/core/chart/charts/instance.js';
 import { DownloadService } from '@/core/DownloadService.js';
 import { S3Service } from '@/core/S3Service.js';
@@ -127,7 +126,6 @@ export class DriveService {
 		private roleService: RoleService,
 		private moderationLogService: ModerationLogService,
 		private driveChart: DriveChart,
-		private perUserDriveChart: PerUserDriveChart,
 		private instanceChart: InstanceChart,
 		private utilityService: UtilityService,
 	) {
@@ -644,10 +642,7 @@ export class DriveService {
 		}
 
 		this.driveChart.update(file, true);
-		if (file.userHost == null) {
-			// ローカルユーザーのみ
-			this.perUserDriveChart.update(file, true);
-		} else {
+		if (file.userHost != null) {
 			if (this.meta.enableChartsForFederatedInstances) {
 				this.instanceChart.updateDrive(file, true);
 			}
@@ -790,10 +785,7 @@ export class DriveService {
 		}
 
 		this.driveChart.update(file, false);
-		if (file.userHost == null) {
-			// ローカルユーザーのみ
-			this.perUserDriveChart.update(file, false);
-		} else {
+		if (file.userHost != null) {
 			if (this.meta.enableChartsForFederatedInstances) {
 				this.instanceChart.updateDrive(file, false);
 			}

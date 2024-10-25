@@ -15,7 +15,6 @@ import type { MiNoteReaction } from '@/models/NoteReaction.js';
 import { isDuplicateKeyValueError } from '@/misc/is-duplicate-key-value-error.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { NotificationService } from '@/core/NotificationService.js';
-import PerUserReactionsChart from '@/core/chart/charts/per-user-reactions.js';
 import { emojiRegex } from '@/misc/emoji-regex.js';
 import { ApDeliverManagerService } from '@/core/activitypub/ApDeliverManagerService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
@@ -96,7 +95,6 @@ export class ReactionService {
 		private apRendererService: ApRendererService,
 		private apDeliverManagerService: ApDeliverManagerService,
 		private notificationService: NotificationService,
-		private perUserReactionsChart: PerUserReactionsChart,
 	) {
 	}
 
@@ -226,10 +224,6 @@ export class ReactionService {
 			})
 			.where('id = :id', { id: note.id })
 			.execute();
-
-		if (this.meta.enableChartsForRemoteUser || (user.host == null)) {
-			this.perUserReactionsChart.update(user, note);
-		}
 
 		// カスタム絵文字リアクションだったら絵文字情報も送る
 		const decodedReaction = this.decodeReaction(reaction);

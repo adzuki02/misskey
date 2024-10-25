@@ -10,12 +10,7 @@ import NotesChart from '@/core/chart/charts/notes.js';
 import UsersChart from '@/core/chart/charts/users.js';
 import ActiveUsersChart from '@/core/chart/charts/active-users.js';
 import InstanceChart from '@/core/chart/charts/instance.js';
-import PerUserNotesChart from '@/core/chart/charts/per-user-notes.js';
-import PerUserPvChart from '@/core/chart/charts/per-user-pv.js';
 import DriveChart from '@/core/chart/charts/drive.js';
-import PerUserReactionsChart from '@/core/chart/charts/per-user-reactions.js';
-import PerUserFollowingChart from '@/core/chart/charts/per-user-following.js';
-import PerUserDriveChart from '@/core/chart/charts/per-user-drive.js';
 import ApRequestChart from '@/core/chart/charts/ap-request.js';
 import { bindThis } from '@/decorators.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
@@ -31,12 +26,7 @@ export class TickChartsProcessorService {
 		private usersChart: UsersChart,
 		private activeUsersChart: ActiveUsersChart,
 		private instanceChart: InstanceChart,
-		private perUserNotesChart: PerUserNotesChart,
-		private perUserPvChart: PerUserPvChart,
 		private driveChart: DriveChart,
-		private perUserReactionsChart: PerUserReactionsChart,
-		private perUserFollowingChart: PerUserFollowingChart,
-		private perUserDriveChart: PerUserDriveChart,
 		private apRequestChart: ApRequestChart,
 
 		private queueLoggerService: QueueLoggerService,
@@ -54,12 +44,7 @@ export class TickChartsProcessorService {
 			this.usersChart.tick(false),
 			this.activeUsersChart.tick(false),
 			this.instanceChart.tick(false),
-			this.perUserNotesChart.tick(false),
-			this.perUserPvChart.tick(false),
 			this.driveChart.tick(false),
-			this.perUserReactionsChart.tick(false),
-			this.perUserFollowingChart.tick(false),
-			this.perUserDriveChart.tick(false),
 			this.apRequestChart.tick(false),
 		]);
 
