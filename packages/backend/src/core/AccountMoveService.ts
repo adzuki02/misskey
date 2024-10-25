@@ -23,7 +23,6 @@ import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { ProxyAccountService } from '@/core/ProxyAccountService.js';
 import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
 import InstanceChart from '@/core/chart/charts/instance.js';
-import PerUserFollowingChart from '@/core/chart/charts/per-user-following.js';
 
 @Injectable()
 export class AccountMoveService {
@@ -56,7 +55,6 @@ export class AccountMoveService {
 		private apDeliverManagerService: ApDeliverManagerService,
 		private globalEventService: GlobalEventService,
 		private proxyAccountService: ProxyAccountService,
-		private perUserFollowingChart: PerUserFollowingChart,
 		private federatedInstanceService: FederatedInstanceService,
 		private instanceChart: InstanceChart,
 		private relayService: RelayService,
@@ -281,11 +279,6 @@ export class AccountMoveService {
 					this.instanceChart.updateFollowers(i.host, false);
 				}
 			});
-		}
-
-		// FIXME: expensive?
-		for (const followerId of localFollowerIds) {
-			this.perUserFollowingChart.update({ id: followerId, host: null }, oldAccount, false);
 		}
 	}
 

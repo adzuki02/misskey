@@ -9,7 +9,6 @@ import { IsNull } from 'typeorm';
 import type { MiLocalUser, MiPartialLocalUser, MiPartialRemoteUser, MiRemoteUser, MiUser } from '@/models/User.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
 import { QueueService } from '@/core/QueueService.js';
-import PerUserFollowingChart from '@/core/chart/charts/per-user-following.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { IdService } from '@/core/IdService.js';
 import { isDuplicateKeyValueError } from '@/misc/is-duplicate-key-value-error.js';
@@ -84,7 +83,6 @@ export class UserFollowingService implements OnModuleInit {
 		private webhookService: UserWebhookService,
 		private apRendererService: ApRendererService,
 		private accountMoveService: AccountMoveService,
-		private perUserFollowingChart: PerUserFollowingChart,
 		private instanceChart: InstanceChart,
 	) {
 	}
@@ -318,8 +316,6 @@ export class UserFollowingService implements OnModuleInit {
 				});
 			}
 			//#endregion
-
-			this.perUserFollowingChart.update(follower, followee, true);
 		}
 
 		if (this.userEntityService.isLocalUser(follower) && !silent) {
@@ -450,8 +446,6 @@ export class UserFollowingService implements OnModuleInit {
 				});
 			}
 			//#endregion
-
-			this.perUserFollowingChart.update(follower, followee, false);
 		} else {
 			// Adjust following/followers counts
 			for (const user of [follower, followee]) {

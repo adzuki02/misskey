@@ -698,111 +698,6 @@ const fetchInstanceDriveFilesChart = async (total: boolean): Promise<typeof char
 	};
 };
 
-const fetchPerUserNotesChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApi('charts/user/notes', { userId: props.args?.user?.id, limit: props.limit, span: props.span });
-	return {
-		series: [...(props.args?.withoutAll ? [] : [{
-			name: 'All',
-			type: 'line' as const,
-			data: format(sum(raw.inc, negate(raw.dec))),
-			color: '#888888',
-		}]), {
-			name: 'With file',
-			type: 'area',
-			data: format(raw.diffs.withFile),
-			color: colors.purple,
-		}, {
-			name: 'Renotes',
-			type: 'area',
-			data: format(raw.diffs.renote),
-			color: colors.green,
-		}, {
-			name: 'Replies',
-			type: 'area',
-			data: format(raw.diffs.reply),
-			color: colors.yellow,
-		}, {
-			name: 'Normal',
-			type: 'area',
-			data: format(raw.diffs.normal),
-			color: colors.blue,
-		}],
-	};
-};
-
-const fetchPerUserPvChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApi('charts/user/pv', { userId: props.args?.user?.id, limit: props.limit, span: props.span });
-	return {
-		series: [{
-			name: 'Unique PV (user)',
-			type: 'area',
-			data: format(raw.upv.user),
-			color: colors.purple,
-		}, {
-			name: 'PV (user)',
-			type: 'area',
-			data: format(raw.pv.user),
-			color: colors.green,
-		}, {
-			name: 'Unique PV (visitor)',
-			type: 'area',
-			data: format(raw.upv.visitor),
-			color: colors.yellow,
-		}, {
-			name: 'PV (visitor)',
-			type: 'area',
-			data: format(raw.pv.visitor),
-			color: colors.blue,
-		}],
-	};
-};
-
-const fetchPerUserFollowingChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApi('charts/user/following', { userId: props.args?.user?.id, limit: props.limit, span: props.span });
-	return {
-		series: [{
-			name: 'Local',
-			type: 'area',
-			data: format(raw.local.followings.total),
-		}, {
-			name: 'Remote',
-			type: 'area',
-			data: format(raw.remote.followings.total),
-		}],
-	};
-};
-
-const fetchPerUserFollowersChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApi('charts/user/following', { userId: props.args?.user?.id, limit: props.limit, span: props.span });
-	return {
-		series: [{
-			name: 'Local',
-			type: 'area',
-			data: format(raw.local.followers.total),
-		}, {
-			name: 'Remote',
-			type: 'area',
-			data: format(raw.remote.followers.total),
-		}],
-	};
-};
-
-const fetchPerUserDriveChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApi('charts/user/drive', { userId: props.args?.user?.id, limit: props.limit, span: props.span });
-	return {
-		bytes: true,
-		series: [{
-			name: 'Inc',
-			type: 'area',
-			data: format(raw.incSize),
-		}, {
-			name: 'Dec',
-			type: 'area',
-			data: format(raw.decSize),
-		}],
-	};
-};
-
 const fetchAndRender = async () => {
 	const fetchData = () => {
 		switch (props.src) {
@@ -828,12 +723,6 @@ const fetchAndRender = async () => {
 			case 'instance-drive-usage-total': return fetchInstanceDriveUsageChart(true);
 			case 'instance-drive-files': return fetchInstanceDriveFilesChart(false);
 			case 'instance-drive-files-total': return fetchInstanceDriveFilesChart(true);
-
-			case 'per-user-notes': return fetchPerUserNotesChart();
-			case 'per-user-pv': return fetchPerUserPvChart();
-			case 'per-user-following': return fetchPerUserFollowingChart();
-			case 'per-user-followers': return fetchPerUserFollowersChart();
-			case 'per-user-drive': return fetchPerUserDriveChart();
 
 			default: return null;
 		}

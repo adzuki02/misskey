@@ -183,16 +183,6 @@ import type {
 	ChartsInstanceResponse,
 	ChartsNotesRequest,
 	ChartsNotesResponse,
-	ChartsUserDriveRequest,
-	ChartsUserDriveResponse,
-	ChartsUserFollowingRequest,
-	ChartsUserFollowingResponse,
-	ChartsUserNotesRequest,
-	ChartsUserNotesResponse,
-	ChartsUserPvRequest,
-	ChartsUserPvResponse,
-	ChartsUserReactionsRequest,
-	ChartsUserReactionsResponse,
 	ChartsUsersRequest,
 	ChartsUsersResponse,
 	ClipsAddNoteRequest,
@@ -642,11 +632,6 @@ export type Endpoints = {
 	'charts/federation': { req: ChartsFederationRequest; res: ChartsFederationResponse };
 	'charts/instance': { req: ChartsInstanceRequest; res: ChartsInstanceResponse };
 	'charts/notes': { req: ChartsNotesRequest; res: ChartsNotesResponse };
-	'charts/user/drive': { req: ChartsUserDriveRequest; res: ChartsUserDriveResponse };
-	'charts/user/following': { req: ChartsUserFollowingRequest; res: ChartsUserFollowingResponse };
-	'charts/user/notes': { req: ChartsUserNotesRequest; res: ChartsUserNotesResponse };
-	'charts/user/pv': { req: ChartsUserPvRequest; res: ChartsUserPvResponse };
-	'charts/user/reactions': { req: ChartsUserReactionsRequest; res: ChartsUserReactionsResponse };
 	'charts/users': { req: ChartsUsersRequest; res: ChartsUsersResponse };
 	'clips/add-note': { req: ClipsAddNoteRequest; res: EmptyResponse };
 	'clips/remove-note': { req: ClipsRemoveNoteRequest; res: EmptyResponse };

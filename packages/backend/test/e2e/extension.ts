@@ -73,41 +73,6 @@ describe('独自拡張', () => {
 		});
 	});
 
-	describe('各ユーザーのチャートを見られるのを本人とモデレーターのみに', () => {
-		describe.each([
-			{ endpoint: 'charts/user/pv' },
-			{ endpoint: 'charts/user/drive' },
-			{ endpoint: 'charts/user/following' },
-			{ endpoint: 'charts/user/notes' },
-			{ endpoint: 'charts/user/reactions' },
-		])('/api/$endpoint', ({ endpoint }) => {
-			test('はGETできない。', async() => {
-				const res = await simpleGet(`/api/${endpoint}`, 'application/json');
-				assert.strictEqual(res.status, 405);
-			});
-
-			test('は認証情報がなければアクセスできない。', async () => {
-				const res = await api(endpoint as keyof misskey.Endpoints, {});
-				assert.strictEqual(res.status, 401);
-			});
-
-			test('はモデレータならアクセスできる。', async () => {
-				const res = await api(endpoint as keyof misskey.Endpoints, { span: 'day', userId: bob.id }, alice);
-				assert.strictEqual(res.status, 200);
-			});
-
-			test('は本人ならアクセスできる。', async () => {
-				const res = await api(endpoint as keyof misskey.Endpoints, { span: 'day', userId: bob.id }, bob);
-				assert.strictEqual(res.status, 200);
-			});
-
-			test('はモデレータでも本人でもないなら、認証情報があってもアクセスできない。', async () => {
-				const res = await api(endpoint as keyof misskey.Endpoints, { span: 'day', userId: alice.id }, bob);
-				assert.strictEqual(res.status, 400);
-			});
-		});
-	});
-
 	describe('サーバーのチャートを隠す', () => {
 		describe.each([
 			{ endpoint: 'charts/federation', param: { span: 'day' } },
