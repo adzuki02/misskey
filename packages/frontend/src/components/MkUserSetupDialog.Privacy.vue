@@ -16,14 +16,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkFolder>
 
 	<MkFolder>
-		<template #label>{{ i18n.ts.hideOnlineStatus }}</template>
-		<template #icon><i class="ti ti-eye-off"></i></template>
-		<template #suffix>{{ hideOnlineStatus ? i18n.ts.on : i18n.ts.off }}</template>
-
-		<MkSwitch v-model="hideOnlineStatus">{{ i18n.ts.hideOnlineStatus }}<template #caption>{{ i18n.ts.hideOnlineStatusDescription }}</template></MkSwitch>
-	</MkFolder>
-
-	<MkFolder>
 		<template #label>{{ i18n.ts.noCrawle }}</template>
 		<template #icon><i class="ti ti-world-x"></i></template>
 		<template #suffix>{{ noCrawle ? i18n.ts.on : i18n.ts.off }}</template>
@@ -52,14 +44,12 @@ import MkFolder from '@/components/MkFolder.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 
 const isLocked = ref(false);
-const hideOnlineStatus = ref(false);
 const noCrawle = ref(false);
 const preventAiLearning = ref(true);
 
-watch([isLocked, hideOnlineStatus, noCrawle, preventAiLearning], () => {
+watch([isLocked, noCrawle, preventAiLearning], () => {
 	misskeyApi('i/update', {
 		isLocked: !!isLocked.value,
-		hideOnlineStatus: !!hideOnlineStatus.value,
 		noCrawle: !!noCrawle.value,
 		preventAiLearning: !!preventAiLearning.value,
 	});

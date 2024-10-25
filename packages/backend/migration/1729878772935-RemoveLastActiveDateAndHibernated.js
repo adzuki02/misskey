@@ -6,9 +6,11 @@ export class RemoveLastActiveDateAndHibernated1729878772935 {
         await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "lastActiveDate"`);
         await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "isHibernated"`);
         await queryRunner.query(`ALTER TABLE "following" DROP COLUMN "isFollowerHibernated"`);
+        await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "hideOnlineStatus"`);
     }
 
     async down(queryRunner) {
+				await queryRunner.query(`ALTER TABLE "user" ADD "hideOnlineStatus" boolean NOT NULL DEFAULT false`);
         await queryRunner.query(`ALTER TABLE "following" ADD "isFollowerHibernated" boolean NOT NULL DEFAULT false`);
         await queryRunner.query(`ALTER TABLE "user" ADD "isHibernated" boolean NOT NULL DEFAULT false`);
         await queryRunner.query(`ALTER TABLE "user" ADD "lastActiveDate" TIMESTAMP WITH TIME ZONE`);

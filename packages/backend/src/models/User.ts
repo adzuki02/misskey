@@ -25,11 +25,6 @@ export class MiUser {
 	})
 	public lastFetchedAt: Date | null;
 
-	@Column('boolean', {
-		default: false,
-	})
-	public hideOnlineStatus: boolean;
-
 	@Column('varchar', {
 		length: 128,
 		comment: 'The username of the User.',

@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template v-if="!props.noUserInfo">
 			<div :class="$style.divider"></div>
 			<div>
-				<MkAvatar :user="clip.user" :class="$style.userAvatar" indicator link preview/> <MkUserName :user="clip.user" :nowrap="false"/>
+				<MkAvatar :user="clip.user" :class="$style.userAvatar" link preview/> <MkUserName :user="clip.user" :nowrap="false"/>
 			</div>
 		</template>
 	</div>

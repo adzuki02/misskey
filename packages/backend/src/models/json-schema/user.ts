@@ -152,11 +152,6 @@ export const packedUserLiteSchema = {
 				type: 'string',
 			},
 		},
-		onlineStatus: {
-			type: 'string',
-			nullable: false, optional: false,
-			enum: ['unknown', 'online', 'active', 'offline'],
-		},
 		badgeRoles: {
 			type: 'array',
 			nullable: false, optional: true,
@@ -484,10 +479,6 @@ export const packedMeDetailedOnlySchema = {
 		twoFactorBackupCodesStock: {
 			type: 'string',
 			enum: ['full', 'partial', 'none'],
-			nullable: false, optional: false,
-		},
-		hideOnlineStatus: {
-			type: 'boolean',
 			nullable: false, optional: false,
 		},
 		hasUnreadSpecifiedNotes: {

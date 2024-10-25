@@ -3165,8 +3165,6 @@ export type components = {
       emojis: {
         [key: string]: string;
       };
-      /** @enum {string} */
-      onlineStatus: 'unknown' | 'online' | 'active' | 'offline';
       badgeRoles?: ({
           name: string;
           iconUrl: string | null;
@@ -3257,7 +3255,6 @@ export type components = {
       isDeleted: boolean;
       /** @enum {string} */
       twoFactorBackupCodesStock: 'full' | 'partial' | 'none';
-      hideOnlineStatus: boolean;
       hasUnreadSpecifiedNotes: boolean;
       hasUnreadMentions: boolean;
       hasUnreadAnnouncement: boolean;
@@ -17621,7 +17618,6 @@ export type operations = {
             }[];
           isLocked?: boolean;
           isExplorable?: boolean;
-          hideOnlineStatus?: boolean;
           publicReactions?: boolean;
           carefulBot?: boolean;
           autoAcceptFollowed?: boolean;
