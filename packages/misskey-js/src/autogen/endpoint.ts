@@ -71,7 +71,6 @@ import type {
 	AdminInviteCreateResponse,
 	AdminInviteListRequest,
 	AdminInviteListResponse,
-	AdminPromoCreateRequest,
 	AdminQueueDeliverDelayedResponse,
 	AdminQueueInboxDelayedResponse,
 	AdminQueuePromoteRequest,
@@ -436,7 +435,6 @@ import type {
 	FlashMyLikesResponse,
 	PingResponse,
 	PinnedUsersResponse,
-	PromoReadRequest,
 	RolesListResponse,
 	RolesShowRequest,
 	RolesShowResponse,
@@ -557,7 +555,6 @@ export type Endpoints = {
 	'admin/get-user-ips': { req: AdminGetUserIpsRequest; res: AdminGetUserIpsResponse };
 	'admin/invite/create': { req: AdminInviteCreateRequest; res: AdminInviteCreateResponse };
 	'admin/invite/list': { req: AdminInviteListRequest; res: AdminInviteListResponse };
-	'admin/promo/create': { req: AdminPromoCreateRequest; res: EmptyResponse };
 	'admin/queue/clear': { req: EmptyRequest; res: EmptyResponse };
 	'admin/queue/deliver-delayed': { req: EmptyRequest; res: AdminQueueDeliverDelayedResponse };
 	'admin/queue/inbox-delayed': { req: EmptyRequest; res: AdminQueueInboxDelayedResponse };
@@ -802,7 +799,6 @@ export type Endpoints = {
 	'flash/my-likes': { req: FlashMyLikesRequest; res: FlashMyLikesResponse };
 	'ping': { req: EmptyRequest; res: PingResponse };
 	'pinned-users': { req: EmptyRequest; res: PinnedUsersResponse };
-	'promo/read': { req: PromoReadRequest; res: EmptyResponse };
 	'roles/list': { req: EmptyRequest; res: RolesListResponse };
 	'roles/show': { req: RolesShowRequest; res: RolesShowResponse };
 	'roles/users': { req: RolesUsersRequest; res: RolesUsersResponse };

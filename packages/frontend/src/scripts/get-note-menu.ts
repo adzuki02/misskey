@@ -228,19 +228,6 @@ export function getNoteMenu(props: {
 		props.isDeleted.value = true;
 	}
 
-	async function promote(): Promise<void> {
-		const { canceled, result: days } = await os.inputNumber({
-			title: i18n.ts.numberOfDays,
-		});
-
-		if (canceled) return;
-
-		os.apiWithDialog('admin/promo/create', {
-			noteId: appearNote.id,
-			expiresAt: Date.now() + (86400000 * days),
-		});
-	}
-
 	function share(): void {
 		navigator.share({
 			title: i18n.tsx.noteOf({ user: appearNote.user.name ?? appearNote.user.username }),
@@ -349,16 +336,6 @@ export function getNoteMenu(props: {
 					return menu;
 				},
 			},
-			/*
-		...($i.isModerator || $i.isAdmin ? [
-			{ type: 'divider' },
-			{
-				icon: 'ti ti-speakerphone',
-				text: i18n.ts.promote,
-				action: promote
-			}]
-			: []
-		),*/
 			...(appearNote.userId !== $i.id ? [
 				{ type: 'divider' },
 				appearNote.userId !== $i.id ? getAbuseNoteMenu(appearNote, i18n.ts.reportAbuse) : undefined,
