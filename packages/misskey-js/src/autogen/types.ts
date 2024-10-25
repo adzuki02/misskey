@@ -978,15 +978,6 @@ export type paths = {
      */
     post: operations['channels___create'];
   };
-  '/channels/featured': {
-    /**
-     * channels/featured
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['channels___featured'];
-  };
   '/channels/follow': {
     /**
      * channels/follow
@@ -1680,22 +1671,6 @@ export type paths = {
      * **Credential required**: *No*
      */
     post: operations['hashtags___show'];
-  };
-  '/hashtags/trend': {
-    /**
-     * hashtags/trend
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    get: operations['hashtags___trend'];
-    /**
-     * hashtags/trend
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['hashtags___trend'];
   };
   '/hashtags/users': {
     /**
@@ -2445,15 +2420,6 @@ export type paths = {
      */
     post: operations['notes___favorites___delete'];
   };
-  '/notes/featured': {
-    /**
-     * notes/featured
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:account*
-     */
-    post: operations['notes___featured'];
-  };
   '/notes/global-timeline': {
     /**
      * notes/global-timeline
@@ -2489,15 +2455,6 @@ export type paths = {
      * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['notes___mentions'];
-  };
-  '/notes/polls/recommendation': {
-    /**
-     * notes/polls/recommendation
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:account*
-     */
-    post: operations['notes___polls___recommendation'];
   };
   '/notes/polls/vote': {
     /**
@@ -2714,15 +2671,6 @@ export type paths = {
      */
     post: operations['pages___delete'];
   };
-  '/pages/featured': {
-    /**
-     * pages/featured
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['pages___featured'];
-  };
   '/pages/like': {
     /**
      * pages/like
@@ -2776,15 +2724,6 @@ export type paths = {
      * **Credential required**: *Yes* / **Permission**: *write:flash*
      */
     post: operations['flash___delete'];
-  };
-  '/flash/featured': {
-    /**
-     * flash/featured
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['flash___featured'];
   };
   '/flash/like': {
     /**
@@ -3012,15 +2951,6 @@ export type paths = {
      */
     post: operations['username___available'];
   };
-  '/users': {
-    /**
-     * users
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['users'];
-  };
   '/users/clips': {
     /**
      * users/clips
@@ -3056,22 +2986,6 @@ export type paths = {
      * **Credential required**: *No*
      */
     post: operations['users___get-frequently-replied-users'];
-  };
-  '/users/featured-notes': {
-    /**
-     * users/featured-notes
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    get: operations['users___featured-notes'];
-    /**
-     * users/featured-notes
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['users___featured-notes'];
   };
   '/users/lists/create': {
     /**
@@ -3216,15 +3130,6 @@ export type paths = {
      * **Credential required**: *No*
      */
     post: operations['users___reactions'];
-  };
-  '/users/recommendation': {
-    /**
-     * users/recommendation
-     * @description Show users that the authenticated user might be interested to follow.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:account*
-     */
-    post: operations['users___recommendation'];
   };
   '/users/relation': {
     /**
@@ -3431,7 +3336,6 @@ export type components = {
       bannerId: string | null;
       isModerator: boolean | null;
       isAdmin: boolean | null;
-      injectFeaturedNote: boolean;
       receiveAnnouncementEmail: boolean;
       alwaysMarkNsfw: boolean;
       autoSensitive: boolean;
@@ -4583,7 +4487,6 @@ export type operations = {
             silencedHosts?: string[];
             mediaSilencedHosts: string[];
             pinnedUsers: string[];
-            hiddenTags: string[];
             blockedHosts: string[];
             sensitiveWords: string[];
             prohibitedWords: string[];
@@ -8436,7 +8339,6 @@ export type operations = {
             alwaysMarkNsfw: boolean;
             autoSensitive: boolean;
             carefulBot: boolean;
-            injectFeaturedNote: boolean;
             receiveAnnouncementEmail: boolean;
             mutedWords: (string | string[])[];
             mutedInstances: string[];
@@ -8799,7 +8701,6 @@ export type operations = {
         'application/json': {
           disableRegistration?: boolean | null;
           pinnedUsers?: string[] | null;
-          hiddenTags?: string[] | null;
           blockedHosts?: string[] | null;
           sensitiveWords?: string[] | null;
           prohibitedWords?: string[] | null;
@@ -11001,52 +10902,6 @@ export type operations = {
       };
       /** @description To many requests */
       429: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * channels/featured
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  channels___featured: {
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Channel'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
         content: {
           'application/json': components['schemas']['Error'];
         };
@@ -15621,56 +15476,6 @@ export type operations = {
     };
   };
   /**
-   * hashtags/trend
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  hashtags___trend: {
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': {
-              tag: string;
-              chart: number[];
-              usersCount: number;
-            }[];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
    * hashtags/users
    * @description No description provided.
    *
@@ -18443,7 +18248,6 @@ export type operations = {
           preventAiLearning?: boolean;
           isBot?: boolean;
           isCat?: boolean;
-          injectFeaturedNote?: boolean;
           receiveAnnouncementEmail?: boolean;
           alwaysMarkNsfw?: boolean;
           autoSensitive?: boolean;
@@ -20305,64 +20109,6 @@ export type operations = {
     };
   };
   /**
-   * notes/featured
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:account*
-   */
-  notes___featured: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default 10 */
-          limit?: number;
-          /** Format: misskey:id */
-          untilId?: string;
-          /** Format: misskey:id */
-          channelId?: string | null;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Note'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
    * notes/global-timeline
    * @description No description provided.
    *
@@ -20587,64 +20333,6 @@ export type operations = {
           /** Format: misskey:id */
           untilId?: string;
           visibility?: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Note'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * notes/polls/recommendation
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:account*
-   */
-  notes___polls___recommendation: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default 10 */
-          limit?: number;
-          /** @default 0 */
-          offset?: number;
-          /** @default false */
-          excludeChannels?: boolean;
         };
       };
     };
@@ -22051,52 +21739,6 @@ export type operations = {
     };
   };
   /**
-   * pages/featured
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  pages___featured: {
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Page'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
    * pages/like
    * @description No description provided.
    *
@@ -22416,52 +22058,6 @@ export type operations = {
       /** @description OK (without any results) */
       204: {
         content: never;
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * flash/featured
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  flash___featured: {
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Flash'][];
-        };
       };
       /** @description Client error */
       400: {
@@ -23837,79 +23433,6 @@ export type operations = {
     };
   };
   /**
-   * users
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  users: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default 10 */
-          limit?: number;
-          /** @default 0 */
-          offset?: number;
-          /** @enum {string} */
-          sort?: '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+updatedAt' | '-updatedAt';
-          /**
-           * @default all
-           * @enum {string}
-           */
-          state?: 'all' | 'alive';
-          /**
-           * @default local
-           * @enum {string}
-           */
-          origin?: 'combined' | 'local' | 'remote';
-          /**
-           * @description The local host is represented with `null`.
-           * @default null
-           */
-          hostname?: string | null;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['UserDetailed'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
    * users/clips
    * @description Show all clips this user owns.
    *
@@ -24121,64 +23644,6 @@ export type operations = {
               user: components['schemas']['UserDetailed'];
               weight: number;
             }[];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * users/featured-notes
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  'users___featured-notes': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default 10 */
-          limit?: number;
-          /** Format: misskey:id */
-          untilId?: string;
-          /** Format: misskey:id */
-          userId: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Note'][];
         };
       };
       /** @description Client error */
@@ -25103,62 +24568,6 @@ export type operations = {
       200: {
         content: {
           'application/json': components['schemas']['NoteReaction'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * users/recommendation
-   * @description Show users that the authenticated user might be interested to follow.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:account*
-   */
-  users___recommendation: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default 10 */
-          limit?: number;
-          /** @default 0 */
-          offset?: number;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['UserDetailed'][];
         };
       };
       /** @description Client error */

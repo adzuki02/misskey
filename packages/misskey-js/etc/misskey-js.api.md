@@ -755,9 +755,6 @@ type ChannelsCreateResponse = operations['channels___create']['responses']['200'
 type ChannelsFavoriteRequest = operations['channels___favorite']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
-type ChannelsFeaturedResponse = operations['channels___featured']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
 type ChannelsFollowedRequest = operations['channels___followed']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1299,7 +1296,6 @@ declare namespace entities {
         BlockingListResponse,
         ChannelsCreateRequest,
         ChannelsCreateResponse,
-        ChannelsFeaturedResponse,
         ChannelsFollowRequest,
         ChannelsFollowedRequest,
         ChannelsFollowedResponse,
@@ -1429,7 +1425,6 @@ declare namespace entities {
         HashtagsSearchResponse,
         HashtagsShowRequest,
         HashtagsShowResponse,
-        HashtagsTrendResponse,
         HashtagsUsersRequest,
         HashtagsUsersResponse,
         IResponse,
@@ -1537,8 +1532,6 @@ declare namespace entities {
         NotesDeleteRequest,
         NotesFavoritesCreateRequest,
         NotesFavoritesDeleteRequest,
-        NotesFeaturedRequest,
-        NotesFeaturedResponse,
         NotesGlobalTimelineRequest,
         NotesGlobalTimelineResponse,
         NotesHybridTimelineRequest,
@@ -1547,8 +1540,6 @@ declare namespace entities {
         NotesLocalTimelineResponse,
         NotesMentionsRequest,
         NotesMentionsResponse,
-        NotesPollsRecommendationRequest,
-        NotesPollsRecommendationResponse,
         NotesPollsVoteRequest,
         NotesReactionsRequest,
         NotesReactionsResponse,
@@ -1580,7 +1571,6 @@ declare namespace entities {
         PagesCreateRequest,
         PagesCreateResponse,
         PagesDeleteRequest,
-        PagesFeaturedResponse,
         PagesLikeRequest,
         PagesShowRequest,
         PagesShowResponse,
@@ -1589,7 +1579,6 @@ declare namespace entities {
         FlashCreateRequest,
         FlashCreateResponse,
         FlashDeleteRequest,
-        FlashFeaturedResponse,
         FlashLikeRequest,
         FlashShowRequest,
         FlashShowResponse,
@@ -1624,8 +1613,6 @@ declare namespace entities {
         TestResponse,
         UsernameAvailableRequest,
         UsernameAvailableResponse,
-        UsersRequest,
-        UsersResponse,
         UsersClipsRequest,
         UsersClipsResponse,
         UsersFollowersRequest,
@@ -1634,8 +1621,6 @@ declare namespace entities {
         UsersFollowingResponse,
         UsersGetFrequentlyRepliedUsersRequest,
         UsersGetFrequentlyRepliedUsersResponse,
-        UsersFeaturedNotesRequest,
-        UsersFeaturedNotesResponse,
         UsersListsCreateRequest,
         UsersListsCreateResponse,
         UsersListsDeleteRequest,
@@ -1662,8 +1647,6 @@ declare namespace entities {
         UsersFlashsResponse,
         UsersReactionsRequest,
         UsersReactionsResponse,
-        UsersRecommendationRequest,
-        UsersRecommendationResponse,
         UsersRelationRequest,
         UsersRelationResponse,
         UsersReportAbuseRequest,
@@ -1802,9 +1785,6 @@ type FlashCreateResponse = operations['flash___create']['responses']['200']['con
 type FlashDeleteRequest = operations['flash___delete']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
-type FlashFeaturedResponse = operations['flash___featured']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
 type FlashLikeRequest = operations['flash___like']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1911,9 +1891,6 @@ type HashtagsShowRequest = operations['hashtags___show']['requestBody']['content
 
 // @public (undocumented)
 type HashtagsShowResponse = operations['hashtags___show']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type HashtagsTrendResponse = operations['hashtags___trend']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type HashtagsUsersRequest = operations['hashtags___users']['requestBody']['content']['application/json'];
@@ -2411,12 +2388,6 @@ type NotesFavoritesCreateRequest = operations['notes___favorites___create']['req
 type NotesFavoritesDeleteRequest = operations['notes___favorites___delete']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
-type NotesFeaturedRequest = operations['notes___featured']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type NotesFeaturedResponse = operations['notes___featured']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
 type NotesGlobalTimelineRequest = operations['notes___global-timeline']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -2439,12 +2410,6 @@ type NotesMentionsRequest = operations['notes___mentions']['requestBody']['conte
 
 // @public (undocumented)
 type NotesMentionsResponse = operations['notes___mentions']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type NotesPollsRecommendationRequest = operations['notes___polls___recommendation']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type NotesPollsRecommendationResponse = operations['notes___polls___recommendation']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type NotesPollsVoteRequest = operations['notes___polls___vote']['requestBody']['content']['application/json'];
@@ -2568,9 +2533,6 @@ type PagesCreateResponse = operations['pages___create']['responses']['200']['con
 
 // @public (undocumented)
 type PagesDeleteRequest = operations['pages___delete']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type PagesFeaturedResponse = operations['pages___featured']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type PagesLikeRequest = operations['pages___like']['requestBody']['content']['application/json'];
@@ -2902,12 +2864,6 @@ type UsersClipsRequest = operations['users___clips']['requestBody']['content']['
 type UsersClipsResponse = operations['users___clips']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
-type UsersFeaturedNotesRequest = operations['users___featured-notes']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type UsersFeaturedNotesResponse = operations['users___featured-notes']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
 type UsersFlashsRequest = operations['users___flashs']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -3004,12 +2960,6 @@ type UsersReactionsRequest = operations['users___reactions']['requestBody']['con
 type UsersReactionsResponse = operations['users___reactions']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
-type UsersRecommendationRequest = operations['users___recommendation']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type UsersRecommendationResponse = operations['users___recommendation']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
 type UsersRelationRequest = operations['users___relation']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -3017,12 +2967,6 @@ type UsersRelationResponse = operations['users___relation']['responses']['200'][
 
 // @public (undocumented)
 type UsersReportAbuseRequest = operations['users___report-abuse']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type UsersRequest = operations['users']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type UsersResponse = operations['users']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type UsersSearchByUsernameAndHostRequest = operations['users___search-by-username-and-host']['requestBody']['content']['application/json'];
