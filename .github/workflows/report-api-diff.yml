@@ -122,7 +122,7 @@ jobs:
           message: |
             api.jsonの差分作成中にエラーが発生しました。詳細は[Workflowのログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})を確認してください。
       - name: Tell no error to PR
-        if: !failure()
+        if: ${{ !failure() }}
         uses: thollander/actions-comment-pull-request@fabd468d3a1a0b97feee5f6b9e499eab0dd903f6
         with:
           comment_tag: show_diff_error
