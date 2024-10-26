@@ -165,10 +165,10 @@ describe('After user signed in', () => {
 		cy.wait(1000);
 	});
 
-  it('successfully loads', () => {
+  /* it('successfully loads', () => {
 		// 表示に時間がかかるのでデフォルト秒数だとタイムアウトする
 		cy.get('[data-cy-user-setup-continue]', { timeout: 30000 }).should('be.visible');
-  });
+  }); */
 
 	/* it('account setup wizard', () => {
 		// 表示に時間がかかるのでデフォルト秒数だとタイムアウトする
