@@ -2303,24 +2303,6 @@ export type paths = {
      */
     post: operations['notes___global-timeline'];
   };
-  '/notes/hybrid-timeline': {
-    /**
-     * notes/hybrid-timeline
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:account*
-     */
-    post: operations['notes___hybrid-timeline'];
-  };
-  '/notes/local-timeline': {
-    /**
-     * notes/local-timeline
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['notes___local-timeline'];
-  };
   '/notes/mentions': {
     /**
      * notes/mentions
@@ -4004,7 +3986,6 @@ export type components = {
     });
     RolePolicies: {
       gtlAvailable: boolean;
-      ltlAvailable: boolean;
       canPublicNote: boolean;
       mentionLimit: number;
       canInvite: boolean;
@@ -4100,7 +4081,6 @@ export type components = {
       features?: {
         registration: boolean;
         emailRequiredForSignup: boolean;
-        localTimeline: boolean;
         globalTimeline: boolean;
         hcaptcha: boolean;
         turnstile: boolean;
@@ -18950,148 +18930,6 @@ export type operations = {
           sinceId?: string;
           /** Format: misskey:id */
           untilId?: string;
-          sinceDate?: number;
-          untilDate?: number;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Note'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * notes/hybrid-timeline
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:account*
-   */
-  'notes___hybrid-timeline': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default 10 */
-          limit?: number;
-          /** Format: misskey:id */
-          sinceId?: string;
-          /** Format: misskey:id */
-          untilId?: string;
-          sinceDate?: number;
-          untilDate?: number;
-          /** @default false */
-          allowPartial?: boolean;
-          /** @default true */
-          includeMyRenotes?: boolean;
-          /** @default true */
-          includeRenotedMyNotes?: boolean;
-          /** @default true */
-          includeLocalRenotes?: boolean;
-          /** @default false */
-          withFiles?: boolean;
-          /** @default true */
-          withRenotes?: boolean;
-          /** @default false */
-          withReplies?: boolean;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Note'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * notes/local-timeline
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  'notes___local-timeline': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default false */
-          withFiles?: boolean;
-          /** @default true */
-          withRenotes?: boolean;
-          /** @default false */
-          withReplies?: boolean;
-          /** @default 10 */
-          limit?: number;
-          /** Format: misskey:id */
-          sinceId?: string;
-          /** Format: misskey:id */
-          untilId?: string;
-          /** @default false */
-          allowPartial?: boolean;
           sinceDate?: number;
           untilDate?: number;
         };
