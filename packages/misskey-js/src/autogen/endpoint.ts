@@ -302,10 +302,6 @@ import type {
 	INotificationsResponse,
 	INotificationsGroupedRequest,
 	INotificationsGroupedResponse,
-	IPageLikesRequest,
-	IPageLikesResponse,
-	IPagesRequest,
-	IPagesResponse,
 	IPinRequest,
 	IPinResponse,
 	IReadAnnouncementRequest,
@@ -411,15 +407,6 @@ import type {
 	NotesUserListTimelineRequest,
 	NotesUserListTimelineResponse,
 	NotificationsCreateRequest,
-	PagePushRequest,
-	PagesCreateRequest,
-	PagesCreateResponse,
-	PagesDeleteRequest,
-	PagesLikeRequest,
-	PagesShowRequest,
-	PagesShowResponse,
-	PagesUnlikeRequest,
-	PagesUpdateRequest,
 	FlashCreateRequest,
 	FlashCreateResponse,
 	FlashDeleteRequest,
@@ -484,8 +471,6 @@ import type {
 	UsersListsGetMembershipsResponse,
 	UsersNotesRequest,
 	UsersNotesResponse,
-	UsersPagesRequest,
-	UsersPagesResponse,
 	UsersFlashsRequest,
 	UsersFlashsResponse,
 	UsersReactionsRequest,
@@ -708,8 +693,6 @@ export type Endpoints = {
 	'i/import-antennas': { req: IImportAntennasRequest; res: EmptyResponse };
 	'i/notifications': { req: INotificationsRequest; res: INotificationsResponse };
 	'i/notifications-grouped': { req: INotificationsGroupedRequest; res: INotificationsGroupedResponse };
-	'i/page-likes': { req: IPageLikesRequest; res: IPageLikesResponse };
-	'i/pages': { req: IPagesRequest; res: IPagesResponse };
 	'i/pin': { req: IPinRequest; res: IPinResponse };
 	'i/read-all-unread-notes': { req: EmptyRequest; res: EmptyResponse };
 	'i/read-announcement': { req: IReadAnnouncementRequest; res: EmptyResponse };
@@ -780,13 +763,6 @@ export type Endpoints = {
 	'notifications/flush': { req: EmptyRequest; res: EmptyResponse };
 	'notifications/mark-all-as-read': { req: EmptyRequest; res: EmptyResponse };
 	'notifications/test-notification': { req: EmptyRequest; res: EmptyResponse };
-	'page-push': { req: PagePushRequest; res: EmptyResponse };
-	'pages/create': { req: PagesCreateRequest; res: PagesCreateResponse };
-	'pages/delete': { req: PagesDeleteRequest; res: EmptyResponse };
-	'pages/like': { req: PagesLikeRequest; res: EmptyResponse };
-	'pages/show': { req: PagesShowRequest; res: PagesShowResponse };
-	'pages/unlike': { req: PagesUnlikeRequest; res: EmptyResponse };
-	'pages/update': { req: PagesUpdateRequest; res: EmptyResponse };
 	'flash/create': { req: FlashCreateRequest; res: FlashCreateResponse };
 	'flash/delete': { req: FlashDeleteRequest; res: EmptyResponse };
 	'flash/like': { req: FlashLikeRequest; res: EmptyResponse };
@@ -829,7 +805,6 @@ export type Endpoints = {
 	'users/lists/update-membership': { req: UsersListsUpdateMembershipRequest; res: EmptyResponse };
 	'users/lists/get-memberships': { req: UsersListsGetMembershipsRequest; res: UsersListsGetMembershipsResponse };
 	'users/notes': { req: UsersNotesRequest; res: UsersNotesResponse };
-	'users/pages': { req: UsersPagesRequest; res: UsersPagesResponse };
 	'users/flashs': { req: UsersFlashsRequest; res: UsersFlashsResponse };
 	'users/reactions': { req: UsersReactionsRequest; res: UsersReactionsResponse };
 	'users/relation': { req: UsersRelationRequest; res: UsersRelationResponse };

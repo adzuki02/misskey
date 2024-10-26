@@ -200,29 +200,6 @@ export const userList = async (user: UserToken, userList: Partial<misskey.entiti
 	return res.body;
 };
 
-export const page = async (user: UserToken, page: Partial<misskey.entities.Page> = {}): Promise<misskey.entities.Page> => {
-	const res = await api('pages/create', {
-		alignCenter: false,
-		content: [
-			{
-				id: '2be9a64b-5ada-43a3-85f3-ec3429551ded',
-				text: 'Hello World!',
-				type: 'text',
-			},
-		],
-		eyeCatchingImageId: null,
-		font: 'sans-serif' as any,
-		hideTitleWhenPinned: false,
-		name: '1678594845072',
-		script: '',
-		summary: null,
-		title: '',
-		variables: [],
-		...page,
-	}, user);
-	return res.body;
-};
-
 export const play = async (user: UserToken, play: Partial<misskey.entities.Flash> = {}): Promise<misskey.entities.Flash> => {
 	const res = await api('flash/create', {
 		permissions: [],

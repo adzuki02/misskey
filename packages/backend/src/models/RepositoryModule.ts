@@ -41,8 +41,6 @@ import {
 	MiNoteReaction,
 	MiNoteThreadMuting,
 	MiNoteUnread,
-	MiPage,
-	MiPageLike,
 	MiPasswordResetRequest,
 	MiPoll,
 	MiPollVote,
@@ -320,18 +318,6 @@ const $signinsRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $pagesRepository: Provider = {
-	provide: DI.pagesRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiPage).extend(miRepository as MiRepository<MiPage>),
-	inject: [DI.db],
-};
-
-const $pageLikesRepository: Provider = {
-	provide: DI.pageLikesRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiPageLike).extend(miRepository as MiRepository<MiPageLike>),
-	inject: [DI.db],
-};
-
 const $moderationLogsRepository: Provider = {
 	provide: DI.moderationLogsRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiModerationLog).extend(miRepository as MiRepository<MiModerationLog>),
@@ -490,8 +476,6 @@ const $userMemosRepository: Provider = {
 		$authSessionsRepository,
 		$accessTokensRepository,
 		$signinsRepository,
-		$pagesRepository,
-		$pageLikesRepository,
 		$moderationLogsRepository,
 		$clipsRepository,
 		$clipNotesRepository,
@@ -554,8 +538,6 @@ const $userMemosRepository: Provider = {
 		$authSessionsRepository,
 		$accessTokensRepository,
 		$signinsRepository,
-		$pagesRepository,
-		$pageLikesRepository,
 		$moderationLogsRepository,
 		$clipsRepository,
 		$clipNotesRepository,

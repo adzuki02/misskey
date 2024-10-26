@@ -33,7 +33,6 @@ export type Channels = {
 			followed: (payload: UserDetailed | UserLite) => void; // 他人が自分をフォローしたとき
 			unfollow: (payload: UserDetailed) => void; // 自分が他人をフォロー解除したとき
 			meUpdated: (payload: UserDetailed) => void;
-			pageEvent: (payload: PageEvent) => void;
 			urlUploadFinished: (payload: { marker: string; file: DriveFile; }) => void;
 			readAllNotifications: () => void;
 			unreadNotification: (payload: Notification) => void;
