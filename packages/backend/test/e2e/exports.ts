@@ -28,10 +28,6 @@ describe('export-clips', () => {
 			}
 			const file = (await api('drive/files/show', { fileId: files[0].id }, alice)).body;
 			const res = await fetch(new URL(new URL(file.url).pathname, `http://127.0.0.1:${port}`));
-			if (!res.ok) {
-				await new Promise(r => setTimeout(r, 100));
-				continue;
-			}
 			return await res.json();
 		}
 	}
