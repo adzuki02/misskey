@@ -8,7 +8,6 @@ import type {
 	InviteCode,
 	MetaDetailed,
 	Note,
-	Page,
 	Role,
 	SystemWebhook,
 	UserLite,
@@ -152,7 +151,6 @@ export const moderationLogTypes = [
 	'updateAbuseReportNotificationRecipient',
 	'deleteAbuseReportNotificationRecipient',
 	'deleteAccount',
-	'deletePage',
 	'deleteFlash',
 ] as const;
 
@@ -384,12 +382,6 @@ export type ModerationLogPayloads = {
 		userId: string;
 		userUsername: string;
 		userHost: string | null;
-	};
-	deletePage: {
-		pageId: string;
-		pageUserId: string;
-		pageUserUsername: string;
-		page: Page;
 	};
 	deleteFlash: {
 		flashId: string;

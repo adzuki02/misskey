@@ -4,7 +4,6 @@ import {
 	EmojiDetailed,
 	MeDetailed,
 	Note,
-	Page,
 	Role,
 	RolePolicies,
 	User,
@@ -170,9 +169,6 @@ export type ModerationLog = {
 } | {
 	type: 'deleteAccount';
 	info: ModerationLogPayloads['deleteAccount'];
-} | {
-	type: 'deletePage';
-	info: ModerationLogPayloads['deletePage'];
 } | {
 	type: 'deleteFlash';
 	info: ModerationLogPayloads['deleteFlash'];

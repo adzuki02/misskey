@@ -32,10 +32,6 @@ interface NotePostInterruptor {
 	handler: (note: FIXME) => unknown;
 }
 
-interface PageViewInterruptor {
-	handler: (page: Misskey.entities.Page) => unknown;
-}
-
 /** サウンド設定 */
 export type SoundStore = {
 	type: Exclude<SoundType, '_driveFile_'>;
@@ -57,7 +53,6 @@ export const userActions: UserAction[] = [];
 export const noteActions: NoteAction[] = [];
 export const noteViewInterruptors: NoteViewInterruptor[] = [];
 export const notePostInterruptors: NotePostInterruptor[] = [];
-export const pageViewInterruptors: PageViewInterruptor[] = [];
 
 // TODO: それぞれいちいちwhereとかdefaultというキーを付けなきゃいけないの冗長なのでなんとかする(ただ型定義が面倒になりそう)
 //       あと、現行の定義の仕方なら「whereが何であるかに関わらずキー名の重複不可」という制約を付けられるメリットもあるからそのメリットを引き継ぐ方法も考えないといけない
