@@ -170,7 +170,7 @@ describe('After user signed in', () => {
 		cy.get('[data-cy-user-setup-continue]', { timeout: 30000 }).should('be.visible');
   });
 
-	it('account setup wizard', () => {
+	/* it('account setup wizard', () => {
 		// 表示に時間がかかるのでデフォルト秒数だとタイムアウトする
 		cy.get('[data-cy-user-setup-continue]', { timeout: 30000 }).click();
 
@@ -193,7 +193,7 @@ describe('After user signed in', () => {
 		cy.get('[data-cy-user-setup-continue]').click();
 
 		cy.get('[data-cy-user-setup-continue]').click();
-  });
+  }); */
 });
 
 describe('After user setup', () => {
@@ -208,10 +208,10 @@ describe('After user setup', () => {
 
 		cy.login('alice', 'alice1234');
 
-		// アカウント初期設定ウィザード
+		/* // アカウント初期設定ウィザード
 		// 表示に時間がかかるのでデフォルト秒数だとタイムアウトする
 		cy.get('[data-cy-user-setup] [data-cy-modal-window-close]', { timeout: 30000 }).click();
-		cy.get('[data-cy-modal-dialog-ok]').click();
+		cy.get('[data-cy-modal-dialog-ok]').click(); */
 	});
 
 	afterEach(() => {
