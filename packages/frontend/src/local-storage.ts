@@ -10,8 +10,6 @@ type Keys =
 	'instanceCachedAt' |
 	'account' |
 	'accounts' |
-	'latestDonationInfoShownAt' |
-	'neverShowDonationInfo' |
 	'neverShowLocalOnlyInfo' |
 	'modifiedVersionMustProminentlyOfferInAgplV3Section13Read' |
 	'lastUsed' |
