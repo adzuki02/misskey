@@ -17,11 +17,7 @@ describe('Router transition', () => {
 
 			cy.login('alice', 'alice1234');
 
-			// アカウント初期設定ウィザード
-			// 表示に時間がかかるのでデフォルト秒数だとタイムアウトする
-			cy.get('[data-cy-user-setup] [data-cy-modal-window-close]', { timeout: 30000 }).click();
-			cy.wait(500);
-			cy.get('[data-cy-modal-dialog-ok]').click();
+			cy.wait(2000);
 		});
 
 		it('redirect to user profile', () => {
