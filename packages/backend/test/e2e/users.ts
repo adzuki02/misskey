@@ -77,8 +77,6 @@ describe('ユーザー', () => {
 			notesCount: user.notesCount,
 			pinnedNoteIds: user.pinnedNoteIds,
 			pinnedNotes: user.pinnedNotes,
-			pinnedPageId: user.pinnedPageId,
-			pinnedPage: user.pinnedPage,
 			publicReactions: user.publicReactions,
 			followingVisibility: user.followingVisibility,
 			followersVisibility: user.followersVisibility,
@@ -330,8 +328,6 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.notesCount, 0);
 		assert.deepStrictEqual(response.pinnedNoteIds, []);
 		assert.deepStrictEqual(response.pinnedNotes, []);
-		assert.strictEqual(response.pinnedPageId, null);
-		assert.strictEqual(response.pinnedPage, null);
 		assert.strictEqual(response.publicReactions, true);
 		assert.strictEqual(response.followingVisibility, 'public');
 		assert.strictEqual(response.followersVisibility, 'public');

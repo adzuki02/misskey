@@ -3118,8 +3118,6 @@ export type components = {
       notesCount: number;
       pinnedNoteIds: string[];
       pinnedNotes: components['schemas']['Note'][];
-      pinnedPageId: string | null;
-      pinnedPage: components['schemas']['Page'] | null;
       publicReactions: boolean;
       /** @enum {string} */
       followingVisibility: 'public' | 'followers' | 'private';
@@ -17421,8 +17419,6 @@ export type operations = {
           followingVisibility?: 'public' | 'followers' | 'private';
           /** @enum {string} */
           followersVisibility?: 'public' | 'followers' | 'private';
-          /** Format: misskey:id */
-          pinnedPageId?: string | null;
           mutedWords?: (string[] | string)[];
           hardMutedWords?: (string[] | string)[];
           mutedInstances?: string[];

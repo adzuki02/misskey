@@ -240,8 +240,6 @@ export function userDetailed(id = 'someuserid', username = 'miskist', host: enti
 		notesCount: 65536,
 		pinnedNoteIds: [],
 		pinnedNotes: [],
-		pinnedPage: null,
-		pinnedPageId: null,
 		publicReactions: false,
 		securityKeys: false,
 		twoFactorEnabled: false,
