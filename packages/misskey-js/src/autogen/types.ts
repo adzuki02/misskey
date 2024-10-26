@@ -2727,7 +2727,7 @@ export type paths = {
      * stats
      * @description No description provided.
      *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     post: operations['stats'];
   };
@@ -21661,7 +21661,7 @@ export type operations = {
    * stats
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes* / **Permission**: *read:account*
    */
   stats: {
     responses: {

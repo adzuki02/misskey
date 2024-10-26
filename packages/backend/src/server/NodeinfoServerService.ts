@@ -11,7 +11,6 @@ import { MAX_NOTE_TEXT_LENGTH } from '@/const.js';
 import { MemorySingleCache } from '@/misc/cache.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { bindThis } from '@/decorators.js';
-import NotesChart from '@/core/chart/charts/notes.js';
 import UsersChart from '@/core/chart/charts/users.js';
 import { DEFAULT_POLICIES } from '@/core/RoleService.js';
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify';
@@ -28,7 +27,6 @@ export class NodeinfoServerService {
 
 		private userEntityService: UserEntityService,
 		private metaService: MetaService,
-		private notesChart: NotesChart,
 		private usersChart: UsersChart,
 	) {
 		//this.createServer = this.createServer.bind(this);
@@ -48,17 +46,10 @@ export class NodeinfoServerService {
 	@bindThis
 	public createServer(fastify: FastifyInstance, options: FastifyPluginOptions, done: (err?: Error) => void) {
 		const nodeinfo2 = async (version: number) => {
-			const now = Date.now();
-
-			const localPosts = 1;
-
 			const usersChart = await this.usersChart.getChart('hour', 1, null);
 			const total = usersChart.local.total[0];
 
 			const meta = await this.metaService.fetch(true);
-
-			const activeHalfyear = null;
-			const activeMonth = null;
 
 			const proxyAccount = meta.proxyAccountId ? await this.userEntityService.pack(meta.proxyAccountId).catch(() => null) : null;
 
@@ -79,8 +70,12 @@ export class NodeinfoServerService {
 				},
 				openRegistrations: !meta.disableRegistration,
 				usage: {
-					users: { total, activeHalfyear, activeMonth },
-					localPosts,
+					users: {
+						total,
+						activeHalfyear: null,
+						activeMonth: null,
+					},
+					localPosts: 1,
 					localComments: 0,
 				},
 				metadata: {

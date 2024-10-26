@@ -11,7 +11,9 @@ import NotesChart from '@/core/chart/charts/notes.js';
 import UsersChart from '@/core/chart/charts/users.js';
 
 export const meta = {
-	requireCredential: false,
+	requireCredential: true,
+
+	kind: 'read:account',
 
 	tags: ['meta'],
 
@@ -71,8 +73,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const notesChart = await this.notesChart.getChart('hour', 1, null);
-			const notesCount = me ? (notesChart.local.total[0] + notesChart.remote.total[0]) : 1;
-			const originalNotesCount = me ? notesChart.local.total[0] : 1;
+			const notesCount = notesChart.local.total[0] + notesChart.remote.total[0];
+			const originalNotesCount = notesChart.local.total[0];
 
 			const usersChart = await this.usersChart.getChart('hour', 1, null);
 			const usersCount = usersChart.local.total[0] + usersChart.remote.total[0];
@@ -80,11 +82,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			const [
 				reactionsCount,
-				//originalReactionsCount,
 				instances,
 			] = await Promise.all([
 				this.noteReactionsRepository.count({ cache: 3600000 }), // 1 hour
-				//this.noteReactionsRepository.count({ where: { userHost: IsNull() }, cache: 3600000 }),
 				this.instancesRepository.count({ cache: 3600000 }),
 			]);
 
@@ -94,7 +94,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				usersCount,
 				originalUsersCount,
 				reactionsCount,
-				//originalReactionsCount,
 				instances,
 				driveUsageLocal: 0,
 				driveUsageRemote: 0,
