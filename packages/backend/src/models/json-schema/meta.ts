@@ -148,49 +148,6 @@ export const packedMetaLiteSchema = {
 			type: 'number',
 			optional: false, nullable: false,
 		},
-		ads: {
-			type: 'array',
-			optional: false, nullable: false,
-			items: {
-				type: 'object',
-				optional: false, nullable: false,
-				properties: {
-					id: {
-						type: 'string',
-						optional: false, nullable: false,
-						format: 'id',
-						example: 'xxxxxxxxxx',
-					},
-					url: {
-						type: 'string',
-						optional: false, nullable: false,
-						format: 'url',
-					},
-					place: {
-						type: 'string',
-						optional: false, nullable: false,
-					},
-					ratio: {
-						type: 'number',
-						optional: false, nullable: false,
-					},
-					imageUrl: {
-						type: 'string',
-						optional: false, nullable: false,
-						format: 'url',
-					},
-					dayOfWeek: {
-						type: 'integer',
-						optional: false, nullable: false,
-					},
-				},
-			},
-		},
-		notesPerOneAd: {
-			type: 'number',
-			optional: false, nullable: false,
-			default: 0,
-		},
 		enableEmail: {
 			type: 'boolean',
 			optional: false, nullable: false,

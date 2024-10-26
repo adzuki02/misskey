@@ -10,7 +10,6 @@ import {
 	MiAbuseReportNotificationRecipient,
 	MiAbuseUserReport,
 	MiAccessToken,
-	MiAd,
 	MiAnnouncement,
 	MiAnnouncementRead,
 	MiAntenna,
@@ -390,12 +389,6 @@ const $systemWebhooksRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $adsRepository: Provider = {
-	provide: DI.adsRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiAd).extend(miRepository as MiRepository<MiAd>),
-	inject: [DI.db],
-};
-
 const $passwordResetRequestsRepository: Provider = {
 	provide: DI.passwordResetRequestsRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiPasswordResetRequest).extend(miRepository as MiRepository<MiPasswordResetRequest>),
@@ -488,7 +481,6 @@ const $userMemosRepository: Provider = {
 		$registryItemsRepository,
 		$webhooksRepository,
 		$systemWebhooksRepository,
-		$adsRepository,
 		$passwordResetRequestsRepository,
 		$rolesRepository,
 		$roleAssignmentsRepository,
@@ -550,7 +542,6 @@ const $userMemosRepository: Provider = {
 		$registryItemsRepository,
 		$webhooksRepository,
 		$systemWebhooksRepository,
-		$adsRepository,
 		$passwordResetRequestsRepository,
 		$rolesRepository,
 		$roleAssignmentsRepository,
