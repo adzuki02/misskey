@@ -288,11 +288,6 @@ describe('API', () => {
 			isModerator: false,
 			isPublic: false,
 			policies: {
-				ltlAvailable: {
-					value: true,
-					priority: 0,
-					useDefault: false,
-				},
 			},
 			target: 'manual',
 		});

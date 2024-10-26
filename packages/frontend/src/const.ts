@@ -72,7 +72,6 @@ export const obsoleteNotificationTypes = ['pollVote', 'groupInvited', 'achieveme
 
 export const ROLE_POLICIES = [
 	'gtlAvailable',
-	'ltlAvailable',
 	'canPublicNote',
 	'mentionLimit',
 	'canInvite',

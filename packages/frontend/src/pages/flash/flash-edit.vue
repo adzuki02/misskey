@@ -303,7 +303,7 @@ Ui:render(qaEls)
 `;
 
 const PRESET_TIMELINE = `/// @ ${AISCRIPT_VERSION}
-// APIリクエストを行いローカルタイムラインを表示するプリセット
+// APIリクエストを行いグローバルタイムラインを表示するプリセット
 
 @fetch() {
 	Ui:render([
@@ -316,7 +316,7 @@ const PRESET_TIMELINE = `/// @ ${AISCRIPT_VERSION}
 	])
 
 	// タイムライン取得
-	let notes = Mk:api("notes/local-timeline", {})
+	let notes = Mk:api("notes/global-timeline", {})
 
 	// それぞれのノートごとにUI要素作成
 	let noteEls = []
@@ -346,7 +346,7 @@ const PRESET_TIMELINE = `/// @ ${AISCRIPT_VERSION}
 
 	// UIを表示
 	Ui:render([
-		Ui:C:text({ text: "ローカル タイムライン" })
+		Ui:C:text({ text: "グローバル タイムライン" })
 		Ui:C:button({
 			text: "更新"
 			onClick: @() {

@@ -98,7 +98,7 @@ export class NodeinfoServerService {
 					repositoryUrl: meta.repositoryUrl,
 					feedbackUrl: meta.feedbackUrl,
 					disableRegistration: meta.disableRegistration,
-					disableLocalTimeline: !basePolicies.ltlAvailable,
+					disableLocalTimeline: true,
 					disableGlobalTimeline: !basePolicies.gtlAvailable,
 					emailRequiredForSignup: meta.emailRequiredForSignup,
 					enableHcaptcha: meta.enableHcaptcha,

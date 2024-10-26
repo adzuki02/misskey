@@ -172,10 +172,6 @@ export const packedRolePoliciesSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
-		ltlAvailable: {
-			type: 'boolean',
-			optional: false, nullable: false,
-		},
 		canPublicNote: {
 			type: 'boolean',
 			optional: false, nullable: false,
