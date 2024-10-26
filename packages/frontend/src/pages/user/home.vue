@@ -166,7 +166,6 @@ import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
 import { $i, iAmModerator } from '@/account.js';
 import { dateString } from '@/filters/date.js';
-import { confetti } from '@/scripts/confetti.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { isFollowingVisibleForMe, isFollowersVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
 import { useRouter } from '@/router/supplier.js';
@@ -284,17 +283,6 @@ onMounted(() => {
 	window.requestAnimationFrame(parallaxLoop);
 	narrow.value = rootEl.value!.clientWidth < 1000;
 
-	if (props.user.birthday) {
-		const m = new Date().getMonth() + 1;
-		const d = new Date().getDate();
-		const bm = parseInt(props.user.birthday.split('-')[1]);
-		const bd = parseInt(props.user.birthday.split('-')[2]);
-		if (m === bm && d === bd) {
-			confetti({
-				duration: 1000 * 4,
-			});
-		}
-	}
 	nextTick(() => {
 		adjustMemoTextarea();
 	});
