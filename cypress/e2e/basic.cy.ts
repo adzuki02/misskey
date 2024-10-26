@@ -164,36 +164,6 @@ describe('After user signed in', () => {
 		// waitを入れることでそれを防止できる
 		cy.wait(1000);
 	});
-
-  /* it('successfully loads', () => {
-		// 表示に時間がかかるのでデフォルト秒数だとタイムアウトする
-		cy.get('[data-cy-user-setup-continue]', { timeout: 30000 }).should('be.visible');
-  }); */
-
-	/* it('account setup wizard', () => {
-		// 表示に時間がかかるのでデフォルト秒数だとタイムアウトする
-		cy.get('[data-cy-user-setup-continue]', { timeout: 30000 }).click();
-
-		cy.get('[data-cy-user-setup-user-name] input').type('ありす');
-		cy.get('[data-cy-user-setup-user-description] textarea').type('ほげ');
-		// TODO: アイコン設定テスト
-
-		cy.get('[data-cy-user-setup-continue]').click();
-
-		// プライバシー設定
-
-		cy.get('[data-cy-user-setup-continue]').click();
-
-		// フォローはスキップ
-
-		cy.get('[data-cy-user-setup-continue]').click();
-
-		// プッシュ通知設定はスキップ
-
-		cy.get('[data-cy-user-setup-continue]').click();
-
-		cy.get('[data-cy-user-setup-continue]').click();
-  }); */
 });
 
 describe('After user setup', () => {
@@ -207,11 +177,6 @@ describe('After user setup', () => {
 		cy.registerUser('alice', 'alice1234');
 
 		cy.login('alice', 'alice1234');
-
-		/* // アカウント初期設定ウィザード
-		// 表示に時間がかかるのでデフォルト秒数だとタイムアウトする
-		cy.get('[data-cy-user-setup] [data-cy-modal-window-close]', { timeout: 30000 }).click();
-		cy.get('[data-cy-modal-dialog-ok]').click(); */
 	});
 
 	afterEach(() => {
