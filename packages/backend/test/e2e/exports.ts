@@ -71,6 +71,7 @@ describe('export-clips', () => {
 		assert.strictEqual(res2.status, 204);
 
 		const exported = await pollFirstDriveFile();
+		console.log('!DEBUG!:', exported);
 		assert.strictEqual(exported[0].name, 'foo');
 		assert.strictEqual(exported[0].description, 'bar');
 		assert.strictEqual(exported[0].clipNotes.length, 0);
