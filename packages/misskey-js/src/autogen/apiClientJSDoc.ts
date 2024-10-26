@@ -3274,7 +3274,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'stats', P extends Endpoints[E]['req']>(
       endpoint: E,
