@@ -30,15 +30,6 @@ export type PureRenote =
 	& { files: []; fileIds: []; }
 	& NonNullableRecord<Pick<Note, 'renote' | 'renoteId'>>;
 
-export type PageEvent = {
-	pageId: Page['id'];
-	event: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	var: any;
-	userId: User['id'];
-	user: User;
-};
-
 export type ModerationLog = {
 	id: ID;
 	createdAt: DateString;
