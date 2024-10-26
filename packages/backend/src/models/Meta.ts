@@ -584,11 +584,6 @@ export class MiMeta {
 	})
 	public perUserListTimelineCacheMax: number;
 
-	@Column('integer', {
-		default: 0,
-	})
-	public notesPerOneAd: number;
-
 	@Column('boolean', {
 		default: true,
 	})

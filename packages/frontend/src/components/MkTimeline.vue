@@ -74,10 +74,6 @@ function prepend(note) {
 
 	tlNotesCount++;
 
-	if (instance.notesPerOneAd > 0 && tlNotesCount % instance.notesPerOneAd === 0) {
-		note._shouldInsertAd_ = true;
-	}
-
 	tlComponent.value.pagingComponent?.prepend(note);
 
 	emit('note');

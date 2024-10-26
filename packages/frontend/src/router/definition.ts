@@ -205,9 +205,6 @@ const routes: RouteDef[] = [{
 	name: 'invite',
 	component: page(() => import('@/pages/invite.vue')),
 }, {
-	path: '/ads',
-	component: page(() => import('@/pages/ads.vue')),
-}, {
 	path: '/theme-editor',
 	component: page(() => import('@/pages/theme-editor.vue')),
 	loginRequired: true,
@@ -364,10 +361,6 @@ const routes: RouteDef[] = [{
 		path: '/announcements',
 		name: 'announcements',
 		component: page(() => import('@/pages/admin/announcements.vue')),
-	}, {
-		path: '/ads',
-		name: 'ads',
-		component: page(() => import('@/pages/admin/ads.vue')),
 	}, {
 		path: '/roles/:id/edit',
 		name: 'roles',

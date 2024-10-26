@@ -80,24 +80,6 @@ type AdminAccountsFindByEmailRequest = operations['admin___accounts___find-by-em
 type AdminAccountsFindByEmailResponse = operations['admin___accounts___find-by-email']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
-type AdminAdCreateRequest = operations['admin___ad___create']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAdCreateResponse = operations['admin___ad___create']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAdDeleteRequest = operations['admin___ad___delete']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAdListRequest = operations['admin___ad___list']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAdListResponse = operations['admin___ad___list']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAdUpdateRequest = operations['admin___ad___update']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
 type AdminAnnouncementsCreateRequest = operations['admin___announcements___create']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1119,12 +1101,6 @@ declare namespace entities {
         AdminAccountsDeleteRequest,
         AdminAccountsFindByEmailRequest,
         AdminAccountsFindByEmailResponse,
-        AdminAdCreateRequest,
-        AdminAdCreateResponse,
-        AdminAdDeleteRequest,
-        AdminAdListRequest,
-        AdminAdListResponse,
-        AdminAdUpdateRequest,
         AdminAnnouncementsCreateRequest,
         AdminAnnouncementsCreateResponse,
         AdminAnnouncementsDeleteRequest,

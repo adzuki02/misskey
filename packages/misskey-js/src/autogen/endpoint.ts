@@ -18,12 +18,6 @@ import type {
 	AdminAccountsDeleteRequest,
 	AdminAccountsFindByEmailRequest,
 	AdminAccountsFindByEmailResponse,
-	AdminAdCreateRequest,
-	AdminAdCreateResponse,
-	AdminAdDeleteRequest,
-	AdminAdListRequest,
-	AdminAdListResponse,
-	AdminAdUpdateRequest,
 	AdminAnnouncementsCreateRequest,
 	AdminAnnouncementsCreateResponse,
 	AdminAnnouncementsDeleteRequest,
@@ -498,10 +492,6 @@ export type Endpoints = {
 	'admin/accounts/create': { req: AdminAccountsCreateRequest; res: AdminAccountsCreateResponse };
 	'admin/accounts/delete': { req: AdminAccountsDeleteRequest; res: EmptyResponse };
 	'admin/accounts/find-by-email': { req: AdminAccountsFindByEmailRequest; res: AdminAccountsFindByEmailResponse };
-	'admin/ad/create': { req: AdminAdCreateRequest; res: AdminAdCreateResponse };
-	'admin/ad/delete': { req: AdminAdDeleteRequest; res: EmptyResponse };
-	'admin/ad/list': { req: AdminAdListRequest; res: AdminAdListResponse };
-	'admin/ad/update': { req: AdminAdUpdateRequest; res: EmptyResponse };
 	'admin/announcements/create': { req: AdminAnnouncementsCreateRequest; res: AdminAnnouncementsCreateResponse };
 	'admin/announcements/delete': { req: AdminAnnouncementsDeleteRequest; res: EmptyResponse };
 	'admin/announcements/list': { req: AdminAnnouncementsListRequest; res: AdminAnnouncementsListResponse };

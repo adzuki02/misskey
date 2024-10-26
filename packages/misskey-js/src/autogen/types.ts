@@ -107,42 +107,6 @@ export type paths = {
      */
     post: operations['admin___accounts___find-by-email'];
   };
-  '/admin/ad/create': {
-    /**
-     * admin/ad/create
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:admin:ad*
-     */
-    post: operations['admin___ad___create'];
-  };
-  '/admin/ad/delete': {
-    /**
-     * admin/ad/delete
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:admin:ad*
-     */
-    post: operations['admin___ad___delete'];
-  };
-  '/admin/ad/list': {
-    /**
-     * admin/ad/list
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:admin:ad*
-     */
-    post: operations['admin___ad___list'];
-  };
-  '/admin/ad/update': {
-    /**
-     * admin/ad/update
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:admin:ad*
-     */
-    post: operations['admin___ad___update'];
-  };
   '/admin/announcements/create': {
     /**
      * admin/announcements/create
@@ -4051,7 +4015,6 @@ export type components = {
       canManageAvatarDecorations: boolean;
       canSearchNotes: boolean;
       canUseTranslator: boolean;
-      canHideAds: boolean;
       driveCapacityMb: number;
       alwaysMarkNsfw: boolean;
       canUpdateBioMedia: boolean;
@@ -4113,22 +4076,6 @@ export type components = {
       notFoundImageUrl: string | null;
       iconUrl: string | null;
       maxNoteTextLength: number;
-      ads: {
-          /**
-           * Format: id
-           * @example xxxxxxxxxx
-           */
-          id: string;
-          /** Format: url */
-          url: string;
-          place: string;
-          ratio: number;
-          /** Format: url */
-          imageUrl: string;
-          dayOfWeek: number;
-        }[];
-      /** @default 0 */
-      notesPerOneAd: number;
       enableEmail: boolean;
       enableServiceWorker: boolean;
       translatorAvailable: boolean;
@@ -4303,7 +4250,6 @@ export type operations = {
             perRemoteUserUserTimelineCacheMax: number;
             perUserHomeTimelineCacheMax: number;
             perUserListTimelineCacheMax: number;
-            notesPerOneAd: number;
             backgroundImageUrl: string | null;
             deeplAuthKey: string | null;
             deeplIsPro: boolean;
@@ -4874,240 +4820,6 @@ export type operations = {
         content: {
           'application/json': components['schemas']['UserDetailedNotMe'];
         };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/ad/create
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:admin:ad*
-   */
-  admin___ad___create: {
-    requestBody: {
-      content: {
-        'application/json': {
-          url: string;
-          memo: string;
-          place: string;
-          priority: string;
-          ratio: number;
-          expiresAt: number;
-          startsAt: number;
-          imageUrl: string;
-          dayOfWeek: number;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Ad'];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/ad/delete
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:admin:ad*
-   */
-  admin___ad___delete: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** Format: misskey:id */
-          id: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/ad/list
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:admin:ad*
-   */
-  admin___ad___list: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default 10 */
-          limit?: number;
-          /** Format: misskey:id */
-          sinceId?: string;
-          /** Format: misskey:id */
-          untilId?: string;
-          /** @default null */
-          publishing?: boolean | null;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Ad'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/ad/update
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:admin:ad*
-   */
-  admin___ad___update: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** Format: misskey:id */
-          id: string;
-          memo?: string;
-          url?: string;
-          imageUrl?: string;
-          place?: string;
-          priority?: string;
-          ratio?: number;
-          expiresAt?: number;
-          startsAt?: number;
-          dayOfWeek?: number;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
       };
       /** @description Client error */
       400: {
@@ -8507,7 +8219,6 @@ export type operations = {
           perRemoteUserUserTimelineCacheMax?: number;
           perUserHomeTimelineCacheMax?: number;
           perUserListTimelineCacheMax?: number;
-          notesPerOneAd?: number;
           silencedHosts?: string[] | null;
           mediaSilencedHosts?: string[] | null;
           /** @description [Deprecated] Use "urlPreviewSummaryProxyUrl" instead. */

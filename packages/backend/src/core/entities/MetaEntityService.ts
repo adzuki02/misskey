@@ -8,7 +8,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import JSON5 from 'json5';
 import type { Packed } from '@/misc/json-schema.js';
 import type { MiMeta } from '@/models/Meta.js';
-import type { AdsRepository } from '@/models/_.js';
 import { MAX_NOTE_TEXT_LENGTH } from '@/const.js';
 import { bindThis } from '@/decorators.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
@@ -26,9 +25,6 @@ export class MetaEntityService {
 		@Inject(DI.meta)
 		private meta: MiMeta,
 
-		@Inject(DI.adsRepository)
-		private adsRepository: AdsRepository,
-
 		private userEntityService: UserEntityService,
 		private instanceActorService: InstanceActorService,
 	) { }
@@ -40,16 +36,6 @@ export class MetaEntityService {
 		if (!instance) {
 			instance = this.meta;
 		}
-
-		const ads = await this.adsRepository.createQueryBuilder('ads')
-			.where('ads.expiresAt > :now', { now: new Date() })
-			.andWhere('ads.startsAt <= :now', { now: new Date() })
-			.andWhere(new Brackets(qb => {
-				// 曜日のビットフラグを確認する
-				qb.where('ads.dayOfWeek & :dayOfWeek > 0', { dayOfWeek: 1 << new Date().getDay() })
-					.orWhere('ads.dayOfWeek = 0');
-			}))
-			.getMany();
 
 		// クライアントの手間を減らすためあらかじめJSONに変換しておく
 		let defaultLightTheme = null;
@@ -109,15 +95,6 @@ export class MetaEntityService {
 			maxNoteTextLength: MAX_NOTE_TEXT_LENGTH,
 			defaultLightTheme,
 			defaultDarkTheme,
-			ads: ads.map(ad => ({
-				id: ad.id,
-				url: ad.url,
-				place: ad.place,
-				ratio: ad.ratio,
-				imageUrl: ad.imageUrl,
-				dayOfWeek: ad.dayOfWeek,
-			})),
-			notesPerOneAd: instance.notesPerOneAd,
 			enableEmail: instance.enableEmail,
 			enableServiceWorker: instance.enableServiceWorker,
 

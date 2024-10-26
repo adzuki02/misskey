@@ -12,7 +12,6 @@ import { entities as charts } from '@/core/chart/entities.js';
 import { MiAbuseUserReport } from '@/models/AbuseUserReport.js';
 import { MiAbuseReportNotificationRecipient } from '@/models/AbuseReportNotificationRecipient.js';
 import { MiAccessToken } from '@/models/AccessToken.js';
-import { MiAd } from '@/models/Ad.js';
 import { MiAnnouncement } from '@/models/Announcement.js';
 import { MiAnnouncementRead } from '@/models/AnnouncementRead.js';
 import { MiAntenna } from '@/models/Antenna.js';
@@ -186,7 +185,6 @@ export const entities = [
 	MiChannelFollowing,
 	MiChannelFavorite,
 	MiRegistryItem,
-	MiAd,
 	MiPasswordResetRequest,
 	MiUserPending,
 	MiWebhook,

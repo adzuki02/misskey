@@ -129,22 +129,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</FormSection>
 
 					<FormSection>
-						<template #label>{{ i18n.ts._ad.adsSettings }}</template>
-
-						<div class="_gaps_m">
-							<div class="_gaps_s">
-								<MkInput v-model="notesPerOneAd" :min="0" type="number">
-									<template #label>{{ i18n.ts._ad.notesPerOneAd }}</template>
-									<template #caption>{{ i18n.ts._ad.setZeroToDisable }}</template>
-								</MkInput>
-								<MkInfo v-if="notesPerOneAd > 0 && notesPerOneAd < 20" :warn="true">
-									{{ i18n.ts._ad.adsTooClose }}
-								</MkInfo>
-							</div>
-						</div>
-					</FormSection>
-
-					<FormSection>
 						<template #label>{{ i18n.ts._urlPreviewSetting.title }}</template>
 
 						<div class="_gaps_m">
@@ -242,7 +226,6 @@ const perLocalUserUserTimelineCacheMax = ref<number>(0);
 const perRemoteUserUserTimelineCacheMax = ref<number>(0);
 const perUserHomeTimelineCacheMax = ref<number>(0);
 const perUserListTimelineCacheMax = ref<number>(0);
-const notesPerOneAd = ref<number>(0);
 const urlPreviewEnabled = ref<boolean>(true);
 const urlPreviewTimeout = ref<number>(10000);
 const urlPreviewMaximumContentLength = ref<number>(1024 * 1024 * 10);
@@ -271,7 +254,6 @@ async function init(): Promise<void> {
 	perRemoteUserUserTimelineCacheMax.value = meta.perRemoteUserUserTimelineCacheMax;
 	perUserHomeTimelineCacheMax.value = meta.perUserHomeTimelineCacheMax;
 	perUserListTimelineCacheMax.value = meta.perUserListTimelineCacheMax;
-	notesPerOneAd.value = meta.notesPerOneAd;
 	urlPreviewEnabled.value = meta.urlPreviewEnabled;
 	urlPreviewTimeout.value = meta.urlPreviewTimeout;
 	urlPreviewMaximumContentLength.value = meta.urlPreviewMaximumContentLength;
@@ -301,7 +283,6 @@ async function save() {
 		perRemoteUserUserTimelineCacheMax: perRemoteUserUserTimelineCacheMax.value,
 		perUserHomeTimelineCacheMax: perUserHomeTimelineCacheMax.value,
 		perUserListTimelineCacheMax: perUserListTimelineCacheMax.value,
-		notesPerOneAd: notesPerOneAd.value,
 		urlPreviewEnabled: urlPreviewEnabled.value,
 		urlPreviewTimeout: urlPreviewTimeout.value,
 		urlPreviewMaximumContentLength: urlPreviewMaximumContentLength.value,

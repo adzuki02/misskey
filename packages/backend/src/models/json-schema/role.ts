@@ -216,10 +216,6 @@ export const packedRolePoliciesSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
-		canHideAds: {
-			type: 'boolean',
-			optional: false, nullable: false,
-		},
 		driveCapacityMb: {
 			type: 'integer',
 			optional: false, nullable: false,

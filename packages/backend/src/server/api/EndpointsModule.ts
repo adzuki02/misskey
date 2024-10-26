@@ -16,10 +16,6 @@ import * as ep___admin_meta from './endpoints/admin/meta.js';
 import * as ep___admin_accounts_create from './endpoints/admin/accounts/create.js';
 import * as ep___admin_accounts_delete from './endpoints/admin/accounts/delete.js';
 import * as ep___admin_accounts_findByEmail from './endpoints/admin/accounts/find-by-email.js';
-import * as ep___admin_ad_create from './endpoints/admin/ad/create.js';
-import * as ep___admin_ad_delete from './endpoints/admin/ad/delete.js';
-import * as ep___admin_ad_list from './endpoints/admin/ad/list.js';
-import * as ep___admin_ad_update from './endpoints/admin/ad/update.js';
 import * as ep___admin_announcements_create from './endpoints/admin/announcements/create.js';
 import * as ep___admin_announcements_delete from './endpoints/admin/announcements/delete.js';
 import * as ep___admin_announcements_list from './endpoints/admin/announcements/list.js';
@@ -345,10 +341,6 @@ const $admin_abuseReport_notificationRecipient_delete: Provider = { provide: 'ep
 const $admin_accounts_create: Provider = { provide: 'ep:admin/accounts/create', useClass: ep___admin_accounts_create.default };
 const $admin_accounts_delete: Provider = { provide: 'ep:admin/accounts/delete', useClass: ep___admin_accounts_delete.default };
 const $admin_accounts_findByEmail: Provider = { provide: 'ep:admin/accounts/find-by-email', useClass: ep___admin_accounts_findByEmail.default };
-const $admin_ad_create: Provider = { provide: 'ep:admin/ad/create', useClass: ep___admin_ad_create.default };
-const $admin_ad_delete: Provider = { provide: 'ep:admin/ad/delete', useClass: ep___admin_ad_delete.default };
-const $admin_ad_list: Provider = { provide: 'ep:admin/ad/list', useClass: ep___admin_ad_list.default };
-const $admin_ad_update: Provider = { provide: 'ep:admin/ad/update', useClass: ep___admin_ad_update.default };
 const $admin_announcements_create: Provider = { provide: 'ep:admin/announcements/create', useClass: ep___admin_announcements_create.default };
 const $admin_announcements_delete: Provider = { provide: 'ep:admin/announcements/delete', useClass: ep___admin_announcements_delete.default };
 const $admin_announcements_list: Provider = { provide: 'ep:admin/announcements/list', useClass: ep___admin_announcements_list.default };
@@ -678,10 +670,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_accounts_create,
 		$admin_accounts_delete,
 		$admin_accounts_findByEmail,
-		$admin_ad_create,
-		$admin_ad_delete,
-		$admin_ad_list,
-		$admin_ad_update,
 		$admin_announcements_create,
 		$admin_announcements_delete,
 		$admin_announcements_list,
@@ -1005,10 +993,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_accounts_create,
 		$admin_accounts_delete,
 		$admin_accounts_findByEmail,
-		$admin_ad_create,
-		$admin_ad_delete,
-		$admin_ad_list,
-		$admin_ad_update,
 		$admin_announcements_create,
 		$admin_announcements_delete,
 		$admin_announcements_list,

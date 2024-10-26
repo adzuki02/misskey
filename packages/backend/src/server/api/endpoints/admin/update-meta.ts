@@ -137,7 +137,6 @@ export const paramDef = {
 		perRemoteUserUserTimelineCacheMax: { type: 'integer' },
 		perUserHomeTimelineCacheMax: { type: 'integer' },
 		perUserListTimelineCacheMax: { type: 'integer' },
-		notesPerOneAd: { type: 'integer' },
 		silencedHosts: {
 			type: 'array',
 			nullable: true,
@@ -587,10 +586,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.perUserListTimelineCacheMax !== undefined) {
 				set.perUserListTimelineCacheMax = ps.perUserListTimelineCacheMax;
-			}
-
-			if (ps.notesPerOneAd !== undefined) {
-				set.notesPerOneAd = ps.notesPerOneAd;
 			}
 
 			if (ps.bannedEmailDomains !== undefined) {
