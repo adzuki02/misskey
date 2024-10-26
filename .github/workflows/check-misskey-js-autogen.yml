@@ -108,7 +108,7 @@ jobs:
           fi
       - name: Send message
         if: steps.check-changes.outputs.changes == 'true'
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@fabd468d3a1a0b97feee5f6b9e499eab0dd903f6
         with:
           comment_tag: check-misskey-js-autogen
           message: |
@@ -121,7 +121,7 @@ jobs:
             ```
       - name: Send message
         if: steps.check-changes.outputs.changes == 'false'
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@fabd468d3a1a0b97feee5f6b9e499eab0dd903f6
         with:
           comment_tag: check-misskey-js-autogen
           mode: delete
