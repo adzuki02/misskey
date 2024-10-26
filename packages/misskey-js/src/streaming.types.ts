@@ -14,7 +14,6 @@ import {
 	AnnouncementCreated,
 	EmojiAdded, EmojiDeleted,
 	EmojiUpdated,
-	PageEvent,
 	QueueStats,
 	QueueStatsLog,
 	ServerStats,

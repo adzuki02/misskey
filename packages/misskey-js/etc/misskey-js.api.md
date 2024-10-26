@@ -1084,7 +1084,6 @@ declare namespace entities {
         ID,
         DateString,
         PureRenote,
-        PageEvent,
         ModerationLog,
         ServerStats,
         ServerStatsLog,
@@ -2428,15 +2427,6 @@ type Page = components['schemas']['Page'];
 type PageBlock = components['schemas']['PageBlock'];
 
 // @public (undocumented)
-type PageEvent = {
-    pageId: Page['id'];
-    event: string;
-    var: any;
-    userId: User['id'];
-    user: User;
-};
-
-// @public (undocumented)
 function parse(_acct: string): Acct;
 
 // Warning: (ae-forgotten-export) The symbol "Values" needs to be exported by the entry point index.d.ts
@@ -2866,7 +2856,7 @@ type UsersUpdateMemoRequest = operations['users___update-memo']['requestBody']['
 
 // Warnings were encountered during analysis:
 //
-// src/entities.ts:49:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
+// src/entities.ts:40:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
