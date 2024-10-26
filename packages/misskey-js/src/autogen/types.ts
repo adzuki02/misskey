@@ -4015,7 +4015,6 @@ export type components = {
       canManageAvatarDecorations: boolean;
       canSearchNotes: boolean;
       canUseTranslator: boolean;
-      canHideAds: boolean;
       driveCapacityMb: number;
       alwaysMarkNsfw: boolean;
       canUpdateBioMedia: boolean;

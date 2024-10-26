@@ -199,14 +199,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkInput>
 						</MkFolder>
 
-						<MkFolder v-if="matchQuery([i18n.ts._role._options.canHideAds, 'canHideAds'])">
-							<template #label>{{ i18n.ts._role._options.canHideAds }}</template>
-							<template #suffix>{{ policies.canHideAds ? i18n.ts.yes : i18n.ts.no }}</template>
-							<MkSwitch v-model="policies.canHideAds">
-								<template #label>{{ i18n.ts.enable }}</template>
-							</MkSwitch>
-						</MkFolder>
-
 						<MkFolder v-if="matchQuery([i18n.ts._role._options.avatarDecorationLimit, 'avatarDecorationLimit'])">
 							<template #label>{{ i18n.ts._role._options.avatarDecorationLimit }}</template>
 							<template #suffix>{{ policies.avatarDecorationLimit }}</template>
@@ -214,7 +206,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkInput>
 						</MkFolder>
 
-						<MkFolder v-if="matchQuery([i18n.ts._role._options.canMakePureRenoteOfRemoteNotes, 'canHideAds'])">
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.canMakePureRenoteOfRemoteNotes, 'canMakePureRenoteOfRemoteNotes'])">
 							<template #label>{{ i18n.ts._role._options.canMakePureRenoteOfRemoteNotes }}</template>
 							<template #suffix>{{ policies.canMakePureRenoteOfRemoteNotes ? i18n.ts.yes : i18n.ts.no }}</template>
 							<MkSwitch v-model="policies.canMakePureRenoteOfRemoteNotes">
