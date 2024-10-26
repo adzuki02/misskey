@@ -66,6 +66,15 @@ jobs:
       run: cp .github/misskey/test.yml .config
     - name: Pre-build and Build misskey-js
       run: pnpm run build-pre && pnpm --filter misskey-js run build
+    - name: Get jest cache path
+      id: get-jest-cache-path
+      run: echo "path=$(pnpm --silent --filter backend run jest --showConfig | jq -r '.configs[0].cacheDirectory')" >> $GITHUB_OUTPUT
+    - name: Restore jest cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.get-jest-cache-path.outputs.path }}
+        key: jest-backend-unit-v1-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ github.ref }}-${{ github.sha }}
+        restore-keys: jest-backend-unit-v1-${{ hashFiles('**/pnpm-lock.yaml') }}-
     - name: Test
       run: pnpm --filter backend run test-and-coverage
     - name: Upload coverage
@@ -115,6 +124,15 @@ jobs:
         run: cp .github/misskey/test.yml .config
       - name: Pre-build and Build misskey-js
         run: pnpm run build-pre && pnpm --filter misskey-js run build
+      - name: Get jest cache path
+        id: get-jest-cache-path
+        run: echo "path=$(pnpm --silent --filter backend run jest --showConfig | jq -r '.configs[0].cacheDirectory')" >> $GITHUB_OUTPUT
+      - name: Restore jest cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.get-jest-cache-path.outputs.path }}
+          key: jest-backend-e2e-v1-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ github.ref }}-${{ github.sha }}
+          restore-keys: jest-backend-e2e-v1-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - name: Test
         run: pnpm --filter backend run test-and-coverage:e2e
       - name: Upload coverage
