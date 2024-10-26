@@ -169,10 +169,9 @@ describe('独自拡張', () => {
 				assert.strictEqual(res.status, 405);
 			});
 
-			test('は認証情報がなければノート数が1である。', async () => {
+			test('は認証情報がなければアクセスできない。', async () => {
 				const res = await api('stats', {});
-				assert.strictEqual(res.body.notesCount, 1);
-				assert.strictEqual(res.body.originalNotesCount, 1);
+				assert.strictEqual(res.status, 401);
 			});
 
 			// チャートが即時にアップデートされないので保留
