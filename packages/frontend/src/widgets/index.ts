@@ -21,7 +21,6 @@ export default function(app: App) {
 	app.component('WidgetSlideshow', defineAsyncComponent(() => import('./WidgetSlideshow.vue')));
 	app.component('WidgetServerMetric', defineAsyncComponent(() => import('./server-metric/index.vue')));
 	app.component('WidgetJobQueue', defineAsyncComponent(() => import('./WidgetJobQueue.vue')));
-	app.component('WidgetInstanceCloud', defineAsyncComponent(() => import('./WidgetInstanceCloud.vue')));
 	app.component('WidgetButton', defineAsyncComponent(() => import('./WidgetButton.vue')));
 	app.component('WidgetAiscript', defineAsyncComponent(() => import('./WidgetAiscript.vue')));
 	app.component('WidgetAiscriptApp', defineAsyncComponent(() => import('./WidgetAiscriptApp.vue')));
@@ -42,7 +41,6 @@ export const widgets = [
 	'digitalClock',
 	'unixClock',
 	'federation',
-	'instanceCloud',
 	'postForm',
 	'slideshow',
 	'serverMetric',
