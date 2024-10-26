@@ -50,7 +50,6 @@ import { AvatarDecorationService } from '@/core/AvatarDecorationService.js';
 import type { OnModuleInit } from '@nestjs/common';
 import type { NoteEntityService } from './NoteEntityService.js';
 import type { DriveFileEntityService } from './DriveFileEntityService.js';
-import type { PageEntityService } from './PageEntityService.js';
 
 const Ajv = _Ajv.default;
 const ajv = new Ajv();
@@ -84,7 +83,6 @@ export type UserRelation = {
 export class UserEntityService implements OnModuleInit {
 	private apPersonService: ApPersonService;
 	private noteEntityService: NoteEntityService;
-	private pageEntityService: PageEntityService;
 	private customEmojiService: CustomEmojiService;
 	private announcementService: AnnouncementService;
 	private roleService: RoleService;
@@ -139,7 +137,6 @@ export class UserEntityService implements OnModuleInit {
 	onModuleInit() {
 		this.apPersonService = this.moduleRef.get('ApPersonService');
 		this.noteEntityService = this.moduleRef.get('NoteEntityService');
-		this.pageEntityService = this.moduleRef.get('PageEntityService');
 		this.customEmojiService = this.moduleRef.get('CustomEmojiService');
 		this.announcementService = this.moduleRef.get('AnnouncementService');
 		this.roleService = this.moduleRef.get('RoleService');
@@ -529,8 +526,6 @@ export class UserEntityService implements OnModuleInit {
 				pinnedNotes: this.noteEntityService.packMany(pins.map(pin => pin.note!), me, {
 					detail: true,
 				}),
-				pinnedPageId: profile!.pinnedPageId,
-				pinnedPage: profile!.pinnedPageId ? this.pageEntityService.pack(profile!.pinnedPageId, me) : null,
 				publicReactions: this.isLocalUser(user) ? profile!.publicReactions : false, // https://github.com/misskey-dev/misskey/issues/12964
 				followersVisibility: !me && user.host ? 'private' : profile!.followersVisibility,
 				followingVisibility: !me && user.host ? 'private' : profile!.followingVisibility,

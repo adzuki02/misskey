@@ -16,7 +16,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<XReactions v-else-if="tab === 'reactions' && (iAmModerator || $i?.id === user.id || user.publicReactions)" key="reactions" :user="user"/>
 				<XClips v-else-if="tab === 'clips' && user.host === null" key="clips" :user="user"/>
 				<XLists v-else-if="tab === 'lists' && user.host === null" key="lists" :user="user"/>
-				<XPages v-else-if="tab === 'pages' && user.host === null" key="pages" :user="user"/>
 				<XFlashs v-else-if="tab === 'flashs' && user.host === null" key="flashs" :user="user"/>
 				<XRaw v-else-if="tab === 'raw'" key="raw" :user="user"/>
 			</MkHorizontalSwipe>
@@ -42,7 +41,6 @@ const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
 const XReactions = defineAsyncComponent(() => import('./reactions.vue'));
 const XClips = defineAsyncComponent(() => import('./clips.vue'));
 const XLists = defineAsyncComponent(() => import('./lists.vue'));
-const XPages = defineAsyncComponent(() => import('./pages.vue'));
 const XFlashs = defineAsyncComponent(() => import('./flashs.vue'));
 const XRaw = defineAsyncComponent(() => import('./raw.vue'));
 
@@ -94,10 +92,6 @@ const headerTabs = computed(() => user.value ? [{
 	key: 'lists',
 	title: i18n.ts.lists,
 	icon: 'ti ti-list',
-}] : []), ...(user.value.host == null ? [{
-	key: 'pages',
-	title: i18n.ts.pages,
-	icon: 'ti ti-news',
 }] : []), ...(user.value.host == null ? [{
 	key: 'flashs',
 	title: 'Play',

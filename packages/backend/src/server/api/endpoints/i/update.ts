@@ -11,7 +11,7 @@ import { JSDOM } from 'jsdom';
 import { extractCustomEmojisFromMfm } from '@/misc/extract-custom-emojis-from-mfm.js';
 import { extractHashtags } from '@/misc/extract-hashtags.js';
 import * as Acct from '@/misc/acct.js';
-import type { UsersRepository, DriveFilesRepository, UserProfilesRepository, PagesRepository } from '@/models/_.js';
+import type { UsersRepository, DriveFilesRepository, UserProfilesRepository } from '@/models/_.js';
 import type { MiLocalUser, MiUser } from '@/models/User.js';
 import { birthdaySchema, descriptionSchema, locationSchema, nameSchema } from '@/models/User.js';
 import type { MiUserProfile } from '@/models/UserProfile.js';
@@ -229,9 +229,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		@Inject(DI.driveFilesRepository)
 		private driveFilesRepository: DriveFilesRepository,
 
-		@Inject(DI.pagesRepository)
-		private pagesRepository: PagesRepository,
-
 		private userEntityService: UserEntityService,
 		private driveFileEntityService: DriveFileEntityService,
 		private globalEventService: GlobalEventService,
@@ -381,16 +378,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					offsetX: d.offsetX ?? 0,
 					offsetY: d.offsetY ?? 0,
 				}));
-			}
-
-			if (ps.pinnedPageId) {
-				const page = await this.pagesRepository.findOneBy({ id: ps.pinnedPageId });
-
-				if (page == null || page.userId !== user.id) throw new ApiError(meta.errors.noSuchPage);
-
-				profileUpdates.pinnedPageId = page.id;
-			} else if (ps.pinnedPageId === null) {
-				profileUpdates.pinnedPageId = null;
 			}
 
 			if (ps.fields) {

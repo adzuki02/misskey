@@ -7,7 +7,6 @@ import { Entity, Column, Index, OneToOne, JoinColumn, PrimaryColumn } from 'type
 import { obsoleteNotificationTypes, followingVisibilities, followersVisibilities, notificationTypes } from '@/types.js';
 import { id } from './util/id.js';
 import { MiUser } from './User.js';
-import { MiPage } from './Page.js';
 import { MiUserList } from './UserList.js';
 
 // TODO: このテーブルで管理している情報すべてレジストリで管理するようにしても良いかも
@@ -181,18 +180,6 @@ export class MiUserProfile {
 		default: true,
 	})
 	public receiveAnnouncementEmail: boolean;
-
-	@Column({
-		...id(),
-		nullable: true,
-	})
-	public pinnedPageId: MiPage['id'] | null;
-
-	@OneToOne(type => MiPage, {
-		onDelete: 'SET NULL',
-	})
-	@JoinColumn()
-	public pinnedPage: MiPage | null;
 
 	@Index()
 	@Column('boolean', {

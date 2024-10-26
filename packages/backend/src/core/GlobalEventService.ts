@@ -15,7 +15,6 @@ import type { MiDriveFolder } from '@/models/DriveFolder.js';
 import type { MiUserList } from '@/models/UserList.js';
 import type { MiAbuseUserReport } from '@/models/AbuseUserReport.js';
 import type { MiSignin } from '@/models/Signin.js';
-import type { MiPage } from '@/models/Page.js';
 import type { MiWebhook } from '@/models/Webhook.js';
 import type { MiSystemWebhook } from '@/models/SystemWebhook.js';
 import type { MiMeta } from '@/models/Meta.js';
@@ -57,13 +56,6 @@ export interface MainEventTypes {
 	followed: Packed<'UserLite'>;
 	unfollow: Packed<'UserDetailedNotMe'>;
 	meUpdated: Packed<'MeDetailed'>;
-	pageEvent: {
-		pageId: MiPage['id'];
-		event: string;
-		var: any;
-		userId: MiUser['id'];
-		user: Packed<'UserDetailed'>;
-	};
 	urlUploadFinished: {
 		marker?: string | null;
 		file: Packed<'DriveFile'>;

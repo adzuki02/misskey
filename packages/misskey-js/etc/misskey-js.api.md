@@ -572,7 +572,6 @@ export type Channels = {
             followed: (payload: UserDetailed | UserLite) => void;
             unfollow: (payload: UserDetailed) => void;
             meUpdated: (payload: UserDetailed) => void;
-            pageEvent: (payload: PageEvent) => void;
             urlUploadFinished: (payload: {
                 marker: string;
                 file: DriveFile;
@@ -1405,10 +1404,6 @@ declare namespace entities {
         INotificationsResponse,
         INotificationsGroupedRequest,
         INotificationsGroupedResponse,
-        IPageLikesRequest,
-        IPageLikesResponse,
-        IPagesRequest,
-        IPagesResponse,
         IPinRequest,
         IPinResponse,
         IReadAnnouncementRequest,
@@ -1514,15 +1509,6 @@ declare namespace entities {
         NotesUserListTimelineRequest,
         NotesUserListTimelineResponse,
         NotificationsCreateRequest,
-        PagePushRequest,
-        PagesCreateRequest,
-        PagesCreateResponse,
-        PagesDeleteRequest,
-        PagesLikeRequest,
-        PagesShowRequest,
-        PagesShowResponse,
-        PagesUnlikeRequest,
-        PagesUpdateRequest,
         FlashCreateRequest,
         FlashCreateResponse,
         FlashDeleteRequest,
@@ -1587,8 +1573,6 @@ declare namespace entities {
         UsersListsGetMembershipsResponse,
         UsersNotesRequest,
         UsersNotesResponse,
-        UsersPagesRequest,
-        UsersPagesResponse,
         UsersFlashsRequest,
         UsersFlashsResponse,
         UsersReactionsRequest,
@@ -1956,18 +1940,6 @@ type InviteListRequest = operations['invite___list']['requestBody']['content']['
 
 // @public (undocumented)
 type InviteListResponse = operations['invite___list']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type IPageLikesRequest = operations['i___page-likes']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type IPageLikesResponse = operations['i___page-likes']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type IPagesRequest = operations['i___pages']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type IPagesResponse = operations['i___pages']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type IPinRequest = operations['i___pin']['requestBody']['content']['application/json'];
@@ -2465,33 +2437,6 @@ type PageEvent = {
 };
 
 // @public (undocumented)
-type PagePushRequest = operations['page-push']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type PagesCreateRequest = operations['pages___create']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type PagesCreateResponse = operations['pages___create']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type PagesDeleteRequest = operations['pages___delete']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type PagesLikeRequest = operations['pages___like']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type PagesShowRequest = operations['pages___show']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type PagesShowResponse = operations['pages___show']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type PagesUnlikeRequest = operations['pages___unlike']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type PagesUpdateRequest = operations['pages___update']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
 function parse(_acct: string): Acct;
 
 // Warning: (ae-forgotten-export) The symbol "Values" needs to be exported by the entry point index.d.ts
@@ -2882,12 +2827,6 @@ type UsersNotesRequest = operations['users___notes']['requestBody']['content']['
 
 // @public (undocumented)
 type UsersNotesResponse = operations['users___notes']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type UsersPagesRequest = operations['users___pages']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type UsersPagesResponse = operations['users___pages']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type UsersReactionsRequest = operations['users___reactions']['requestBody']['content']['application/json'];

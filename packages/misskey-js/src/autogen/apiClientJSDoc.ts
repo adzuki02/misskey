@@ -2299,28 +2299,6 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:page-likes*
-     */
-    request<E extends 'i/page-likes', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *read:pages*
-     */
-    request<E extends 'i/pages', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
      * **Credential required**: *Yes* / **Permission**: *write:account*
      */
     request<E extends 'i/pin', P extends Endpoints[E]['req']>(
@@ -3098,84 +3076,6 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
-     * **Credential required**: *Yes*
-     */
-    request<E extends 'page-push', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *write:pages*
-     */
-    request<E extends 'pages/create', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *write:pages*
-     */
-    request<E extends 'pages/delete', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *write:page-likes*
-     */
-    request<E extends 'pages/like', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *No*
-     */
-    request<E extends 'pages/show', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *write:page-likes*
-     */
-    request<E extends 'pages/unlike', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *write:pages*
-     */
-    request<E extends 'pages/update', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
      * **Credential required**: *Yes* / **Permission**: *write:flash*
      */
     request<E extends 'flash/create', P extends Endpoints[E]['req']>(
@@ -3633,17 +3533,6 @@ declare module '../api.js' {
      * **Credential required**: *No*
      */
     request<E extends 'users/notes', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * Show all pages this user created.
-     * 
-     * **Credential required**: *No*
-     */
-    request<E extends 'users/pages', P extends Endpoints[E]['req']>(
       endpoint: E,
       params: P,
       credential?: string | null,
