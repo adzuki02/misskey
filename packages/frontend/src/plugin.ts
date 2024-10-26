@@ -87,9 +87,6 @@ function createPluginEnv(opts: { plugin: Plugin; storageKey: string }): Record<s
 		'Plugin:register_note_post_interruptor': values.FN_NATIVE(([handler]) => {
 			registerNotePostInterruptor({ pluginId: opts.plugin.id, handler });
 		}),
-		'Plugin:register_page_view_interruptor': values.FN_NATIVE(([handler]) => {
-			registerPageViewInterruptor({ pluginId: opts.plugin.id, handler });
-		}),
 		'Plugin:open_url': values.FN_NATIVE(([url]) => {
 			utils.assertString(url);
 			window.open(url.value, '_blank', 'noopener');
@@ -164,18 +161,6 @@ function registerNotePostInterruptor({ pluginId, handler }): void {
 				return;
 			}
 			return utils.valToJs(await pluginContext.execFn(handler, [utils.jsToVal(note)]));
-		},
-	});
-}
-
-function registerPageViewInterruptor({ pluginId, handler }): void {
-	pageViewInterruptors.push({
-		handler: async (page) => {
-			const pluginContext = pluginContexts.get(pluginId);
-			if (!pluginContext) {
-				return;
-			}
-			return utils.valToJs(await pluginContext.execFn(handler, [utils.jsToVal(page)]));
 		},
 	});
 }

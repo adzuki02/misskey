@@ -3777,57 +3777,6 @@ export type components = {
       usedAt: string | null;
       used: boolean;
     };
-    Page: {
-      /**
-       * Format: id
-       * @example xxxxxxxxxx
-       */
-      id: string;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      updatedAt: string;
-      /** Format: id */
-      userId: string;
-      user: components['schemas']['UserLite'];
-      content: components['schemas']['PageBlock'][];
-      variables: Record<string, never>[];
-      title: string;
-      name: string;
-      summary: string | null;
-      hideTitleWhenPinned: boolean;
-      alignCenter: boolean;
-      font: string;
-      script: string;
-      eyeCatchingImageId: string | null;
-      eyeCatchingImage: components['schemas']['DriveFile'] | null;
-      attachedFiles: components['schemas']['DriveFile'][];
-      likedCount: number;
-      isLiked?: boolean;
-    };
-    PageBlock: OneOf<[{
-      id: string;
-      /** @enum {string} */
-      type: 'text';
-      text: string;
-    }, {
-      id: string;
-      /** @enum {string} */
-      type: 'section';
-      title: string;
-      children: components['schemas']['PageBlock'][];
-    }, {
-      id: string;
-      /** @enum {string} */
-      type: 'image';
-      fileId: string | null;
-    }, {
-      id: string;
-      /** @enum {string} */
-      type: 'note';
-      detailed: boolean;
-      note: string | null;
-    }]>;
     Channel: {
       /**
        * Format: id

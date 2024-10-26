@@ -25,7 +25,6 @@ describe('Webリソース', () => {
 	let alice: misskey.entities.SignupResponse;
 	let aliceUploadedFile: misskey.entities.DriveFile | null;
 	let alicesPost: misskey.entities.Note;
-	let alicePage: misskey.entities.Page;
 	let alicePlay: misskey.entities.Flash;
 	let aliceClip: misskey.entities.Clip;
 	let aliceChannel: misskey.entities.Channel;
