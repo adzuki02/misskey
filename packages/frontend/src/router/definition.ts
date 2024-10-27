@@ -458,10 +458,6 @@ const routes: RouteDef[] = [{
 	component: page(() => import('@/pages/notifications.vue')),
 	loginRequired: true,
 }, {
-	path: '/my/favorites',
-	component: page(() => import('@/pages/favorites.vue')),
-	loginRequired: true,
-}, {
 	path: '/my/drive/folder/:folder',
 	component: page(() => import('@/pages/drive.vue')),
 	loginRequired: true,
