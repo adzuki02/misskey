@@ -408,7 +408,6 @@ describe('Account Move', () => {
 			'i/pin',
 			'mute/create',
 			'notes/create',
-			'notes/favorites/create',
 			'notes/polls/vote',
 			'notes/reactions/create',
 			'renote-mute/create',

@@ -285,8 +285,6 @@ import type {
 	IChangePasswordRequest,
 	IDeleteAccountRequest,
 	IExportFollowingRequest,
-	IFavoritesRequest,
-	IFavoritesResponse,
 	IImportBlockingRequest,
 	IImportFollowingRequest,
 	IImportMutingRequest,
@@ -364,8 +362,6 @@ import type {
 	NotesCreateRequest,
 	NotesCreateResponse,
 	NotesDeleteRequest,
-	NotesFavoritesCreateRequest,
-	NotesFavoritesDeleteRequest,
 	NotesGlobalTimelineRequest,
 	NotesGlobalTimelineResponse,
 	NotesMentionsRequest,
@@ -671,7 +667,6 @@ export type Endpoints = {
 	'i/export-favorites': { req: EmptyRequest; res: EmptyResponse };
 	'i/export-user-lists': { req: EmptyRequest; res: EmptyResponse };
 	'i/export-antennas': { req: EmptyRequest; res: EmptyResponse };
-	'i/favorites': { req: IFavoritesRequest; res: IFavoritesResponse };
 	'i/import-blocking': { req: IImportBlockingRequest; res: EmptyResponse };
 	'i/import-following': { req: IImportFollowingRequest; res: EmptyResponse };
 	'i/import-muting': { req: IImportMutingRequest; res: EmptyResponse };
@@ -723,8 +718,6 @@ export type Endpoints = {
 	'notes/conversation': { req: NotesConversationRequest; res: NotesConversationResponse };
 	'notes/create': { req: NotesCreateRequest; res: NotesCreateResponse };
 	'notes/delete': { req: NotesDeleteRequest; res: EmptyResponse };
-	'notes/favorites/create': { req: NotesFavoritesCreateRequest; res: EmptyResponse };
-	'notes/favorites/delete': { req: NotesFavoritesDeleteRequest; res: EmptyResponse };
 	'notes/global-timeline': { req: NotesGlobalTimelineRequest; res: NotesGlobalTimelineResponse };
 	'notes/mentions': { req: NotesMentionsRequest; res: NotesMentionsResponse };
 	'notes/polls/vote': { req: NotesPollsVoteRequest; res: EmptyResponse };
