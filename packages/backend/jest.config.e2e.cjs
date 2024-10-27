@@ -3,13 +3,14 @@
 * https://jestjs.io/docs/en/configuration.html
 */
 
-const base = require('./jest.config.cjs')
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const base = require('./jest.config.cjs');
 
 module.exports = {
 	...base,
-	globalSetup: "<rootDir>/built-test/entry.js",
-	setupFilesAfterEnv: ["<rootDir>/test/jest.setup.ts"],
+	globalSetup: '<rootDir>/built-test/entry.js',
+	setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],
 	testMatch: [
-		"<rootDir>/test/e2e/**/*.ts",
+		'<rootDir>/test/e2e/**/*.ts',
 	],
 };

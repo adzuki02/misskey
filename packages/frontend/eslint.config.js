@@ -5,6 +5,8 @@ import pluginVue from 'eslint-plugin-vue';
 import pluginMisskey from '@misskey-dev/eslint-plugin';
 import sharedConfig from '../shared/eslint.config.js';
 
+/* eslint-disable import/no-default-export */
+
 export default [
 	...sharedConfig,
 	{

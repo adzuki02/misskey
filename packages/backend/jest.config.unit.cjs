@@ -3,12 +3,13 @@
 * https://jestjs.io/docs/en/configuration.html
 */
 
-const base = require('./jest.config.cjs')
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const base = require('./jest.config.cjs');
 
 module.exports = {
 	...base,
 	testMatch: [
-		"<rootDir>/test/unit/**/*.ts",
-		"<rootDir>/src/**/*.test.ts",
+		'<rootDir>/test/unit/**/*.ts',
+		'<rootDir>/src/**/*.test.ts',
 	],
 };

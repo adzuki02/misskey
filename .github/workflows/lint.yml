@@ -6,23 +6,7 @@ on:
       - master
       - develop
       - develop-mame
-    paths:
-      - packages/backend/**
-      - packages/frontend/**
-      - packages/sw/**
-      - packages/misskey-js/**
-      - packages/shared/eslint.config.js
-      - .github/workflows/lint.yml
-      - .node-version
   pull_request:
-    paths:
-      - packages/backend/**
-      - packages/frontend/**
-      - packages/sw/**
-      - packages/misskey-js/**
-      - packages/shared/eslint.config.js
-      - .github/workflows/lint.yml
-      - .node-version
 
 permissions: {}
 

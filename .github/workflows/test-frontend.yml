@@ -1,4 +1,4 @@
-name: Test
+name: Test (frontend)
 
 on:
   push:
@@ -6,23 +6,7 @@ on:
       - master
       - develop
       - develop-mame
-    paths:
-      - packages/frontend/**
-      # for permissions
-      - packages/misskey-js/**
-      # for e2e
-      - packages/backend/**
-      - .github/workflows/test-frontend.yml
-      - .node-version
   pull_request:
-    paths:
-      - packages/frontend/**
-      # for permissions
-      - packages/misskey-js/**
-      # for e2e
-      - packages/backend/**
-      - .github/workflows/test-frontend.yml
-      - .node-version
 
 permissions: {}
 
@@ -61,7 +45,9 @@ jobs:
       uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        files: ./packages/frontend/coverage/coverage-final.json
+        file: ./packages/frontend/coverage/coverage-final.json
+        disable_search: true
+        flags: frontend_vitest
 
   e2e:
     name: e2e (frontend)
