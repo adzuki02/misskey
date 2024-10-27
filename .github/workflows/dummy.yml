@@ -14,9 +14,6 @@ jobs:
   unit_backend:
     name: unit (backend)
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        shard: [1, 2, 3, 4]
     if: ${{ false }}
     steps:
       - run: 'true'
@@ -24,6 +21,9 @@ jobs:
   e2e_backend:
     name: e2e (backend)
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4]
     if: ${{ false }}
     steps:
-      - run: 'dummy'
+      - run: 'true'

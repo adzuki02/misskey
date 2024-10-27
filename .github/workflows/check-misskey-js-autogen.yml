@@ -2,13 +2,9 @@ name: Check misskey-js autogen
 
 on:
   pull_request:
-    branches:
-      - master
-      - develop
-      - develop-mame
-      - improve-misskey-js-autogen-check
     paths:
       - packages/backend/**
+      - packages/misskey-js/**
       - .github/workflows/check-misskey-js-autogen.yml
       - .node-version
 
@@ -126,7 +122,6 @@ jobs:
           comment_tag: check-misskey-js-autogen
           mode: delete
           message: "misskey-jsの型定義に問題はありません。"
-          create_if_not_exists: false
       - name: Fail if changes are detected
         if: steps.check-changes.outputs.changes == 'true'
         run: exit 1

@@ -8,6 +8,7 @@ on:
       - develop-mame
     paths:
       - packages/backend/**
+      - packages/misskey-js/**
       - .github/workflows/report-api-diff.yml
       - .node-version
 

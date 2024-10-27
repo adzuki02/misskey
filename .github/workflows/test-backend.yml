@@ -133,9 +133,7 @@ jobs:
           name: coverage-e2e-${{ matrix.shard }}
           path: packages/backend/coverage
 
-  merge_e2e_coverage:
-    name: merge_coverage (e2e, backend)
-
+  merge_backend_e2e_coverage:
     runs-on: ubuntu-latest
 
     permissions:
