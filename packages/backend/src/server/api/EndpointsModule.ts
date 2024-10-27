@@ -199,7 +199,6 @@ import * as ep___i_exportClips from './endpoints/i/export-clips.js';
 import * as ep___i_exportFavorites from './endpoints/i/export-favorites.js';
 import * as ep___i_exportUserLists from './endpoints/i/export-user-lists.js';
 import * as ep___i_exportAntennas from './endpoints/i/export-antennas.js';
-import * as ep___i_favorites from './endpoints/i/favorites.js';
 import * as ep___i_importBlocking from './endpoints/i/import-blocking.js';
 import * as ep___i_importFollowing from './endpoints/i/import-following.js';
 import * as ep___i_importMuting from './endpoints/i/import-muting.js';
@@ -251,8 +250,6 @@ import * as ep___notes_clips from './endpoints/notes/clips.js';
 import * as ep___notes_conversation from './endpoints/notes/conversation.js';
 import * as ep___notes_create from './endpoints/notes/create.js';
 import * as ep___notes_delete from './endpoints/notes/delete.js';
-import * as ep___notes_favorites_create from './endpoints/notes/favorites/create.js';
-import * as ep___notes_favorites_delete from './endpoints/notes/favorites/delete.js';
 import * as ep___notes_globalTimeline from './endpoints/notes/global-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
 import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
@@ -522,7 +519,6 @@ const $i_exportClips: Provider = { provide: 'ep:i/export-clips', useClass: ep___
 const $i_exportFavorites: Provider = { provide: 'ep:i/export-favorites', useClass: ep___i_exportFavorites.default };
 const $i_exportUserLists: Provider = { provide: 'ep:i/export-user-lists', useClass: ep___i_exportUserLists.default };
 const $i_exportAntennas: Provider = { provide: 'ep:i/export-antennas', useClass: ep___i_exportAntennas.default };
-const $i_favorites: Provider = { provide: 'ep:i/favorites', useClass: ep___i_favorites.default };
 const $i_importBlocking: Provider = { provide: 'ep:i/import-blocking', useClass: ep___i_importBlocking.default };
 const $i_importFollowing: Provider = { provide: 'ep:i/import-following', useClass: ep___i_importFollowing.default };
 const $i_importMuting: Provider = { provide: 'ep:i/import-muting', useClass: ep___i_importMuting.default };
@@ -574,8 +570,6 @@ const $notes_clips: Provider = { provide: 'ep:notes/clips', useClass: ep___notes
 const $notes_conversation: Provider = { provide: 'ep:notes/conversation', useClass: ep___notes_conversation.default };
 const $notes_create: Provider = { provide: 'ep:notes/create', useClass: ep___notes_create.default };
 const $notes_delete: Provider = { provide: 'ep:notes/delete', useClass: ep___notes_delete.default };
-const $notes_favorites_create: Provider = { provide: 'ep:notes/favorites/create', useClass: ep___notes_favorites_create.default };
-const $notes_favorites_delete: Provider = { provide: 'ep:notes/favorites/delete', useClass: ep___notes_favorites_delete.default };
 const $notes_globalTimeline: Provider = { provide: 'ep:notes/global-timeline', useClass: ep___notes_globalTimeline.default };
 const $notes_mentions: Provider = { provide: 'ep:notes/mentions', useClass: ep___notes_mentions.default };
 const $notes_polls_vote: Provider = { provide: 'ep:notes/polls/vote', useClass: ep___notes_polls_vote.default };
@@ -849,7 +843,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$i_exportFavorites,
 		$i_exportUserLists,
 		$i_exportAntennas,
-		$i_favorites,
 		$i_importBlocking,
 		$i_importFollowing,
 		$i_importMuting,
@@ -901,8 +894,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$notes_conversation,
 		$notes_create,
 		$notes_delete,
-		$notes_favorites_create,
-		$notes_favorites_delete,
 		$notes_globalTimeline,
 		$notes_mentions,
 		$notes_polls_vote,
@@ -1170,7 +1161,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$i_exportFavorites,
 		$i_exportUserLists,
 		$i_exportAntennas,
-		$i_favorites,
 		$i_importBlocking,
 		$i_importFollowing,
 		$i_importMuting,
@@ -1222,8 +1212,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$notes_conversation,
 		$notes_create,
 		$notes_delete,
-		$notes_favorites_create,
-		$notes_favorites_delete,
 		$notes_globalTimeline,
 		$notes_mentions,
 		$notes_polls_vote,

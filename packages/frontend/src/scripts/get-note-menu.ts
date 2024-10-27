@@ -187,12 +187,6 @@ export function getNoteMenu(props: {
 		});
 	}
 
-	function toggleFavorite(favorite: boolean): void {
-		os.apiWithDialog(favorite ? 'notes/favorites/create' : 'notes/favorites/delete', {
-			noteId: appearNote.id,
-		});
-	}
-
 	function toggleThreadMute(mute: boolean): void {
 		os.apiWithDialog(mute ? 'notes/thread-muting/create' : 'notes/thread-muting/delete', {
 			noteId: appearNote.id,
@@ -292,15 +286,6 @@ export function getNoteMenu(props: {
 				action: translate,
 			} : undefined,
 			{ type: 'divider' },
-			statePromise.then(state => state.isFavorited ? {
-				icon: 'ti ti-star-off',
-				text: i18n.ts.unfavorite,
-				action: () => toggleFavorite(false),
-			} : {
-				icon: 'ti ti-star',
-				text: i18n.ts.favorite,
-				action: () => toggleFavorite(true),
-			}),
 			{
 				type: 'parent' as const,
 				icon: 'ti ti-paperclip',

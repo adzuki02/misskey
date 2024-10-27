@@ -1346,8 +1346,6 @@ declare namespace entities {
         IChangePasswordRequest,
         IDeleteAccountRequest,
         IExportFollowingRequest,
-        IFavoritesRequest,
-        IFavoritesResponse,
         IImportBlockingRequest,
         IImportFollowingRequest,
         IImportMutingRequest,
@@ -1425,8 +1423,6 @@ declare namespace entities {
         NotesCreateRequest,
         NotesCreateResponse,
         NotesDeleteRequest,
-        NotesFavoritesCreateRequest,
-        NotesFavoritesDeleteRequest,
         NotesGlobalTimelineRequest,
         NotesGlobalTimelineResponse,
         NotesMentionsRequest,
@@ -1550,7 +1546,6 @@ declare namespace entities {
         App,
         Note,
         NoteReaction,
-        NoteFavorite,
         Notification_2 as Notification,
         DriveFile,
         DriveFolder,
@@ -1830,12 +1825,6 @@ type IDeleteAccountRequest = operations['i___delete-account']['requestBody']['co
 
 // @public (undocumented)
 type IExportFollowingRequest = operations['i___export-following']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type IFavoritesRequest = operations['i___favorites']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type IFavoritesResponse = operations['i___favorites']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type IImportAntennasRequest = operations['i___import-antennas']['requestBody']['content']['application/json'];
@@ -2207,9 +2196,6 @@ declare namespace note {
 export { note }
 
 // @public (undocumented)
-type NoteFavorite = components['schemas']['NoteFavorite'];
-
-// @public (undocumented)
 type NoteReaction = components['schemas']['NoteReaction'];
 
 // @public (undocumented)
@@ -2238,12 +2224,6 @@ type NotesCreateResponse = operations['notes___create']['responses']['200']['con
 
 // @public (undocumented)
 type NotesDeleteRequest = operations['notes___delete']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type NotesFavoritesCreateRequest = operations['notes___favorites___create']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type NotesFavoritesDeleteRequest = operations['notes___favorites___delete']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type NotesGlobalTimelineRequest = operations['notes___global-timeline']['requestBody']['content']['application/json'];

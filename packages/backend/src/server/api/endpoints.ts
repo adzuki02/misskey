@@ -205,7 +205,6 @@ import * as ep___i_exportClips from './endpoints/i/export-clips.js';
 import * as ep___i_exportFavorites from './endpoints/i/export-favorites.js';
 import * as ep___i_exportUserLists from './endpoints/i/export-user-lists.js';
 import * as ep___i_exportAntennas from './endpoints/i/export-antennas.js';
-import * as ep___i_favorites from './endpoints/i/favorites.js';
 import * as ep___i_importBlocking from './endpoints/i/import-blocking.js';
 import * as ep___i_importFollowing from './endpoints/i/import-following.js';
 import * as ep___i_importMuting from './endpoints/i/import-muting.js';
@@ -257,8 +256,6 @@ import * as ep___notes_clips from './endpoints/notes/clips.js';
 import * as ep___notes_conversation from './endpoints/notes/conversation.js';
 import * as ep___notes_create from './endpoints/notes/create.js';
 import * as ep___notes_delete from './endpoints/notes/delete.js';
-import * as ep___notes_favorites_create from './endpoints/notes/favorites/create.js';
-import * as ep___notes_favorites_delete from './endpoints/notes/favorites/delete.js';
 import * as ep___notes_globalTimeline from './endpoints/notes/global-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
 import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
@@ -526,7 +523,6 @@ const eps = [
 	['i/export-favorites', ep___i_exportFavorites],
 	['i/export-user-lists', ep___i_exportUserLists],
 	['i/export-antennas', ep___i_exportAntennas],
-	['i/favorites', ep___i_favorites],
 	['i/import-blocking', ep___i_importBlocking],
 	['i/import-following', ep___i_importFollowing],
 	['i/import-muting', ep___i_importMuting],
@@ -578,8 +574,6 @@ const eps = [
 	['notes/conversation', ep___notes_conversation],
 	['notes/create', ep___notes_create],
 	['notes/delete', ep___notes_delete],
-	['notes/favorites/create', ep___notes_favorites_create],
-	['notes/favorites/delete', ep___notes_favorites_delete],
 	['notes/global-timeline', ep___notes_globalTimeline],
 	['notes/mentions', ep___notes_mentions],
 	['notes/polls/vote', ep___notes_polls_vote],

@@ -1782,15 +1782,6 @@ export type paths = {
      */
     post: operations['i___export-antennas'];
   };
-  '/i/favorites': {
-    /**
-     * i/favorites
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:favorites*
-     */
-    post: operations['i___favorites'];
-  };
   '/i/import-blocking': {
     /**
      * i/import-blocking
@@ -2275,24 +2266,6 @@ export type paths = {
      * **Credential required**: *Yes* / **Permission**: *write:notes*
      */
     post: operations['notes___delete'];
-  };
-  '/notes/favorites/create': {
-    /**
-     * notes/favorites/create
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:favorites*
-     */
-    post: operations['notes___favorites___create'];
-  };
-  '/notes/favorites/delete': {
-    /**
-     * notes/favorites/delete
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:favorites*
-     */
-    post: operations['notes___favorites___delete'];
   };
   '/notes/global-timeline': {
     /**
@@ -3406,18 +3379,6 @@ export type components = {
       createdAt: string;
       user: components['schemas']['UserLite'];
       type: string;
-    };
-    NoteFavorite: {
-      /**
-       * Format: id
-       * @example xxxxxxxxxx
-       */
-      id: string;
-      /** Format: date-time */
-      createdAt: string;
-      note: components['schemas']['Note'];
-      /** Format: id */
-      noteId: string;
     };
     Notification: {
       /** Format: id */
@@ -15650,64 +15611,6 @@ export type operations = {
     };
   };
   /**
-   * i/favorites
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:favorites*
-   */
-  i___favorites: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default 10 */
-          limit?: number;
-          /** Format: misskey:id */
-          sinceId?: string;
-          /** Format: misskey:id */
-          untilId?: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['NoteFavorite'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
    * i/import-blocking
    * @description No description provided.
    *
@@ -18801,116 +18704,6 @@ export type operations = {
     };
   };
   /**
-   * notes/favorites/create
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:favorites*
-   */
-  notes___favorites___create: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** Format: misskey:id */
-          noteId: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description To many requests */
-      429: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * notes/favorites/delete
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:favorites*
-   */
-  notes___favorites___delete: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** Format: misskey:id */
-          noteId: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
    * notes/global-timeline
    * @description No description provided.
    *
@@ -19599,7 +19392,6 @@ export type operations = {
       200: {
         content: {
           'application/json': {
-            isFavorited: boolean;
             isMutedThread: boolean;
           };
         };
