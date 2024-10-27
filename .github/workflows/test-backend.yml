@@ -76,6 +76,7 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./packages/backend/coverage/coverage-final.json
+        disable_search: true
         flags: backend_unit
 
   e2e:

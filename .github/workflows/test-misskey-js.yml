@@ -53,4 +53,5 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./packages/misskey-js/coverage/coverage-final.json
+          disable_search: true
           flags: misskey-js
