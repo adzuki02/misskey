@@ -136,6 +136,8 @@ jobs:
           path: packages/backend/coverage
 
   merge_e2e_coverage:
+    name: merge_coverage (e2e, backend)
+
     runs-on: ubuntu-latest
 
     permissions:
@@ -176,4 +178,5 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./packages/backend/coverage/coverage-merged.json
+          disable_search: true
           flags: backend_e2e
