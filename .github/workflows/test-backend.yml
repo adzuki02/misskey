@@ -75,7 +75,7 @@ jobs:
       uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        files: ./packages/backend/coverage/coverage-final.json
+        file: ./packages/backend/coverage/coverage-final.json
         flags: backend_unit
 
   e2e:
@@ -144,10 +144,16 @@ jobs:
     needs: e2e
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           pattern: coverage-e2e-*
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
       - name: Count artifacts
         id: count-artifacts
         run: echo "count=$(find . -mindepth 1 -maxdepth 1 -type d -name 'coverage-e2e-*' | wc -l)" >> $GITHUB_OUTPUT
@@ -157,18 +163,17 @@ jobs:
           false
       - name: List coverage report file path
         id: report-file-path
-        run: echo "path=$(find . -mindepth 1 -maxdepth 1 -type d | awk '{ printf "%s/coverage-final.json ", $0 }')" >> $GITHUB_OUTPUT
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+        run: echo "path=$(find . -mindepth 1 -maxdepth 1 -type d -name 'coverage-e2e-*' | awk '{ printf "%s/coverage-final.json ", $0 }')" >> $GITHUB_OUTPUT
       - name: Merge coverage reports
-        run: npx istanbul-merge --out coverage-merged.json "$REPORT_FILE_PATH"
+        run: |
+          mkdir packages/backend/coverage
+          npx istanbul-merge --out packages/backend/coverage/coverage-merged.json "$REPORT_FILE_PATH"
+        # rm -r coverage-e2e-*
         env:
           REPORT_FILE_PATH: ${{ steps.report-file-path.outputs.path }}
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage-merged.json
+          file: ./packages/backend/coverage/coverage-merged.json
           flags: backend_e2e
