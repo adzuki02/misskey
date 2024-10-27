@@ -1,6 +1,8 @@
 import globals from 'globals';
 import pluginMisskey from '@misskey-dev/eslint-plugin';
 
+/* eslint-disable import/no-default-export */
+
 export default [
 	...pluginMisskey.configs['recommended'],
 	{
@@ -8,6 +10,10 @@ export default [
 		languageOptions: {
 			parserOptions: {
 				sourceType: 'commonjs',
+			},
+			globals: {
+				...globals.node,
+				...globals.commonjs,
 			},
 		},
 	},

@@ -183,6 +183,12 @@ export function getConfig(): UserConfig {
 				},
 			},
 			includeSource: ['src/**/*.ts'],
+			coverage: {
+				include: ['src/**/*.ts'],
+				reporter: [
+					'json',
+				],
+			},
 		},
 	};
 }

@@ -1,7 +1,8 @@
 import tsParser from '@typescript-eslint/parser';
 import sharedConfig from '../shared/eslint.config.js';
 
-// eslint-disable-next-line import/no-default-export
+/* eslint-disable import/no-default-export */
+
 export default [
 	...sharedConfig,
 	{

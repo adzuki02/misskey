@@ -2,6 +2,9 @@ import globals from 'globals';
 import tsParser from '@typescript-eslint/parser';
 import sharedConfig from '../shared/eslint.config.js';
 
+/* eslint-disable import/no-default-export */
+
+/** @type { import('eslint').Linter.Config[] } */
 export default [
 	...sharedConfig,
 	{
