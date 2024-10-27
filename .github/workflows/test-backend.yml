@@ -83,6 +83,10 @@ jobs:
     permissions:
       contents: read
 
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4]
+
     services:
       postgres:
         image: postgres:15
@@ -116,20 +120,48 @@ jobs:
         run: cp .github/misskey/test.yml .config
       - name: Pre-build and Build misskey-js
         run: pnpm run build-pre && pnpm --filter misskey-js run build
-      - name: Get jest cache path
-        id: get-jest-cache-path
-        run: echo "path=$(pnpm --silent --filter backend run jest --showConfig | jq -r '.configs[0].cacheDirectory')" >> $GITHUB_OUTPUT
-      - name: Restore jest cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.get-jest-cache-path.outputs.path }}
-          key: jest-backend-e2e-v1-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ github.ref }}-${{ github.sha }}
-          restore-keys: jest-backend-e2e-v1-${{ hashFiles('**/pnpm-lock.yaml') }}-
+      # - name: Get jest cache path
+      #   id: get-jest-cache-path
+      #   run: echo "path=$(pnpm --silent --filter backend run jest --showConfig | jq -r '.configs[0].cacheDirectory')" >> $GITHUB_OUTPUT
+      # - name: Restore jest cache
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ${{ steps.get-jest-cache-path.outputs.path }}
+      #     key: jest-backend-e2e-v1-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ github.ref }}-${{ github.sha }}
+      #     restore-keys: jest-backend-e2e-v1-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - name: Test
-        run: pnpm --filter backend run test-and-coverage:e2e
-      - name: Upload coverage
-        uses: codecov/codecov-action@v4
+        run: pnpm --filter backend run test-and-coverage:e2e --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./packages/backend/coverage/coverage-final.json
-          flags: backend_e2e
+          name: coverage-e2e-${{ matrix.shard }}
+          path: packages/backend/e2e/coverage
+      # - name: Upload coverage
+      #   uses: codecov/codecov-action@v4
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+      #     files: ./packages/backend/coverage/coverage-final.json
+      #     flags: backend_e2e
+
+  merge_e2e_coverage:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    needs: e2e
+
+    steps:
+      - name: Download e2e coverage
+        uses: actions/download-artifact@v4
+        with:
+          pattern: coverage-e2e-*
+      - run: |
+          pwd
+          ls -alhF
+      # - name: Upload coverage
+      #   uses: codecov/codecov-action@v4
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+      #     files: ./packages/backend/coverage/coverage-final.json
+      #     flags: backend_e2e
