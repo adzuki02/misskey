@@ -6,15 +6,7 @@ on:
       - master
       - develop
       - develop-mame
-    paths:
-      - locales/**
-      - .github/workflows/locale.yml
-      - .node-version
   pull_request:
-    paths:
-      - locales/**
-      - .github/workflows/locale.yml
-      - .node-version
 
 permissions: {}
 

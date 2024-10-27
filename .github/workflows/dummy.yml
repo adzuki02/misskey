@@ -2,95 +2,28 @@ name: Dummy
 
 on:
   pull_request:
+    paths-ignore:
+      - packages/backend/**
+      - packages/misskey-js/**
+      - .github/workflows/test-backend.yml
+      - .node-version
 
 permissions: {}
 
 jobs:
-  lint_backend:
-    name: lint (backend)
-    runs-on: ubuntu-latest
-    if: ${{ false }}
-    steps:
-      - run: echo dummy
-
-  lint_frontend:
-    name: lint (frontend)
-    runs-on: ubuntu-latest
-    if: ${{ false }}
-    steps:
-      - run: echo dummy
-
-  lint_sw:
-    name: lint (sw)
-    runs-on: ubuntu-latest
-    if: ${{ false }}
-    steps:
-      - run: echo dummy
-
-  lint_misskey-js:
-    name: lint (misskey-js)
-    runs-on: ubuntu-latest
-    if: ${{ false }}
-    steps:
-      - run: echo dummy
-
-  typecheck_backend:
-    name: typecheck (backend)
-    runs-on: ubuntu-latest
-    if: ${{ false }}
-    steps:
-      - run: echo dummy
-
-  typecheck_misskey-js:
-    name: typecheck (misskey-js)
-    runs-on: ubuntu-latest
-    if: ${{ false }}
-    steps:
-      - run: echo dummy
-
   unit_backend:
     name: unit (backend)
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4]
     if: ${{ false }}
     steps:
-      - run: echo dummy
-
-  vitest_frontend:
-    name: vitest (frontend)
-    runs-on: ubuntu-latest
-    if: ${{ false }}
-    steps:
-      - run: echo dummy
+      - run: 'true'
 
   e2e_backend:
     name: e2e (backend)
     runs-on: ubuntu-latest
     if: ${{ false }}
     steps:
-      - run: echo dummy
-
-  e2e_frontend:
-    name: e2e (frontend)
-    runs-on: ubuntu-latest
-    if: ${{ false }}
-    steps:
-      - run: echo dummy
-
-  test_misskey-js:
-    name: test (misskey-js)
-    runs-on: ubuntu-latest
-    if: ${{ false }}
-    steps:
-      - run: echo dummy
-
-  validate-api-json:
-    runs-on: ubuntu-latest
-    if: ${{ false }}
-    steps:
-      - run: echo dummy
-
-  locale_verify:
-    runs-on: ubuntu-latest
-    if: ${{ false }}
-    steps:
-      - run: echo dummy
+      - run: 'dummy'

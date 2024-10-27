@@ -6,23 +6,7 @@ on:
       - master
       - develop
       - develop-mame
-    paths:
-      - packages/frontend/**
-      # for permissions
-      - packages/misskey-js/**
-      # for e2e
-      - packages/backend/**
-      - .github/workflows/test-frontend.yml
-      - .node-version
   pull_request:
-    paths:
-      - packages/frontend/**
-      # for permissions
-      - packages/misskey-js/**
-      # for e2e
-      - packages/backend/**
-      - .github/workflows/test-frontend.yml
-      - .node-version
 
 permissions: {}
 

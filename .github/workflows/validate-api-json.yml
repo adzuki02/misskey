@@ -6,15 +6,7 @@ on:
       - master
       - develop
       - develop-mame
-    paths:
-      - packages/backend/**
-      - .github/workflows/validate-api-json.yml
-      - .node-version
   pull_request:
-    paths:
-      - packages/backend/**
-      - .github/workflows/validate-api-json.yml
-      - .node-version
 
 permissions: {}
 

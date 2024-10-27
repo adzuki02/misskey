@@ -8,14 +8,12 @@ on:
       - develop-mame
     paths:
       - packages/backend/**
-      # for permissions
       - packages/misskey-js/**
       - .github/workflows/test-backend.yml
       - .node-version
   pull_request:
     paths:
       - packages/backend/**
-      # for permissions
       - packages/misskey-js/**
       - .github/workflows/test-backend.yml
       - .node-version
@@ -107,8 +105,7 @@ jobs:
     steps:
       - name: Check if matrix is configured properly
         if: ${{ strategy.job-total != env.NUM_OF_E2E_SHARDS }}
-        run: |
-          false
+        run: 'false'
       - name: Checkout
         uses: actions/checkout@v4.1.1
       - name: Setup pnpm
@@ -162,8 +159,7 @@ jobs:
         run: echo "count=$(find . -mindepth 1 -maxdepth 1 -type d -name 'coverage-e2e-*' | wc -l)" >> $GITHUB_OUTPUT
       - name: Check if artifacts count is correct
         if: ${{ steps.count-artifacts.outputs.count != env.NUM_OF_E2E_SHARDS }}
-        run: |
-          false
+        run: 'false'
       - name: Merge coverage reports
         run: |
           mkdir packages/backend/coverage
