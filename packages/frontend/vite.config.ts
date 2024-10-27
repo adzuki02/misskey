@@ -184,7 +184,8 @@ export function getConfig(): UserConfig {
 			},
 			includeSource: ['src/**/*.ts'],
 			coverage: {
-				include: ['src/**/*.ts'],
+				include: ['src/**/*.ts', 'src/**/*.vue'],
+				exclude: ['src/**/*.stories.impl.ts', 'src/**/*.stories.meta.ts', 'src/**/*.stories.ts'],
 				reporter: [
 					'json',
 				],
