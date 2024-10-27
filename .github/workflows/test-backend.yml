@@ -73,6 +73,7 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ./packages/backend/coverage/coverage-final.json
+        flags: backend_unit
 
   e2e:
     name: e2e (backend)
@@ -131,3 +132,4 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./packages/backend/coverage/coverage-final.json
+          flags: backend_e2e

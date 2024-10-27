@@ -62,6 +62,7 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ./packages/frontend/coverage/coverage-final.json
+        flags: frontend_vitest
 
   e2e:
     name: e2e (frontend)
