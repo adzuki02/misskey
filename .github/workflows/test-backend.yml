@@ -22,6 +22,9 @@ on:
 
 permissions: {}
 
+env:
+  NUM_OF_E2E_SHARDS: 4
+
 jobs:
   unit:
     name: unit (backend)
@@ -101,6 +104,10 @@ jobs:
           - 56312:6379
 
     steps:
+      - name: Check if matrix is configured properly
+        if: ${{ strategy.job-total != env.NUM_OF_E2E_SHARDS }}
+        run: |
+          false
       - name: Checkout
         uses: actions/checkout@v4.1.1
       - name: Setup pnpm
@@ -120,15 +127,6 @@ jobs:
         run: cp .github/misskey/test.yml .config
       - name: Pre-build and Build misskey-js
         run: pnpm run build-pre && pnpm --filter misskey-js run build
-      # - name: Get jest cache path
-      #   id: get-jest-cache-path
-      #   run: echo "path=$(pnpm --silent --filter backend run jest --showConfig | jq -r '.configs[0].cacheDirectory')" >> $GITHUB_OUTPUT
-      # - name: Restore jest cache
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: ${{ steps.get-jest-cache-path.outputs.path }}
-      #     key: jest-backend-e2e-v1-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ github.ref }}-${{ github.sha }}
-      #     restore-keys: jest-backend-e2e-v1-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - name: Test
         run: pnpm --filter backend run test-and-coverage:e2e --shard=${{ matrix.shard }}/${{ strategy.job-total }}
       - name: Upload coverage artifacts
@@ -136,12 +134,6 @@ jobs:
         with:
           name: coverage-e2e-${{ matrix.shard }}
           path: packages/backend/coverage
-      # - name: Upload coverage
-      #   uses: codecov/codecov-action@v4
-      #   with:
-      #     token: ${{ secrets.CODECOV_TOKEN }}
-      #     files: ./packages/backend/coverage/coverage-final.json
-      #     flags: backend_e2e
 
   merge_e2e_coverage:
     runs-on: ubuntu-latest
@@ -152,16 +144,31 @@ jobs:
     needs: e2e
 
     steps:
-      - name: Download e2e coverage
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           pattern: coverage-e2e-*
-      - run: |
-          pwd
-          ls -alhFR
-      # - name: Upload coverage
-      #   uses: codecov/codecov-action@v4
-      #   with:
-      #     token: ${{ secrets.CODECOV_TOKEN }}
-      #     files: ./packages/backend/coverage/coverage-final.json
-      #     flags: backend_e2e
+      - name: Count artifacts
+        id: count-artifacts
+        run: echo "count=$(find . -mindepth 1 -maxdepth 1 -type d -name 'coverage-e2e-*' | wc -l)" >> $GITHUB_OUTPUT
+      - name: Check if artifacts count is correct
+        if: ${{ steps.count-artifacts.outputs.count != env.NUM_OF_E2E_SHARDS }}
+        run: |
+          false
+      - name: List coverage report file path
+        id: report-file-path
+        run: echo "path=$(find . -mindepth 1 -maxdepth 1 -type d | awk '{ printf "%s/coverage-final.json ", $0 }')" >> $GITHUB_OUTPUT
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Merge coverage reports
+        run: npx istanbul-merge --out coverage-merged.json "$REPORT_FILE_PATH"
+        env:
+          REPORT_FILE_PATH: ${{ steps.report-file-path.outputs.path }}
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage-merged.json
+          flags: backend_e2e
