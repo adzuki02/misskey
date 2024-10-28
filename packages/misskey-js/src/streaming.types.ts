@@ -11,7 +11,6 @@ import {
 	UserLite,
 } from './autogen/models.js';
 import {
-	AnnouncementCreated,
 	EmojiAdded, EmojiDeleted,
 	EmojiUpdated,
 	QueueStats,
@@ -42,7 +41,6 @@ export type Channels = {
 			readAllUnreadSpecifiedNotes: () => void;
 			readAllAntennas: () => void;
 			unreadAntenna: (payload: Antenna) => void;
-			readAllAnnouncements: () => void;
 			myTokenRegenerated: () => void;
 			signin: (payload: Signin) => void;
 			registryUpdated: (payload: {
@@ -54,7 +52,6 @@ export type Channels = {
 			driveFileCreated: (payload: DriveFile) => void;
 			readAntenna: (payload: Antenna) => void;
 			receiveFollowRequest: (payload: User) => void;
-			announcementCreated: (payload: AnnouncementCreated) => void;
 		};
 		receives: null;
 	};
@@ -208,5 +205,4 @@ export type BroadcastEvents = {
 	emojiAdded: (payload: EmojiAdded) => void;
 	emojiUpdated: (payload: EmojiUpdated) => void;
 	emojiDeleted: (payload: EmojiDeleted) => void;
-	announcementCreated: (payload: AnnouncementCreated) => void;
 };

@@ -79,27 +79,6 @@ export async function mainBoot() {
 	}
 
 	if ($i) {
-		for (const announcement of ($i.unreadAnnouncements ?? []).filter(x => x.display === 'dialog')) {
-			const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkAnnouncementDialog.vue')), {
-				announcement,
-			}, {
-				closed: () => dispose(),
-			});
-		}
-
-		function onAnnouncementCreated (ev: { announcement: Misskey.entities.Announcement }) {
-			const announcement = ev.announcement;
-			if (announcement.display === 'dialog') {
-				const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkAnnouncementDialog.vue')), {
-					announcement,
-				}, {
-					closed: () => dispose(),
-				});
-			}
-		}
-
-		stream.on('announcementCreated', onAnnouncementCreated);
-
 		if ($i.isDeleted) {
 			alert({
 				type: 'warning',
@@ -180,13 +159,6 @@ export async function mainBoot() {
 			updateAccount({ hasUnreadAntenna: true });
 			sound.playMisskeySfx('antenna');
 		});
-
-		main.on('readAllAnnouncements', () => {
-			updateAccount({ hasUnreadAnnouncement: false });
-		});
-
-		// 個人宛てお知らせが発行されたとき
-		main.on('announcementCreated', onAnnouncementCreated);
 
 		// トークンが再生成されたとき
 		// このままではMisskeyが利用できないので強制的にサインアウトさせる

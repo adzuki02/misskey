@@ -2,7 +2,6 @@ import type { operations } from './autogen/types.js';
 import type {
 	AbuseReportNotificationRecipient,
 	Ad,
-	Announcement,
 	EmojiDetailed,
 	Flash,
 	InviteCode,
@@ -81,8 +80,6 @@ export const permissions = [
 	'read:admin:relays',
 	'write:admin:invite-codes',
 	'read:admin:invite-codes',
-	'write:admin:announcements',
-	'read:admin:announcements',
 	'write:admin:avatar-decorations',
 	'read:admin:avatar-decorations',
 	'write:admin:federation',
@@ -122,12 +119,6 @@ export const moderationLogTypes = [
 	'promoteQueue',
 	'deleteDriveFile',
 	'deleteNote',
-	'createGlobalAnnouncement',
-	'createUserAnnouncement',
-	'updateGlobalAnnouncement',
-	'updateUserAnnouncement',
-	'deleteGlobalAnnouncement',
-	'deleteUserAnnouncement',
 	'resetPassword',
 	'suspendRemoteInstance',
 	'unsuspendRemoteInstance',
@@ -239,41 +230,6 @@ export type ModerationLogPayloads = {
 		noteUserUsername: string;
 		noteUserHost: string | null;
 		note: Note;
-	};
-	createGlobalAnnouncement: {
-		announcementId: string;
-		announcement: Announcement;
-	};
-	createUserAnnouncement: {
-		announcementId: string;
-		announcement: Announcement;
-		userId: string;
-		userUsername: string;
-		userHost: string | null;
-	};
-	updateGlobalAnnouncement: {
-		announcementId: string;
-		before: Announcement;
-		after: Announcement;
-	};
-	updateUserAnnouncement: {
-		announcementId: string;
-		before: Announcement;
-		after: Announcement;
-		userId: string;
-		userUsername: string;
-		userHost: string | null;
-	};
-	deleteGlobalAnnouncement: {
-		announcementId: string;
-		announcement: Announcement;
-	};
-	deleteUserAnnouncement: {
-		announcementId: string;
-		announcement: Announcement;
-		userId: string;
-		userUsername: string;
-		userHost: string | null;
 	};
 	resetPassword: {
 		userId: string;

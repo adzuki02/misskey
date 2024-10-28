@@ -66,12 +66,6 @@ export const moderationLogTypes = [
 	'promoteQueue',
 	'deleteDriveFile',
 	'deleteNote',
-	'createGlobalAnnouncement',
-	'createUserAnnouncement',
-	'updateGlobalAnnouncement',
-	'updateUserAnnouncement',
-	'deleteGlobalAnnouncement',
-	'deleteUserAnnouncement',
 	'resetPassword',
 	'suspendRemoteInstance',
 	'unsuspendRemoteInstance',
@@ -175,41 +169,6 @@ export type ModerationLogPayloads = {
 		noteUserUsername: string;
 		noteUserHost: string | null;
 		note: any;
-	};
-	createGlobalAnnouncement: {
-		announcementId: string;
-		announcement: any;
-	};
-	createUserAnnouncement: {
-		announcementId: string;
-		announcement: any;
-		userId: string;
-		userUsername: string;
-		userHost: string | null;
-	};
-	updateGlobalAnnouncement: {
-		announcementId: string;
-		before: any;
-		after: any;
-	};
-	updateUserAnnouncement: {
-		announcementId: string;
-		before: any;
-		after: any;
-		userId: string;
-		userUsername: string;
-		userHost: string | null;
-	};
-	deleteGlobalAnnouncement: {
-		announcementId: string;
-		announcement: any;
-	};
-	deleteUserAnnouncement: {
-		announcementId: string;
-		announcement: any;
-		userId: string;
-		userUsername: string;
-		userHost: string | null;
 	};
 	resetPassword: {
 		userId: string;

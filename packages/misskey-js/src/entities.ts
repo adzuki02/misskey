@@ -1,6 +1,5 @@
 import { ModerationLogPayloads } from './consts.js';
 import {
-	Announcement,
 	EmojiDetailed,
 	MeDetailed,
 	Note,
@@ -82,24 +81,6 @@ export type ModerationLog = {
 } | {
 	type: 'deleteNote';
 	info: ModerationLogPayloads['deleteNote'];
-} | {
-	type: 'createGlobalAnnouncement';
-	info: ModerationLogPayloads['createGlobalAnnouncement'];
-} | {
-	type: 'createUserAnnouncement';
-	info: ModerationLogPayloads['createUserAnnouncement'];
-} | {
-	type: 'updateGlobalAnnouncement';
-	info: ModerationLogPayloads['updateGlobalAnnouncement'];
-} | {
-	type: 'updateUserAnnouncement';
-	info: ModerationLogPayloads['updateUserAnnouncement'];
-} | {
-	type: 'deleteGlobalAnnouncement';
-	info: ModerationLogPayloads['deleteGlobalAnnouncement'];
-} | {
-	type: 'deleteUserAnnouncement';
-	info: ModerationLogPayloads['deleteUserAnnouncement'];
 } | {
 	type: 'resetPassword';
 	info: ModerationLogPayloads['resetPassword'];
@@ -219,10 +200,6 @@ export type EmojiUpdated = {
 
 export type EmojiDeleted = {
 	emojis: EmojiDetailed[]
-};
-
-export type AnnouncementCreated = {
-	announcement: Announcement;
 };
 
 export type SignupRequest = {

@@ -22,7 +22,6 @@ export const meta = {
 		example: [
 			'admin/abuse-user-reports',
 			'admin/accounts/create',
-			'admin/announcements/create',
 			'...',
 		],
 	},

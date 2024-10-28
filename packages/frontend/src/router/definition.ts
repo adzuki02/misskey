@@ -185,12 +185,6 @@ const routes: RouteDef[] = [{
 	path: '/signup-complete/:code',
 	component: page(() => import('@/pages/signup-complete.vue')),
 }, {
-	path: '/announcements',
-	component: page(() => import('@/pages/announcements.vue')),
-}, {
-	path: '/announcements/:announcementId',
-	component: page(() => import('@/pages/announcement.vue')),
-}, {
 	path: '/about',
 	component: page(() => import('@/pages/about.vue')),
 	hash: 'initialTab',
@@ -357,10 +351,6 @@ const routes: RouteDef[] = [{
 		path: '/federation',
 		name: 'federation',
 		component: page(() => import('@/pages/admin/federation.vue')),
-	}, {
-		path: '/announcements',
-		name: 'announcements',
-		component: page(() => import('@/pages/admin/announcements.vue')),
 	}, {
 		path: '/roles/:id/edit',
 		name: 'roles',

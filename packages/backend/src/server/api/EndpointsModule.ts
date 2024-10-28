@@ -16,10 +16,6 @@ import * as ep___admin_meta from './endpoints/admin/meta.js';
 import * as ep___admin_accounts_create from './endpoints/admin/accounts/create.js';
 import * as ep___admin_accounts_delete from './endpoints/admin/accounts/delete.js';
 import * as ep___admin_accounts_findByEmail from './endpoints/admin/accounts/find-by-email.js';
-import * as ep___admin_announcements_create from './endpoints/admin/announcements/create.js';
-import * as ep___admin_announcements_delete from './endpoints/admin/announcements/delete.js';
-import * as ep___admin_announcements_list from './endpoints/admin/announcements/list.js';
-import * as ep___admin_announcements_update from './endpoints/admin/announcements/update.js';
 import * as ep___admin_avatarDecorations_create from './endpoints/admin/avatar-decorations/create.js';
 import * as ep___admin_avatarDecorations_delete from './endpoints/admin/avatar-decorations/delete.js';
 import * as ep___admin_avatarDecorations_list from './endpoints/admin/avatar-decorations/list.js';
@@ -87,8 +83,6 @@ import * as ep___admin_systemWebhook_delete from './endpoints/admin/system-webho
 import * as ep___admin_systemWebhook_list from './endpoints/admin/system-webhook/list.js';
 import * as ep___admin_systemWebhook_show from './endpoints/admin/system-webhook/show.js';
 import * as ep___admin_systemWebhook_update from './endpoints/admin/system-webhook/update.js';
-import * as ep___announcements from './endpoints/announcements.js';
-import * as ep___announcements_show from './endpoints/announcements/show.js';
 import * as ep___antennas_create from './endpoints/antennas/create.js';
 import * as ep___antennas_delete from './endpoints/antennas/delete.js';
 import * as ep___antennas_list from './endpoints/antennas/list.js';
@@ -208,7 +202,6 @@ import * as ep___i_notifications from './endpoints/i/notifications.js';
 import * as ep___i_notificationsGrouped from './endpoints/i/notifications-grouped.js';
 import * as ep___i_pin from './endpoints/i/pin.js';
 import * as ep___i_readAllUnreadNotes from './endpoints/i/read-all-unread-notes.js';
-import * as ep___i_readAnnouncement from './endpoints/i/read-announcement.js';
 import * as ep___i_regenerateToken from './endpoints/i/regenerate-token.js';
 import * as ep___i_registry_getAll from './endpoints/i/registry/get-all.js';
 import * as ep___i_registry_getDetail from './endpoints/i/registry/get-detail.js';
@@ -336,10 +329,6 @@ const $admin_abuseReport_notificationRecipient_delete: Provider = { provide: 'ep
 const $admin_accounts_create: Provider = { provide: 'ep:admin/accounts/create', useClass: ep___admin_accounts_create.default };
 const $admin_accounts_delete: Provider = { provide: 'ep:admin/accounts/delete', useClass: ep___admin_accounts_delete.default };
 const $admin_accounts_findByEmail: Provider = { provide: 'ep:admin/accounts/find-by-email', useClass: ep___admin_accounts_findByEmail.default };
-const $admin_announcements_create: Provider = { provide: 'ep:admin/announcements/create', useClass: ep___admin_announcements_create.default };
-const $admin_announcements_delete: Provider = { provide: 'ep:admin/announcements/delete', useClass: ep___admin_announcements_delete.default };
-const $admin_announcements_list: Provider = { provide: 'ep:admin/announcements/list', useClass: ep___admin_announcements_list.default };
-const $admin_announcements_update: Provider = { provide: 'ep:admin/announcements/update', useClass: ep___admin_announcements_update.default };
 const $admin_avatarDecorations_create: Provider = { provide: 'ep:admin/avatar-decorations/create', useClass: ep___admin_avatarDecorations_create.default };
 const $admin_avatarDecorations_delete: Provider = { provide: 'ep:admin/avatar-decorations/delete', useClass: ep___admin_avatarDecorations_delete.default };
 const $admin_avatarDecorations_list: Provider = { provide: 'ep:admin/avatar-decorations/list', useClass: ep___admin_avatarDecorations_list.default };
@@ -407,8 +396,6 @@ const $admin_systemWebhook_delete: Provider = { provide: 'ep:admin/system-webhoo
 const $admin_systemWebhook_list: Provider = { provide: 'ep:admin/system-webhook/list', useClass: ep___admin_systemWebhook_list.default };
 const $admin_systemWebhook_show: Provider = { provide: 'ep:admin/system-webhook/show', useClass: ep___admin_systemWebhook_show.default };
 const $admin_systemWebhook_update: Provider = { provide: 'ep:admin/system-webhook/update', useClass: ep___admin_systemWebhook_update.default };
-const $announcements: Provider = { provide: 'ep:announcements', useClass: ep___announcements.default };
-const $announcements_show: Provider = { provide: 'ep:announcements/show', useClass: ep___announcements_show.default };
 const $antennas_create: Provider = { provide: 'ep:antennas/create', useClass: ep___antennas_create.default };
 const $antennas_delete: Provider = { provide: 'ep:antennas/delete', useClass: ep___antennas_delete.default };
 const $antennas_list: Provider = { provide: 'ep:antennas/list', useClass: ep___antennas_list.default };
@@ -528,7 +515,6 @@ const $i_notifications: Provider = { provide: 'ep:i/notifications', useClass: ep
 const $i_notificationsGrouped: Provider = { provide: 'ep:i/notifications-grouped', useClass: ep___i_notificationsGrouped.default };
 const $i_pin: Provider = { provide: 'ep:i/pin', useClass: ep___i_pin.default };
 const $i_readAllUnreadNotes: Provider = { provide: 'ep:i/read-all-unread-notes', useClass: ep___i_readAllUnreadNotes.default };
-const $i_readAnnouncement: Provider = { provide: 'ep:i/read-announcement', useClass: ep___i_readAnnouncement.default };
 const $i_regenerateToken: Provider = { provide: 'ep:i/regenerate-token', useClass: ep___i_regenerateToken.default };
 const $i_registry_getAll: Provider = { provide: 'ep:i/registry/get-all', useClass: ep___i_registry_getAll.default };
 const $i_registry_getDetail: Provider = { provide: 'ep:i/registry/get-detail', useClass: ep___i_registry_getDetail.default };
@@ -660,10 +646,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_accounts_create,
 		$admin_accounts_delete,
 		$admin_accounts_findByEmail,
-		$admin_announcements_create,
-		$admin_announcements_delete,
-		$admin_announcements_list,
-		$admin_announcements_update,
 		$admin_avatarDecorations_create,
 		$admin_avatarDecorations_delete,
 		$admin_avatarDecorations_list,
@@ -731,8 +713,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_systemWebhook_list,
 		$admin_systemWebhook_show,
 		$admin_systemWebhook_update,
-		$announcements,
-		$announcements_show,
 		$antennas_create,
 		$antennas_delete,
 		$antennas_list,
@@ -852,7 +832,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$i_notificationsGrouped,
 		$i_pin,
 		$i_readAllUnreadNotes,
-		$i_readAnnouncement,
 		$i_regenerateToken,
 		$i_registry_getAll,
 		$i_registry_getDetail,
@@ -978,10 +957,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_accounts_create,
 		$admin_accounts_delete,
 		$admin_accounts_findByEmail,
-		$admin_announcements_create,
-		$admin_announcements_delete,
-		$admin_announcements_list,
-		$admin_announcements_update,
 		$admin_avatarDecorations_create,
 		$admin_avatarDecorations_delete,
 		$admin_avatarDecorations_list,
@@ -1049,8 +1024,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_systemWebhook_list,
 		$admin_systemWebhook_show,
 		$admin_systemWebhook_update,
-		$announcements,
-		$announcements_show,
 		$antennas_create,
 		$antennas_delete,
 		$antennas_list,
@@ -1170,7 +1143,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$i_notificationsGrouped,
 		$i_pin,
 		$i_readAllUnreadNotes,
-		$i_readAnnouncement,
 		$i_regenerateToken,
 		$i_registry_getAll,
 		$i_registry_getDetail,

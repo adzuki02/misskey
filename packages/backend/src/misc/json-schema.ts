@@ -32,7 +32,6 @@ import { packedFederationInstanceSchema } from '@/models/json-schema/federation-
 import { packedQueueCountSchema } from '@/models/json-schema/queue.js';
 import { packedEmojiDetailedSchema, packedEmojiSimpleSchema } from '@/models/json-schema/emoji.js';
 import { packedFlashSchema } from '@/models/json-schema/flash.js';
-import { packedAnnouncementSchema } from '@/models/json-schema/announcement.js';
 import { packedSigninSchema } from '@/models/json-schema/signin.js';
 import {
 	packedRoleCondFormulaFollowersOrFollowingOrNotesSchema,
@@ -67,7 +66,6 @@ export const refs = {
 
 	UserList: packedUserListSchema,
 	Ad: packedAdSchema,
-	Announcement: packedAnnouncementSchema,
 	App: packedAppSchema,
 	Note: packedNoteSchema,
 	NoteReaction: packedNoteReactionSchema,

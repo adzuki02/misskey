@@ -10,8 +10,6 @@ import {
 	MiAbuseReportNotificationRecipient,
 	MiAbuseUserReport,
 	MiAccessToken,
-	MiAnnouncement,
-	MiAnnouncementRead,
 	MiAntenna,
 	MiApp,
 	MiAuthSession,
@@ -79,18 +77,6 @@ const $usersRepository: Provider = {
 const $notesRepository: Provider = {
 	provide: DI.notesRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiNote).extend(miRepository as MiRepository<MiNote>),
-	inject: [DI.db],
-};
-
-const $announcementsRepository: Provider = {
-	provide: DI.announcementsRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiAnnouncement).extend(miRepository as MiRepository<MiAnnouncement>),
-	inject: [DI.db],
-};
-
-const $announcementReadsRepository: Provider = {
-	provide: DI.announcementReadsRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiAnnouncementRead).extend(miRepository as MiRepository<MiAnnouncementRead>),
 	inject: [DI.db],
 };
 
@@ -423,8 +409,6 @@ const $userMemosRepository: Provider = {
 	providers: [
 		$usersRepository,
 		$notesRepository,
-		$announcementsRepository,
-		$announcementReadsRepository,
 		$appsRepository,
 		$avatarDecorationsRepository,
 		$noteThreadMutingsRepository,
@@ -483,8 +467,6 @@ const $userMemosRepository: Provider = {
 	exports: [
 		$usersRepository,
 		$notesRepository,
-		$announcementsRepository,
-		$announcementReadsRepository,
 		$appsRepository,
 		$avatarDecorationsRepository,
 		$noteThreadMutingsRepository,
