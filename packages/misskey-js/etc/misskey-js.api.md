@@ -80,24 +80,6 @@ type AdminAccountsFindByEmailRequest = operations['admin___accounts___find-by-em
 type AdminAccountsFindByEmailResponse = operations['admin___accounts___find-by-email']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
-type AdminAnnouncementsCreateRequest = operations['admin___announcements___create']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAnnouncementsCreateResponse = operations['admin___announcements___create']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAnnouncementsDeleteRequest = operations['admin___announcements___delete']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAnnouncementsListRequest = operations['admin___announcements___list']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAnnouncementsListResponse = operations['admin___announcements___list']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAnnouncementsUpdateRequest = operations['admin___announcements___update']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
 type AdminAvatarDecorationsCreateRequest = operations['admin___avatar-decorations___create']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -365,18 +347,6 @@ type Announcement = components['schemas']['Announcement'];
 type AnnouncementCreated = {
     announcement: Announcement;
 };
-
-// @public (undocumented)
-type AnnouncementsRequest = operations['announcements']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AnnouncementsResponse = operations['announcements']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AnnouncementsShowRequest = operations['announcements___show']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AnnouncementsShowResponse = operations['announcements___show']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type Antenna = components['schemas']['Antenna'];
@@ -1079,12 +1049,6 @@ declare namespace entities {
         AdminAccountsDeleteRequest,
         AdminAccountsFindByEmailRequest,
         AdminAccountsFindByEmailResponse,
-        AdminAnnouncementsCreateRequest,
-        AdminAnnouncementsCreateResponse,
-        AdminAnnouncementsDeleteRequest,
-        AdminAnnouncementsListRequest,
-        AdminAnnouncementsListResponse,
-        AdminAnnouncementsUpdateRequest,
         AdminAvatarDecorationsCreateRequest,
         AdminAvatarDecorationsDeleteRequest,
         AdminAvatarDecorationsListRequest,
@@ -1171,10 +1135,6 @@ declare namespace entities {
         AdminSystemWebhookShowResponse,
         AdminSystemWebhookUpdateRequest,
         AdminSystemWebhookUpdateResponse,
-        AnnouncementsRequest,
-        AnnouncementsResponse,
-        AnnouncementsShowRequest,
-        AnnouncementsShowResponse,
         AntennasCreateRequest,
         AntennasCreateResponse,
         AntennasDeleteRequest,
@@ -1357,7 +1317,6 @@ declare namespace entities {
         INotificationsGroupedResponse,
         IPinRequest,
         IPinResponse,
-        IReadAnnouncementRequest,
         IRegenerateTokenRequest,
         IRegistryGetAllRequest,
         IRegistryGetAllResponse,
@@ -1882,9 +1841,6 @@ type IPinRequest = operations['i___pin']['requestBody']['content']['application/
 
 // @public (undocumented)
 type IPinResponse = operations['i___pin']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type IReadAnnouncementRequest = operations['i___read-announcement']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type IRegenerateTokenRequest = operations['i___regenerate-token']['requestBody']['content']['application/json'];

@@ -18,12 +18,6 @@ import type {
 	AdminAccountsDeleteRequest,
 	AdminAccountsFindByEmailRequest,
 	AdminAccountsFindByEmailResponse,
-	AdminAnnouncementsCreateRequest,
-	AdminAnnouncementsCreateResponse,
-	AdminAnnouncementsDeleteRequest,
-	AdminAnnouncementsListRequest,
-	AdminAnnouncementsListResponse,
-	AdminAnnouncementsUpdateRequest,
 	AdminAvatarDecorationsCreateRequest,
 	AdminAvatarDecorationsDeleteRequest,
 	AdminAvatarDecorationsListRequest,
@@ -110,10 +104,6 @@ import type {
 	AdminSystemWebhookShowResponse,
 	AdminSystemWebhookUpdateRequest,
 	AdminSystemWebhookUpdateResponse,
-	AnnouncementsRequest,
-	AnnouncementsResponse,
-	AnnouncementsShowRequest,
-	AnnouncementsShowResponse,
 	AntennasCreateRequest,
 	AntennasCreateResponse,
 	AntennasDeleteRequest,
@@ -296,7 +286,6 @@ import type {
 	INotificationsGroupedResponse,
 	IPinRequest,
 	IPinResponse,
-	IReadAnnouncementRequest,
 	IRegenerateTokenRequest,
 	IRegistryGetAllRequest,
 	IRegistryGetAllResponse,
@@ -484,10 +473,6 @@ export type Endpoints = {
 	'admin/accounts/create': { req: AdminAccountsCreateRequest; res: AdminAccountsCreateResponse };
 	'admin/accounts/delete': { req: AdminAccountsDeleteRequest; res: EmptyResponse };
 	'admin/accounts/find-by-email': { req: AdminAccountsFindByEmailRequest; res: AdminAccountsFindByEmailResponse };
-	'admin/announcements/create': { req: AdminAnnouncementsCreateRequest; res: AdminAnnouncementsCreateResponse };
-	'admin/announcements/delete': { req: AdminAnnouncementsDeleteRequest; res: EmptyResponse };
-	'admin/announcements/list': { req: AdminAnnouncementsListRequest; res: AdminAnnouncementsListResponse };
-	'admin/announcements/update': { req: AdminAnnouncementsUpdateRequest; res: EmptyResponse };
 	'admin/avatar-decorations/create': { req: AdminAvatarDecorationsCreateRequest; res: EmptyResponse };
 	'admin/avatar-decorations/delete': { req: AdminAvatarDecorationsDeleteRequest; res: EmptyResponse };
 	'admin/avatar-decorations/list': { req: AdminAvatarDecorationsListRequest; res: AdminAvatarDecorationsListResponse };
@@ -555,8 +540,6 @@ export type Endpoints = {
 	'admin/system-webhook/list': { req: AdminSystemWebhookListRequest; res: AdminSystemWebhookListResponse };
 	'admin/system-webhook/show': { req: AdminSystemWebhookShowRequest; res: AdminSystemWebhookShowResponse };
 	'admin/system-webhook/update': { req: AdminSystemWebhookUpdateRequest; res: AdminSystemWebhookUpdateResponse };
-	'announcements': { req: AnnouncementsRequest; res: AnnouncementsResponse };
-	'announcements/show': { req: AnnouncementsShowRequest; res: AnnouncementsShowResponse };
 	'antennas/create': { req: AntennasCreateRequest; res: AntennasCreateResponse };
 	'antennas/delete': { req: AntennasDeleteRequest; res: EmptyResponse };
 	'antennas/list': { req: EmptyRequest; res: AntennasListResponse };
@@ -676,7 +659,6 @@ export type Endpoints = {
 	'i/notifications-grouped': { req: INotificationsGroupedRequest; res: INotificationsGroupedResponse };
 	'i/pin': { req: IPinRequest; res: IPinResponse };
 	'i/read-all-unread-notes': { req: EmptyRequest; res: EmptyResponse };
-	'i/read-announcement': { req: IReadAnnouncementRequest; res: EmptyResponse };
 	'i/regenerate-token': { req: IRegenerateTokenRequest; res: EmptyResponse };
 	'i/registry/get-all': { req: IRegistryGetAllRequest; res: IRegistryGetAllResponse };
 	'i/registry/get-detail': { req: IRegistryGetDetailRequest; res: IRegistryGetDetailResponse };
