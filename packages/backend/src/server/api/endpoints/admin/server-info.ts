@@ -113,7 +113,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	) {
 		super(meta, paramDef, async () => {
 			const fsStats = await statfs('/').catch(() => ({ blocks: 0, bavail: 0, bsize: 0 }));
-			const netInterface = await readFile('/proc/net/route').then(buf => buf.toString().split('\n').filter(str => parseInt(str.split('\t', 4)[3], 16) === 3).map(str => str.split('\t', 1)[0])[0]).catch(() => 'N/A');
+			const netInterface = await readFile('/proc/net/route', { encoding: 'utf-8' }).then(str => str.split('\n').filter(str => parseInt(str.split('\t', 4)[3], 16) === 3).map(str => str.split('\t', 1)[0])[0]).catch(() => 'N/A');
 
 			const redisServerInfo = await this.redisClient.info('Server');
 			const m = redisServerInfo.match(new RegExp('^redis_version:(.*)', 'm'));

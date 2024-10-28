@@ -109,12 +109,12 @@ async function mem(): Promise<{ used: number, active: number }> {
 const prevNetBytes = { rx: Number.MAX_SAFE_INTEGER, tx: Number.MAX_SAFE_INTEGER };
 
 async function net() {
-	const iface = await readFile('/proc/net/route').then(buf => buf.toString().split('\n').filter(str => parseInt(str.split('\t', 4)[3], 16) === 3).map(str => str.split('\t', 1)[0])[0]).catch(() => 'N/A');
+	const iface = await readFile('/proc/net/route', { encoding: 'utf-8' }).then(str => str.split('\n').filter(str => parseInt(str.split('\t', 4)[3], 16) === 3).map(str => str.split('\t', 1)[0])[0]).catch(() => 'N/A');
 
 	return new Promise<{ rx_sec: number, tx_sec: number }>((res, rej) => {
 		Promise.all([
-			readFile(`/sys/class/net/${iface}/statistics/rx_bytes`).then(buf => parseInt(buf.toString())).catch(() => 0),
-			readFile(`/sys/class/net/${iface}/statistics/tx_bytes`).then(buf => parseInt(buf.toString())).catch(() => 0),
+			readFile(`/sys/class/net/${iface}/statistics/rx_bytes`, { encoding: 'utf-8' }).then(str => parseInt(str)).catch(() => 0),
+			readFile(`/sys/class/net/${iface}/statistics/tx_bytes`, { encoding: 'utf-8' }).then(str => parseInt(str)).catch(() => 0),
 		]).then(arr => {
 			const netStats = {
 				rx_sec: (arr[0] - prevNetBytes.rx) / (interval / 1000),
@@ -136,8 +136,8 @@ const prevFsIO = { rIO: Number.MAX_SAFE_INTEGER, wIO: Number.MAX_SAFE_INTEGER };
 
 async function fs() {
 	return new Promise<{ rIO_sec: number, wIO_sec: number }>((res, rej) => {
-		readFile('/sys/block/sda/stat').then(buf => {
-			const stats = buf.toString().split(' ').filter(s => s !== '');
+		readFile('/sys/block/sda/stat', { encoding: 'utf-8' }).then(str => {
+			const stats = str.split(' ').filter(s => s !== '');
 
 			const rIO = parseInt(stats[0]);
 			const wIO = parseInt(stats[4]);
