@@ -44,7 +44,6 @@ import { RoleService } from '@/core/RoleService.js';
 import { ApPersonService } from '@/core/activitypub/models/ApPersonService.js';
 import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
 import { IdService } from '@/core/IdService.js';
-import type { AnnouncementService } from '@/core/AnnouncementService.js';
 import type { CustomEmojiService } from '@/core/CustomEmojiService.js';
 import { AvatarDecorationService } from '@/core/AvatarDecorationService.js';
 import type { OnModuleInit } from '@nestjs/common';
@@ -84,7 +83,6 @@ export class UserEntityService implements OnModuleInit {
 	private apPersonService: ApPersonService;
 	private noteEntityService: NoteEntityService;
 	private customEmojiService: CustomEmojiService;
-	private announcementService: AnnouncementService;
 	private roleService: RoleService;
 	private federatedInstanceService: FederatedInstanceService;
 	private idService: IdService;
@@ -138,7 +136,6 @@ export class UserEntityService implements OnModuleInit {
 		this.apPersonService = this.moduleRef.get('ApPersonService');
 		this.noteEntityService = this.moduleRef.get('NoteEntityService');
 		this.customEmojiService = this.moduleRef.get('CustomEmojiService');
-		this.announcementService = this.moduleRef.get('AnnouncementService');
 		this.roleService = this.moduleRef.get('RoleService');
 		this.federatedInstanceService = this.moduleRef.get('FederatedInstanceService');
 		this.idService = this.moduleRef.get('IdService');
@@ -452,11 +449,6 @@ export class UserEntityService implements OnModuleInit {
 
 		const isModerator = isMe && isDetailed ? this.roleService.isModerator(user) : null;
 		const isAdmin = isMe && isDetailed ? this.roleService.isAdministrator(user) : null;
-		const unreadAnnouncements = isMe && isDetailed ?
-			(await this.announcementService.getUnreadAnnouncements(user)).map((announcement) => ({
-				createdAt: this.idService.parse(announcement.id).date.toISOString(),
-				...announcement,
-			})) : null;
 
 		const notificationsInfo = isMe && isDetailed ? await this.getNotificationsInfo(user.id) : null;
 
@@ -571,8 +563,6 @@ export class UserEntityService implements OnModuleInit {
 					where: { userId: user.id, isMentioned: true },
 					take: 1,
 				}).then(count => count > 0),
-				hasUnreadAnnouncement: unreadAnnouncements!.length > 0,
-				unreadAnnouncements,
 				hasUnreadAntenna: this.getHasUnreadAntenna(user.id),
 				hasUnreadChannel: false, // 後方互換性のため
 				hasUnreadNotification: notificationsInfo?.hasUnread, // 後方互換性のため

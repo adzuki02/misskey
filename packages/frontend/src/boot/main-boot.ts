@@ -160,13 +160,6 @@ export async function mainBoot() {
 			sound.playMisskeySfx('antenna');
 		});
 
-		main.on('readAllAnnouncements', () => {
-			updateAccount({ hasUnreadAnnouncement: false });
-		});
-
-		// 個人宛てお知らせが発行されたとき
-		main.on('announcementCreated', onAnnouncementCreated);
-
 		// トークンが再生成されたとき
 		// このままではMisskeyが利用できないので強制的にサインアウトさせる
 		main.on('myTokenRegenerated', () => {

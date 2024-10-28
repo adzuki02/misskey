@@ -3020,8 +3020,6 @@ export type components = {
       twoFactorBackupCodesStock: 'full' | 'partial' | 'none';
       hasUnreadSpecifiedNotes: boolean;
       hasUnreadMentions: boolean;
-      hasUnreadAnnouncement: boolean;
-      unreadAnnouncements: components['schemas']['Announcement'][];
       hasUnreadAntenna: boolean;
       hasUnreadChannel: boolean;
       hasUnreadNotification: boolean;
@@ -3197,28 +3195,6 @@ export type components = {
       imageUrl: string;
       memo: string;
       dayOfWeek: number;
-    };
-    Announcement: {
-      /**
-       * Format: id
-       * @example xxxxxxxxxx
-       */
-      id: string;
-      /** Format: date-time */
-      createdAt: string;
-      /** Format: date-time */
-      updatedAt: string | null;
-      text: string;
-      title: string;
-      imageUrl: string | null;
-      /** @enum {string} */
-      icon: 'info' | 'warning' | 'error' | 'success';
-      /** @enum {string} */
-      display: 'dialog' | 'normal' | 'banner';
-      needConfirmationToRead: boolean;
-      silence: boolean;
-      forYou: boolean;
-      isRead?: boolean;
     };
     App: {
       id: string;

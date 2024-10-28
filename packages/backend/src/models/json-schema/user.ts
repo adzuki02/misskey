@@ -480,19 +480,6 @@ export const packedMeDetailedOnlySchema = {
 			type: 'boolean',
 			nullable: false, optional: false,
 		},
-		hasUnreadAnnouncement: {
-			type: 'boolean',
-			nullable: false, optional: false,
-		},
-		unreadAnnouncements: {
-			type: 'array',
-			nullable: false, optional: false,
-			items: {
-				type: 'object',
-				nullable: false, optional: false,
-				ref: 'Announcement',
-			},
-		},
 		hasUnreadAntenna: {
 			type: 'boolean',
 			nullable: false, optional: false,

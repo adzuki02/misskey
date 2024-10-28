@@ -13,8 +13,6 @@ import { OrmUtils } from 'typeorm/util/OrmUtils.js';
 import { MiAbuseUserReport } from '@/models/AbuseUserReport.js';
 import { MiAbuseReportNotificationRecipient } from '@/models/AbuseReportNotificationRecipient.js';
 import { MiAccessToken } from '@/models/AccessToken.js';
-import { MiAnnouncement } from '@/models/Announcement.js';
-import { MiAnnouncementRead } from '@/models/AnnouncementRead.js';
 import { MiAntenna } from '@/models/Antenna.js';
 import { MiApp } from '@/models/App.js';
 import { MiAvatarDecoration } from '@/models/AvatarDecoration.js';
@@ -117,8 +115,6 @@ export {
 	MiAbuseUserReport,
 	MiAbuseReportNotificationRecipient,
 	MiAccessToken,
-	MiAnnouncement,
-	MiAnnouncementRead,
 	MiAntenna,
 	MiApp,
 	MiAvatarDecoration,
@@ -177,8 +173,6 @@ export {
 export type AbuseUserReportsRepository = Repository<MiAbuseUserReport> & MiRepository<MiAbuseUserReport>;
 export type AbuseReportNotificationRecipientRepository = Repository<MiAbuseReportNotificationRecipient> & MiRepository<MiAbuseReportNotificationRecipient>;
 export type AccessTokensRepository = Repository<MiAccessToken> & MiRepository<MiAccessToken>;
-export type AnnouncementsRepository = Repository<MiAnnouncement> & MiRepository<MiAnnouncement>;
-export type AnnouncementReadsRepository = Repository<MiAnnouncementRead> & MiRepository<MiAnnouncementRead>;
 export type AntennasRepository = Repository<MiAntenna> & MiRepository<MiAntenna>;
 export type AppsRepository = Repository<MiApp> & MiRepository<MiApp>;
 export type AvatarDecorationsRepository = Repository<MiAvatarDecoration> & MiRepository<MiAvatarDecoration>;

@@ -23,7 +23,6 @@ import { AvatarDecorationService } from '@/core/AvatarDecorationService.js';
 import { ApPersonService } from '@/core/activitypub/models/ApPersonService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { CustomEmojiService } from '@/core/CustomEmojiService.js';
-import { AnnouncementService } from '@/core/AnnouncementService.js';
 import { RoleService } from '@/core/RoleService.js';
 import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
 import { IdService } from '@/core/IdService.js';
@@ -142,7 +141,6 @@ describe('UserEntityService', () => {
 				ApPersonService,
 				NoteEntityService,
 				CustomEmojiService,
-				AnnouncementService,
 				RoleService,
 				FederatedInstanceService,
 				IdService,

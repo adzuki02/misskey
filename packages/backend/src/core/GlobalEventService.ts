@@ -42,9 +42,6 @@ export interface BroadcastTypes {
 			[other: string]: any;
 		}[];
 	};
-	announcementCreated: {
-		announcement: Packed<'Announcement'>;
-	};
 }
 
 export interface MainEventTypes {
@@ -69,7 +66,6 @@ export interface MainEventTypes {
 	readAllUnreadSpecifiedNotes: undefined;
 	readAllAntennas: undefined;
 	unreadAntenna: MiAntenna;
-	readAllAnnouncements: undefined;
 	myTokenRegenerated: undefined;
 	signin: {
 		id: MiSignin['id'];
@@ -86,9 +82,6 @@ export interface MainEventTypes {
 	driveFileCreated: Packed<'DriveFile'>;
 	readAntenna: MiAntenna;
 	receiveFollowRequest: Packed<'UserLite'>;
-	announcementCreated: {
-		announcement: Packed<'Announcement'>;
-	};
 }
 
 export interface DriveEventTypes {

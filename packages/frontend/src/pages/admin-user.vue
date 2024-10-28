@@ -595,11 +595,4 @@ definePageMetadata(() => ({
 	margin-left: 8px;
 	align-self: center;
 }
-
-.announcementItem {
-	display: flex;
-	padding: 8px 12px;
-	border-radius: 6px;
-	cursor: pointer;
-}
 </style>
