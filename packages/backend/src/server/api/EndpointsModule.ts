@@ -16,10 +16,6 @@ import * as ep___admin_meta from './endpoints/admin/meta.js';
 import * as ep___admin_accounts_create from './endpoints/admin/accounts/create.js';
 import * as ep___admin_accounts_delete from './endpoints/admin/accounts/delete.js';
 import * as ep___admin_accounts_findByEmail from './endpoints/admin/accounts/find-by-email.js';
-import * as ep___admin_announcements_create from './endpoints/admin/announcements/create.js';
-import * as ep___admin_announcements_delete from './endpoints/admin/announcements/delete.js';
-import * as ep___admin_announcements_list from './endpoints/admin/announcements/list.js';
-import * as ep___admin_announcements_update from './endpoints/admin/announcements/update.js';
 import * as ep___admin_avatarDecorations_create from './endpoints/admin/avatar-decorations/create.js';
 import * as ep___admin_avatarDecorations_delete from './endpoints/admin/avatar-decorations/delete.js';
 import * as ep___admin_avatarDecorations_list from './endpoints/admin/avatar-decorations/list.js';
@@ -336,10 +332,6 @@ const $admin_abuseReport_notificationRecipient_delete: Provider = { provide: 'ep
 const $admin_accounts_create: Provider = { provide: 'ep:admin/accounts/create', useClass: ep___admin_accounts_create.default };
 const $admin_accounts_delete: Provider = { provide: 'ep:admin/accounts/delete', useClass: ep___admin_accounts_delete.default };
 const $admin_accounts_findByEmail: Provider = { provide: 'ep:admin/accounts/find-by-email', useClass: ep___admin_accounts_findByEmail.default };
-const $admin_announcements_create: Provider = { provide: 'ep:admin/announcements/create', useClass: ep___admin_announcements_create.default };
-const $admin_announcements_delete: Provider = { provide: 'ep:admin/announcements/delete', useClass: ep___admin_announcements_delete.default };
-const $admin_announcements_list: Provider = { provide: 'ep:admin/announcements/list', useClass: ep___admin_announcements_list.default };
-const $admin_announcements_update: Provider = { provide: 'ep:admin/announcements/update', useClass: ep___admin_announcements_update.default };
 const $admin_avatarDecorations_create: Provider = { provide: 'ep:admin/avatar-decorations/create', useClass: ep___admin_avatarDecorations_create.default };
 const $admin_avatarDecorations_delete: Provider = { provide: 'ep:admin/avatar-decorations/delete', useClass: ep___admin_avatarDecorations_delete.default };
 const $admin_avatarDecorations_list: Provider = { provide: 'ep:admin/avatar-decorations/list', useClass: ep___admin_avatarDecorations_list.default };
@@ -660,10 +652,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_accounts_create,
 		$admin_accounts_delete,
 		$admin_accounts_findByEmail,
-		$admin_announcements_create,
-		$admin_announcements_delete,
-		$admin_announcements_list,
-		$admin_announcements_update,
 		$admin_avatarDecorations_create,
 		$admin_avatarDecorations_delete,
 		$admin_avatarDecorations_list,
@@ -978,10 +966,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_accounts_create,
 		$admin_accounts_delete,
 		$admin_accounts_findByEmail,
-		$admin_announcements_create,
-		$admin_announcements_delete,
-		$admin_announcements_list,
-		$admin_announcements_update,
 		$admin_avatarDecorations_create,
 		$admin_avatarDecorations_delete,
 		$admin_avatarDecorations_list,

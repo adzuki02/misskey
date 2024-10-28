@@ -358,10 +358,6 @@ const routes: RouteDef[] = [{
 		name: 'federation',
 		component: page(() => import('@/pages/admin/federation.vue')),
 	}, {
-		path: '/announcements',
-		name: 'announcements',
-		component: page(() => import('@/pages/admin/announcements.vue')),
-	}, {
 		path: '/roles/:id/edit',
 		name: 'roles',
 		component: page(() => import('@/pages/admin/roles.edit.vue')),
