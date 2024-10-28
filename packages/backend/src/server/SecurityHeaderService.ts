@@ -8,7 +8,6 @@ import { JSDOM } from 'jsdom';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import { bindThis } from '@/decorators.js';
-import frontendPackageInfo from '../../../frontend/package.json' with { type: 'json' };
 import type { FastifyInstance } from 'fastify';
 
 const _filename = fileURLToPath(import.meta.url);
@@ -64,11 +63,13 @@ export class SecurityHeaderService {
 
 		baseWindow.close();
 
+		const meta = JSON.parse(readFileSync(`${_dirname}/../../../../built/meta.json`, 'utf-8'));
+
 		const baseScriptSrc = [
 			'\'self\'', '\'wasm-unsafe-eval\'',
 			'https://static.cloudflareinsights.com/beacon.min.js',
-			`https://esm.sh/shiki@${frontendPackageInfo.dependencies.shiki}/`,
-			`https://esm.sh/v135/shiki@${frontendPackageInfo.dependencies.shiki}/es2022/`,
+			`https://esm.sh/shiki@${meta.shikiVersion}/`,
+			`https://esm.sh/v135/shiki@${meta.shikiVersion}/es2022/`,
 			...(baseScriptHashes.map(hash => `'sha256-${hash}'`)),
 		].join(' ');
 
