@@ -133,16 +133,16 @@ export default class RemovePerUserChart1729841326897 {
 			// chartV21615965918224
 			await queryRunner.query(`ALTER TABLE "__chart__per_user_reaction" ADD "unique" jsonb NOT NULL DEFAULT '{}'`);
 			await queryRunner.query(`CREATE TYPE "public"."__chart__per_user_reaction_span_enum" AS ENUM('hour', 'day')`);
-			await queryRunner.query(`ALTER TABLE "__chart__per_user_reaction" ADD "span" "__chart__per_user_reaction_span_enum" NOT NULL`);
+			await queryRunner.query(`ALTER TABLE "__chart__per_user_reaction" ADD "span" "__chart__per_user_reaction_span_enum" NOT NULL DEFAULT 'hour'`);
 			await queryRunner.query(`ALTER TABLE "__chart__per_user_notes" ADD "unique" jsonb NOT NULL DEFAULT '{}'`);
 			await queryRunner.query(`CREATE TYPE "public"."__chart__per_user_notes_span_enum" AS ENUM('hour', 'day')`);
-			await queryRunner.query(`ALTER TABLE "__chart__per_user_notes" ADD "span" "__chart__per_user_notes_span_enum" NOT NULL`);
+			await queryRunner.query(`ALTER TABLE "__chart__per_user_notes" ADD "span" "__chart__per_user_notes_span_enum" NOT NULL DEFAULT 'hour'`);
 			await queryRunner.query(`ALTER TABLE "__chart__per_user_following" ADD "unique" jsonb NOT NULL DEFAULT '{}'`);
 			await queryRunner.query(`CREATE TYPE "public"."__chart__per_user_following_span_enum" AS ENUM('hour', 'day')`);
-			await queryRunner.query(`ALTER TABLE "__chart__per_user_following" ADD "span" "__chart__per_user_following_span_enum" NOT NULL`);
+			await queryRunner.query(`ALTER TABLE "__chart__per_user_following" ADD "span" "__chart__per_user_following_span_enum" NOT NULL DEFAULT 'hour'`);
 			await queryRunner.query(`ALTER TABLE "__chart__per_user_drive" ADD "unique" jsonb NOT NULL DEFAULT '{}'`);
 			await queryRunner.query(`CREATE TYPE "public"."__chart__per_user_drive_span_enum" AS ENUM('hour', 'day')`);
-			await queryRunner.query(`ALTER TABLE "__chart__per_user_drive" ADD "span" "__chart__per_user_drive_span_enum" NOT NULL`);
+			await queryRunner.query(`ALTER TABLE "__chart__per_user_drive" ADD "span" "__chart__per_user_drive_span_enum" NOT NULL DEFAULT 'hour'`);
 			// ChartIndexes1561873850023
 			// Init1000000000000
 			await queryRunner.query(`DROP TABLE "__chart__per_user_reaction"`);
