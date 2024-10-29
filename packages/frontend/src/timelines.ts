@@ -8,8 +8,6 @@ import { instance } from '@/instance.js';
 
 export const basicTimelineTypes = [
 	'home',
-	'local',
-	'social',
 	'global',
 ] as const;
 
@@ -23,10 +21,6 @@ export function basicTimelineIconClass(timeline: BasicTimelineType): string {
 	switch (timeline) {
 		case 'home':
 			return 'ti ti-home';
-		case 'local':
-			return 'ti ti-planet';
-		case 'social':
-			return 'ti ti-universe';
 		case 'global':
 			return 'ti ti-whirl';
 	}
@@ -48,5 +42,5 @@ export function availableBasicTimelines(): BasicTimelineType[] {
 }
 
 export function hasWithReplies(timeline: BasicTimelineType | undefined | null): boolean {
-	return timeline === 'local' || timeline === 'social';
+	return false;
 }
