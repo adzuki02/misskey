@@ -34,7 +34,6 @@
 		"generate-api-json": "node ./scripts/generate_api_json.js"
 	},
 	"optionalDependencies": {
-		"@tensorflow/tfjs": "4.4.0",
 		"@tensorflow/tfjs-node": "4.4.0"
 	},
 	"dependencies": {
