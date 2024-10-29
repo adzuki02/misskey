@@ -7,9 +7,6 @@ on:
 
 permissions: {}
 
-env:
-  NODE_ENV: production
-
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -71,6 +68,8 @@ jobs:
         run: git diff --exit-code pnpm-lock.yaml
       - name: Build
         run: pnpm run build
+        env:
+          NODE_ENV: production
       - name: Note latest commit hash
         run: git rev-parse HEAD > ./built/hash
       - name: Archive (tar)
