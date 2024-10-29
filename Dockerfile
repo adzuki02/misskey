@@ -25,14 +25,13 @@ COPY --link ["packages/frontend/package.json", "./packages/frontend/"]
 COPY --link ["packages/sw/package.json", "./packages/sw/"]
 COPY --link ["packages/misskey-js/package.json", "./packages/misskey-js/"]
 
-ARG NODE_ENV=production
-
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
 	pnpm i --frozen-lockfile --aggregate-output
 
+ARG NODE_ENV=production
+
 COPY --link . ./
 
-RUN git submodule update --init
 RUN pnpm build
 RUN rm -rf .git/
 
