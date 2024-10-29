@@ -14,7 +14,7 @@ function build() {
 		const frontendJson = fs.readFileSync(frontendPackageJsonPath, 'utf-8');
 		const frontendMeta = JSON.parse(frontendJson);
 		fs.mkdirSync(__dirname + '/../built', { recursive: true });
-		fs.writeFileSync(__dirname + '/../built/meta.json', JSON.stringify({ version: meta.version, shikiVersion: frontendMeta.dependencies.shiki }), 'utf-8');
+		fs.writeFileSync(__dirname + '/../built/meta.json', JSON.stringify({ version: meta.version, shikiVersion: frontendMeta.devDependencies.shiki }), 'utf-8');
 	} catch (e) {
 		console.error(e)
 	}

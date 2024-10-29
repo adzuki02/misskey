@@ -10,9 +10,6 @@ on:
 
 permissions: {}
 
-env:
-  NODE_ENV: production
-
 jobs:
   production:
     runs-on: ubuntu-latest
@@ -40,3 +37,5 @@ jobs:
       run: cp .github/misskey/test.yml .config/default.yml
     - name: Build
       run: pnpm run build
+      env:
+        NODE_ENV: production
