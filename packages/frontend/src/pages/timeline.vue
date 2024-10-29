@@ -51,7 +51,7 @@ import { MenuItem } from '@/types/menu.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { availableBasicTimelines, hasWithReplies, isAvailableBasicTimeline, isBasicTimeline, basicTimelineIconClass } from '@/timelines.js';
 import type { BasicTimelineType } from '@/timelines.js';
-	
+
 provide('shouldOmitHeaderTitle', true);
 
 const tlComponent = shallowRef<InstanceType<typeof MkTimeline>>();
@@ -80,9 +80,7 @@ const localSocialTLFilterSwitchStore = ref<'withReplies' | 'onlyFiles' | false>(
 const withReplies = computed<boolean>({
 	get: () => {
 		if (!$i) return false;
-		if (['local', 'social'].includes(src.value) && localSocialTLFilterSwitchStore.value === 'onlyFiles') {
-			return false;
-		} else {
+		else {
 			return defaultStore.reactiveState.tl.value.filter.withReplies;
 		}
 	},
@@ -90,11 +88,7 @@ const withReplies = computed<boolean>({
 });
 const onlyFiles = computed<boolean>({
 	get: () => {
-		if (['local', 'social'].includes(src.value) && localSocialTLFilterSwitchStore.value === 'withReplies') {
-			return false;
-		} else {
-			return defaultStore.reactiveState.tl.value.filter.onlyFiles;
-		}
+		return defaultStore.reactiveState.tl.value.filter.onlyFiles;
 	},
 	set: (x) => saveTlFilter('onlyFiles', x),
 });
