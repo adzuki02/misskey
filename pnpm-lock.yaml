@@ -663,6 +663,10 @@ importers:
 
   packages/frontend:
     dependencies:
+      misskey-js:
+        specifier: workspace:*
+        version: link:../misskey-js
+    devDependencies:
       '@github/webauthn-json':
         specifier: 2.1.1
         version: 2.1.1
@@ -675,6 +679,9 @@ importers:
       '@misskey-dev/browser-image-resizer':
         specifier: 2024.1.0
         version: 2024.1.0
+      '@misskey-dev/summaly':
+        specifier: 5.1.0
+        version: 5.1.0
       '@rollup/plugin-json':
         specifier: 6.1.0
         version: 6.1.0(rollup@4.22.2)
@@ -684,133 +691,6 @@ importers:
       '@rollup/pluginutils':
         specifier: 5.1.0
         version: 5.1.0(rollup@4.22.2)
-      '@syuilo/aiscript':
-        specifier: 0.19.0
-        version: 0.19.0
-      '@vitejs/plugin-vue':
-        specifier: 5.1.4
-        version: 5.1.4(vite@5.4.7(@types/node@20.14.12)(sass@1.79.3)(terser@5.33.0))(vue@3.5.7(typescript@5.6.2))
-      '@vue/compiler-sfc':
-        specifier: 3.5.7
-        version: 3.5.7
-      aiscript-vscode:
-        specifier: github:aiscript-dev/aiscript-vscode#v0.1.11
-        version: https://codeload.github.com/aiscript-dev/aiscript-vscode/tar.gz/e1e1b27f2f72cd28a473e004b6da0d8fc0bd40d9
-      astring:
-        specifier: 1.9.0
-        version: 1.9.0
-      broadcast-channel:
-        specifier: 7.0.0
-        version: 7.0.0
-      buraha:
-        specifier: 0.0.1
-        version: 0.0.1
-      chart.js:
-        specifier: 4.4.4
-        version: 4.4.4
-      chartjs-adapter-date-fns:
-        specifier: 3.0.0
-        version: 3.0.0(chart.js@4.4.4)(date-fns@2.30.0)
-      chartjs-chart-matrix:
-        specifier: 2.0.1
-        version: 2.0.1(chart.js@4.4.4)
-      chartjs-plugin-gradient:
-        specifier: 0.6.1
-        version: 0.6.1(chart.js@4.4.4)
-      chartjs-plugin-zoom:
-        specifier: 2.0.1
-        version: 2.0.1(chart.js@4.4.4)
-      chromatic:
-        specifier: 11.10.2
-        version: 11.10.2
-      compare-versions:
-        specifier: 6.1.1
-        version: 6.1.1
-      cropperjs:
-        specifier: 2.0.0-rc.2
-        version: 2.0.0-rc.2
-      date-fns:
-        specifier: 2.30.0
-        version: 2.30.0
-      estree-walker:
-        specifier: 3.0.3
-        version: 3.0.3
-      eventemitter3:
-        specifier: 5.0.1
-        version: 5.0.1
-      idb-keyval:
-        specifier: 6.2.1
-        version: 6.2.1
-      insert-text-at-cursor:
-        specifier: 0.3.0
-        version: 0.3.0
-      is-file-animated:
-        specifier: 1.0.2
-        version: 1.0.2
-      json5:
-        specifier: 2.2.3
-        version: 2.2.3
-      mfm-js:
-        specifier: 0.24.0
-        version: 0.24.0
-      misskey-js:
-        specifier: workspace:*
-        version: link:../misskey-js
-      photoswipe:
-        specifier: 5.4.4
-        version: 5.4.4
-      punycode:
-        specifier: 2.3.1
-        version: 2.3.1
-      rollup:
-        specifier: 4.22.2
-        version: 4.22.2
-      sass:
-        specifier: 1.79.3
-        version: 1.79.3
-      shiki:
-        specifier: 1.12.0
-        version: 1.12.0
-      strict-event-emitter-types:
-        specifier: 2.0.0
-        version: 2.0.0
-      textarea-caret:
-        specifier: 3.1.0
-        version: 3.1.0
-      throttle-debounce:
-        specifier: 5.0.2
-        version: 5.0.2
-      tinycolor2:
-        specifier: 1.6.0
-        version: 1.6.0
-      tsc-alias:
-        specifier: 1.8.10
-        version: 1.8.10
-      tsconfig-paths:
-        specifier: 4.2.0
-        version: 4.2.0
-      typescript:
-        specifier: 5.6.2
-        version: 5.6.2
-      uuid:
-        specifier: 10.0.0
-        version: 10.0.0
-      v-code-diff:
-        specifier: 1.13.1
-        version: 1.13.1(vue@3.5.7(typescript@5.6.2))
-      vite:
-        specifier: 5.4.7
-        version: 5.4.7(@types/node@20.14.12)(sass@1.79.3)(terser@5.33.0)
-      vue:
-        specifier: 3.5.7
-        version: 3.5.7(typescript@5.6.2)
-      vuedraggable:
-        specifier: next
-        version: 4.1.0(vue@3.5.7(typescript@5.6.2))
-    devDependencies:
-      '@misskey-dev/summaly':
-        specifier: 5.1.0
-        version: 5.1.0
       '@storybook/addon-actions':
         specifier: 8.3.2
         version: 8.3.2(storybook@8.3.2(bufferutil@4.0.8)(utf-8-validate@6.0.4))
@@ -865,6 +745,9 @@ importers:
       '@storybook/vue3-vite':
         specifier: 8.3.2
         version: 8.3.2(storybook@8.3.2(bufferutil@4.0.8)(utf-8-validate@6.0.4))(vite@5.4.7(@types/node@20.14.12)(sass@1.79.3)(terser@5.33.0))(vue@3.5.7(typescript@5.6.2))
+      '@syuilo/aiscript':
+        specifier: 0.19.0
+        version: 0.19.0
       '@testing-library/vue':
         specifier: 8.1.0
         version: 8.1.0(@vue/compiler-sfc@3.5.7)(@vue/server-renderer@3.5.7(vue@3.5.7(typescript@5.6.2)))(vue@3.5.7(typescript@5.6.2))
@@ -901,36 +784,102 @@ importers:
       '@typescript-eslint/parser':
         specifier: 7.17.0
         version: 7.17.0(eslint@9.11.0)(typescript@5.6.2)
+      '@vitejs/plugin-vue':
+        specifier: 5.1.4
+        version: 5.1.4(vite@5.4.7(@types/node@20.14.12)(sass@1.79.3)(terser@5.33.0))(vue@3.5.7(typescript@5.6.2))
       '@vitest/coverage-v8':
         specifier: 1.6.0
         version: 1.6.0(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.33.0))
+      '@vue/compiler-sfc':
+        specifier: 3.5.7
+        version: 3.5.7
       '@vue/runtime-core':
         specifier: 3.5.7
         version: 3.5.7
       acorn:
         specifier: 8.12.1
         version: 8.12.1
+      aiscript-vscode:
+        specifier: github:aiscript-dev/aiscript-vscode#v0.1.11
+        version: https://codeload.github.com/aiscript-dev/aiscript-vscode/tar.gz/e1e1b27f2f72cd28a473e004b6da0d8fc0bd40d9
+      astring:
+        specifier: 1.9.0
+        version: 1.9.0
+      broadcast-channel:
+        specifier: 7.0.0
+        version: 7.0.0
+      buraha:
+        specifier: 0.0.1
+        version: 0.0.1
+      chart.js:
+        specifier: 4.4.4
+        version: 4.4.4
+      chartjs-adapter-date-fns:
+        specifier: 3.0.0
+        version: 3.0.0(chart.js@4.4.4)(date-fns@2.30.0)
+      chartjs-chart-matrix:
+        specifier: 2.0.1
+        version: 2.0.1(chart.js@4.4.4)
+      chartjs-plugin-gradient:
+        specifier: 0.6.1
+        version: 0.6.1(chart.js@4.4.4)
+      chartjs-plugin-zoom:
+        specifier: 2.0.1
+        version: 2.0.1(chart.js@4.4.4)
+      chromatic:
+        specifier: 11.10.2
+        version: 11.10.2
+      compare-versions:
+        specifier: 6.1.1
+        version: 6.1.1
+      cropperjs:
+        specifier: 2.0.0-rc.2
+        version: 2.0.0-rc.2
       cross-env:
         specifier: 7.0.3
         version: 7.0.3
       cypress:
         specifier: 13.14.2
         version: 13.14.2
+      date-fns:
+        specifier: 2.30.0
+        version: 2.30.0
       eslint-plugin-import:
         specifier: 2.30.0
         version: 2.30.0(@typescript-eslint/parser@7.17.0(eslint@9.11.0)(typescript@5.6.2))(eslint@9.11.0)
       eslint-plugin-vue:
         specifier: 9.28.0
         version: 9.28.0(eslint@9.11.0)
+      estree-walker:
+        specifier: 3.0.3
+        version: 3.0.3
+      eventemitter3:
+        specifier: 5.0.1
+        version: 5.0.1
       fast-glob:
         specifier: 3.3.2
         version: 3.3.2
       happy-dom:
         specifier: 10.0.3
         version: 10.0.3
+      idb-keyval:
+        specifier: 6.2.1
+        version: 6.2.1
+      insert-text-at-cursor:
+        specifier: 0.3.0
+        version: 0.3.0
       intersection-observer:
         specifier: 0.12.2
         version: 0.12.2
+      is-file-animated:
+        specifier: 1.0.2
+        version: 1.0.2
+      json5:
+        specifier: 2.2.3
+        version: 2.2.3
+      mfm-js:
+        specifier: 0.24.0
+        version: 0.24.0
       micromatch:
         specifier: 4.0.8
         version: 4.0.8
@@ -943,18 +892,33 @@ importers:
       nodemon:
         specifier: 3.1.7
         version: 3.1.7
+      photoswipe:
+        specifier: 5.4.4
+        version: 5.4.4
       prettier:
         specifier: 3.3.3
         version: 3.3.3
+      punycode:
+        specifier: 2.3.1
+        version: 2.3.1
       react:
         specifier: 18.3.1
         version: 18.3.1
       react-dom:
         specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
+      rollup:
+        specifier: 4.22.2
+        version: 4.22.2
+      sass:
+        specifier: 1.79.3
+        version: 1.79.3
       seedrandom:
         specifier: 3.0.5
         version: 3.0.5
+      shiki:
+        specifier: 1.12.0
+        version: 1.12.0
       start-server-and-test:
         specifier: 2.0.8
         version: 2.0.8
@@ -964,6 +928,36 @@ importers:
       storybook-addon-misskey-theme:
         specifier: github:misskey-dev/storybook-addon-misskey-theme
         version: https://codeload.github.com/misskey-dev/storybook-addon-misskey-theme/tar.gz/cf583db098365b2ccc81a82f63ca9c93bc32b640(@storybook/blocks@8.3.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.2(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(@storybook/components@8.3.2(storybook@8.3.2(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(@storybook/core-events@8.3.2(storybook@8.3.2(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(@storybook/manager-api@8.3.2(storybook@8.3.2(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(@storybook/preview-api@8.3.2(storybook@8.3.2(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(@storybook/theming@8.3.2(storybook@8.3.2(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(@storybook/types@8.3.2(storybook@8.3.2(bufferutil@4.0.8)(utf-8-validate@6.0.4)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      strict-event-emitter-types:
+        specifier: 2.0.0
+        version: 2.0.0
+      textarea-caret:
+        specifier: 3.1.0
+        version: 3.1.0
+      throttle-debounce:
+        specifier: 5.0.2
+        version: 5.0.2
+      tinycolor2:
+        specifier: 1.6.0
+        version: 1.6.0
+      tsc-alias:
+        specifier: 1.8.10
+        version: 1.8.10
+      tsconfig-paths:
+        specifier: 4.2.0
+        version: 4.2.0
+      typescript:
+        specifier: 5.6.2
+        version: 5.6.2
+      uuid:
+        specifier: 10.0.0
+        version: 10.0.0
+      v-code-diff:
+        specifier: 1.13.1
+        version: 1.13.1(vue@3.5.7(typescript@5.6.2))
+      vite:
+        specifier: 5.4.7
+        version: 5.4.7(@types/node@20.14.12)(sass@1.79.3)(terser@5.33.0)
       vite-plugin-turbosnap:
         specifier: 1.0.3
         version: 1.0.3
@@ -973,6 +967,9 @@ importers:
       vitest-fetch-mock:
         specifier: 0.2.2
         version: 0.2.2(encoding@0.1.13)(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.33.0))
+      vue:
+        specifier: 3.5.7
+        version: 3.5.7(typescript@5.6.2)
       vue-component-type-helpers:
         specifier: 2.1.6
         version: 2.1.6
@@ -982,6 +979,9 @@ importers:
       vue-tsc:
         specifier: 2.1.6
         version: 2.1.6(typescript@5.6.2)
+      vuedraggable:
+        specifier: 4.1.0
+        version: 4.1.0(vue@3.5.7(typescript@5.6.2))
 
   packages/misskey-js:
     dependencies:
