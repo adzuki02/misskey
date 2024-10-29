@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import RE2 from 're2';
 import * as mfm from 'mfm-js';
 import { Inject, Injectable } from '@nestjs/common';
 import ms from 'ms';
@@ -280,12 +279,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 					const regexp = mutedWord.match(/^\/(.+)\/(.*)$/);
 					if (!regexp) throw new ApiError(meta.errors.invalidRegexp);
-
-					try {
-						new RE2(regexp[1], regexp[2]);
-					} catch (err) {
-						throw new ApiError(meta.errors.invalidRegexp);
-					}
 				}
 			}
 
