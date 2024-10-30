@@ -140,7 +140,7 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
 import MkLink from '@/components/MkLink.vue';
 
-const initStats = () => $i ? misskeyApi('stats', {}) : new Promise<undefined>(r => { r(undefined); });
+const initStats = () => $i ? misskeyApi('stats', {}) : new Promise<null>(r => { r(null); });
 </script>
 
 <style lang="scss" module>

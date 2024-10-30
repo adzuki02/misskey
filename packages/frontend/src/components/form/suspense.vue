@@ -30,7 +30,7 @@ const props = defineProps<{
 const pending = ref(true);
 const resolved = ref(false);
 const rejected = ref(false);
-const result = ref<T | null>(null);
+const result = ref<T | undefined>(undefined);
 
 const process = () => {
 	if (props.p == null) {
