@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<div v-if="$i.twoFactorEnabled" class="_gaps_s">
 				<div v-text="i18n.ts._2fa.alreadyRegistered"/>
-				<template v-if="$i.securityKeysList.length > 0">
+				<template v-if="$i.securityKeysList && $i.securityKeysList.length > 0">
 					<MkButton @click="renewTOTP">{{ i18n.ts._2fa.renewTOTP }}</MkButton>
 					<MkInfo>{{ i18n.ts._2fa.whyTOTPOnlyRenew }}</MkInfo>
 				</template>
@@ -66,7 +66,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</MkFolder>
 
-		<MkSwitch :disabled="!$i.twoFactorEnabled || $i.securityKeysList.length === 0" :modelValue="usePasswordLessLogin" @update:modelValue="v => updatePasswordLessLogin(v)">
+		<MkSwitch :disabled="!$i.twoFactorEnabled || !$i.securityKeysList || $i.securityKeysList.length === 0" :modelValue="usePasswordLessLogin" @update:modelValue="v => updatePasswordLessLogin(v)">
 			<template #label>{{ i18n.ts.passwordLessLogin }}</template>
 			<template #caption>{{ i18n.ts.passwordLessLoginDescription }}</template>
 		</MkSwitch>
@@ -200,7 +200,7 @@ async function addSecurityKey() {
 		minLength: 1,
 		maxLength: 30,
 	});
-	if (name.canceled) return;
+	if (name.canceled || !name.result) return;
 
 	const credential = await os.promiseDialog(
 		webAuthnCreate(registrationOptions),

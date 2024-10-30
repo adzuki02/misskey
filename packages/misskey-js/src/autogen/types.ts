@@ -14490,7 +14490,7 @@ export type operations = {
       /** @description OK (with results) */
       200: {
         content: {
-          'application/json': {
+          'application/json': ({
               /** Format: misskey:id */
               id: string;
               name?: string;
@@ -14498,8 +14498,10 @@ export type operations = {
               createdAt: string;
               /** Format: date-time */
               lastUsedAt?: string;
+              description: string | null;
+              iconUrl: string | null;
               permission: string[];
-            }[];
+            })[];
         };
       };
       /** @description Client error */

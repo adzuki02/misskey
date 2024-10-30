@@ -115,8 +115,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</div>
 						<div v-if="expandedBlockItems.includes(item.id)" :class="$style.userItemSub">
 							<div>Blocked at: <MkTime :time="item.createdAt" mode="detail"/></div>
-							<div v-if="item.expiresAt">Period: {{ new Date(item.expiresAt).toLocaleString() }}</div>
-							<div v-else>Period: {{ i18n.ts.indefinitely }}</div>
+							<div>Period: {{ i18n.ts.indefinitely }}</div>
 						</div>
 					</div>
 				</div>
@@ -158,9 +157,9 @@ const blockingPagination = {
 	limit: 10,
 };
 
-const expandedRenoteMuteItems = ref([]);
-const expandedMuteItems = ref([]);
-const expandedBlockItems = ref([]);
+const expandedRenoteMuteItems = ref<string[]>([]);
+const expandedMuteItems = ref<string[]>([]);
+const expandedBlockItems = ref<string[]>([]);
 
 async function unrenoteMute(user, ev) {
 	os.popupMenu([{

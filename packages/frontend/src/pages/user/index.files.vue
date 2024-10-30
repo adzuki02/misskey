@@ -54,7 +54,7 @@ const files = ref<{
 }[]>([]);
 const showingFiles = ref<string[]>([]);
 
-function thumbnail(image: Misskey.entities.DriveFile): string {
+function thumbnail(image: Misskey.entities.DriveFile): string | null {
 	return defaultStore.state.disableShowingAnimatedImages
 		? getStaticImageUrl(image.url)
 		: image.thumbnailUrl;
@@ -67,6 +67,7 @@ onMounted(() => {
 		limit: 15,
 	}).then(notes => {
 		for (const note of notes) {
+			if (!note.files) continue;
 			for (const file of note.files) {
 				files.value.push({
 					note,

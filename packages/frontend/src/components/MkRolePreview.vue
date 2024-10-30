@@ -39,9 +39,9 @@ import * as Misskey from 'misskey-js';
 import { i18n } from '@/i18n.js';
 
 const props = withDefaults(defineProps<{
-	role: Misskey.entities.Role;
+	role: Misskey.entities.RoleLite & Partial<Misskey.entities.Role>;
 	forModeration: boolean;
-	detailed: boolean;
+	detailed?: boolean;
 }>(), {
 	detailed: true,
 });

@@ -39,7 +39,8 @@ onMounted(() => {
 async function add() {
 	defaultStore.push('statusbars', {
 		id: uuid(),
-		type: null,
+		name: '',
+		type: null as unknown as string,
 		black: false,
 		size: 'medium',
 		props: {},

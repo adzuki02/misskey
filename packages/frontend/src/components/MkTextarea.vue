@@ -43,7 +43,7 @@ import { i18n } from '@/i18n.js';
 import { Autocomplete, SuggestionType } from '@/scripts/autocomplete.js';
 
 const props = defineProps<{
-	modelValue: string | null;
+	modelValue: string | null | undefined;
 	required?: boolean;
 	readonly?: boolean;
 	disabled?: boolean;

@@ -9,9 +9,9 @@ import { popup } from '@/os.js';
 import { defaultStore } from '@/store.js';
 
 class ReactionPicker {
-	private src: Ref<HTMLElement | null> = ref(null);
+	private src: Ref<HTMLElement | undefined> = ref(undefined);
 	private manualShowing = ref(false);
-	private targetNote: Ref<Misskey.entities.Note | null> = ref(null);
+	private targetNote: Ref<Misskey.entities.Note | undefined> = ref(undefined);
 	private onChosen?: (reaction: string) => void;
 	private onClosed?: () => void;
 
@@ -35,13 +35,13 @@ class ReactionPicker {
 				this.manualShowing.value = false;
 			},
 			closed: () => {
-				this.src.value = null;
+				this.src.value = undefined;
 				if (this.onClosed) this.onClosed();
 			},
 		});
 	}
 
-	public show(src: HTMLElement | null, targetNote: Misskey.entities.Note | null, onChosen?: ReactionPicker['onChosen'], onClosed?: ReactionPicker['onClosed']) {
+	public show(src: HTMLElement | undefined, targetNote: Misskey.entities.Note | undefined, onChosen?: ReactionPicker['onChosen'], onClosed?: ReactionPicker['onClosed']) {
 		this.src.value = src;
 		this.targetNote.value = targetNote;
 		this.manualShowing.value = true;

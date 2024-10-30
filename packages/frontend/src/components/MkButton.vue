@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@click="emit('click', $event)"
 	@mousedown="onMousedown"
 >
-	<div ref="ripples" :class="$style.ripples" :data-children-class="$style.ripple"></div>
+	<div ref="ripples" :class="$style.ripples" :data-children-class.attr="$style.ripple"></div>
 	<div :class="$style.content">
 		<slot></slot>
 	</div>

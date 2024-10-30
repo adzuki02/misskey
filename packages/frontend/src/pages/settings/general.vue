@@ -400,7 +400,7 @@ async function setPinnedList() {
 			value: x, text: x.name,
 		})),
 	});
-	if (canceled) return;
+	if (canceled || !list) return;
 
 	defaultStore.set('pinnedUserLists', [list]);
 }
@@ -413,7 +413,6 @@ function testNotification(): void {
 	const notification: Misskey.entities.Notification = {
 		id: Math.random().toString(),
 		createdAt: new Date().toUTCString(),
-		isRead: false,
 		type: 'test',
 	};
 

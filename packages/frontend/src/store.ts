@@ -103,7 +103,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	pinnedEmojis: {
 		where: 'account',
-		default: [],
+		default: [] as string[],
 	},
 	reactionAcceptance: {
 		where: 'account',

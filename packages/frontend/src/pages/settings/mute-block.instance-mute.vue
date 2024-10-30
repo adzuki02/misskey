@@ -25,7 +25,7 @@ import { i18n } from '@/i18n.js';
 
 const $i = signinRequired();
 
-const instanceMutes = ref($i.mutedInstances.join('\n'));
+const instanceMutes = ref($i.mutedInstances ? $i.mutedInstances.join('\n') : '');
 const changed = ref(false);
 
 async function save() {

@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkRadios>
 
 	<template v-if="statusbar.type === 'federation'">
-		<MkInput v-model="statusbar.props.refreshIntervalSec" manualSave type="number" min="1">
+		<MkInput v-model="statusbar.props.refreshIntervalSec" manualSave type="number" :min="1">
 			<template #label>{{ i18n.ts.refreshInterval }}</template>
 		</MkInput>
 		<MkRange v-model="statusbar.props.marqueeDuration" :min="5" :max="150" :step="1">

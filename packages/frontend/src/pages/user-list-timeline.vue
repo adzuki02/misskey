@@ -55,6 +55,7 @@ function queueUpdated(q) {
 }
 
 function top() {
+	if (!rootEl.value) return;
 	scroll(rootEl.value, { top: 0 });
 }
 

@@ -7,7 +7,7 @@ import { ref } from 'vue';
 import { Interpreter, Parser, utils, values } from '@syuilo/aiscript';
 import { aiScriptReadline, createAiScriptEnv } from '@/scripts/aiscript/api.js';
 import { inputText } from '@/os.js';
-import { Plugin, noteActions, notePostInterruptors, noteViewInterruptors, postFormActions, userActions, pageViewInterruptors } from '@/store.js';
+import { Plugin, noteActions, notePostInterruptors, noteViewInterruptors, postFormActions, userActions } from '@/store.js';
 
 const parser = new Parser();
 const pluginContexts = new Map<string, Interpreter>();
@@ -24,12 +24,12 @@ export async function install(plugin: Plugin): Promise<void> {
 		in: aiScriptReadline,
 		out: (value): void => {
 			console.log(value);
-			pluginLogs.value.get(plugin.id).push(utils.reprValue(value));
+			pluginLogs.value?.get(plugin.id)?.push(utils.reprValue(value));
 		},
 		log: (): void => {
 		},
 		err: (err): void => {
-			pluginLogs.value.get(plugin.id).push(`${err}`);
+			pluginLogs.value?.get(plugin.id)?.push(`${err}`);
 			throw err; // install時のtry-catchに反応させる
 		},
 	});

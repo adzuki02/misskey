@@ -10,8 +10,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkCodeEditor>
 
 	<div class="_buttons">
-		<MkButton :disabled="installThemeCode == null" inline @click="() => previewTheme(installThemeCode)"><i class="ti ti-eye"></i> {{ i18n.ts.preview }}</MkButton>
-		<MkButton :disabled="installThemeCode == null" primary inline @click="() => install(installThemeCode)"><i class="ti ti-check"></i> {{ i18n.ts.install }}</MkButton>
+		<MkButton :disabled="installThemeCode == null" inline @click="() => previewTheme(installThemeCode!)"><i class="ti ti-eye"></i> {{ i18n.ts.preview }}</MkButton>
+		<MkButton :disabled="installThemeCode == null" primary inline @click="() => install(installThemeCode!)"><i class="ti ti-check"></i> {{ i18n.ts.install }}</MkButton>
 	</div>
 </div>
 </template>
@@ -36,20 +36,22 @@ async function install(code: string): Promise<void> {
 			text: i18n.tsx._theme.installed({ name: theme.name }),
 		});
 	} catch (err) {
-		switch (err.message.toLowerCase()) {
-			case 'this theme is already installed':
-				os.alert({
-					type: 'info',
-					text: i18n.ts._theme.alreadyInstalled,
-				});
-				break;
+		if (err instanceof Error) {
+			switch (err.message.toLowerCase()) {
+				case 'this theme is already installed':
+					os.alert({
+						type: 'info',
+						text: i18n.ts._theme.alreadyInstalled,
+					});
+					break;
 
-			default:
-				os.alert({
-					type: 'error',
-					text: i18n.ts._theme.invalid,
-				});
-				break;
+				default:
+					os.alert({
+						type: 'error',
+						text: i18n.ts._theme.invalid,
+					});
+					break;
+			}
 		}
 		console.error(err);
 	}

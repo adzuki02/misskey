@@ -77,7 +77,7 @@ export const meta = {
 				forwarded: {
 					type: 'boolean',
 					nullable: false, optional: false,
-				}
+				},
 			},
 		},
 	},

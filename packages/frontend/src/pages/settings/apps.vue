@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkKeyValue>
 						<MkKeyValue oneline>
 							<template #key>{{ i18n.ts.lastUsedDate }}</template>
-							<template #value><MkTime :time="token.lastUsedAt"/></template>
+							<template #value><MkTime :time="token.lastUsedAt ?? null"/></template>
 						</MkKeyValue>
 						<details>
 							<summary>{{ i18n.ts.details }}</summary>
@@ -46,7 +46,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import FormPagination from '@/components/MkPagination.vue';
+import type { ComponentExposed } from 'vue-component-type-helpers';
+import FormPagination, { type Paging } from '@/components/MkPagination.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
@@ -54,9 +55,9 @@ import MkKeyValue from '@/components/MkKeyValue.vue';
 import MkButton from '@/components/MkButton.vue';
 import { infoImageUrl } from '@/instance.js';
 
-const list = ref<InstanceType<typeof FormPagination>>();
+const list = ref<ComponentExposed<typeof FormPagination>>();
 
-const pagination = {
+const pagination: Paging<'i/apps'> = {
 	endpoint: 'i/apps' as const,
 	limit: 100,
 	noPaging: true,
@@ -67,7 +68,7 @@ const pagination = {
 
 function revoke(token) {
 	misskeyApi('i/revoke-token', { tokenId: token.id }).then(() => {
-		list.value.reload();
+		list.value?.reload();
 	});
 }
 

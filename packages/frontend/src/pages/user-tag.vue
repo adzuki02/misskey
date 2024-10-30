@@ -17,6 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed } from 'vue';
+import type { Paging } from '@/components/MkPagination.vue';
 import MkUserList from '@/components/MkUserList.vue';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
@@ -24,7 +25,7 @@ const props = defineProps<{
 	tag: string;
 }>();
 
-const tagUsers = computed(() => ({
+const tagUsers = computed<Paging<'hashtags/users'>>(() => ({
 	endpoint: 'hashtags/users' as const,
 	limit: 30,
 	params: {

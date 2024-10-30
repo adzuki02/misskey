@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkKeyValue>
 			<MkKeyValue oneline>
 				<template #key>{{ i18n.ts.createdAt }}</template>
-				<template #value><span class="_monospace"><MkTime :time="user.createdAt" :mode="'detail'"/></span></template>
+				<template #value><span class="_monospace"><MkTime :time="(user as Misskey.entities.UserDetailed).createdAt" :mode="'detail'"/></span></template>
 			</MkKeyValue>
 		</div>
 
@@ -51,8 +51,11 @@ const props = defineProps<{
 	user: Misskey.entities.User;
 }>();
 
+// @ts-expect-error isModeratorはUserLiteには存在しないがUserDetailedには存在する
 const moderator = computed(() => props.user.isModerator ?? false);
+// @ts-expect-error isModeratorはUserLiteには存在しないがUserDetailedには存在する
 const silenced = computed(() => props.user.isSilenced ?? false);
+// @ts-expect-error isModeratorはUserLiteには存在しないがUserDetailedには存在する
 const suspended = computed(() => props.user.isSuspended ?? false);
 </script>
 
