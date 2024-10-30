@@ -97,7 +97,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</FormSection>
 
 	<FormSuspense v-slot="{ result: stats }" :p="initStats">
-		<FormSection>
+		<FormSection v-if="stats">
 			<template #label>{{ i18n.ts.statistics }}</template>
 			<FormSplit>
 				<MkKeyValue>
@@ -106,7 +106,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkKeyValue>
 				<MkKeyValue>
 					<template #key>{{ i18n.ts.notes }}</template>
-					<template #value>{{ $i ? number(stats.originalNotesCount) : '-' }}</template>
+					<template #value>{{ number(stats.originalNotesCount) }}</template>
 				</MkKeyValue>
 			</FormSplit>
 		</FormSection>
@@ -140,7 +140,7 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
 import MkLink from '@/components/MkLink.vue';
 
-const initStats = () => misskeyApi('stats', {});
+const initStats = () => $i ? misskeyApi('stats', {}) : new Promise<undefined>(r => { r(undefined); });
 </script>
 
 <style lang="scss" module>
