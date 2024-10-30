@@ -80,7 +80,7 @@ const run = async () => {
 	} catch (err) {
 		os.alert({
 			type: 'error',
-			text: err,
+			text: typeof err === 'string' ? err : err instanceof Error ? err.toString() : JSON.stringify(err),
 		});
 	}
 };

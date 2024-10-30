@@ -327,7 +327,7 @@ function createFolder() {
 	}).then(({ canceled, result: name }) => {
 		if (canceled) return;
 		misskeyApi('drive/folders/create', {
-			name: name,
+			name: name ?? undefined,
 			parentId: folder.value ? folder.value.id : undefined,
 		}).then(createdFolder => {
 			addFolder(createdFolder, true);

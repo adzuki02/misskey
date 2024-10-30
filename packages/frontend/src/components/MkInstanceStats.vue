@@ -75,7 +75,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, ref, shallowRef } from 'vue';
 import { Chart } from 'chart.js';
 import MkSelect from '@/components/MkSelect.vue';
-import MkChart from '@/components/MkChart.vue';
+import MkChart, { type ChartSrc } from '@/components/MkChart.vue';
 import { useChartTooltip } from '@/scripts/use-chart-tooltip.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -89,7 +89,7 @@ initChart();
 
 const chartLimit = 500;
 const chartSpan = ref<'hour' | 'day'>('hour');
-const chartSrc = ref('notes');
+const chartSrc = ref<ChartSrc>('notes');
 const heatmapSrc = ref<HeatmapSource>('notes');
 const subDoughnutEl = shallowRef<HTMLCanvasElement>();
 const pubDoughnutEl = shallowRef<HTMLCanvasElement>();

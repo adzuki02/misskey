@@ -53,25 +53,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, shallowRef, ref } from 'vue';
-
+import { computed, shallowRef, ref, type Ref } from 'vue';
 import XHeader from './_header_.vue';
+import type { ComponentExposed } from 'vue-component-type-helpers';
 import MkSelect from '@/components/MkSelect.vue';
-import MkPagination from '@/components/MkPagination.vue';
+import MkPagination, { type Paging } from '@/components/MkPagination.vue';
 import XAbuseReport from '@/components/MkAbuseReport.vue';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkButton from '@/components/MkButton.vue';
 
-const reports = shallowRef<InstanceType<typeof MkPagination>>();
+const reports = shallowRef<ComponentExposed<typeof MkPagination<'admin/abuse-user-reports'>>>();
 
 const state = ref('unresolved');
-const reporterOrigin = ref('combined');
-const targetUserOrigin = ref('combined');
-const searchUsername = ref('');
-const searchHost = ref('');
+const reporterOrigin: Ref<'remote' | 'local' | 'combined'> = ref('combined');
+const targetUserOrigin: Ref<'remote' | 'local' | 'combined'> = ref('combined');
 
-const pagination = {
+const pagination: Paging<'admin/abuse-user-reports'> = {
 	endpoint: 'admin/abuse-user-reports' as const,
 	limit: 10,
 	params: computed(() => ({

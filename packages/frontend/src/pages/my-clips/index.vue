@@ -25,6 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { watch, ref, shallowRef, computed } from 'vue';
+import { ComponentExposed } from 'vue-component-type-helpers';
 import * as Misskey from 'misskey-js';
 import MkPagination from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -46,7 +47,7 @@ const tab = ref('my');
 
 const favorites = ref<Misskey.entities.Clip[] | null>(null);
 
-const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const pagingComponent = shallowRef<ComponentExposed<typeof MkPagination>>();
 
 watch(tab, async () => {
 	favorites.value = await misskeyApi('clips/my-favorites');

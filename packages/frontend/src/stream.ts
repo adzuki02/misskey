@@ -12,7 +12,7 @@ import { wsOrigin } from '@/config.js';
 const HEART_BEAT_INTERVAL = 1000 * 60;
 
 let stream: Misskey.Stream | null = null;
-let timeoutHeartBeat: ReturnType<typeof setTimeout> | null = null;
+let timeoutHeartBeat: number | null = null;
 let lastHeartbeatCall = 0;
 
 export function useStream(): Misskey.Stream {

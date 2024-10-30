@@ -160,6 +160,7 @@ export function federationInstance(): entities.FederationInstance {
 		maintainerName: '',
 		maintainerEmail: '',
 		isSilenced: false,
+		isMediaSilenced: false,
 		iconUrl: 'https://github.com/misskey-dev/misskey/blob/master/packages/frontend/assets/about-icon.png?raw=true',
 		faviconUrl: '',
 		themeColor: '',
@@ -182,7 +183,6 @@ export function note(id = 'somenoteid'): entities.Note {
 		reactionEmojis: {},
 		reactions: {},
 		myReaction: null,
-		reactionCount: 0,
 		renoteCount: 0,
 		repliesCount: 0,
 	};

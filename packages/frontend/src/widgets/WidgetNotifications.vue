@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #func="{ buttonStyleClass }"><button class="_button" :class="buttonStyleClass" @click="configureNotification()"><i class="ti ti-settings"></i></button></template>
 
 	<div>
-		<XNotifications :excludeTypes="widgetProps.excludeTypes"/>
+		<XNotifications :excludeTypes="widgetProps.excludeTypes as (typeof notificationTypes)[number][]"/>
 	</div>
 </MkContainer>
 </template>
@@ -18,6 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { defineAsyncComponent } from 'vue';
 import { useWidgetPropsManager, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
+import { notificationTypes } from '@/const.js';
 import { GetFormResultType } from '@/scripts/form.js';
 import MkContainer from '@/components/MkContainer.vue';
 import XNotifications from '@/components/MkNotifications.vue';
@@ -55,7 +56,7 @@ const { widgetProps, configure, save } = useWidgetPropsManager(name,
 
 const configureNotification = () => {
 	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkNotificationSelectWindow.vue')), {
-		excludeTypes: widgetProps.excludeTypes,
+		excludeTypes: widgetProps.excludeTypes as (typeof notificationTypes)[number][],
 	}, {
 		done: async (res) => {
 			const { excludeTypes } = res;

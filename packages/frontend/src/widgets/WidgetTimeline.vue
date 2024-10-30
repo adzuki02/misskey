@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<p :class="$style.disabledDescription">{{ i18n.ts._disabledTimeline.description }}</p>
 	</div>
 	<div v-else>
-		<MkTimeline :key="widgetProps.src === 'list' ? `list:${widgetProps.list.id}` : widgetProps.src === 'antenna' ? `antenna:${widgetProps.antenna.id}` : widgetProps.src" :src="widgetProps.src" :list="widgetProps.list ? widgetProps.list.id : null" :antenna="widgetProps.antenna ? widgetProps.antenna.id : null"/>
+		<MkTimeline :key="widgetProps.src === 'list' ? `list:${widgetProps.list.id}` : widgetProps.src === 'antenna' ? `antenna:${widgetProps.antenna.id}` : widgetProps.src" :src="widgetProps.src as (typeof widgetPropsDef)['src']['default']" :list="widgetProps.list ? widgetProps.list.id as string : undefined" :antenna="widgetProps.antenna ? widgetProps.antenna.id as string : undefined"/>
 	</div>
 </MkContainer>
 </template>
@@ -54,7 +54,7 @@ const widgetPropsDef = {
 	},
 	src: {
 		type: 'string' as const,
-		default: 'home',
+		default: 'home' as 'home' | 'antenna' | 'list',
 		hidden: true,
 	},
 	antenna: {

@@ -38,6 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { shallowRef, computed } from 'vue';
+import { ComponentExposed } from 'vue-component-type-helpers';
 import MkPagination from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
 import { userPage, acct } from '@/filters/user.js';
@@ -46,7 +47,7 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { infoImageUrl } from '@/instance.js';
 
-const paginationComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const paginationComponent = shallowRef<ComponentExposed<typeof MkPagination>>();
 
 const pagination = {
 	endpoint: 'following/requests/list' as const,

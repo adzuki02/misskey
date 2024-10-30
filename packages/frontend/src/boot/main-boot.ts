@@ -157,7 +157,6 @@ export async function mainBoot() {
 
 		main.on('unreadAntenna', () => {
 			updateAccount({ hasUnreadAntenna: true });
-			sound.playMisskeySfx('antenna');
 		});
 
 		// トークンが再生成されたとき

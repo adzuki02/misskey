@@ -41,6 +41,8 @@ const touched = () => {
 };
 
 const onMousemove = (ev: MouseEvent) => {
+	if (!live2d.value || !live2d.value.contentWindow) return;
+
 	const iframeRect = live2d.value.getBoundingClientRect();
 	live2d.value.contentWindow.postMessage({
 		type: 'moveCursor',

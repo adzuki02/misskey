@@ -56,6 +56,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref, shallowRef } from 'vue';
+import type { ComponentExposed } from 'vue-component-type-helpers';
 import XHeader from './_header_.vue';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
@@ -69,7 +70,7 @@ import MkPagination, { Paging } from '@/components/MkPagination.vue';
 import MkInviteCode from '@/components/MkInviteCode.vue';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
-const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const pagingComponent = shallowRef<ComponentExposed<typeof MkPagination>>();
 
 const type = ref('all');
 const sort = ref('+createdAt');

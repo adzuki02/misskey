@@ -95,7 +95,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	memo: {
 		where: 'account',
-		default: null,
+		default: null as string | null,
 	},
 	reactions: {
 		where: 'account',

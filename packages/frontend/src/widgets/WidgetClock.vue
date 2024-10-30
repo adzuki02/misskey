@@ -15,12 +15,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="widgetProps.label === 'tz' || widgetProps.label === 'timeAndTz'" class="_monospace" :class="[$style.label, $style.a]">{{ tzAbbrev }}</div>
 		<MkAnalogClock
 			:class="$style.clock"
-			:thickness="widgetProps.thickness"
+			:thickness="widgetProps.thickness as typeof widgetPropsDef['thickness']['options'][number]['value']"
 			:offset="tzOffset"
-			:graduations="widgetProps.graduations"
+			:graduations="widgetProps.graduations as typeof widgetPropsDef['graduations']['options'][number]['value']"
 			:fadeGraduations="widgetProps.fadeGraduations"
 			:twentyfour="widgetProps.twentyFour"
-			:sAnimation="widgetProps.sAnimation"
+			:sAnimation="widgetProps.sAnimation as typeof widgetPropsDef['sAnimation']['options'][number]['value']"
 		/>
 		<MkDigitalClock v-if="widgetProps.label === 'time' || widgetProps.label === 'timeAndTz'" :class="[$style.label, $style.c]" class="_monospace" :showS="false" :offset="tzOffset"/>
 		<div v-if="widgetProps.label === 'tz' || widgetProps.label === 'timeAndTz'" class="_monospace" :class="[$style.label, $style.d]">{{ tzOffsetLabel }}</div>
@@ -71,11 +71,11 @@ const widgetPropsDef = {
 		type: 'radio' as const,
 		default: 'numbers',
 		options: [{
-			value: 'none', label: 'None',
+			value: 'none' as const, label: 'None',
 		}, {
-			value: 'dots', label: 'Dots',
+			value: 'dots' as const, label: 'Dots',
 		}, {
-			value: 'numbers', label: 'Numbers',
+			value: 'numbers' as const, label: 'Numbers',
 		}],
 	},
 	fadeGraduations: {
@@ -86,11 +86,11 @@ const widgetPropsDef = {
 		type: 'radio' as const,
 		default: 'elastic',
 		options: [{
-			value: 'none', label: 'None',
+			value: 'none' as const, label: 'None',
 		}, {
-			value: 'elastic', label: 'Elastic',
+			value: 'elastic' as const, label: 'Elastic',
 		}, {
-			value: 'easeOut', label: 'Ease out',
+			value: 'easeOut' as const, label: 'Ease out',
 		}],
 	},
 	twentyFour: {
@@ -118,7 +118,7 @@ const widgetPropsDef = {
 			value: tz.name.toLowerCase(),
 		})), {
 			label: '(auto)',
-			value: null,
+			value: null as unknown as string,
 		}],
 	},
 };
@@ -134,10 +134,14 @@ const { widgetProps, configure } = useWidgetPropsManager(name,
 	emit,
 );
 
+// タイムゾーンの自動設定を意味するnullをstring型として格納しているので必要
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 const tzAbbrev = computed(() => (widgetProps.timezone === null
 	? timezones.find((tz) => tz.name.toLowerCase() === Intl.DateTimeFormat().resolvedOptions().timeZone.toLowerCase())?.abbrev
 	: timezones.find((tz) => tz.name.toLowerCase() === widgetProps.timezone)?.abbrev) ?? '?');
 
+// タイムゾーンの自動設定を意味するnullをstring型として格納しているので必要
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 const tzOffset = computed(() => widgetProps.timezone === null
 	? 0 - new Date().getTimezoneOffset()
 	: timezones.find((tz) => tz.name.toLowerCase() === widgetProps.timezone)?.offset ?? 0);

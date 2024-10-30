@@ -53,7 +53,7 @@ const squareAvatars = ref(defaultStore.state.squareAvatars);
 const useBlurEffect = ref(defaultStore.state.useBlurEffect);
 
 const props = withDefaults(defineProps<{
-	user: Misskey.entities.User;
+	user: Misskey.entities.UserLite;
 	target?: string | null;
 	link?: boolean;
 	preview?: boolean;

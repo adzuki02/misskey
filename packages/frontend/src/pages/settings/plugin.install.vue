@@ -44,7 +44,7 @@ async function install() {
 		os.alert({
 			type: 'error',
 			title: 'Install failed',
-			text: err.toString() ?? null,
+			text: typeof err === 'string' ? err : err instanceof Error ? err.toString() : JSON.stringify(err),
 		});
 	}
 }

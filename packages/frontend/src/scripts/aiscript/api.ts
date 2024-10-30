@@ -25,7 +25,7 @@ export function aiScriptReadline(q: string): Promise<string> {
 export function createAiScriptEnv(opts) {
 	return {
 		USER_ID: $i ? values.STR($i.id) : values.NULL,
-		USER_NAME: $i ? values.STR($i.name) : values.NULL,
+		USER_NAME: $i && $i.name ? values.STR($i.name) : values.NULL,
 		USER_USERNAME: $i ? values.STR($i.username) : values.NULL,
 		CUSTOM_EMOJIS: utils.jsToVal(customEmojis.value),
 		LOCALE: values.STR(lang),
@@ -61,18 +61,6 @@ export function createAiScriptEnv(opts) {
 				return values.ERROR('request_failed', utils.jsToVal(err));
 			});
 		}),
-		/* セキュリティ上の問題があるため無効化
-		'Mk:apiExternal': values.FN_NATIVE(async ([host, ep, param, token]) => {
-			utils.assertString(host);
-			utils.assertString(ep);
-			if (token) utils.assertString(token);
-			return os.apiExternal(host.value, ep.value, utils.valToJs(param), token?.value).then(res => {
-				return utils.jsToVal(res);
-			}, err => {
-				return values.ERROR('request_failed', utils.jsToVal(err));
-			});
-		}),
-		*/
 		'Mk:save': values.FN_NATIVE(([key, value]) => {
 			utils.assertString(key);
 			miLocalStorage.setItem(`aiscript:${opts.storageKey}:${key.value}`, JSON.stringify(utils.valToJs(value)));
@@ -80,7 +68,7 @@ export function createAiScriptEnv(opts) {
 		}),
 		'Mk:load': values.FN_NATIVE(([key]) => {
 			utils.assertString(key);
-			return utils.jsToVal(JSON.parse(miLocalStorage.getItem(`aiscript:${opts.storageKey}:${key.value}`)));
+			return utils.jsToVal(JSON.parse(miLocalStorage.getItem(`aiscript:${opts.storageKey}:${key.value}`) ?? 'null'));
 		}),
 		'Mk:url': values.FN_NATIVE(() => {
 			return values.STR(window.location.href);

@@ -5,7 +5,6 @@
 
 import { reactive, ref } from 'vue';
 import * as Misskey from 'misskey-js';
-import { v4 as uuid } from 'uuid';
 import { readAndCompressImage } from '@misskey-dev/browser-image-resizer';
 import { getCompressionConfig } from './upload/compress-config.js';
 import { defaultStore } from '@/store.js';
@@ -50,7 +49,7 @@ export function uploadFile(
 	}
 
 	return new Promise((resolve, reject) => {
-		const id = uuid();
+		const id = crypto.randomUUID();
 
 		const reader = new FileReader();
 		reader.onload = async (): Promise<void> => {
@@ -89,7 +88,9 @@ export function uploadFile(
 			}
 
 			const formData = new FormData();
-			formData.append('i', $i.token);
+			// 一番上で既にチェックしているので再度チェックしない。仮にundefinedになってもアップロードに失敗するだけ。
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			formData.append('i', $i!.token);
 			formData.append('force', 'true');
 			formData.append('file', resizedImage ?? file);
 			formData.append('name', ctx.name);

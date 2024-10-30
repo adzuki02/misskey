@@ -198,6 +198,7 @@ const onContextmenu = (ev) => {
 		if (el.parentElement) {
 			return isLink(el.parentElement);
 		}
+		return false;
 	};
 	if (isLink(ev.target)) return;
 	if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes(ev.target.tagName) || ev.target.attributes['contenteditable']) return;
@@ -216,7 +217,7 @@ const onContextmenu = (ev) => {
 };
 
 function top() {
-	contents.value.rootEl.scrollTo({
+	contents.value?.rootEl?.scrollTo({
 		top: 0,
 		behavior: 'smooth',
 	});
@@ -239,7 +240,7 @@ watch(navFooter, () => {
 	immediate: true,
 });
 
-useScrollPositionManager(() => contents.value.rootEl, mainRouter);
+useScrollPositionManager(() => contents.value?.rootEl ?? null, mainRouter);
 </script>
 
 <style>

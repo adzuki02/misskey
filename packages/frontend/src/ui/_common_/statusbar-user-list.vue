@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		>
 			<MarqueeText :key="key" :duration="marqueeDuration" :reverse="marqueeReverse">
 				<span v-for="note in notes" :key="note.id" :class="$style.item">
-					<img :class="$style.avatar" :src="note.user.avatarUrl" decoding="async"/>
+					<img :class="$style.avatar" :src="note.user.avatarUrl ?? undefined" decoding="async"/>
 					<MkA :class="$style.text" :to="notePage(note)">
 						<Mfm :text="getNoteSummary(note)" :plain="true" :nowrap="true"/>
 					</MkA>
@@ -65,7 +65,7 @@ const tick = () => {
 
 watch(() => props.userListId, tick);
 
-useInterval(tick, Math.max(5000, props.refreshIntervalSec * 1000), {
+useInterval(tick, Math.max(5000, (props.refreshIntervalSec ?? 5) * 1000), {
 	immediate: true,
 	afterMounted: true,
 });

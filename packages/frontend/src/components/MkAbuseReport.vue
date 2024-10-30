@@ -42,6 +42,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import type { AdminAbuseUserReportsResponse } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
@@ -50,7 +51,7 @@ import { i18n } from '@/i18n.js';
 import { dateString } from '@/filters/date.js';
 
 const props = defineProps<{
-	report: any;
+	report: AdminAbuseUserReportsResponse[number];
 }>();
 
 const emit = defineEmits<{

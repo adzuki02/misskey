@@ -22,7 +22,8 @@ export async function fetchThemes(): Promise<void> {
 		const themes = await misskeyApi('i/registry/get', { scope: ['client'], key: 'themes' });
 		miLocalStorage.setItem(lsCacheKey!, JSON.stringify(themes));
 	} catch (err) {
-		if (err.code === 'NO_SUCH_KEY') return;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		if ((err as any).code === 'NO_SUCH_KEY') return;
 		throw err;
 	}
 }

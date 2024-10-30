@@ -326,7 +326,7 @@ provide('react', (reaction: string) => {
 const tab = ref(props.initialTab);
 const reactionTabType = ref<string | null>(null);
 
-const renotesPagination = computed<Paging>(() => ({
+const renotesPagination = computed<Paging<'notes/renotes'>>(() => ({
 	endpoint: 'notes/renotes',
 	limit: 10,
 	params: {
@@ -334,7 +334,7 @@ const renotesPagination = computed<Paging>(() => ({
 	},
 }));
 
-const reactionsPagination = computed<Paging>(() => ({
+const reactionsPagination = computed<Paging<'notes/reactions'>>(() => ({
 	endpoint: 'notes/reactions',
 	limit: 10,
 	params: {
@@ -351,6 +351,8 @@ useNoteCapture({
 });
 
 useTooltip(renoteButton, async (showing) => {
+	if (!renoteButton.value) return;
+
 	const renotes = await misskeyApi('notes/renotes', {
 		noteId: appearNote.value.id,
 		limit: 11,

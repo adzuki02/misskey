@@ -398,6 +398,10 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			feedbackUrl: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
 			impressumUrl: {
 				type: 'string',
 				optional: false, nullable: true,

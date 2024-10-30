@@ -14,6 +14,7 @@
 		"moduleResolution": "nodenext",
 		"removeComments": false,
 		"noLib": false,
+		"skipLibCheck": true,
 		"strict": true,
 		"strictNullChecks": true,
 		"experimentalDecorators": true,
@@ -48,6 +49,7 @@
 		"./**/*.vue"
 	],
 	"exclude": [
-		".storybook/**/*"
+		".storybook/**/*",
+		"src/**/*.stories.ts"
 	]
 }

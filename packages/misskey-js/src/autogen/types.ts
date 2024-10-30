@@ -4111,6 +4111,7 @@ export type operations = {
             defaultLightTheme: string | null;
             description: string | null;
             disableRegistration: boolean;
+            feedbackUrl: string | null;
             impressumUrl: string | null;
             maintainerEmail: string | null;
             maintainerName: string | null;
@@ -4227,6 +4228,7 @@ export type operations = {
               reporter: components['schemas']['UserDetailedNotMe'];
               targetUser: components['schemas']['UserDetailedNotMe'];
               assignee?: components['schemas']['UserDetailedNotMe'] | null;
+              forwarded: boolean;
             })[];
         };
       };

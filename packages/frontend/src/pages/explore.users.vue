@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #header><i class="ti ti-hash ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularTags }}</template>
 
 		<div>
-			<MkA v-for="tag in tagsList" :key="tag.tag" :to="`/user-tags/${tag.tag}`" style="margin-right: 16px;">{{ tag.tag }}</MkA>
+			<MkA v-for="tagsListItem in tagsList" :key="tagsListItem.tag" :to="`/user-tags/${tagsListItem.tag}`" style="margin-right: 16px;">{{ tagsListItem.tag }}</MkA>
 		</div>
 	</MkFoldableSection>
 
@@ -30,6 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { watch, ref, shallowRef, computed } from 'vue';
 import * as Misskey from 'misskey-js';
+import type { Paging } from '@/components/MkPagination.vue';
 import MkUserList from '@/components/MkUserList.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -54,9 +55,9 @@ const tagUsers = computed(() => ({
 		origin: 'combined',
 		sort: '+follower',
 	},
-}));
+} as Paging<'hashtags/users'>));
 
-const pinnedUsers = { endpoint: 'pinned-users', noPaging: true, limit: 10 };
+const pinnedUsers: Paging<'pinned-users'> = { endpoint: 'pinned-users', noPaging: true, limit: 10 };
 
 misskeyApi('hashtags/list', {
 	sort: '+attachedUsers',

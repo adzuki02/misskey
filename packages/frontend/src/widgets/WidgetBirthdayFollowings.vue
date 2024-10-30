@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.bdayFRoot">
 		<MkLoading v-if="fetching"/>
 		<div v-else-if="users.length > 0" :class="$style.bdayFGrid">
-			<MkAvatar v-for="user in users" :key="user.id" :user="user.followee" link preview></MkAvatar>
+			<MkAvatar v-for="user in users" :key="user.id" :user="user.followee!" link preview></MkAvatar>
 		</div>
 		<div v-else :class="$style.bdayFFallback">
 			<img :src="infoImageUrl" class="_ghost" :class="$style.bdayFFallbackImage"/>

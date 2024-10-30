@@ -5,12 +5,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div class="_panel">
-	<div :class="$style.container" :style="{ backgroundImage: $i.bannerUrl ? `url(${ $i.bannerUrl })` : null }">
+	<div :class="$style.container" :style="{ backgroundImage: $i?.bannerUrl ? `url(${ $i.bannerUrl })` : 'none' }">
 		<div :class="$style.avatarContainer">
-			<MkAvatar :class="$style.avatar" :user="$i"/>
+			<MkAvatar v-if="$i" :class="$style.avatar" :user="$i"/>
 		</div>
 		<div :class="$style.bodyContainer">
-			<div :class="$style.body">
+			<div v-if="$i" :class="$style.body">
 				<MkA :class="$style.name" :to="userPage($i)">
 					<MkUserName :user="$i"/>
 				</MkA>

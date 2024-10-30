@@ -74,5 +74,5 @@ function onContextmenu(ev: MouseEvent) {
 	}], ev);
 }
 
-useScrollPositionManager(() => getScrollContainer(contents.value), mainRouter);
+useScrollPositionManager(() => getScrollContainer(contents.value ?? null), mainRouter);
 </script>
