@@ -150,8 +150,9 @@ function like() {
 	os.apiWithDialog('flash/like', {
 		flashId: flash.value.id,
 	}).then(() => {
-		flash.value!.isLiked = true;
-		flash.value!.likedCount++;
+		if (!flash.value) return;
+		flash.value.isLiked = true;
+		flash.value.likedCount = (flash.value.likedCount ?? 0) + 1;
 	});
 }
 
@@ -167,8 +168,9 @@ async function unlike() {
 	os.apiWithDialog('flash/unlike', {
 		flashId: flash.value.id,
 	}).then(() => {
-		flash.value!.isLiked = false;
-		flash.value!.likedCount--;
+		if (!flash.value) return;
+		flash.value.isLiked = false;
+		flash.value.likedCount = (flash.value.likedCount ?? 1) - 1;
 	});
 }
 
@@ -225,7 +227,7 @@ async function run() {
 		os.alert({
 			type: 'error',
 			title: 'AiScript Error',
-			text: err.message,
+			text: (err as Error).message,
 		});
 	}
 }

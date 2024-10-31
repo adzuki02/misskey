@@ -25,17 +25,19 @@ import FormSuspense from '@/components/form/suspense.vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
-import { getAccounts, addAccount as addAccounts, removeAccount as _removeAccount, login, $i } from '@/account.js';
+import { getAccounts, addAccount as addAccounts, removeAccount as _removeAccount, login, signinRequired } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
+
+const $i = signinRequired();
 
 const storedAccounts = ref<{ id: string, token: string }[] | null>(null);
 const accounts = ref<Misskey.entities.UserDetailed[]>([]);
 
 const init = async () => {
 	getAccounts().then(accounts => {
-		storedAccounts.value = accounts.filter(x => x.id !== $i!.id);
+		storedAccounts.value = accounts.filter(x => x.id !== $i.id);
 
 		return misskeyApi('users/show', {
 			userIds: storedAccounts.value.map(x => x.id),

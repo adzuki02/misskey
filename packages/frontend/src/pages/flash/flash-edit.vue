@@ -407,7 +407,7 @@ function selectPreset(ev: MouseEvent) {
 }
 
 async function save() {
-	if (flash.value) {
+	if (flash.value && props.id) {
 		os.apiWithDialog('flash/update', {
 			flashId: props.id,
 			title: title.value,
@@ -439,6 +439,8 @@ function show() {
 }
 
 async function del() {
+	if (!flash.value || !props.id) return;
+
 	const { canceled } = await os.confirm({
 		type: 'warning',
 		text: i18n.tsx.deleteAreYouSure({ x: flash.value.title }),

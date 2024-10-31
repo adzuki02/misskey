@@ -47,7 +47,7 @@ import { fetchInstance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
-const deeplAuthKey = ref<string>('');
+const deeplAuthKey = ref<string | null>(null);
 const deeplIsPro = ref<boolean>(false);
 
 async function init() {

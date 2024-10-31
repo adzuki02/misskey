@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div ref="el" class="fdidabkc" :style="{ background: bg }" @click="onClick">
+<div ref="el" class="fdidabkc" :style="{ background: bg ?? '' }" @click="onClick">
 	<template v-if="pageMetadata">
 		<div class="titleContainer" @click="showTabsPopup">
 			<i v-if="pageMetadata.icon" class="icon" :class="pageMetadata.icon"></i>
@@ -78,7 +78,7 @@ const hasTabs = computed(() => {
 });
 
 const showTabsPopup = (ev: MouseEvent) => {
-	if (!hasTabs.value) return;
+	if (!hasTabs.value || !props.tabs) return;
 	ev.preventDefault();
 	ev.stopPropagation();
 	const menu = props.tabs.map(tab => ({

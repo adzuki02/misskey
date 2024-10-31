@@ -21,6 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<MkPagination v-slot="{items}" ref="logs" :pagination="pagination" style="margin-top: var(--margin);">
 				<div class="_gaps_s">
+					<!-- @vue-expect-error -->
 					<XModLog v-for="item in items" :key="item.id" :log="item"/>
 				</div>
 			</MkPagination>

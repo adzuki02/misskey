@@ -199,7 +199,7 @@ import { url } from '@/config.js';
 import { acct } from '@/filters/user.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
-import { iAmAdmin, $i, iAmModerator } from '@/account.js';
+import { signinRequired, iAmAdmin, iAmModerator } from '@/account.js';
 import MkRolePreview from '@/components/MkRolePreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
 
@@ -210,11 +210,12 @@ const props = withDefaults(defineProps<{
 	initialTab: 'overview',
 });
 
+const $i = signinRequired();
 const tab = ref(props.initialTab);
 const chartSrc = ref('per-user-notes');
 const user = ref<null | Misskey.entities.UserDetailed>();
 const init = ref<ReturnType<typeof createFetcher>>();
-const info = ref<any>();
+const info = ref<Misskey.Endpoints['admin/show-user']['res'] | null>(null);
 const ips = ref<Misskey.entities.AdminGetUserIpsResponse | null>(null);
 const ap = ref<any>(null);
 const moderator = ref(false);
@@ -228,7 +229,7 @@ const filesPagination = {
 		userId: props.userId,
 	})),
 };
-const expandedRoles = ref([]);
+const expandedRoles = ref<Misskey.entities.Role['id'][]>([]);
 
 function createFetcher() {
 	return () => Promise.all([misskeyApi('users/show', {
@@ -247,6 +248,7 @@ function createFetcher() {
 		moderationNote.value = info.value.moderationNote;
 
 		watch(moderationNote, async () => {
+			if (!user.value) return;
 			await misskeyApi('admin/update-user-note', { userId: user.value.id, text: moderationNote.value });
 			await refreshUser();
 		});
@@ -258,11 +260,13 @@ function refreshUser() {
 }
 
 async function updateRemoteUser() {
+	if (!user.value) return;
 	await os.apiWithDialog('federation/update-remote-user', { userId: user.value.id });
 	refreshUser();
 }
 
 async function resetPassword() {
+	if (!user.value) return;
 	const confirm = await os.confirm({
 		type: 'warning',
 		text: i18n.ts.resetPasswordConfirm,
@@ -281,6 +285,7 @@ async function resetPassword() {
 }
 
 async function toggleSuspend(v) {
+	if (!user.value) return;
 	const confirm = await os.confirm({
 		type: 'warning',
 		text: v ? i18n.ts.suspendConfirm : i18n.ts.unsuspendConfirm,
@@ -294,13 +299,14 @@ async function toggleSuspend(v) {
 }
 
 async function unsetUserAvatar() {
+	if (!user.value) return;
 	const confirm = await os.confirm({
 		type: 'warning',
 		text: i18n.ts.unsetUserAvatarConfirm,
 	});
 	if (confirm.canceled) return;
 	const process = async () => {
-		await misskeyApi('admin/unset-user-avatar', { userId: user.value.id });
+		await misskeyApi('admin/unset-user-avatar', { userId: user.value!.id });
 		os.success();
 	};
 	await process().catch(err => {
@@ -313,13 +319,14 @@ async function unsetUserAvatar() {
 }
 
 async function unsetUserBanner() {
+	if (!user.value) return;
 	const confirm = await os.confirm({
 		type: 'warning',
 		text: i18n.ts.unsetUserBannerConfirm,
 	});
 	if (confirm.canceled) return;
 	const process = async () => {
-		await misskeyApi('admin/unset-user-banner', { userId: user.value.id });
+		await misskeyApi('admin/unset-user-banner', { userId: user.value!.id });
 		os.success();
 	};
 	await process().catch(err => {
@@ -340,7 +347,7 @@ async function deleteAllFiles() {
 	});
 	if (confirm.canceled) return;
 	const process = async () => {
-		await misskeyApi('admin/delete-all-files-of-a-user', { userId: user.value.id });
+		await misskeyApi('admin/delete-all-files-of-a-user', { userId: user.value!.id });
 		os.success();
 	};
 	await process().catch(err => {
@@ -418,18 +425,19 @@ async function assignRole() {
 }
 
 async function unassignRole(role, ev) {
+	if (!user.value) return;
 	os.popupMenu([{
 		text: i18n.ts.unassign,
 		icon: 'ti ti-x',
 		danger: true,
 		action: async () => {
-			await os.apiWithDialog('admin/roles/unassign', { roleId: role.id, userId: user.value.id });
+			await os.apiWithDialog('admin/roles/unassign', { roleId: role.id, userId: user.value!.id });
 			refreshUser();
 		},
 	}], ev.currentTarget ?? ev.target);
 }
 
-function toggleRoleItem(role) {
+function toggleRoleItem(role: Misskey.entities.Role) {
 	if (expandedRoles.value.includes(role.id)) {
 		expandedRoles.value = expandedRoles.value.filter(x => x !== role.id);
 	} else {
@@ -444,6 +452,7 @@ watch(() => props.userId, () => {
 });
 
 watch(user, () => {
+	if (!user.value) return;
 	misskeyApi('ap/get', {
 		uri: user.value.uri ?? `${url}/users/${user.value.id}`,
 	}).then(res => {

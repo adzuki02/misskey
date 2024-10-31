@@ -9,10 +9,12 @@ import { readAndCompressImage } from '@misskey-dev/browser-image-resizer';
 import { getCompressionConfig } from './upload/compress-config.js';
 import { defaultStore } from '@/store.js';
 import { apiUrl } from '@/config.js';
-import { $i } from '@/account.js';
+import { signinRequired } from '@/account.js';
 import { alert } from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
+
+const $i = signinRequired();
 
 type Uploading = {
 	id: string;
@@ -35,8 +37,6 @@ export function uploadFile(
 	name?: string,
 	keepOriginal: boolean = defaultStore.state.keepOriginalUploading,
 ): Promise<Misskey.entities.DriveFile> {
-	if ($i == null) throw new Error('Not logged in');
-
 	if (folder && typeof folder === 'object') folder = folder.id;
 
 	if (file.size > instance.maxFileSize) {
@@ -88,9 +88,7 @@ export function uploadFile(
 			}
 
 			const formData = new FormData();
-			// 一番上で既にチェックしているので再度チェックしない。仮にundefinedになってもアップロードに失敗するだけ。
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			formData.append('i', $i!.token);
+			formData.append('i', $i.token);
 			formData.append('force', 'true');
 			formData.append('file', resizedImage ?? file);
 			formData.append('name', ctx.name);

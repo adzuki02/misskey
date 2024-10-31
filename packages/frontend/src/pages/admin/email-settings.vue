@@ -82,10 +82,10 @@ import MkButton from '@/components/MkButton.vue';
 const enableEmail = ref<boolean>(false);
 const email = ref<string | null>(null);
 const smtpSecure = ref<boolean>(false);
-const smtpHost = ref<string>('');
-const smtpPort = ref<number>(0);
-const smtpUser = ref<string>('');
-const smtpPass = ref<string>('');
+const smtpHost = ref<string | null>(null);
+const smtpPort = ref<number | null>(null);
+const smtpUser = ref<string | null>(null);
+const smtpPass = ref<string | null>(null);
 
 async function init() {
 	const meta = await misskeyApi('admin/meta');

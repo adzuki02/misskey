@@ -141,7 +141,7 @@ export const moderationLogTypes = [
 	'deleteFlash',
 ] as const;
 
-type AvatarDecoration = UserLite['avatarDecorations'][number];
+type AvatarDecoration = UserLite['avatarDecorations'][number] & { name: string };
 
 type ReceivedAbuseReport = {
 	reportId: AbuseReportNotificationRecipient['id'];
