@@ -210,14 +210,14 @@ function saveTlFilter(key: keyof typeof defaultStore.state.tl.filter, newValue: 
 	}
 }
 
-async function timetravel(): Promise<void> {
+/* async function timetravel(): Promise<void> {
 	const { canceled, result: date } = await os.inputDate({
 		title: i18n.ts.jumpToSpecifiedDate,
 	});
 	if (canceled) return;
 
 	tlComponent.value.timetravel(date);
-}
+} */
 
 function switchTlIfNeeded() {
 	if (isBasicTimeline(src.value) && !isAvailableBasicTimeline(src.value)) {

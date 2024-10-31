@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
 			<div v-if="tab === 'overview'" key="overview" class="_gaps_m">
 				<div class="fnfelxur">
-					<img :src="faviconUrl" alt="" class="icon"/>
+					<img :src="faviconUrl ?? undefined" alt="" class="icon"/>
 					<span class="name">{{ instance.name || `(${i18n.ts.unknown})` }}</span>
 				</div>
 				<div style="display: flex; flex-direction: column; gap: 1em;">
@@ -117,7 +117,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 			<div v-else-if="tab === 'users'" key="users" class="_gaps_m">
 				<MkPagination v-slot="{items}" :pagination="usersPagination" style="display: grid; grid-template-columns: repeat(auto-fill,minmax(270px,1fr)); grid-gap: 12px;">
-					<MkA v-for="user in items" :key="user.id" v-tooltip.mfm="`Last posted: ${dateString(user.updatedAt)}`" class="user" :to="`/admin/user/${user.id}`">
+					<MkA v-for="user in items" :key="user.id" v-tooltip.mfm="`Last posted: ${dateString(user.updatedAt ?? '1970-01-01')}`" class="user" :to="`/admin/user/${user.id}`">
 						<MkUserCardMini :user="user"/>
 					</MkA>
 				</MkPagination>
@@ -172,8 +172,8 @@ const isMediaSilenced = ref(false);
 const faviconUrl = ref<string | null>(null);
 const moderationNote = ref('');
 
-const usersPagination = {
-	endpoint: iAmModerator ? 'admin/show-users' : 'users',
+const usersPagination: Paging<'admin/show-users'> = {
+	endpoint: 'admin/show-users' as const,
 	limit: 10,
 	params: {
 		sort: '+updatedAt',
@@ -181,7 +181,7 @@ const usersPagination = {
 		hostname: props.host,
 	},
 	offsetMode: true,
-} satisfies Paging;
+};
 
 if (iAmModerator) {
 	watch(moderationNote, async () => {

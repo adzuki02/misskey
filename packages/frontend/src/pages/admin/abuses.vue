@@ -57,7 +57,7 @@ import { computed, shallowRef, ref, type Ref } from 'vue';
 import XHeader from './_header_.vue';
 import type { ComponentExposed } from 'vue-component-type-helpers';
 import MkSelect from '@/components/MkSelect.vue';
-import MkPagination, { type Paging } from '@/components/MkPagination.vue';
+import MkPagination from '@/components/MkPagination.vue';
 import XAbuseReport from '@/components/MkAbuseReport.vue';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
@@ -69,7 +69,7 @@ const state = ref('unresolved');
 const reporterOrigin: Ref<'remote' | 'local' | 'combined'> = ref('combined');
 const targetUserOrigin: Ref<'remote' | 'local' | 'combined'> = ref('combined');
 
-const pagination: Paging<'admin/abuse-user-reports'> = {
+const pagination = {
 	endpoint: 'admin/abuse-user-reports' as const,
 	limit: 10,
 	params: computed(() => ({

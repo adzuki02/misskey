@@ -71,7 +71,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 const host = ref('');
 const state = ref('federating');
-const sort = ref('+pubSub');
+const sort = ref<Exclude<Misskey.Endpoints['federation/instances']['req']['sort'], null | undefined>>('+pubSub');
 const pagination = {
 	endpoint: 'federation/instances' as const,
 	limit: 10,

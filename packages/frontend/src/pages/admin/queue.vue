@@ -25,7 +25,7 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkButton from '@/components/MkButton.vue';
 
-const tab = ref('deliver');
+const tab = ref<'deliver' | 'inbox'>('deliver');
 
 function clear() {
 	os.confirm({
@@ -35,7 +35,7 @@ function clear() {
 	}).then(({ canceled }) => {
 		if (canceled) return;
 
-		os.apiWithDialog('admin/queue/clear');
+		os.apiWithDialog('admin/queue/clear', {});
 	});
 }
 

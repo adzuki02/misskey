@@ -80,7 +80,7 @@ import { useRouter } from '@/router/supplier.js';
 const router = useRouter();
 
 const props = defineProps<{
-	id?: string;
+	id: string;
 }>();
 
 const usersPagination = {
@@ -91,7 +91,7 @@ const usersPagination = {
 	})),
 };
 
-const expandedItems = ref([]);
+const expandedItems = ref<string[]>([]);
 
 const role = reactive(await misskeyApi('admin/roles/show', {
 	roleId: props.id,

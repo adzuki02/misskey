@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed } from 'vue';
 import * as Misskey from 'misskey-js';
-import MkPagination, { type Paging } from '@/components/MkPagination.vue';
+import MkPagination from '@/components/MkPagination.vue';
 import MkNote from '@/components/MkNote.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 
@@ -29,7 +29,7 @@ const props = defineProps<{
 	user: Misskey.entities.User;
 }>();
 
-const pagination: Paging<'users/reactions'> = {
+const pagination = {
 	endpoint: 'users/reactions' as const,
 	limit: 20,
 	params: computed(() => ({
