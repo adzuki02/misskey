@@ -114,6 +114,8 @@ const remotePagination = {
 };
 
 const selectAll = () => {
+	if (!emojisPaginationComponent.value) return;
+
 	if (selectedEmojis.value.length > 0) {
 		selectedEmojis.value = [];
 	} else {
@@ -134,7 +136,7 @@ const add = async (ev: MouseEvent) => {
 	}, {
 		done: result => {
 			if (result.created) {
-				emojisPaginationComponent.value.prepend(result.created);
+				emojisPaginationComponent.value?.prepend(result.created);
 			}
 		},
 		closed: () => dispose(),
@@ -146,6 +148,8 @@ const edit = (emoji) => {
 		emoji: emoji,
 	}, {
 		done: result => {
+			if (!emojisPaginationComponent.value) return;
+
 			if (result.updated) {
 				emojisPaginationComponent.value.updateItem(result.updated.id, (oldEmoji: any) => ({
 					...oldEmoji,
@@ -219,6 +223,8 @@ const menu = (ev: MouseEvent) => {
 };
 
 const setCategoryBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
 	const { canceled, result } = await os.inputText({
 		title: 'Category',
 	});
@@ -231,6 +237,8 @@ const setCategoryBulk = async () => {
 };
 
 const setLicenseBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
 	const { canceled, result } = await os.inputText({
 		title: 'License',
 	});
@@ -243,10 +251,12 @@ const setLicenseBulk = async () => {
 };
 
 const addTagBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
 	const { canceled, result } = await os.inputText({
 		title: 'Tag',
 	});
-	if (canceled) return;
+	if (canceled || !result) return;
 	await os.apiWithDialog('admin/emoji/add-aliases-bulk', {
 		ids: selectedEmojis.value,
 		aliases: result.split(' '),
@@ -255,10 +265,12 @@ const addTagBulk = async () => {
 };
 
 const removeTagBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
 	const { canceled, result } = await os.inputText({
 		title: 'Tag',
 	});
-	if (canceled) return;
+	if (canceled || !result) return;
 	await os.apiWithDialog('admin/emoji/remove-aliases-bulk', {
 		ids: selectedEmojis.value,
 		aliases: result.split(' '),
@@ -267,10 +279,12 @@ const removeTagBulk = async () => {
 };
 
 const setTagBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
 	const { canceled, result } = await os.inputText({
 		title: 'Tag',
 	});
-	if (canceled) return;
+	if (canceled || !result) return;
 	await os.apiWithDialog('admin/emoji/set-aliases-bulk', {
 		ids: selectedEmojis.value,
 		aliases: result.split(' '),
@@ -279,6 +293,8 @@ const setTagBulk = async () => {
 };
 
 const delBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
 	const { canceled } = await os.confirm({
 		type: 'warning',
 		text: i18n.ts.deleteConfirm,

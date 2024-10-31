@@ -65,7 +65,7 @@ watch(() => props.clipId, async () => {
 	clip.value = await misskeyApi('clips/show', {
 		clipId: props.clipId,
 	});
-	favorited.value = clip.value.isFavorited;
+	favorited.value = clip.value?.isFavorited ?? false;
 }, {
 	immediate: true,
 });
@@ -97,6 +97,8 @@ const headerActions = computed(() => clip.value && isOwned.value ? [{
 	icon: 'ti ti-pencil',
 	text: i18n.ts.edit,
 	handler: async (): Promise<void> => {
+		if (!clip.value) return;
+
 		const { canceled, result } = await os.form(clip.value.name, {
 			name: {
 				type: 'string',
@@ -130,6 +132,7 @@ const headerActions = computed(() => clip.value && isOwned.value ? [{
 	icon: 'ti ti-link',
 	text: i18n.ts.copyUrl,
 	handler: async (): Promise<void> => {
+		if (!clip.value) return;
 		copyToClipboard(`${url}/clips/${clip.value.id}`);
 		os.success();
 	},
@@ -137,9 +140,10 @@ const headerActions = computed(() => clip.value && isOwned.value ? [{
 	icon: 'ti ti-share',
 	text: i18n.ts.share,
 	handler: async (): Promise<void> => {
+		if (!clip.value) return;
 		navigator.share({
 			title: clip.value.name,
-			text: clip.value.description,
+			text: clip.value.description ?? '',
 			url: `${url}/clips/${clip.value.id}`,
 		});
 	},
@@ -148,6 +152,8 @@ const headerActions = computed(() => clip.value && isOwned.value ? [{
 	text: i18n.ts.delete,
 	danger: true,
 	handler: async (): Promise<void> => {
+		if (!clip.value) return;
+
 		const { canceled } = await os.confirm({
 			type: 'warning',
 			text: i18n.tsx.deleteAreYouSure({ x: clip.value.name }),

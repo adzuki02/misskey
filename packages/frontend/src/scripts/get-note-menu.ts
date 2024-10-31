@@ -5,6 +5,7 @@
 
 import { defineAsyncComponent, Ref, ShallowRef } from 'vue';
 import * as Misskey from 'misskey-js';
+import type { MenuItem, MenuDivider } from '@/types/menu.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
@@ -16,7 +17,6 @@ import { defaultStore, noteActions } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { getUserMenu } from '@/scripts/get-user-menu.js';
 import { clipsCache, favoritedChannelsCache } from '@/cache.js';
-import { MenuItem } from '@/types/menu.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { isSupportShare } from '@/scripts/navigator.js';
 import { getAppearNote } from '@/scripts/get-appear-note.js';
@@ -92,12 +92,14 @@ export async function getNoteClipMenu(props: {
 				name: {
 					type: 'string',
 					label: i18n.ts.name,
+					default: '',
 				},
 				description: {
 					type: 'string',
 					required: false,
 					multiline: true,
 					label: i18n.ts.description,
+					default: null,
 				},
 				isPublic: {
 					type: 'boolean',
@@ -206,14 +208,7 @@ export function getNoteMenu(props: {
 	function togglePin(pin: boolean): void {
 		os.apiWithDialog(pin ? 'i/pin' : 'i/unpin', {
 			noteId: appearNote.id,
-		}, undefined, null, res => {
-			if (res.id === '72dab508-c64d-498f-8740-a8eec1ba385a') {
-				os.alert({
-					type: 'error',
-					text: i18n.ts.pinLimitExceeded,
-				});
-			}
-		});
+		}, undefined);
 	}
 
 	async function unclip(): Promise<void> {
@@ -258,7 +253,7 @@ export function getNoteMenu(props: {
 					text: i18n.ts.unclip,
 					danger: true,
 					action: unclip,
-				}, { type: 'divider' }] : []
+				}, { type: 'divider' } as MenuDivider] : []
 			), {
 				icon: 'ti ti-info-circle',
 				text: i18n.ts.details,
@@ -285,7 +280,7 @@ export function getNoteMenu(props: {
 				text: i18n.ts.translate,
 				action: translate,
 			} : undefined,
-			{ type: 'divider' },
+			{ type: 'divider' } as MenuDivider,
 			{
 				type: 'parent' as const,
 				icon: 'ti ti-paperclip',
@@ -322,13 +317,13 @@ export function getNoteMenu(props: {
 				},
 			},
 			...(appearNote.userId !== $i.id ? [
-				{ type: 'divider' },
+				{ type: 'divider' } as MenuDivider,
 				appearNote.userId !== $i.id ? getAbuseNoteMenu(appearNote, i18n.ts.reportAbuse) : undefined,
 			]
 			: []
 			),
 			...(appearNote.channel && (appearNote.channel.userId === $i.id || $i.isModerator || $i.isAdmin) ? [
-				{ type: 'divider' },
+				{ type: 'divider' } as MenuDivider,
 				{
 					type: 'parent' as const,
 					icon: 'ti ti-device-tv',
@@ -364,7 +359,7 @@ export function getNoteMenu(props: {
 			: []
 			),
 			...(appearNote.userId === $i.id || $i.isModerator || $i.isAdmin ? [
-				{ type: 'divider' },
+				{ type: 'divider' } as MenuDivider,
 				appearNote.userId === $i.id ? {
 					icon: 'ti ti-edit',
 					text: i18n.ts.deleteAndEdit,

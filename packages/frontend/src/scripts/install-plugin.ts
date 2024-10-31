@@ -6,6 +6,7 @@
 import { defineAsyncComponent } from 'vue';
 import { compareVersions } from 'compare-versions';
 import { v4 as uuid } from 'uuid';
+import type { permissions } from 'misskey-js';
 import { Interpreter, Parser, utils } from '@syuilo/aiscript';
 import type { Plugin } from '@/store.js';
 import { ColdDeviceStorage } from '@/store.js';
@@ -18,7 +19,7 @@ export type AiScriptPluginMeta = {
 	version: string;
 	author: string;
 	description?: string;
-	permissions?: string[];
+	permissions?: typeof permissions[number][];
 	config?: Record<string, any>;
 };
 
@@ -102,7 +103,7 @@ export async function installPlugin(code: string, meta?: AiScriptPluginMeta) {
 		realMeta = meta;
 	}
 
-	const token = realMeta.permissions == null || realMeta.permissions.length === 0 ? null : await new Promise((res, rej) => {
+	const token: string | null = realMeta.permissions == null || realMeta.permissions.length === 0 ? null : await new Promise((res, rej) => {
 		const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkTokenGenerateWindow.vue')), {
 			title: i18n.ts.tokenRequested,
 			information: i18n.ts.pluginTokenRequestedDescription,
