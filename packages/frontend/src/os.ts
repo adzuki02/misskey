@@ -31,7 +31,7 @@ import { focusParent } from '@/scripts/focus.js';
 
 export const apiWithDialog = (<E extends keyof Misskey.Endpoints = keyof Misskey.Endpoints, P extends Misskey.Endpoints[E]['req'] = Misskey.Endpoints[E]['req']>(
 	endpoint: E,
-	data: P = {} as any,
+	data: P,
 	token?: string | null | undefined,
 ) => {
 	const promise = misskeyApi(endpoint, data, token);
@@ -84,7 +84,7 @@ export const apiWithDialog = (<E extends keyof Misskey.Endpoints = keyof Misskey
 	});
 
 	return promise;
-}) as typeof misskeyApi;
+});
 
 export function promiseDialog<T extends Promise<any>>(
 	promise: T,
@@ -133,8 +133,8 @@ let popupIdCount = 0;
 export const popups = ref([]) as Ref<{
 	id: number;
 	component: Component;
-	props: Record<string, any>;
-	events: Record<string, any>;
+	props: Record<string, unknown>;
+	events: Record<string, unknown>;
 }[]>;
 
 const zIndexes = {
