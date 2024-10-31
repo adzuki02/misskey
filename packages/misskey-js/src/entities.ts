@@ -103,15 +103,6 @@ export type ModerationLog = {
 	type: 'createInvitation';
 	info: ModerationLogPayloads['createInvitation'];
 } | {
-	type: 'createAd';
-	info: ModerationLogPayloads['createAd'];
-} | {
-	type: 'updateAd';
-	info: ModerationLogPayloads['updateAd'];
-} | {
-	type: 'deleteAd';
-	info: ModerationLogPayloads['deleteAd'];
-} | {
 	type: 'createAvatarDecoration';
 	info: ModerationLogPayloads['createAvatarDecoration'];
 } | {

@@ -37,10 +37,12 @@ const el = ref<HTMLElement | { $el: HTMLElement }>();
 
 if (isEnabledUrlPreview.value) {
 	useTooltip(el, (showing) => {
+		if (!el.value) return;
+
 		const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkUrlPreviewPopup.vue')), {
 			showing,
 			url: props.url,
-			source: el.value instanceof HTMLElement ? el.value : el.value?.$el,
+			source: el.value instanceof HTMLElement ? el.value : el.value.$el,
 		}, {
 			closed: () => dispose(),
 		});

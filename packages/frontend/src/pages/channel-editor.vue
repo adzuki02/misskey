@@ -119,6 +119,8 @@ async function fetchChannel() {
 		channelId: props.channelId,
 	});
 
+	if (!channel.value) return;
+
 	name.value = channel.value.name;
 	description.value = channel.value.description;
 	bannerId.value = channel.value.bannerId;
@@ -137,7 +139,7 @@ async function addPinnedNote() {
 	const { canceled, result: value } = await os.inputText({
 		title: i18n.ts.noteIdOrUrl,
 	});
-	if (canceled) return;
+	if (canceled || !value) return;
 	const note = await os.apiWithDialog('notes/show', {
 		noteId: value.includes('/') ? value.split('/').pop() : value,
 	});
@@ -162,8 +164,10 @@ function save() {
 	};
 
 	if (props.channelId) {
-		params.channelId = props.channelId;
-		os.apiWithDialog('channels/update', params);
+		os.apiWithDialog('channels/update', {
+			...params,
+			channelId: props.channelId,
+		});
 	} else {
 		os.apiWithDialog('channels/create', params).then(created => {
 			router.push(`/channels/${created.id}`);
@@ -174,7 +178,7 @@ function save() {
 async function archive() {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		title: i18n.tsx.channelArchiveConfirmTitle({ name: name.value }),
+		title: i18n.tsx.channelArchiveConfirmTitle({ name: name.value ?? i18n.ts.channel }),
 		text: i18n.ts.channelArchiveConfirmDescription,
 	});
 

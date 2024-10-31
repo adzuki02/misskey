@@ -47,6 +47,7 @@ export type Tab = {
 		}
 	| {
 			iconOnly: true;
+			title?: undefined;
 			icon: string;
 		}
 );

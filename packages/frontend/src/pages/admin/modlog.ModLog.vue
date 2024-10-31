@@ -11,7 +11,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				[$style.logGreen]: [
 					'createRole',
 					'addCustomEmoji',
-					'createAd',
 					'createInvitation',
 					'createAvatarDecoration',
 					'createSystemWebhook',
@@ -28,7 +27,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					'deleteCustomEmoji',
 					'deleteNote',
 					'deleteDriveFile',
-					'deleteAd',
 					'deleteAvatarDecoration',
 					'deleteSystemWebhook',
 					'deleteAbuseReportNotificationRecipient',
@@ -113,11 +111,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</template>
 		<template v-else-if="log.type === 'updateCustomEmoji'">
 			<div>{{ i18n.ts.emoji }}: {{ log.info.emojiId }}</div>
-			<div :class="$style.diff">
-				<CodeDiff :context="5" :hideHeader="true" :oldString="JSON5.stringify(log.info.before, null, '\t')" :newString="JSON5.stringify(log.info.after, null, '\t')" language="javascript" maxHeight="300px"/>
-			</div>
-		</template>
-		<template v-else-if="log.type === 'updateAd'">
 			<div :class="$style.diff">
 				<CodeDiff :context="5" :hideHeader="true" :oldString="JSON5.stringify(log.info.before, null, '\t')" :newString="JSON5.stringify(log.info.after, null, '\t')" language="javascript" maxHeight="300px"/>
 			</div>

@@ -36,16 +36,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup generic="E extends keyof Misskey.Endpoints = keyof Misskey.Endpoints">
 import * as Misskey from 'misskey-js';
-import MkPagination from '@/components/MkPagination.vue';
+import MkPagination, { type Paging } from '@/components/MkPagination.vue';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
 import bytes from '@/filters/bytes.js';
 import { i18n } from '@/i18n.js';
 import { dateString } from '@/filters/date.js';
 
-const props = defineProps<{
-	pagination: any;
+defineProps<{
+	pagination: Paging<E>;
 	viewMode: 'grid' | 'list';
 }>();
 </script>

@@ -120,7 +120,7 @@ export const meta = {
 			},
 			silencedHosts: {
 				type: 'array',
-				optional: true,
+				optional: false,
 				nullable: false,
 				items: {
 					type: 'string',

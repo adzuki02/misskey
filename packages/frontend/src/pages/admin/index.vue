@@ -51,6 +51,7 @@ const indexInfo = {
 	title: i18n.ts.controlPanel,
 	icon: 'ti ti-settings',
 	hideHeader: true,
+	needWideArea: undefined as boolean | undefined,
 };
 
 provide('shouldOmitHeaderTitle', false);

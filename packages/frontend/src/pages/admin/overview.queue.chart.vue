@@ -22,7 +22,7 @@ const props = defineProps<{
 	type: string;
 }>();
 
-const chartEl = shallowRef<HTMLCanvasElement>(null);
+const chartEl = shallowRef<HTMLCanvasElement | null>(null);
 
 const { handler: externalTooltipHandler } = useChartTooltip();
 

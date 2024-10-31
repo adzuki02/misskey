@@ -56,9 +56,9 @@ async function init() {
 
 function save() {
 	os.apiWithDialog('admin/update-meta', {
-		blockedHosts: blockedHosts.value.split('\n') || [],
-		silencedHosts: silencedHosts.value.split('\n') || [],
-		mediaSilencedHosts: mediaSilencedHosts.value.split('\n') || [],
+		blockedHosts: blockedHosts.value.split('\n').filter(host => host !== ''),
+		silencedHosts: silencedHosts.value.split('\n').filter(host => host !== ''),
+		mediaSilencedHosts: mediaSilencedHosts.value.split('\n').filter(host => host !== ''),
 
 	}).then(() => {
 		fetchInstance(true);

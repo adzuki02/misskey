@@ -96,12 +96,14 @@ const props = defineProps<{
 async function fetch() {
 	file.value = await misskeyApi('drive/files/show', { fileId: props.fileId });
 	info.value = await misskeyApi('admin/drive/show-file', { fileId: props.fileId });
-	isSensitive.value = file.value.isSensitive;
+	isSensitive.value = file.value?.isSensitive ?? false;
 }
 
 fetch();
 
 async function del() {
+	if (!file.value) return;
+
 	const { canceled } = await os.confirm({
 		type: 'warning',
 		text: i18n.tsx.removeAreYouSure({ x: file.value.name }),
@@ -122,6 +124,7 @@ const headerActions = computed(() => [{
 	text: i18n.ts.openInNewTab,
 	icon: 'ti ti-external-link',
 	handler: () => {
+		if (!file.value) return;
 		window.open(file.value.url, '_blank', 'noopener');
 	},
 }]);
@@ -130,11 +133,11 @@ const headerTabs = computed(() => [{
 	key: 'overview',
 	title: i18n.ts.overview,
 	icon: 'ti ti-info-circle',
-}, iAmModerator ? {
+}, ...iAmModerator ? [{
 	key: 'ip',
 	title: 'IP',
 	icon: 'ti ti-password',
-} : null, {
+}] : [], {
 	key: 'raw',
 	title: 'Raw data',
 	icon: 'ti ti-code',

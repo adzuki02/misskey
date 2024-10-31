@@ -3178,24 +3178,6 @@ export type components = {
       userIds?: string[];
       isPublic: boolean;
     };
-    Ad: {
-      /**
-       * Format: id
-       * @example xxxxxxxxxx
-       */
-      id: string;
-      /** Format: date-time */
-      expiresAt: string;
-      /** Format: date-time */
-      startsAt: string;
-      place: string;
-      priority: string;
-      ratio: number;
-      url: string;
-      imageUrl: string;
-      memo: string;
-      dayOfWeek: number;
-    };
     App: {
       id: string;
       name: string;
@@ -3292,6 +3274,7 @@ export type components = {
       createdAt: string;
       user: components['schemas']['UserLite'];
       type: string;
+      note?: components['schemas']['Note'];
     };
     Notification: {
       /** Format: id */
@@ -3611,6 +3594,8 @@ export type components = {
       description: string | null;
       /** Format: id */
       userId: string | null;
+      /** Format: id */
+      bannerId: string | null;
       /** Format: url */
       bannerUrl: string | null;
       pinnedNoteIds: string[];
@@ -4048,7 +4033,7 @@ export type operations = {
             enableEmail: boolean;
             enableServiceWorker: boolean;
             translatorAvailable: boolean;
-            silencedHosts?: string[];
+            silencedHosts: string[];
             mediaSilencedHosts: string[];
             pinnedUsers: string[];
             blockedHosts: string[];
@@ -5334,6 +5319,10 @@ export type operations = {
             folderId: string | null;
             isSensitive: boolean;
             isLink: boolean;
+            requestIp: string | null;
+            requestHeaders: {
+              [key: string]: unknown;
+            } | null;
           };
         };
       };

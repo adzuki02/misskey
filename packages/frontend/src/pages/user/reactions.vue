@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkReactionIcon :class="$style.reaction" :reaction="item.type" :noStyle="true"/>
 				<MkTime :time="item.createdAt" :class="$style.createdAt"/>
 			</div>
-			<MkNote :key="item.id" :note="item.note"/>
+			<MkNote :key="item.id" :note="item.note!"/>
 		</div>
 	</MkPagination>
 </MkSpacer>

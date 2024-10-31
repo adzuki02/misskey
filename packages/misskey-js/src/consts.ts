@@ -1,7 +1,6 @@
 import type { operations } from './autogen/types.js';
 import type {
 	AbuseReportNotificationRecipient,
-	Ad,
 	EmojiDetailed,
 	Flash,
 	InviteCode,
@@ -127,9 +126,6 @@ export const moderationLogTypes = [
 	'unmarkSensitiveDriveFile',
 	'resolveAbuseReport',
 	'createInvitation',
-	'createAd',
-	'updateAd',
-	'deleteAd',
 	'createAvatarDecoration',
 	'updateAvatarDecoration',
 	'deleteAvatarDecoration',
@@ -269,19 +265,6 @@ export type ModerationLogPayloads = {
 	};
 	createInvitation: {
 		invitations: InviteCode[];
-	};
-	createAd: {
-		adId: string;
-		ad: Ad;
-	};
-	updateAd: {
-		adId: string;
-		before: Ad;
-		after: Ad;
-	};
-	deleteAd: {
-		adId: string;
-		ad: Ad;
 	};
 	createAvatarDecoration: {
 		avatarDecorationId: string;
