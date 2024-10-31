@@ -88,6 +88,7 @@ function unlike() {
 }
 
 async function create() {
+	if (!list.value) return;
 	const { canceled, result: name } = await os.inputText({
 		title: i18n.ts.enterListName,
 	});

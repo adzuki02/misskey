@@ -61,7 +61,7 @@ async function setAntenna() {
 		],
 		default: props.column.antennaId,
 	});
-	if (canceled || antenna == null) return;
+	if (canceled) return;
 
 	if (antenna === '_CREATE_') {
 		const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkAntennaEditorDialog.vue')), {}, {

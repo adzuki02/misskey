@@ -216,7 +216,7 @@ async function timetravel(): Promise<void> {
 	});
 	if (canceled) return;
 
-	// tlComponent.value?.timetravel(date);
+	tlComponent.value.timetravel(date);
 }
 
 function switchTlIfNeeded() {

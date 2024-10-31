@@ -307,7 +307,7 @@ function urlUpload() {
 		type: 'url',
 		placeholder: i18n.ts.uploadFromUrlDescription,
 	}).then(({ canceled, result: url }) => {
-		if (canceled || !url) return;
+		if (canceled) return;
 		misskeyApi('drive/files/upload-from-url', {
 			url: url,
 			folderId: folder.value ? folder.value.id : undefined,
@@ -327,7 +327,7 @@ function createFolder() {
 	}).then(({ canceled, result: name }) => {
 		if (canceled) return;
 		misskeyApi('drive/folders/create', {
-			name: name ?? undefined,
+			name: name,
 			parentId: folder.value ? folder.value.id : undefined,
 		}).then(createdFolder => {
 			addFolder(createdFolder, true);

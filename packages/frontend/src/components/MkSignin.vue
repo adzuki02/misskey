@@ -273,10 +273,8 @@ async function specifyHostAndOpenRemote(options: OpenOnRemoteOptions): Promise<v
 
 	if (canceled) return;
 
-	let targetHost: string | null = hostTemp;
-
 	// ドメイン部分だけを取り出す
-	targetHost = targetHost ? extractDomain(targetHost) : null;
+	const targetHost = extractDomain(hostTemp);
 	if (targetHost == null) {
 		os.alert({
 			type: 'error',

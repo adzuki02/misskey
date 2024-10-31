@@ -141,7 +141,7 @@ async function addPinnedNote() {
 	});
 	if (canceled || !value) return;
 	const note = await os.apiWithDialog('notes/show', {
-		noteId: value.includes('/') ? value.split('/').pop() : value,
+		noteId: value.includes('/') ? value.split('/').pop() as string : value,
 	});
 	pinnedNotes.value = [{
 		id: note.id,
@@ -154,7 +154,7 @@ function removePinnedNote(index: number) {
 
 function save() {
 	const params = {
-		name: name.value,
+		name: name.value ?? undefined,
 		description: description.value,
 		bannerId: bannerId.value,
 		pinnedNoteIds: pinnedNotes.value.map(x => x.id),

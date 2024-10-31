@@ -536,7 +536,7 @@ async function toggleReactionAcceptance() {
 			{ value: 'nonSensitiveOnlyForLocalLikeOnlyForRemote' as const, text: i18n.ts.nonSensitiveOnlyForLocalLikeOnlyForRemote },
 			{ value: 'likeOnly' as const, text: i18n.ts.likeOnly },
 		],
-		default: reactionAcceptance.value,
+		default: reactionAcceptance.value ?? undefined,
 	});
 	if (select.canceled) return;
 	reactionAcceptance.value = select.result;

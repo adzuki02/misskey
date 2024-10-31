@@ -332,6 +332,8 @@ async function unsetUserBanner() {
 }
 
 async function deleteAllFiles() {
+	if (!user.value) return;
+
 	const confirm = await os.confirm({
 		type: 'warning',
 		text: i18n.ts.deleteAllFilesConfirm,
@@ -351,6 +353,8 @@ async function deleteAllFiles() {
 }
 
 async function deleteAccount() {
+	if (!user.value) return;
+
 	const confirm = await os.confirm({
 		type: 'warning',
 		text: i18n.ts.deleteAccountConfirm,
@@ -358,11 +362,11 @@ async function deleteAccount() {
 	if (confirm.canceled) return;
 
 	const typed = await os.inputText({
-		text: i18n.tsx.typeToConfirm({ x: user.value?.username }),
+		text: i18n.tsx.typeToConfirm({ x: user.value.username }),
 	});
 	if (typed.canceled) return;
 
-	if (typed.result === user.value?.username) {
+	if (typed.result === user.value.username) {
 		await os.apiWithDialog('admin/delete-account', {
 			userId: user.value.id,
 		});
@@ -375,6 +379,8 @@ async function deleteAccount() {
 }
 
 async function assignRole() {
+	if (!user.value) return;
+
 	const roles = await misskeyApi('admin/roles/list');
 
 	const { canceled, result: roleId } = await os.select({
@@ -384,7 +390,7 @@ async function assignRole() {
 	if (canceled) return;
 
 	const { canceled: canceled2, result: period } = await os.select({
-		title: i18n.ts.period + ': ' + roles.find(r => r.id === roleId)!.name,
+		title: `${i18n.ts.period}: ${roles.find(r => r.id === roleId)?.name ?? ''}`,
 		items: [{
 			value: 'indefinitely', text: i18n.ts.indefinitely,
 		}, {

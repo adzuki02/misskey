@@ -99,7 +99,6 @@ async function setType() {
 		}
 		return;
 	}
-	if (src == null) return;
 	updateColumn(props.column.id, {
 		tl: src ?? undefined,
 	});

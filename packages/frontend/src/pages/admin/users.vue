@@ -112,7 +112,7 @@ async function addUser() {
 		username: username,
 		password: password,
 	}).then(res => {
-		paginationComponent.value.reload();
+		paginationComponent.value?.reload();
 	});
 }
 

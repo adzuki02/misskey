@@ -60,7 +60,7 @@ async function setChannel() {
 		})),
 		default: props.column.channelId,
 	});
-	if (canceled || chosenChannel == null) return;
+	if (canceled) return;
 	updateColumn(props.column.id, {
 		channelId: chosenChannel.id,
 		name: chosenChannel.name,

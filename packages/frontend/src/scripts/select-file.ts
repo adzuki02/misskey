@@ -54,7 +54,7 @@ export function chooseFileFromUrl(): Promise<Misskey.entities.DriveFile> {
 			type: 'url',
 			placeholder: i18n.ts.uploadFromUrlDescription,
 		}).then(({ canceled, result: url }) => {
-			if (canceled || url == null) return;
+			if (canceled) return;
 
 			const marker = Math.random().toString(); // TODO: UUIDとか使う
 

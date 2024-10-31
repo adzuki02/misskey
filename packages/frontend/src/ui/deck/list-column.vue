@@ -66,13 +66,13 @@ async function setList() {
 		],
 		default: props.column.listId,
 	});
-	if (canceled || list == null) return;
+	if (canceled) return;
 
 	if (list === '_CREATE_') {
 		const { canceled, result: name } = await os.inputText({
 			title: i18n.ts.enterListName,
 		});
-		if (canceled || name == null || name === '') return;
+		if (canceled || name === '') return;
 
 		const res = await os.apiWithDialog('users/lists/create', { name: name });
 		userListsCache.delete();

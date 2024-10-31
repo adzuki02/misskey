@@ -77,7 +77,7 @@ async function addItem() {
 			value: '-', text: i18n.ts.divider,
 		}],
 	});
-	if (canceled || !item) return;
+	if (canceled) return;
 	items.value = [...items.value, {
 		id: Math.random().toString(),
 		type: item,

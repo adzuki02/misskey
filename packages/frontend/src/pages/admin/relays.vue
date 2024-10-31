@@ -44,9 +44,9 @@ async function addRelay() {
 	if (canceled) return;
 	misskeyApi('admin/relays/add', {
 		inbox,
-	}).then((relay: any) => {
+	}).then((relay) => {
 		refresh();
-	}).catch((err: any) => {
+	}).catch((err) => {
 		os.alert({
 			type: 'error',
 			text: err.message || err,

@@ -400,7 +400,7 @@ async function setPinnedList() {
 			value: x, text: x.name,
 		})),
 	});
-	if (canceled || !list) return;
+	if (canceled) return;
 
 	defaultStore.set('pinnedUserLists', [list]);
 }

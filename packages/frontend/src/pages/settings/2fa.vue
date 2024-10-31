@@ -200,7 +200,7 @@ async function addSecurityKey() {
 		minLength: 1,
 		maxLength: 30,
 	});
-	if (name.canceled || !name.result) return;
+	if (name.canceled) return;
 
 	const credential = await os.promiseDialog(
 		webAuthnCreate(registrationOptions),

@@ -55,7 +55,7 @@ function top() {
 
 async function timetravel() {
 	const { canceled, result: date } = await os.inputDate({
-		title: i18n.ts.date,
+		title: i18n.ts.jumpToSpecifiedDate,
 	});
 	if (canceled) return;
 
@@ -64,10 +64,6 @@ async function timetravel() {
 
 function settings() {
 	router.push(`/my/antennas/${props.antennaId}`);
-}
-
-function focus() {
-	tlEl.value.focus();
 }
 
 watch(() => props.antennaId, async () => {

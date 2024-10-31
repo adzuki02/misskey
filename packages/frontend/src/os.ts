@@ -291,7 +291,7 @@ export function inputText(props: {
 	type?: 'text' | 'email' | 'password' | 'url';
 	title?: string;
 	text?: string;
-	placeholder?: string | null;
+	placeholder?: string;
 	autocomplete?: string;
 	default: string;
 	minLength?: number;
@@ -305,29 +305,29 @@ export function inputText(props: {
 	type?: 'text' | 'email' | 'password' | 'url';
 	title?: string;
 	text?: string;
-	placeholder?: string | null;
+	placeholder?: string;
 	autocomplete?: string;
-	default?: string | null;
+	default?: string;
 	minLength?: number;
 	maxLength?: number;
 }): Promise<{
 	canceled: true; result: undefined;
 } | {
-	canceled: false; result: string | null;
+	canceled: false; result: string;
 }>;
 export function inputText(props: {
 	type?: 'text' | 'email' | 'password' | 'url';
 	title?: string;
 	text?: string;
-	placeholder?: string | null;
+	placeholder?: string;
 	autocomplete?: string;
-	default?: string | null;
+	default?: string;
 	minLength?: number;
 	maxLength?: number;
 }): Promise<{
 	canceled: true; result: undefined;
 } | {
-	canceled: false; result: string | null;
+	canceled: false; result: string;
 }> {
 	return new Promise(resolve => {
 		const { dispose } = popup(MkDialog, {
@@ -343,7 +343,7 @@ export function inputText(props: {
 			},
 		}, {
 			done: result => {
-				resolve(result ? result : { canceled: true });
+				resolve(result && result.result !== null ? result : { canceled: true });
 			},
 			closed: () => dispose(),
 		});
@@ -354,7 +354,7 @@ export function inputText(props: {
 export function inputNumber(props: {
 	title?: string;
 	text?: string;
-	placeholder?: string | null;
+	placeholder?: string;
 	autocomplete?: string;
 	default: number;
 }): Promise<{
@@ -365,24 +365,24 @@ export function inputNumber(props: {
 export function inputNumber(props: {
 	title?: string;
 	text?: string;
-	placeholder?: string | null;
+	placeholder?: string;
 	autocomplete?: string;
-	default?: number | null;
+	default?: number;
 }): Promise<{
 	canceled: true; result: undefined;
 } | {
-	canceled: false; result: number | null;
+	canceled: false; result: number;
 }>;
 export function inputNumber(props: {
 	title?: string;
 	text?: string;
-	placeholder?: string | null;
+	placeholder?: string;
 	autocomplete?: string;
-	default?: number | null;
+	default?: number;
 }): Promise<{
 	canceled: true; result: undefined;
 } | {
-	canceled: false; result: number | null;
+	canceled: false; result: number;
 }> {
 	return new Promise(resolve => {
 		const { dispose } = popup(MkDialog, {
@@ -396,7 +396,7 @@ export function inputNumber(props: {
 			},
 		}, {
 			done: result => {
-				resolve(result ? result : { canceled: true });
+				resolve(result && result.result !== null ? result : { canceled: true });
 			},
 			closed: () => dispose(),
 		});
@@ -406,8 +406,8 @@ export function inputNumber(props: {
 export function inputDate(props: {
 	title?: string;
 	text?: string;
-	placeholder?: string | null;
-	default?: string | null;
+	placeholder?: string;
+	default?: string;
 }): Promise<{
 	canceled: true; result: undefined;
 } | {
@@ -424,7 +424,7 @@ export function inputDate(props: {
 			},
 		}, {
 			done: result => {
-				resolve(result ? { result: new Date(result.result), canceled: false } : { result: undefined, canceled: true });
+				resolve(result && result.result !== null ? { result: new Date(result.result), canceled: false } : { result: undefined, canceled: true });
 			},
 			closed: () => dispose(),
 		});
@@ -468,7 +468,7 @@ export function select<C = any>(props: {
 export function select<C = any>(props: {
 	title?: string;
 	text?: string;
-	default?: string | null;
+	default?: string;
 	items: (SelectItem<C> | {
 		sectionTitle: string;
 		items: SelectItem<C>[];
@@ -476,12 +476,12 @@ export function select<C = any>(props: {
 }): Promise<{
 	canceled: true; result: undefined;
 } | {
-	canceled: false; result: C | null;
+	canceled: false; result: C;
 }>;
 export function select<C = any>(props: {
 	title?: string;
 	text?: string;
-	default?: string | null;
+	default?: string;
 	items: (SelectItem<C> | {
 		sectionTitle: string;
 		items: SelectItem<C>[];
@@ -489,7 +489,7 @@ export function select<C = any>(props: {
 }): Promise<{
 	canceled: true; result: undefined;
 } | {
-	canceled: false; result: C | null;
+	canceled: false; result: C;
 }> {
 	return new Promise(resolve => {
 		const { dispose } = popup(MkDialog, {
@@ -501,7 +501,7 @@ export function select<C = any>(props: {
 			},
 		}, {
 			done: result => {
-				resolve(result ? result : { canceled: true });
+				resolve(result && result.result !== null ? result : { canceled: true });
 			},
 			closed: () => dispose(),
 		});
