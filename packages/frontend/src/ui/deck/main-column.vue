@@ -57,6 +57,7 @@ function onContextmenu(ev: MouseEvent) {
 		if (el.parentElement) {
 			return isLink(el.parentElement);
 		}
+		return false;
 	};
 	if (isLink(ev.target as HTMLElement)) return;
 	if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes((ev.target as HTMLElement).tagName) || (ev.target as HTMLElement).attributes['contenteditable']) return;

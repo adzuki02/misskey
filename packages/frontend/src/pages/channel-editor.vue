@@ -185,7 +185,9 @@ async function archive() {
 	if (canceled) return;
 
 	misskeyApi('channels/update', {
-		channelId: props.channelId,
+		// @click="archive()"が指定されている要素はv-if="props.channelId"も指定されている
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		channelId: props.channelId!,
 		isArchived: true,
 	}).then(() => {
 		os.success();

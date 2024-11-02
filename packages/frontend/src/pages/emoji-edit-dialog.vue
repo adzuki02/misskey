@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:initialWidth="400"
 	:initialHeight="500"
 	:canResize="false"
-	@close="windowEl.close()"
+	@close="windowEl?.close()"
 	@closed="$emit('closed')"
 >
 	<template v-if="emoji" #header>:{{ emoji.name }}:</template>
@@ -153,6 +153,7 @@ async function done() {
 		isSensitive: isSensitive.value,
 		localOnly: localOnly.value,
 		roleIdsThatCanBeUsedThisEmojiAsReaction: rolesThatCanBeUsedThisEmojiAsReaction.value.map(x => x.id),
+		fileId: undefined as string | undefined,
 	};
 
 	if (file.value) {
@@ -172,15 +173,18 @@ async function done() {
 			},
 		});
 
-		windowEl.value.close();
+		windowEl.value?.close();
 	} else {
-		const created = await os.apiWithDialog('admin/emoji/add', params);
+		const created = await os.apiWithDialog('admin/emoji/add', {
+			...params,
+			fileId: file.value?.id as string,
+		});
 
 		emit('done', {
 			created: created,
 		});
 
-		windowEl.value.close();
+		windowEl.value?.close();
 	}
 }
 
@@ -197,7 +201,7 @@ async function del() {
 		emit('done', {
 			deleted: true,
 		});
-		windowEl.value.close();
+		windowEl.value?.close();
 	});
 }
 </script>

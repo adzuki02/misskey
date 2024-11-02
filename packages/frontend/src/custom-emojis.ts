@@ -11,14 +11,14 @@ import { get, set } from '@/scripts/idb-proxy.js';
 
 const storageCache = await get('emojis');
 export const customEmojis = shallowRef<Misskey.entities.EmojiSimple[]>(Array.isArray(storageCache) ? storageCache : []);
-export const customEmojiCategories = computed<[ ...string[], null ]>(() => {
+export const customEmojiCategories = computed<string[]>(() => {
 	const categories = new Set<string>();
 	for (const emoji of customEmojis.value) {
 		if (emoji.category && emoji.category !== 'null') {
 			categories.add(emoji.category);
 		}
 	}
-	return markRaw([...Array.from(categories), null]);
+	return markRaw(Array.from(categories));
 });
 
 export const customEmojisMap = new Map<string, Misskey.entities.EmojiSimple>();
@@ -38,7 +38,7 @@ stream.on('emojiAdded', emojiData => {
 });
 
 stream.on('emojiUpdated', emojiData => {
-	customEmojis.value = customEmojis.value.map(item => emojiData.emojis.find(search => search.name === item.name) as Misskey.entities.EmojiSimple ?? item);
+	customEmojis.value = customEmojis.value.map(item => emojiData.emojis.find(search => search.name === item.name) ?? item);
 	set('emojis', customEmojis.value);
 });
 
@@ -64,11 +64,11 @@ export async function fetchCustomEmojis(force = false) {
 	set('lastEmojisFetchedAt', now);
 }
 
-let cachedTags;
+let cachedTags: string[] | undefined;
 export function getCustomEmojiTags() {
 	if (cachedTags) return cachedTags;
 
-	const tags = new Set();
+	const tags = new Set<string>();
 	for (const emoji of customEmojis.value) {
 		for (const tag of emoji.aliases) {
 			tags.add(tag);

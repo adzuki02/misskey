@@ -176,6 +176,7 @@ export function swapLeftColumn(id: Column['id']) {
 			}
 			return true;
 		}
+		return false;
 	});
 	saveDeck();
 }
@@ -192,6 +193,7 @@ export function swapRightColumn(id: Column['id']) {
 			}
 			return true;
 		}
+		return false;
 	});
 	saveDeck();
 }
@@ -212,6 +214,7 @@ export function swapUpColumn(id: Column['id']) {
 			}
 			return true;
 		}
+		return false;
 	});
 	saveDeck();
 }
@@ -232,6 +235,7 @@ export function swapDownColumn(id: Column['id']) {
 			}
 			return true;
 		}
+		return false;
 	});
 	saveDeck();
 }

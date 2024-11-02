@@ -64,10 +64,12 @@ import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import { openInstanceMenu } from './common.js';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
-import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
+import { signinRequired, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
+
+const $i = signinRequired();
 
 const iconOnly = ref(false);
 

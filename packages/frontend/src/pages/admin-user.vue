@@ -10,10 +10,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<FormSuspense :p="init">
 			<div v-if="tab === 'overview'" class="_gaps_m">
 				<div class="aeakzknw">
-					<MkAvatar class="avatar" :user="user" link preview/>
+					<MkAvatar class="avatar" :user="user!" link preview/>
 					<div class="body">
-						<span class="name"><MkUserName class="name" :user="user"/></span>
-						<span class="sub"><span class="acct _monospace">@{{ acct(user) }}</span></span>
+						<span class="name"><MkUserName class="name" :user="user!"/></span>
+						<span class="sub"><span class="acct _monospace">@{{ acct(user!) }}</span></span>
 						<span class="state">
 							<span v-if="suspended" class="suspended">Suspended</span>
 							<span v-if="silenced" class="silenced">Silenced</span>
@@ -22,24 +22,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</div>
 
-				<MkInfo v-if="['instance.actor', 'relay.actor'].includes(user.username)">{{ i18n.ts.isSystemAccount }}</MkInfo>
+				<MkInfo v-if="['instance.actor', 'relay.actor'].includes(user!.username)">{{ i18n.ts.isSystemAccount }}</MkInfo>
 
-				<FormLink v-if="user.host" :to="`/instance-info/${user.host}`">{{ i18n.ts.instanceInfo }}</FormLink>
+				<FormLink v-if="user!.host" :to="`/instance-info/${user!.host}`">{{ i18n.ts.instanceInfo }}</FormLink>
 
 				<div style="display: flex; flex-direction: column; gap: 1em;">
-					<MkKeyValue :copy="user.id" oneline>
+					<MkKeyValue :copy="user!.id" oneline>
 						<template #key>ID</template>
-						<template #value><span class="_monospace">{{ user.id }}</span></template>
+						<template #value><span class="_monospace">{{ user!.id }}</span></template>
 					</MkKeyValue>
-					<!-- 要る？
-					<MkKeyValue v-if="ips.length > 0" :copy="user.id" oneline>
-						<template #key>IP (recent)</template>
-						<template #value><span class="_monospace">{{ ips[0].ip }}</span></template>
-					</MkKeyValue>
-					-->
 					<MkKeyValue oneline>
 						<template #key>{{ i18n.ts.createdAt }}</template>
-						<template #value><span class="_monospace"><MkTime :time="user.createdAt" :mode="'detail'"/></span></template>
+						<template #value><span class="_monospace"><MkTime :time="user!.createdAt" :mode="'detail'"/></span></template>
 					</MkKeyValue>
 					<MkKeyValue v-if="info" oneline>
 						<template #key>{{ i18n.ts.email }}</template>
@@ -51,56 +45,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts.moderationNote }}</template>
 				</MkTextarea>
 
-				<!--
-				<FormSection>
-					<template #label>ActivityPub</template>
-
-					<div class="_gaps_m">
-						<div style="display: flex; flex-direction: column; gap: 1em;">
-							<MkKeyValue v-if="user.host" oneline>
-								<template #key>{{ i18n.ts.instanceInfo }}</template>
-								<template #value><MkA :to="`/instance-info/${user.host}`" class="_link">{{ user.host }} <i class="ti ti-chevron-right"></i></MkA></template>
-							</MkKeyValue>
-							<MkKeyValue v-else oneline>
-								<template #key>{{ i18n.ts.instanceInfo }}</template>
-								<template #value>(Local user)</template>
-							</MkKeyValue>
-							<MkKeyValue oneline>
-								<template #key>{{ i18n.ts.updatedAt }}</template>
-								<template #value><MkTime v-if="user.lastFetchedAt" mode="detail" :time="user.lastFetchedAt"/><span v-else>N/A</span></template>
-							</MkKeyValue>
-							<MkKeyValue v-if="ap" oneline>
-								<template #key>Type</template>
-								<template #value><span class="_monospace">{{ ap.type }}</span></template>
-							</MkKeyValue>
-						</div>
-
-						<MkButton v-if="user.host != null" @click="updateRemoteUser"><i class="ti ti-refresh"></i> {{ i18n.ts.updateRemoteUser }}</MkButton>
-
-						<MkFolder>
-							<template #label>Raw</template>
-
-							<MkObjectView v-if="ap" tall :value="ap">
-							</MkObjectView>
-						</MkFolder>
-					</div>
-				</FormSection>
-			-->
-
 				<FormSection>
 					<div class="_gaps">
 						<MkSwitch v-model="suspended" @update:modelValue="toggleSuspend">{{ i18n.ts.suspend }}</MkSwitch>
 
 						<div>
-							<MkButton v-if="user.host == null" inline style="margin-right: 8px;" @click="resetPassword"><i class="ti ti-key"></i> {{ i18n.ts.resetPassword }}</MkButton>
+							<MkButton v-if="user && user.host == null" inline style="margin-right: 8px;" @click="resetPassword"><i class="ti ti-key"></i> {{ i18n.ts.resetPassword }}</MkButton>
 						</div>
 
 						<MkFolder>
 							<template #icon><i class="ti ti-license"></i></template>
 							<template #label>{{ i18n.ts._role.policies }}</template>
 							<div class="_gaps">
-								<div v-for="policy in Object.keys(info.policies)" :key="policy">
-									{{ policy }} ... {{ info.policies[policy] }}
+								<div v-for="policy in Object.keys(info!.policies)" :key="policy">
+									{{ policy }} ... {{ info!.policies[policy] }}
 								</div>
 							</div>
 						</MkFolder>
@@ -128,9 +86,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 
 			<div v-else-if="tab === 'roles'" class="_gaps">
-				<MkButton v-if="user.host == null" primary rounded @click="assignRole"><i class="ti ti-plus"></i> {{ i18n.ts.assign }}</MkButton>
+				<MkButton v-if="user!.host == null" primary rounded @click="assignRole"><i class="ti ti-plus"></i> {{ i18n.ts.assign }}</MkButton>
 
-				<div v-for="role in info.roles" :key="role.id">
+				<div v-for="role in info!.roles" :key="role.id">
 					<div :class="$style.roleItemMain">
 						<MkRolePreview :class="$style.role" :role="role" :forModeration="true"/>
 						<button class="_button" @click="toggleRoleItem(role)"><i class="ti ti-chevron-down"></i></button>
@@ -138,8 +96,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<button v-else class="_button" :class="$style.roleUnassign" disabled><i class="ti ti-ban"></i></button>
 					</div>
 					<div v-if="expandedRoles.includes(role.id)" :class="$style.roleItemSub">
-						<div>Assigned: <MkTime :time="info.roleAssigns.find(a => a.roleId === role.id).createdAt" mode="detail"/></div>
-						<div v-if="info.roleAssigns.find(a => a.roleId === role.id).expiresAt">Period: {{ new Date(info.roleAssigns.find(a => a.roleId === role.id).expiresAt).toLocaleString() }}</div>
+						<div>Assigned: <MkTime :time="info!.roleAssigns.find(a => a.roleId === role.id)?.createdAt ?? null" mode="detail"/></div>
+						<div v-if="info!.roleAssigns.find(a => a.roleId === role.id)?.expiresAt">Period: {{ new Date(info!.roleAssigns.find(a => a.roleId === role.id)?.expiresAt ?? 0).toLocaleString() }}</div>
 						<div v-else>Period: {{ i18n.ts.indefinitely }}</div>
 					</div>
 				</div>
@@ -149,27 +107,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkFileListForAdmin :pagination="filesPagination" viewMode="grid"/>
 			</div>
 
-			<div v-else-if="tab === 'chart'" class="_gaps_m">
-				<div class="cmhjzshm">
-					<div class="selects">
-						<MkSelect v-model="chartSrc" style="margin: 0 10px 0 0; flex: 1;">
-							<option value="per-user-notes">{{ i18n.ts.notes }}</option>
-						</MkSelect>
-					</div>
-					<div class="charts">
-						<div class="label">{{ i18n.tsx.recentNHours({ n: 90 }) }}</div>
-						<MkChart class="chart" :src="chartSrc" span="hour" :limit="90" :args="{ user, withoutAll: true }" :detailed="true"></MkChart>
-						<div class="label">{{ i18n.tsx.recentNDays({ n: 90 }) }}</div>
-						<MkChart class="chart" :src="chartSrc" span="day" :limit="90" :args="{ user, withoutAll: true }" :detailed="true"></MkChart>
-					</div>
-				</div>
-			</div>
-
 			<div v-else-if="tab === 'raw'" class="_gaps_m">
 				<MkObjectView v-if="info && $i.isAdmin" tall :value="info">
 				</MkObjectView>
 
-				<MkObjectView tall :value="user">
+				<MkObjectView tall :value="user ?? {}">
 				</MkObjectView>
 			</div>
 		</FormSuspense>
@@ -180,7 +122,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, watch, ref } from 'vue';
 import * as Misskey from 'misskey-js';
-import MkChart from '@/components/MkChart.vue';
 import MkObjectView from '@/components/MkObjectView.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -212,9 +153,8 @@ const props = withDefaults(defineProps<{
 
 const $i = signinRequired();
 const tab = ref(props.initialTab);
-const chartSrc = ref('per-user-notes');
 const user = ref<null | Misskey.entities.UserDetailed>();
-const init = ref<ReturnType<typeof createFetcher>>();
+const init = ref<ReturnType<typeof createFetcher>>(() => new Promise<void>(_r => {}));
 const info = ref<Misskey.Endpoints['admin/show-user']['res'] | null>(null);
 const ips = ref<Misskey.entities.AdminGetUserIpsResponse | null>(null);
 const ap = ref<any>(null);
@@ -474,10 +414,6 @@ const headerTabs = computed(() => [{
 	key: 'drive',
 	title: i18n.ts.drive,
 	icon: 'ti ti-cloud',
-}, {
-	key: 'chart',
-	title: i18n.ts.charts,
-	icon: 'ti ti-chart-line',
 }, {
 	key: 'raw',
 	title: 'Raw',
