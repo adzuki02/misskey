@@ -57,10 +57,10 @@ const run = async () => {
 		token: $i?.token,
 	}), {
 		in: aiScriptReadline,
-		out: (value) => {
+		out: () => {
 			// nop
 		},
-		log: (type, params) => {
+		log: () => {
 			// nop
 		},
 	});
