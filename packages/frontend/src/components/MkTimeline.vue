@@ -92,46 +92,46 @@ const stream = useStream();
 function connectChannel() {
 	if (props.src === 'antenna') {
 		if (props.antenna == null) return;
-		(<Misskey.ChannelConnection<Misskey.Channels['antenna']>>connection) = stream.useChannel('antenna', {
+		(connection as Misskey.ChannelConnection<Misskey.Channels['antenna']>) = stream.useChannel('antenna', {
 			antennaId: props.antenna,
 		});
 	} else if (props.src === 'home') {
-		(<Misskey.ChannelConnection<Misskey.Channels['homeTimeline']>>connection) = stream.useChannel('homeTimeline', {
+		(connection as Misskey.ChannelConnection<Misskey.Channels['homeTimeline']>) = stream.useChannel('homeTimeline', {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
 		});
-		(<Misskey.ChannelConnection<Misskey.Channels['main']>>connection2) = stream.useChannel('main');
+		(connection2 as Misskey.ChannelConnection<Misskey.Channels['main']>) = stream.useChannel('main');
 	} else if (props.src === 'global') {
-		(<Misskey.ChannelConnection<Misskey.Channels['globalTimeline']>>connection) = stream.useChannel('globalTimeline', {
+		(connection as Misskey.ChannelConnection<Misskey.Channels['globalTimeline']>) = stream.useChannel('globalTimeline', {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
 		});
 	} else if (props.src === 'mentions') {
-		(<Misskey.ChannelConnection<Misskey.Channels['main']>>connection) = stream.useChannel('main');
-		(<Misskey.ChannelConnection<Misskey.Channels['main']>>connection).on('mention', prepend);
+		(connection as Misskey.ChannelConnection<Misskey.Channels['main']>) = stream.useChannel('main');
+		(connection as Misskey.ChannelConnection<Misskey.Channels['main']>).on('mention', prepend);
 	} else if (props.src === 'directs') {
 		const onNote = note => {
 			if (note.visibility === 'specified') {
 				prepend(note);
 			}
 		};
-		(<Misskey.ChannelConnection<Misskey.Channels['main']>>connection) = stream.useChannel('main');
-		(<Misskey.ChannelConnection<Misskey.Channels['main']>>connection).on('mention', onNote);
+		(connection as Misskey.ChannelConnection<Misskey.Channels['main']>) = stream.useChannel('main');
+		(connection as Misskey.ChannelConnection<Misskey.Channels['main']>).on('mention', onNote);
 	} else if (props.src === 'list') {
 		if (props.list == null) return;
-		(<Misskey.ChannelConnection<Misskey.Channels['userList']>>connection) = stream.useChannel('userList', {
+		(connection as Misskey.ChannelConnection<Misskey.Channels['userList']>) = stream.useChannel('userList', {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
 			listId: props.list,
 		});
 	} else if (props.src === 'channel') {
 		if (props.channel == null) return;
-		(<Misskey.ChannelConnection<Misskey.Channels['channel']>>connection) = stream.useChannel('channel', {
+		(connection as Misskey.ChannelConnection<Misskey.Channels['channel']>) = stream.useChannel('channel', {
 			channelId: props.channel,
 		});
 	} else if (props.src === 'role') {
 		if (props.role == null) return;
-		(<Misskey.ChannelConnection<Misskey.Channels['roleTimeline']>>connection) = stream.useChannel('roleTimeline', {
+		(connection as Misskey.ChannelConnection<Misskey.Channels['roleTimeline']>) = stream.useChannel('roleTimeline', {
 			roleId: props.role,
 		});
 	}
