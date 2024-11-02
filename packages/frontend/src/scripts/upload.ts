@@ -9,12 +9,10 @@ import { readAndCompressImage } from '@misskey-dev/browser-image-resizer';
 import { getCompressionConfig } from './upload/compress-config.js';
 import { defaultStore } from '@/store.js';
 import { apiUrl } from '@/config.js';
-import { signinRequired } from '@/account.js';
+import { $i } from '@/account.js';
 import { alert } from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
-
-const $i = signinRequired();
 
 type Uploading = {
 	id: string;
@@ -88,7 +86,7 @@ export function uploadFile(
 			}
 
 			const formData = new FormData();
-			formData.append('i', $i.token);
+			if ($i) formData.append('i', $i.token);
 			formData.append('force', 'true');
 			formData.append('file', resizedImage ?? file);
 			formData.append('name', ctx.name);
