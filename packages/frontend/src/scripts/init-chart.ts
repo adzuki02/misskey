@@ -45,6 +45,7 @@ export function initChart() {
 		SubTitle,
 		Filler,
 		MatrixController, MatrixElement,
+		// @ts-expect-error とりあえず無視
 		zoomPlugin,
 		gradient,
 	);

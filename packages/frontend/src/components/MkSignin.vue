@@ -90,7 +90,7 @@ const queryingKey = ref(false);
 let credentialRequest: CredentialRequestOptions | null = null;
 
 const emit = defineEmits<{
-	(ev: 'login', v: any): void;
+	(ev: 'login', v: Misskey.entities.SigninResponse): void;
 }>();
 
 const props = withDefaults(defineProps<{
@@ -115,7 +115,7 @@ function onUsernameChange(): void {
 	});
 }
 
-function onLogin(res: any): Promise<void> | void {
+function onLogin(res: Misskey.entities.SigninResponse): Promise<void> | void {
 	if (props.autoSet) {
 		return login(res.i);
 	}
@@ -182,8 +182,8 @@ function onSubmit(): void {
 	}
 }
 
-function loginFailed(err: any): void {
-	switch (err.id) {
+function loginFailed(err: unknown): void {
+	switch (err !== null && typeof err === 'object' && 'id' in err ? err.id : undefined) {
 		case '6cc579cc-885d-43d8-95c2-b8c7fc963280': {
 			os.alert({
 				type: 'error',

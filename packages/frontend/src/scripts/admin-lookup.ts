@@ -14,7 +14,7 @@ export async function lookupUser() {
 	});
 	if (canceled) return;
 
-	const show = (user) => {
+	const show = (user: { id: string }) => {
 		os.pageWindow(`/admin/user/${user.id}`);
 	};
 
@@ -53,7 +53,7 @@ export async function lookupUserByEmail() {
 
 		os.pageWindow(`/admin/user/${user.id}`);
 	} catch (err) {
-		if (err.code === 'USER_NOT_FOUND') {
+		if (err !== null && typeof err === 'object' && 'code' in err && err.code === 'USER_NOT_FOUND') {
 			os.alert({
 				type: 'error',
 				text: i18n.ts.noSuchUser,
@@ -71,7 +71,7 @@ export async function lookupFile() {
 	});
 	if (canceled) return;
 
-	const show = (file) => {
+	const show = (file: { id: string }) => {
 		os.pageWindow(`/admin/file/${file.id}`);
 	};
 

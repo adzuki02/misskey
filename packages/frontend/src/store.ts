@@ -468,7 +468,7 @@ export type Plugin = {
 	active: boolean;
 	config?: Record<string, { default: any }>;
 	configData: Record<string, any>;
-	token: string;
+	token: string | null;
 	src: string | null;
 	version: string;
 	ast: any[];
