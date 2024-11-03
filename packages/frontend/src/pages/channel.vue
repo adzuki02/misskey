@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<!-- スマホ・タブレットの場合、キーボードが表示されると投稿が見づらくなるので、デスクトップ場合のみ自動でフォーカスを当てる -->
 				<MkPostForm v-if="$i && defaultStore.reactiveState.showFixedPostFormInChannel.value" :channel="channel" class="post-form _panel" fixed :autofocus="deviceKind === 'desktop'"/>
 
-				<MkTimeline :key="channelId" src="channel" :channel="channelId" @before="before" @after="after" @note="miLocalStorage.setItemAsJson(`channelLastReadedAt:${channel.id}`, Date.now())"/>
+				<MkTimeline :key="channelId" src="channel" :channel="channelId" @note="miLocalStorage.setItemAsJson(`channelLastReadedAt:${channel.id}`, Date.now())"/>
 			</div>
 			<div v-else-if="tab === 'search'" key="search">
 				<div class="_gaps">
@@ -109,9 +109,10 @@ const searchPagination = ref();
 const searchKey = ref('');
 
 watch(() => props.channelId, async () => {
-	channel.value = await misskeyApi('channels/show', {
+	const res = await misskeyApi('channels/show', {
 		channelId: props.channelId,
 	});
+	channel.value = res;
 	favorited.value = channel.value.isFavorited ?? false;
 	if (favorited.value || channel.value.isFollowing) {
 		tab.value = 'timeline';

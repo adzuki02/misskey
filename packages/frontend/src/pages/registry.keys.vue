@@ -67,10 +67,12 @@ async function createKey() {
 	const { canceled, result } = await os.form(i18n.ts._registry.createKey, {
 		key: {
 			type: 'string',
+			default: null,
 			label: i18n.ts._registry.key,
 		},
 		value: {
 			type: 'string',
+			default: null,
 			multiline: true,
 			label: i18n.ts.value,
 		},

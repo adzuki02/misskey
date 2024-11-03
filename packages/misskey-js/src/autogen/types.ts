@@ -4045,8 +4045,10 @@ export type operations = {
             mcaptchaSecretKey: string | null;
             recaptchaSecretKey: string | null;
             turnstileSecretKey: string | null;
-            sensitiveMediaDetection: string;
-            sensitiveMediaDetectionSensitivity: string;
+            /** @enum {string} */
+            sensitiveMediaDetection: 'none' | 'all' | 'local' | 'remote';
+            /** @enum {string} */
+            sensitiveMediaDetectionSensitivity: 'medium' | 'low' | 'high' | 'veryLow' | 'veryHigh';
             setSensitiveFlagAutomatically: boolean;
             enableSensitiveMediaDetectionForVideos: boolean;
             /** Format: id */

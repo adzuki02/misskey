@@ -169,7 +169,7 @@ function save() {
 			channelId: props.channelId,
 		});
 	} else {
-		os.apiWithDialog('channels/create', params).then(created => {
+		os.apiWithDialog('channels/create', params as Misskey.entities.ChannelsCreateRequest).then(created => {
 			router.push(`/channels/${created.id}`);
 		});
 	}

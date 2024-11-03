@@ -199,10 +199,12 @@ export const meta = {
 			},
 			sensitiveMediaDetection: {
 				type: 'string',
+				enum: ['none', 'all', 'local', 'remote'],
 				optional: false, nullable: false,
 			},
 			sensitiveMediaDetectionSensitivity: {
 				type: 'string',
+				enum: ['medium', 'low', 'high', 'veryLow', 'veryHigh'],
 				optional: false, nullable: false,
 			},
 			setSensitiveFlagAutomatically: {

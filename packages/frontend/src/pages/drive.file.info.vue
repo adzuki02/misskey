@@ -144,6 +144,7 @@ function move() {
 	if (!file.value) return;
 
 	os.selectDriveFolder(false).then(folder => {
+		if (!file.value) return;
 		misskeyApi('drive/files/update', {
 			fileId: file.value.id,
 			folderId: folder[0] ? folder[0].id : null,
@@ -178,7 +179,7 @@ function rename() {
 		placeholder: i18n.ts.inputNewFileName,
 		default: file.value.name,
 	}).then(({ canceled, result: name }) => {
-		if (canceled) return;
+		if (canceled || !file.value) return;
 		os.apiWithDialog('drive/files/update', {
 			fileId: file.value.id,
 			name: name,
@@ -196,6 +197,7 @@ function describe() {
 		file: file.value,
 	}, {
 		done: caption => {
+			if (!file.value) return;
 			os.apiWithDialog('drive/files/update', {
 				fileId: file.value.id,
 				comment: caption.length === 0 ? null : caption,

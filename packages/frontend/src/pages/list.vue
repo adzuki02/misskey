@@ -26,8 +26,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 		</div>
-		<MkButton v-if="list.isLiked" v-tooltip="i18n.ts.unlike" inline :class="$style.button" asLike primary @click="unlike()"><i class="ti ti-heart-off"></i><span v-if="list.likedCount > 0" class="count">{{ list.likedCount }}</span></MkButton>
-		<MkButton v-if="!list.isLiked" v-tooltip="i18n.ts.like" inline :class="$style.button" asLike @click="like()"><i class="ti ti-heart"></i><span v-if="1 > 0" class="count">{{ list.likedCount }}</span></MkButton>
+		<MkButton v-if="(list as unknown as { 'isLiked'?: boolean }).isLiked" v-tooltip="i18n.ts.unlike" inline :class="$style.button" asLike primary @click="unlike()"><i class="ti ti-heart-off"></i><span v-if="(list as unknown as { 'likedCount': number }).likedCount > 0" class="count">{{ (list as unknown as { 'likedCount'?: number }).likedCount }}</span></MkButton>
+		<MkButton v-else v-tooltip="i18n.ts.like" inline :class="$style.button" asLike @click="like()"><i class="ti ti-heart"></i><span v-if="(list as unknown as { 'likedCount'?: number }).likedCount" class="count">{{ (list as unknown as { 'likedCount': number }).likedCount }}</span></MkButton>
 		<MkButton inline @click="create()"><i class="ti ti-download" :class="$style.import"></i>{{ i18n.ts.import }}</MkButton>
 	</MkSpacer>
 </MkStickyContainer>
@@ -70,20 +70,22 @@ function fetchList(): void {
 }
 
 function like() {
+	if (!list.value) return;
 	os.apiWithDialog('users/lists/favorite', {
 		listId: list.value.id,
 	}).then(() => {
-		list.value.isLiked = true;
-		list.value.likedCount++;
+		(list.value as unknown as { isLiked: boolean }).isLiked = true;
+		(list.value as unknown as { likedCount: number }).likedCount++;
 	});
 }
 
 function unlike() {
+	if (!list.value) return;
 	os.apiWithDialog('users/lists/unfavorite', {
 		listId: list.value.id,
 	}).then(() => {
-		list.value.isLiked = false;
-		list.value.likedCount--;
+		(list.value as unknown as { isLiked: boolean}).isLiked = false;
+		(list.value as unknown as { likedCount: number }).likedCount--;
 	});
 }
 
