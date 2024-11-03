@@ -33,7 +33,7 @@ export async function getTheme(mode: 'light' | 'dark', getName = false): Promise
 			_res = deepClone(theme.codeHighlighter.overrides);
 		} else {
 			const base = await bundledThemesInfo.find(t => t.id === theme.codeHighlighter!.base)?.import() ?? darkPlus;
-			_res = deepMerge(theme.codeHighlighter.overrides ?? {}, 'default' in base ? base.default : base);
+			_res = deepMerge(theme.codeHighlighter.overrides ?? {}, 'default' in (base as object) ? (base as { 'default': ThemeRegistration }).default : base as ThemeRegistration);
 		}
 		if (_res.name == null) {
 			_res.name = theme.id;
