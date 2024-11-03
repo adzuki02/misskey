@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { ref } from 'vue';
 import XColumn from './column.vue';
 import { addColumnWidget, Column, removeColumnWidget, setColumnWidgets, updateColumnWidget } from './deck-store.js';
-import XWidgets from '@/components/MkWidgets.vue';
+import XWidgets, { type Widget } from '@/components/MkWidgets.vue';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
@@ -36,8 +36,8 @@ function removeWidget(widget) {
 	removeColumnWidget(props.column.id, widget);
 }
 
-function updateWidget({ id, data }) {
-	updateColumnWidget(props.column.id, id, data);
+function updateWidget(widget: Pick<Widget, 'id'> & Partial<Widget>) {
+	updateColumnWidget(props.column.id, widget.id, widget.data);
 }
 
 function updateWidgets(widgets) {

@@ -77,8 +77,8 @@ import MkPostForm from '@/components/MkPostForm.vue';
 const props = withDefaults(defineProps<{
 	component: AsUiComponent;
 	components: Ref<AsUiComponent>[];
-	size: 'small' | 'medium' | 'large';
-	align: 'left' | 'center' | 'right';
+	size?: 'small' | 'medium' | 'large';
+	align?: 'left' | 'center' | 'right';
 }>(), {
 	size: 'medium',
 	align: 'left',

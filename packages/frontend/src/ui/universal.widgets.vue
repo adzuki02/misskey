@@ -17,7 +17,7 @@ import { computed, ref } from 'vue';
 const editMode = ref(false);
 </script>
 <script lang="ts" setup>
-import XWidgets from '@/components/MkWidgets.vue';
+import XWidgets, { Widget } from '@/components/MkWidgets.vue';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
 
@@ -47,10 +47,10 @@ function removeWidget(widget) {
 	defaultStore.set('widgets', defaultStore.state.widgets.filter(w => w.id !== widget.id));
 }
 
-function updateWidget({ id, data }) {
-	defaultStore.set('widgets', defaultStore.state.widgets.map(w => w.id === id ? {
+function updateWidget(widget: Pick<Widget, 'id'> & Partial<Widget>) {
+	defaultStore.set('widgets', defaultStore.state.widgets.map(w => w.id === widget.id ? {
 		...w,
-		data,
+		data: widget.data ?? {},
 		place: props.place,
 	} : w));
 }

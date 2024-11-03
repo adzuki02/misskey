@@ -73,6 +73,7 @@ export function getConfig(): UserConfig {
 			pluginJson5(),
 			...process.env.NODE_ENV === 'production'
 				? [
+					// @ts-expect-error 無視
 					pluginReplace({
 						preventAssignment: true,
 						values: {

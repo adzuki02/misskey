@@ -60,7 +60,7 @@ export function useNoteCapture(props: {
 			case 'pollVoted': {
 				const choice = body.choice;
 
-				const choices = [...note.value.poll.choices];
+				const choices = note.value.poll ? [...note.value.poll.choices] : [];
 				choices[choice] = {
 					...choices[choice],
 					votes: choices[choice].votes + 1,
@@ -69,7 +69,7 @@ export function useNoteCapture(props: {
 					} : {}),
 				};
 
-				note.value.poll.choices = choices;
+				if (note.value.poll) note.value.poll.choices = choices;
 				break;
 			}
 

@@ -18,13 +18,11 @@ export default function(app: App) {
 	app.component('WidgetUnixClock', defineAsyncComponent(() => import('./WidgetUnixClock.vue')));
 	app.component('WidgetFederation', defineAsyncComponent(() => import('./WidgetFederation.vue')));
 	app.component('WidgetPostForm', defineAsyncComponent(() => import('./WidgetPostForm.vue')));
-	app.component('WidgetSlideshow', defineAsyncComponent(() => import('./WidgetSlideshow.vue')));
 	app.component('WidgetServerMetric', defineAsyncComponent(() => import('./server-metric/index.vue')));
 	app.component('WidgetJobQueue', defineAsyncComponent(() => import('./WidgetJobQueue.vue')));
 	app.component('WidgetButton', defineAsyncComponent(() => import('./WidgetButton.vue')));
 	app.component('WidgetAiscript', defineAsyncComponent(() => import('./WidgetAiscript.vue')));
 	app.component('WidgetAiscriptApp', defineAsyncComponent(() => import('./WidgetAiscriptApp.vue')));
-	app.component('WidgetAichan', defineAsyncComponent(() => import('./WidgetAichan.vue')));
 	app.component('WidgetUserList', defineAsyncComponent(() => import('./WidgetUserList.vue')));
 	app.component('WidgetBirthdayFollowings', defineAsyncComponent(() => import('./WidgetBirthdayFollowings.vue')));
 }
@@ -42,13 +40,11 @@ export const widgets = [
 	'unixClock',
 	'federation',
 	'postForm',
-	'slideshow',
 	'serverMetric',
 	'jobQueue',
 	'button',
 	'aiscript',
 	'aiscriptApp',
-	'aichan',
 	'userList',
 	'birthdayFollowings',
 ];

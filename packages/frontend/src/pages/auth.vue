@@ -75,9 +75,11 @@ onMounted(async () => {
 	if (!$i) return;
 
 	try {
-		session.value = await misskeyApi('auth/session/show', {
+		const res = await misskeyApi('auth/session/show', {
 			token: props.token,
 		});
+
+		session.value = res;
 
 		// 既に連携していた場合
 		if (session.value.app.isAuthorized) {

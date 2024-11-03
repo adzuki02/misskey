@@ -104,7 +104,7 @@ const run = async () => {
 	} catch (err) {
 		os.alert({
 			type: 'error',
-			text: typeof err === 'string' ? err : err instanceof Error ? err.toString() : JSON.stringify(err),
+			text: err instanceof Error ? err.toString() : JSON.stringify(err),
 		});
 	}
 };
