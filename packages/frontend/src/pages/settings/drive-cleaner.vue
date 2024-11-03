@@ -50,6 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script setup lang="ts">
 import { computed, ref, watch, type StyleValue } from 'vue';
 import tinycolor from 'tinycolor2';
+import type { DriveFilesRequest } from 'misskey-js/entities.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import MkPagination from '@/components/MkPagination.vue';
@@ -60,7 +61,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkSelect from '@/components/MkSelect.vue';
 import { getDriveFileMenu } from '@/scripts/get-drive-file-menu.js';
 
-const sortMode = ref('+size');
+const sortMode = ref<DriveFilesRequest['sort']>('+size');
 const pagination = {
 	endpoint: 'drive/files' as const,
 	limit: 10,

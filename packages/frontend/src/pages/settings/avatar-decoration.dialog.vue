@@ -60,7 +60,7 @@ const props = defineProps<{
 	decoration: {
 		id: string;
 		url: string;
-		name: string;
+		name?: string;
 	};
 }>();
 

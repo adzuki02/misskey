@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</div>
 				<div v-if="!(narrow && currentPage?.route.name == null)" class="main">
-					<div class="bkzroven" style="container-type: inline-size;">
+					<div style="container-type: inline-size;">
 						<RouterView/>
 					</div>
 				</div>
@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script setup lang="ts">
-import { computed, onActivated, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
+import { computed, onActivated, onMounted, onUnmounted, ref, watch, useTemplateRef } from 'vue';
 import { i18n } from '@/i18n.js';
 import MkInfo from '@/components/MkInfo.vue';
 import MkSuperMenu from '@/components/MkSuperMenu.vue';
@@ -44,8 +44,8 @@ const indexInfo = {
 	icon: 'ti ti-settings',
 	hideHeader: true,
 };
-const INFO = ref(indexInfo);
-const el = shallowRef<HTMLElement | null>(null);
+const INFO = ref<PageMetadata>(indexInfo);
+const el = useTemplateRef('el');
 const childInfo = ref<null | PageMetadata>(null);
 
 const router = useRouter();
@@ -55,7 +55,7 @@ const NARROW_THRESHOLD = 600;
 
 const currentPage = computed(() => router.currentRef.value.child);
 
-const ro = new ResizeObserver((entries, observer) => {
+const ro = new ResizeObserver((entries) => {
 	if (entries.length === 0) return;
 	narrow.value = entries[0].borderBoxSize[0].inlineSize < NARROW_THRESHOLD;
 });
@@ -199,6 +199,8 @@ const menuDef = computed(() => [{
 }]);
 
 onMounted(() => {
+	if (!el.value) return;
+
 	ro.observe(el.value);
 
 	narrow.value = el.value.offsetWidth < NARROW_THRESHOLD;
@@ -209,6 +211,8 @@ onMounted(() => {
 });
 
 onActivated(() => {
+	if (!el.value) return;
+
 	narrow.value = el.value.offsetWidth < NARROW_THRESHOLD;
 
 	if (!narrow.value && currentPage.value?.route.name == null) {
@@ -226,7 +230,7 @@ watch(router.currentRef, (to) => {
 	}
 });
 
-const emailNotConfigured = computed(() => instance.enableEmail && ($i.email == null || !$i.emailVerified));
+const emailNotConfigured = computed(() => instance.enableEmail && ($i == null || $i.email == null || !$i.emailVerified));
 
 provideMetadataReceiver((metadataGetter) => {
 	const info = metadataGetter();
@@ -265,11 +269,6 @@ definePageMetadata(() => INFO.value);
 						margin: 8px auto 16px auto;
 					}
 				}
-			}
-		}
-
-		> .main {
-			.bkzroven {
 			}
 		}
 	}

@@ -27,7 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<FormSection>
 		<div class="_gaps_m">
-			<FormLink to="/settings/drive" :behavior="null" @click="chooseUploadFolder()">
+			<FormLink to="/settings/drive" @click="chooseUploadFolder()">
 				{{ i18n.ts.uploadFolder }}
 				<template #suffix>{{ uploadFolder ? uploadFolder.name : '-' }}</template>
 				<template #suffixIcon><i class="ti ti-folder"></i></template>
