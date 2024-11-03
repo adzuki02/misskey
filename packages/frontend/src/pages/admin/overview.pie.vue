@@ -26,21 +26,19 @@ const props = defineProps<{
 	data: InstanceForPie[];
 }>();
 
-const chartEl = shallowRef<HTMLCanvasElement>(null);
+const chartEl = shallowRef<HTMLCanvasElement>();
 
 const { handler: externalTooltipHandler } = useChartTooltip({
 	position: 'middle',
 });
 
-let chartInstance: Chart;
-
 onMounted(() => {
-	chartInstance = new Chart(chartEl.value, {
+	new Chart(chartEl.value!, {
 		type: 'doughnut',
 		data: {
 			labels: props.data.map(x => x.name),
 			datasets: [{
-				backgroundColor: props.data.map(x => x.color),
+				backgroundColor: props.data.map(x => x.color ?? undefined),
 				borderColor: getComputedStyle(document.documentElement).getPropertyValue('--panel'),
 				borderWidth: 2,
 				hoverOffset: 0,
@@ -56,10 +54,10 @@ onMounted(() => {
 					bottom: 16,
 				},
 			},
-			onClick: (ev) => {
-				const hit = chartInstance.getElementsAtEventForMode(ev, 'nearest', { intersect: true }, false)[0];
+			onClick: (ev, _elements, chart) => {
+				const hit = chart.getElementsAtEventForMode(ev as unknown as Event, 'nearest', { intersect: true }, false)[0];
 				if (hit && props.data[hit.index].onClick) {
-					props.data[hit.index].onClick();
+					props.data[hit.index].onClick!();
 				}
 			},
 			plugins: {

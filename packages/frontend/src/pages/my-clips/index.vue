@@ -57,10 +57,12 @@ async function create() {
 	const { canceled, result } = await os.form(i18n.ts.createNewClip, {
 		name: {
 			type: 'string',
+			default: null,
 			label: i18n.ts.name,
 		},
 		description: {
 			type: 'string',
+			default: null,
 			required: false,
 			multiline: true,
 			treatAsMfm: true,
@@ -78,15 +80,7 @@ async function create() {
 
 	clipsCache.delete();
 
-	pagingComponent.value.reload();
-}
-
-function onClipCreated() {
-	pagingComponent.value.reload();
-}
-
-function onClipDeleted() {
-	pagingComponent.value.reload();
+	pagingComponent.value?.reload();
 }
 
 const headerActions = computed(() => []);

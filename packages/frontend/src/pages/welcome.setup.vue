@@ -57,6 +57,7 @@ function submit() {
 		username: username.value,
 		password: password.value,
 	}).then(res => {
+		// @ts-expect-error backendではtokenプロパティを含むように定義しようとしているがmisskey-jsはそうなっていない
 		return login(res.token);
 	}).catch(() => {
 		submitting.value = false;

@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<MkFolder defaultOpen>
 				<template #label>{{ i18n.ts.members }}</template>
-				<template #caption>{{ i18n.tsx.nUsers({ n: `${list.userIds.length}/${$i.policies['userEachUserListsLimit']}` }) }}</template>
+				<template #caption>{{ i18n.tsx.nUsers({ n: `${list.userIds?.length ?? '?' }/${$i.policies['userEachUserListsLimit']}` }) }}</template>
 
 				<div class="_gaps_s">
 					<MkButton rounded primary style="margin: 0 auto;" @click="addUser()">{{ i18n.ts.addUser }}</MkButton>
@@ -68,15 +68,10 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkInput from '@/components/MkInput.vue';
 import { userListsCache } from '@/cache.js';
 import { signinRequired } from '@/account.js';
-import { defaultStore } from '@/store.js';
 import MkPagination from '@/components/MkPagination.vue';
 import { mainRouter } from '@/router/main.js';
 
 const $i = signinRequired();
-
-const {
-	enableInfiniteScroll,
-} = defaultStore.reactiveState;
 
 const props = defineProps<{
 	listId: string;
@@ -111,7 +106,7 @@ function addUser() {
 			listId: list.value.id,
 			userId: user.id,
 		}).then(() => {
-			paginationEl.value.reload();
+			paginationEl.value?.reload();
 		});
 	});
 }
@@ -127,7 +122,7 @@ async function removeUser(item, ev) {
 				listId: list.value.id,
 				userId: item.userId,
 			}).then(() => {
-				paginationEl.value.removeItem(item.id);
+				paginationEl.value?.removeItem(item.id);
 			});
 		},
 	}], ev.currentTarget ?? ev.target);
@@ -148,7 +143,7 @@ async function showMembershipMenu(item, ev) {
 			withReplies,
 		}).then(() => {
 			paginationEl.value!.updateItem(item.id, (old) => ({
-				...old,
+				...(old as Misskey.entities.UsersListsGetMembershipsResponse[number]),
 				withReplies,
 			}));
 		});

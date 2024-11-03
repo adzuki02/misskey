@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkTimeline
 						ref="tlComponent"
 						:key="src + withRenotes + withReplies + onlyFiles"
-						:src="src.split(':')[0]"
+						:src="tlComponentSrc"
 						:list="src.split(':')[1]"
 						:withRenotes="withRenotes"
 						:withReplies="withReplies"
@@ -35,12 +35,10 @@ import { computed, watch, provide, shallowRef, ref, onMounted, onActivated } fro
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import type { BasicTimelineType } from '@/timelines.js';
 import MkTimeline from '@/components/MkTimeline.vue';
-import MkInfo from '@/components/MkInfo.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import { scroll } from '@/scripts/scroll.js';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
@@ -60,10 +58,15 @@ const rootEl = shallowRef<HTMLElement>();
 type TimelinePageSrc = BasicTimelineType | `list:${string}`;
 
 const queue = ref(0);
-const srcWhenNotSignin = ref<'global'>('global');
 const src = computed<TimelinePageSrc>({
-	get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin.value),
+	get: () => ($i ? defaultStore.reactiveState.tl.value.src : 'global'),
 	set: (x) => saveSrc(x),
+});
+const tlComponentSrc = computed<BasicTimelineType | 'list'>(() => {
+	if (src.value.startsWith('list:')) {
+		return 'list';
+	}
+	return src.value as BasicTimelineType;
 });
 const withRenotes = computed<boolean>({
 	get: () => defaultStore.reactiveState.tl.value.filter.withRenotes,
@@ -198,9 +201,6 @@ function saveSrc(newSrc: TimelinePageSrc): void {
 	}
 
 	defaultStore.set('tl', out);
-	if (['global'].includes(newSrc)) {
-		srcWhenNotSignin.value = newSrc as 'global';
-	}
 }
 
 function saveTlFilter(key: keyof typeof defaultStore.state.tl.filter, newValue: boolean) {
@@ -232,45 +232,40 @@ onActivated(() => {
 	switchTlIfNeeded();
 });
 
-const headerActions = computed(() => {
-	const tmp = [
-		{
-			icon: 'ti ti-dots',
-			text: i18n.ts.options,
-			handler: (ev) => {
-				os.popupMenu([{
-					type: 'switch',
-					text: i18n.ts.showRenotes,
-					ref: withRenotes,
-				}, isBasicTimeline(src.value) && hasWithReplies(src.value) ? {
-					type: 'switch',
-					text: i18n.ts.showRepliesToOthersInTimeline,
-					ref: withReplies,
-					disabled: onlyFiles,
-				} : undefined, {
-					type: 'switch',
-					text: i18n.ts.withSensitive,
-					ref: withSensitive,
-				}, {
-					type: 'switch',
-					text: i18n.ts.fileAttachedOnly,
-					ref: onlyFiles,
-					disabled: isBasicTimeline(src.value) && hasWithReplies(src.value) ? withReplies : false,
-				}], ev.currentTarget ?? ev.target);
-			},
+const headerActions = computed(() => [
+	...(deviceKind === 'desktop' ? [{
+		icon: 'ti ti-refresh',
+		text: i18n.ts.reload,
+		handler: () => {
+			tlComponent.value?.reloadTimeline();
 		},
-	];
-	if (deviceKind === 'desktop') {
-		tmp.unshift({
-			icon: 'ti ti-refresh',
-			text: i18n.ts.reload,
-			handler: (ev: Event) => {
-				tlComponent.value?.reloadTimeline();
-			},
-		});
-	}
-	return tmp;
-});
+	}] : []),
+	{
+		icon: 'ti ti-dots',
+		text: i18n.ts.options,
+		handler: (ev) => {
+			os.popupMenu([{
+				type: 'switch',
+				text: i18n.ts.showRenotes,
+				ref: withRenotes,
+			}, isBasicTimeline(src.value) && hasWithReplies(src.value) ? {
+				type: 'switch',
+				text: i18n.ts.showRepliesToOthersInTimeline,
+				ref: withReplies,
+				disabled: onlyFiles,
+			} : undefined, {
+				type: 'switch',
+				text: i18n.ts.withSensitive,
+				ref: withSensitive,
+			}, {
+				type: 'switch',
+				text: i18n.ts.fileAttachedOnly,
+				ref: onlyFiles,
+				disabled: isBasicTimeline(src.value) && hasWithReplies(src.value) ? withReplies : false,
+			}], ev.currentTarget ?? ev.target);
+		},
+	},
+]);
 
 const headerTabs = computed(() => [...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
 	key: 'list:' + l.id,

@@ -160,6 +160,7 @@ function onSubmit(): void {
 			}).then(res => {
 				totpLogin.value = true;
 				signing.value = false;
+				// @ts-expect-error とりあえず無視
 				credentialRequest = parseRequestOptionsFromJSON({
 					publicKey: res,
 				});

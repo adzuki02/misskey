@@ -2381,6 +2381,7 @@ _notification:
     roleAssigned: "Role given"
     achievementEarned: "Achievement unlocked"
     app: "Notifications from linked apps"
+    test: "Test"
   _actions:
     followBack: "followed you back"
     reply: "Reply"

@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkButton rounded :class="$style.loadButton" @click="showNext = 'user'"><i class="ti ti-chevron-up"></i> <i class="ti ti-user"></i></MkButton>
 						</div>
 						<div class="_margin _gaps_s">
-							<MkRemoteCaution v-if="note.user.host != null" :href="note.url ?? note.uri"/>
+							<MkRemoteCaution v-if="note.user.host != null" :href="note.url ?? note.uri!"/>
 							<MkNoteDetailed :key="note.id" v-model:note="note" :initialTab="initialTab" :class="$style.note"/>
 						</div>
 						<div v-if="clips && clips.length > 0" class="_margin">
@@ -61,10 +61,11 @@ import { i18n } from '@/i18n.js';
 import { dateString } from '@/filters/date.js';
 import MkClipPreview from '@/components/MkClipPreview.vue';
 import { defaultStore } from '@/store.js';
+import { acct } from '@/filters/user';
 
 const props = defineProps<{
 	noteId: string;
-	initialTab?: string;
+	initialTab?: 'replies' | 'renotes' | 'reactions';
 }>();
 
 const note = ref<null | Misskey.entities.Note>();
@@ -120,7 +121,7 @@ function fetchNote() {
 	}).then(res => {
 		note.value = res;
 		// 古いノートは被クリップ数をカウントしていないので、2023-10-01以前のものは強制的にnotes/clipsを叩く
-		if (note.value.clippedCount > 0 || new Date(note.value.createdAt).getTime() < new Date('2023-10-01').getTime()) {
+		if ((note.value.clippedCount !== undefined && note.value.clippedCount > 0) || new Date(note.value.createdAt).getTime() < new Date('2023-10-01').getTime()) {
 			misskeyApi('notes/clips', {
 				noteId: note.value.id,
 			}).then((_clips) => {
@@ -147,7 +148,7 @@ definePageMetadata(() => ({
 		avatar: note.value.user,
 		path: `/notes/${note.value.id}`,
 		share: {
-			title: i18n.tsx.noteOf({ user: note.value.user.name }),
+			title: i18n.tsx.noteOf({ user: note.value.user.name ?? acct(note.value.user) }),
 			text: note.value.text,
 		},
 	} : {},

@@ -239,7 +239,7 @@ import { type Keymap } from '@/scripts/hotkey.js';
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
-	initialTab: string;
+	initialTab?: 'replies' | 'renotes' | 'reactions';
 }>(), {
 	initialTab: 'replies',
 });

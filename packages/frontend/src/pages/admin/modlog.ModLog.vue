@@ -67,7 +67,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span v-else-if="log.type === 'deleteFlash'">: @{{ log.info.flashUserUsername }}</span>
 	</template>
 	<template #icon>
-		<MkAvatar :user="log.user" :class="$style.avatar"/>
+		<MkAvatar v-if="log.user" :user="log.user" :class="$style.avatar"/>
+		<div v-else :class="$style.avatar"></div>
 	</template>
 	<template #suffix>
 		<MkTime :time="log.createdAt"/>
@@ -151,7 +152,7 @@ import JSON5 from 'json5';
 import { i18n } from '@/i18n.js';
 import MkFolder from '@/components/MkFolder.vue';
 
-const props = defineProps<{
+defineProps<{
 	log: Misskey.entities.ModerationLog;
 }>();
 </script>

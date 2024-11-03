@@ -32,9 +32,9 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { notificationTypes } from '@/const.js';
 
-const tab = ref('all');
-const includeTypes = ref<string[] | null>(null);
-const excludeTypes = computed(() => includeTypes.value ? notificationTypes.filter(t => !includeTypes.value.includes(t)) : null);
+const tab = ref<'all' | 'mentions' | 'directNotes'>('all');
+const includeTypes = ref<string[]>();
+const excludeTypes = computed(() => includeTypes.value ? notificationTypes.filter(t => !includeTypes.value?.includes(t)) : []);
 
 const mentionsPagination = {
 	endpoint: 'notes/mentions' as const,
@@ -57,11 +57,11 @@ function setFilter(ev) {
 			includeTypes.value = [t];
 		},
 	}));
-	const items = includeTypes.value != null ? [{
+	const items = includeTypes.value !== undefined ? [{
 		icon: 'ti ti-x',
 		text: i18n.ts.clear,
 		action: () => {
-			includeTypes.value = null;
+			includeTypes.value = undefined;
 		},
 	}, { type: 'divider' as const }, ...typeItems] : typeItems;
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
@@ -70,13 +70,13 @@ function setFilter(ev) {
 const headerActions = computed(() => [tab.value === 'all' ? {
 	text: i18n.ts.filter,
 	icon: 'ti ti-filter',
-	highlighted: includeTypes.value != null,
+	highlighted: includeTypes.value !== undefined,
 	handler: setFilter,
 } : undefined, tab.value === 'all' ? {
 	text: i18n.ts.markAllAsRead,
 	icon: 'ti ti-check',
 	handler: () => {
-		os.apiWithDialog('notifications/mark-all-as-read');
+		os.apiWithDialog('notifications/mark-all-as-read', {});
 	},
 } : undefined].filter(x => x !== undefined));
 
