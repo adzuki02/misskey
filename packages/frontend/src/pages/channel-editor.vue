@@ -70,7 +70,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref, watch, defineAsyncComponent } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Channel, Note, ChannelsCreateRequest } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkColorInput from '@/components/MkColorInput.vue';
@@ -92,7 +92,7 @@ const props = defineProps<{
 	channelId?: string;
 }>();
 
-const channel = ref<Misskey.entities.Channel | null>(null);
+const channel = ref<Channel | null>(null);
 const name = ref<string | null>(null);
 const description = ref<string | null>(null);
 const bannerUrl = ref<string | null>(null);
@@ -100,7 +100,7 @@ const bannerId = ref<string | null>(null);
 const color = ref('#000');
 const isSensitive = ref(false);
 const allowRenoteToExternal = ref(true);
-const pinnedNotes = ref<{ id: Misskey.entities.Note['id'] }[]>([]);
+const pinnedNotes = ref<{ id: Note['id'] }[]>([]);
 
 watch(() => bannerId.value, async () => {
 	if (bannerId.value == null) {
@@ -169,7 +169,7 @@ function save() {
 			channelId: props.channelId,
 		});
 	} else {
-		os.apiWithDialog('channels/create', params as Misskey.entities.ChannelsCreateRequest).then(created => {
+		os.apiWithDialog('channels/create', params as ChannelsCreateRequest).then(created => {
 			router.push(`/channels/${created.id}`);
 		});
 	}

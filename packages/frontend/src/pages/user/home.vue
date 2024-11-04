@@ -150,7 +150,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, computed, onMounted, onUnmounted, nextTick, watch, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import MkNote from '@/components/MkNote.vue';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 import MkAccountMoved from '@/components/MkAccountMoved.vue';
@@ -192,7 +192,7 @@ const XFiles = defineAsyncComponent(() => import('./index.files.vue'));
 const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
 
 const props = withDefaults(defineProps<{
-	user: Misskey.entities.UserDetailed;
+	user: UserDetailed;
 	/** Test only; MkNotes currently causes problems in vitest */
 	disableNotes?: boolean;
 }>(), {

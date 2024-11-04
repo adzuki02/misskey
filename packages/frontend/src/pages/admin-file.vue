@@ -68,7 +68,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile, AdminDriveShowFileResponse } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkObjectView from '@/components/MkObjectView.vue';
@@ -84,9 +84,9 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { iAmAdmin, iAmModerator } from '@/account.js';
 
-const tab = ref('overview');
-const file = ref<Misskey.entities.DriveFile | null>(null);
-const info = ref<Misskey.entities.AdminDriveShowFileResponse | null>(null);
+const tab = ref<'overview' | 'ip' | 'raw'>('overview');
+const file = ref<DriveFile>();
+const info = ref<AdminDriveShowFileResponse>();
 const isSensitive = ref<boolean>(false);
 
 const props = defineProps<{

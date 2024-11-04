@@ -120,8 +120,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, watch, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import { computed, watch, ref } from 'vue';
+import type { UserDetailed, Role, AdminShowUserResponse, AdminGetUserIpsResponse } from 'misskey-js/entities.js';
 import MkObjectView from '@/components/MkObjectView.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -130,7 +130,6 @@ import FormSection from '@/components/form/section.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
-import MkSelect from '@/components/MkSelect.vue';
 import FormSuspense from '@/components/form/suspense.vue';
 import MkFileListForAdmin from '@/components/MkFileListForAdmin.vue';
 import MkInfo from '@/components/MkInfo.vue';
@@ -142,7 +141,6 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
 import { signinRequired, iAmAdmin, iAmModerator } from '@/account.js';
 import MkRolePreview from '@/components/MkRolePreview.vue';
-import MkPagination from '@/components/MkPagination.vue';
 
 const props = withDefaults(defineProps<{
 	userId: string;
@@ -153,10 +151,10 @@ const props = withDefaults(defineProps<{
 
 const $i = signinRequired();
 const tab = ref(props.initialTab);
-const user = ref<null | Misskey.entities.UserDetailed>();
+const user = ref<UserDetailed>();
 const init = ref<ReturnType<typeof createFetcher>>(() => new Promise<void>(_r => {}));
-const info = ref<Misskey.Endpoints['admin/show-user']['res'] | null>(null);
-const ips = ref<Misskey.entities.AdminGetUserIpsResponse | null>(null);
+const info = ref<AdminShowUserResponse>();
+const ips = ref<AdminGetUserIpsResponse>();
 const ap = ref<any>(null);
 const moderator = ref(false);
 const silenced = ref(false);
@@ -169,7 +167,7 @@ const filesPagination = {
 		userId: props.userId,
 	})),
 };
-const expandedRoles = ref<Misskey.entities.Role['id'][]>([]);
+const expandedRoles = ref<Role['id'][]>([]);
 
 function createFetcher() {
 	return () => Promise.all([misskeyApi('users/show', {
@@ -181,7 +179,7 @@ function createFetcher() {
 	}) : Promise.resolve(null)]).then(([_user, _info, _ips]) => {
 		user.value = _user;
 		info.value = _info;
-		ips.value = _ips;
+		ips.value = _ips ?? undefined;
 		moderator.value = info.value.isModerator;
 		silenced.value = info.value.isSilenced;
 		suspended.value = info.value.isSuspended;
@@ -377,7 +375,7 @@ async function unassignRole(role, ev) {
 	}], ev.currentTarget ?? ev.target);
 }
 
-function toggleRoleItem(role: Misskey.entities.Role) {
+function toggleRoleItem(role: Role) {
 	if (expandedRoles.value.includes(role.id)) {
 		expandedRoles.value = expandedRoles.value.filter(x => x !== role.id);
 	} else {

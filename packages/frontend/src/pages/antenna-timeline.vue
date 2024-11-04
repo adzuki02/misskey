@@ -24,11 +24,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, ref, shallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import { computed, watch, ref, useTemplateRef } from 'vue';
+import type { Antenna } from 'misskey-js/entities.js';
 import MkTimeline from '@/components/MkTimeline.vue';
 import { scroll } from '@/scripts/scroll.js';
-import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
@@ -40,10 +39,10 @@ const props = defineProps<{
 	antennaId: string;
 }>();
 
-const antenna = ref<Misskey.entities.Antenna | null>(null);
+const antenna = ref<Antenna>();
 const queue = ref(0);
-const rootEl = shallowRef<HTMLElement>();
-const tlEl = shallowRef<InstanceType<typeof MkTimeline>>();
+const rootEl = useTemplateRef('rootEl');
+const tlEl = useTemplateRef('tlEl');
 
 function queueUpdated(q) {
 	queue.value = q;

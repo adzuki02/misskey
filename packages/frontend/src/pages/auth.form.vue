@@ -21,13 +21,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { AuthSessionShowResponse } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
-	session: Misskey.entities.AuthSessionShowResponse;
+	session: AuthSessionShowResponse;
 }>();
 
 const emit = defineEmits<{

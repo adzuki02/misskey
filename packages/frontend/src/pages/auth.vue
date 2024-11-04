@@ -43,8 +43,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, ref, computed } from 'vue';
-import * as Misskey from 'misskey-js';
 import XForm from './auth.form.vue';
+import type { AuthSessionShowResponse } from 'misskey-js/entities.js';
 import MkSignin from '@/components/MkSignin.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { $i, login } from '@/account.js';
@@ -56,7 +56,7 @@ const props = defineProps<{
 }>();
 
 const state = ref<'waiting' | 'accepted' | 'fetch-session-error' | 'denied' | null>(null);
-const session = ref<Misskey.entities.AuthSessionShowResponse | null>(null);
+const session = ref<AuthSessionShowResponse>();
 
 function accepted() {
 	state.value = 'accepted';

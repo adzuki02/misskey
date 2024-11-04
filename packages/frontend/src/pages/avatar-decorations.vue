@@ -47,7 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { AdminAvatarDecorationsListResponse } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
@@ -58,7 +58,7 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkFolder from '@/components/MkFolder.vue';
 
-type AvatarDecoration = Misskey.entities.AdminAvatarDecorationsListResponse[number];
+type AvatarDecoration = AdminAvatarDecorationsListResponse[number];
 
 const avatarDecorations = ref<(Omit<AvatarDecoration, 'id' | 'createdAt' | 'updatedAt' | 'roleIdsThatCanBeUsedThisDecoration'> & Partial<Pick<AvatarDecoration, 'id'>> & { _id?: string })[]>([]);
 

@@ -77,7 +77,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script setup lang="ts">
 import { ref, computed, defineAsyncComponent, onMounted } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile, DriveFolder } from 'misskey-js/entities.js';
 import MkInfo from '@/components/MkInfo.vue';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
@@ -95,12 +95,12 @@ const props = defineProps<{
 }>();
 
 const fetching = ref(true);
-const file = ref<Misskey.entities.DriveFile>();
+const file = ref<DriveFile>();
 const folderHierarchy = computed(() => {
 	if (!file.value) return [i18n.ts.drive];
 	const folderNames = [i18n.ts.drive];
 	
-	function get(folder: Misskey.entities.DriveFolder) {
+	function get(folder: DriveFolder) {
 		if (folder.parent) get(folder.parent);
 		folderNames.push(folder.name);
 	}

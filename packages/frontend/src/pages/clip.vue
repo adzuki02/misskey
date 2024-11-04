@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, watch, provide, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Clip } from 'misskey-js/entities.js';
 import MkNotes from '@/components/MkNotes.vue';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
@@ -49,7 +49,7 @@ const props = defineProps<{
 	clipId: string,
 }>();
 
-const clip = ref<Misskey.entities.Clip | null>(null);
+const clip = ref<Clip>();
 const favorited = ref(false);
 const pagination = {
 	endpoint: 'clips/notes' as const,
@@ -59,7 +59,7 @@ const pagination = {
 	})),
 };
 
-const isOwned = computed<boolean | null>(() => $i && clip.value && ($i.id === clip.value.userId));
+const isOwned = computed<boolean | null>(() => ($i && clip.value && ($i.id === clip.value.userId)) ?? null);
 
 watch(() => props.clipId, async () => {
 	clip.value = await misskeyApi('clips/show', {

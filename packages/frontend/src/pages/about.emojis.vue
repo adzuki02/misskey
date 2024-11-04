@@ -38,8 +38,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { watch, ref } from 'vue';
-import * as Misskey from 'misskey-js';
 import XEmoji from './emojis.emoji.vue';
+import type { EmojiSimple } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
@@ -48,7 +48,7 @@ import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 
 const q = ref('');
-const searchEmojis = ref<Misskey.entities.EmojiSimple[]>([]);
+const searchEmojis = ref<EmojiSimple[]>([]);
 
 function search() {
 	if (q.value === '') {
