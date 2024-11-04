@@ -43,10 +43,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<template #label>{{ i18n.ts.colored }}</template>
 		</MkSwitch>
 	</template>
-	<template v-else-if="statusbar.type === 'userList' && userLists != null">
+	<template v-else-if="statusbar.type === 'userList' && userLists !== undefined">
 		<MkSelect v-model="statusbar.props.userListId">
 			<template #label>{{ i18n.ts.userList }}</template>
-			<option v-for="list in userLists" :value="list.id">{{ list.name }}</option>
+			<option v-for="list in userLists" :key="list.id" :value="list.id">{{ list.name }}</option>
 		</MkSelect>
 		<MkInput v-model="statusbar.props.refreshIntervalSec" manualSave type="number">
 			<template #label>{{ i18n.ts.refreshInterval }}</template>
@@ -68,7 +68,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { reactive, watch } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { UserList } from 'misskey-js/entities.js';
 import MkSelect from '@/components/MkSelect.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -81,7 +81,7 @@ import { deepClone } from '@/scripts/clone.js';
 
 const props = defineProps<{
 	_id: string;
-	userLists: Misskey.entities.UserList[] | null;
+	userLists?: UserList[];
 }>();
 
 const statusbar = reactive(deepClone(defaultStore.state.statusbars.find(x => x.id === props._id))!);

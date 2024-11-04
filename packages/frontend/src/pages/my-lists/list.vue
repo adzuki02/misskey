@@ -55,7 +55,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
 import { ComponentExposed } from 'vue-component-type-helpers';
-import * as Misskey from 'misskey-js';
+import type { UserList, UsersListsGetMembershipsResponse } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -78,7 +78,7 @@ const props = defineProps<{
 }>();
 
 const paginationEl = ref<ComponentExposed<typeof MkPagination>>();
-const list = ref<Misskey.entities.UserList | null>(null);
+const list = ref<UserList>();
 const isPublic = ref(false);
 const name = ref('');
 const membershipsPagination = {
@@ -143,7 +143,7 @@ async function showMembershipMenu(item, ev) {
 			withReplies,
 		}).then(() => {
 			paginationEl.value!.updateItem(item.id, (old) => ({
-				...(old as Misskey.entities.UsersListsGetMembershipsResponse[number]),
+				...(old as UsersListsGetMembershipsResponse[number]),
 				withReplies,
 			}));
 		});

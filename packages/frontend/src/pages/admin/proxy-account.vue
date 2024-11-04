@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import MkKeyValue from '@/components/MkKeyValue.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInfo from '@/components/MkInfo.vue';
@@ -33,8 +33,8 @@ import { fetchInstance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
-const proxyAccount = ref<Misskey.entities.UserDetailed | null>(null);
-const proxyAccountId = ref<string | null>(null);
+const proxyAccount = ref<UserDetailed>();
+const proxyAccountId = ref<string | null>();
 
 async function init() {
 	const meta = await misskeyApi('admin/meta');

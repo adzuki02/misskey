@@ -25,15 +25,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import * as Misskey from 'misskey-js';
 import XHeader from './_header_.vue';
+import type { AdminRelaysListResponse } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
-const relays = ref<Misskey.entities.AdminRelaysListResponse>([]);
+const relays = ref<AdminRelaysListResponse>([]);
 
 async function addRelay() {
 	const { canceled, result: inbox } = await os.inputText({
@@ -44,7 +44,7 @@ async function addRelay() {
 	if (canceled) return;
 	misskeyApi('admin/relays/add', {
 		inbox,
-	}).then((relay) => {
+	}).then(() => {
 		refresh();
 	}).catch((err) => {
 		os.alert({

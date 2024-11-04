@@ -18,11 +18,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
-import * as Misskey from 'misskey-js';
 import { defaultStore } from '@/store.js';
 
-const moderators = ref<Misskey.entities.UserDetailed[] | null>(null);
+const moderators = ref<UserDetailed[]>([]);
 const fetching = ref(true);
 
 onMounted(async () => {

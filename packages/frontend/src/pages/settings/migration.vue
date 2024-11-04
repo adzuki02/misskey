@@ -59,7 +59,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import FormInfo from '@/components/MkInfo.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -71,11 +71,12 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { signinRequired } from '@/account.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
+import { acct } from '@/filters/user';
 
 const $i = signinRequired();
 
 const moveToAccount = ref('');
-const movedTo = ref<Misskey.entities.UserDetailed>();
+const movedTo = ref<UserDetailed>();
 const accountAliases = ref(['']);
 
 async function init() {
@@ -87,7 +88,7 @@ async function init() {
 
 	if ($i.alsoKnownAs && $i.alsoKnownAs.length > 0) {
 		const alsoKnownAs = await misskeyApi('users/show', { userIds: $i.alsoKnownAs });
-		accountAliases.value = (alsoKnownAs && alsoKnownAs.length > 0) ? alsoKnownAs.map(user => `@${Misskey.acct.toString(user)}`) : [''];
+		accountAliases.value = (alsoKnownAs && alsoKnownAs.length > 0) ? alsoKnownAs.map(user => `@${acct(user)}`) : [''];
 	} else {
 		accountAliases.value = [''];
 	}

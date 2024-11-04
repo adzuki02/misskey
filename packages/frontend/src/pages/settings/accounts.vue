@@ -19,8 +19,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, ref, computed } from 'vue';
-import type * as Misskey from 'misskey-js';
+import { defineAsyncComponent, ref } from 'vue';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import FormSuspense from '@/components/form/suspense.vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
@@ -33,7 +33,7 @@ import MkUserCardMini from '@/components/MkUserCardMini.vue';
 const $i = signinRequired();
 
 const storedAccounts = ref<{ id: string, token: string }[] | null>(null);
-const accounts = ref<Misskey.entities.UserDetailed[]>([]);
+const accounts = ref<UserDetailed[]>([]);
 
 const init = async () => {
 	getAccounts().then(accounts => {
@@ -105,10 +105,6 @@ async function switchAccount(account: any) {
 function switchAccountWithToken(token: string) {
 	login(token);
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.accounts,

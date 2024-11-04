@@ -146,14 +146,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import * as Misskey from 'misskey-js';
 import { CodeDiff } from 'v-code-diff';
 import JSON5 from 'json5';
+import type { ModerationLog } from 'misskey-js/entities.js';
 import { i18n } from '@/i18n.js';
 import MkFolder from '@/components/MkFolder.vue';
 
 defineProps<{
-	log: Misskey.entities.ModerationLog;
+	log: ModerationLog;
 }>();
 </script>
 

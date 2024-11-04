@@ -57,8 +57,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import * as Misskey from 'misskey-js';
 import tinycolor from 'tinycolor2';
+import type { DriveFolder } from 'misskey-js/entities.js';
 import FormLink from '@/components/form/link.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import FormSection from '@/components/form/section.vue';
@@ -75,9 +75,9 @@ import { signinRequired } from '@/account.js';
 const $i = signinRequired();
 
 const fetching = ref(true);
-const usage = ref<number | null>(null);
-const capacity = ref<number | null>(null);
-const uploadFolder = ref<Misskey.entities.DriveFolder | null>(null);
+const usage = ref<number>();
+const capacity = ref<number>();
+const uploadFolder = ref<DriveFolder>();
 const alwaysMarkNsfw = ref($i.alwaysMarkNsfw);
 const autoSensitive = ref($i.autoSensitive);
 
@@ -119,7 +119,7 @@ function chooseUploadFolder() {
 				folderId: defaultStore.state.uploadFolder,
 			});
 		} else {
-			uploadFolder.value = null;
+			uploadFolder.value = undefined;
 		}
 	});
 }

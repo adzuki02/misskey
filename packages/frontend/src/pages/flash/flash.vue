@@ -62,8 +62,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, onDeactivated, onUnmounted, Ref, ref, watch, shallowRef, defineAsyncComponent } from 'vue';
-import * as Misskey from 'misskey-js';
 import { Interpreter, Parser, values } from '@syuilo/aiscript';
+import type { Flash } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -86,11 +86,11 @@ const props = defineProps<{
 	id: string;
 }>();
 
-const flash = ref<Misskey.entities.Flash | null>(null);
+const flash = ref<Flash>();
 const error = ref<any>(null);
 
 function fetchFlash() {
-	flash.value = null;
+	flash.value = undefined;
 	misskeyApi('flash/show', {
 		flashId: props.id,
 	}).then(_flash => {

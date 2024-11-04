@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<Transition :name="defaultStore.state.animation ? '_transition_zoom' : ''" mode="out-in">
 		<MkLoading v-if="fetching"/>
 		<div v-else class="users">
-			<MkA v-for="(user, i) in newUsers" :key="user.id" :to="`/admin/user/${user.id}`" class="user">
+			<MkA v-for="user in newUsers" :key="user.id" :to="`/admin/user/${user.id}`" class="user">
 				<MkUserCardMini :user="user"/>
 			</MkA>
 		</div>
@@ -18,13 +18,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
-import * as Misskey from 'misskey-js';
 import { useInterval } from '@/scripts/use-interval.js';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { defaultStore } from '@/store.js';
 
-const newUsers = ref<Misskey.entities.UserDetailed[] | null>(null);
+const newUsers = ref<UserDetailed[]>([]);
 const fetching = ref(true);
 
 const fetch = async () => {

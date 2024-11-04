@@ -46,9 +46,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, defineAsyncComponent, computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import { ref, defineAsyncComponent } from 'vue';
 import XDecoration from './avatar-decoration.decoration.vue';
+import type { GetAvatarDecorationsResponse } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -56,12 +56,11 @@ import { i18n } from '@/i18n.js';
 import { signinRequired } from '@/account.js';
 import MkInfo from '@/components/MkInfo.vue';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { IUpdateRequest } from 'misskey-js/entities.js';
 
 const $i = signinRequired();
 
 const loading = ref(true);
-const avatarDecorations = ref<Misskey.entities.GetAvatarDecorationsResponse>([]);
+const avatarDecorations = ref<GetAvatarDecorationsResponse>([]);
 
 misskeyApi('get-avatar-decorations').then(_avatarDecorations => {
 	avatarDecorations.value = _avatarDecorations;
