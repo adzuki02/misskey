@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><XHeader/></template>
 	<MkSpacer :contentMax="900">
 		<div>
 			<div style="display: flex; gap: var(--margin); flex-wrap: wrap;">
@@ -55,10 +55,6 @@ const pagination = {
 		userId: moderatorId.value === '' ? null : moderatorId.value,
 	})),
 };
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.moderationLogs,

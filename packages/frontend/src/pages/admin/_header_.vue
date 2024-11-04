@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div ref="el" class="fdidabkc" :style="{ background: bg ?? '' }" @click="onClick">
+<div ref="el" class="fdidabkc" @click="onClick">
 	<template v-if="pageMetadata">
 		<div class="titleContainer" @click="showTabsPopup">
 			<i v-if="pageMetadata.icon" class="icon" :class="pageMetadata.icon"></i>
@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 		<div class="tabs">
-			<button v-for="tab in tabs" :ref="(el) => tabRefs[tab.key] = el" v-tooltip.noDelay="tab.title" class="tab _button" :class="{ active: tab.key != null && tab.key === props.tab }" @mousedown="(ev) => onTabMousedown(tab, ev)" @click="(ev) => onTabClick(tab, ev)">
+			<button v-for="tab in tabs" :key="tab.key" :ref="(tabRef) => tabRefs[tab.key] = tabRef" v-tooltip.noDelay="tab.title" class="tab _button" :class="{ active: tab.key != null && tab.key === props.tab }" @mousedown="(ev) => onTabMousedown(tab, ev)" @click="(ev) => onTabClick(tab, ev)">
 				<i v-if="tab.icon" class="icon" :class="tab.icon"></i>
 				<span v-if="!tab.iconOnly" class="title">{{ tab.title }}</span>
 			</button>
@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template v-if="actions">
 			<template v-for="action in actions">
 				<MkButton v-if="action.asFullButton" class="fullButton" primary :disabled="action.disabled" @click.stop="action.handler"><i :class="action.icon" style="margin-right: 6px;"></i>{{ action.text }}</MkButton>
-				<button v-else v-tooltip.noDelay="action.text" class="_button button" :class="{ highlighted: action.highlighted }" :disabled="action.disabled" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
+				<button v-else v-tooltip.noDelay="action.text" class="_button button" :disabled="action.disabled" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 			</template>
 		</template>
 	</div>
@@ -33,16 +33,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref, shallowRef, watch, nextTick } from 'vue';
-import tinycolor from 'tinycolor2';
+import { computed, onMounted, shallowRef, watch, nextTick, useTemplateRef } from 'vue';
 import { popupMenu } from '@/os.js';
 import { scrollToTop } from '@/scripts/scroll.js';
 import MkButton from '@/components/MkButton.vue';
-import { globalEvents } from '@/events.js';
 import { injectReactiveMetadata } from '@/scripts/page-metadata.js';
 
 type Tab = {
-	key?: string | null;
+	key: string;
 	title: string;
 	icon?: string;
 	iconOnly?: boolean;
@@ -68,11 +66,9 @@ const emit = defineEmits<{
 
 const pageMetadata = injectReactiveMetadata();
 
-const el = shallowRef<HTMLElement>(null);
+const el = shallowRef<HTMLElement>();
 const tabRefs = {};
-const tabHighlightEl = shallowRef<HTMLElement | null>(null);
-const bg = ref<string | null>(null);
-const height = ref(0);
+const tabHighlightEl = useTemplateRef('tabHighlightEl');
 const hasTabs = computed(() => {
 	return props.tabs && props.tabs.length > 0;
 });
@@ -97,6 +93,7 @@ const preventDrag = (ev: TouchEvent) => {
 };
 
 const onClick = () => {
+	if (!el.value) return;
 	scrollToTop(el.value, { behavior: 'smooth' });
 };
 
@@ -118,19 +115,10 @@ function onTabClick(tab: Tab, ev: MouseEvent): void {
 	}
 }
 
-const calcBg = () => {
-	const rawBg = pageMetadata.value?.bg ?? 'var(--bg)';
-	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-	tinyBg.setAlpha(0.85);
-	bg.value = tinyBg.toRgbString();
-};
-
 onMounted(() => {
-	calcBg();
-	globalEvents.on('themeChanged', calcBg);
-
 	watch(() => [props.tab, props.tabs], () => {
 		nextTick(() => {
+			if (!props.tab) return;
 			const tabEl = tabRefs[props.tab];
 			if (tabEl && tabHighlightEl.value) {
 				// offsetWidth や offsetLeft は少数を丸めてしまうため getBoundingClientRect を使う必要がある
@@ -144,10 +132,6 @@ onMounted(() => {
 	}, {
 		immediate: true,
 	});
-});
-
-onUnmounted(() => {
-	globalEvents.off('themeChanged', calcBg);
 });
 </script>
 
@@ -186,10 +170,6 @@ onUnmounted(() => {
 
 			&:hover {
 				background: rgba(0, 0, 0, 0.05);
-			}
-
-			&.highlighted {
-				color: var(--accent);
 			}
 		}
 

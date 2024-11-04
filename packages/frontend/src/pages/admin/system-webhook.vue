@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkStickyContainer>
 	<template #header>
-		<XHeader :actions="headerActions" :tabs="headerTabs"/>
+		<XHeader/>
 	</template>
 
 	<MkSpacer :contentMax="900">
@@ -39,9 +39,6 @@ import { showSystemWebhookEditorDialog } from '@/components/MkSystemWebhookEdito
 import * as os from '@/os.js';
 
 const webhooks = ref<entities.SystemWebhook[]>([]);
-
-const headerActions = computed(() => []);
-const headerTabs = computed(() => []);
 
 async function onCreateWebhookClicked() {
 	await showSystemWebhookEditorDialog({

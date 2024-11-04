@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><XHeader/></template>
 	<MkSpacer :contentMax="900">
 		<div :class="$style.root" class="_gaps">
 			<div :class="$style.subMenus" class="_gaps">
@@ -82,10 +82,6 @@ const pagination = {
 function resolved(reportId) {
 	reports.value?.removeItem(reportId);
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.abuseReports,
