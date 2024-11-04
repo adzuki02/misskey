@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as Misskey from 'misskey-js';
+import type { DriveFile } from 'misskey-js/entities.js';
 
 type EnumItem = string | {
 	label: string;
@@ -82,7 +82,7 @@ export type FormItem = {
 	type: 'drive-file';
 	defaultFileId?: string | null;
 	hidden?: Hidden;
-	validate?: (v: Misskey.entities.DriveFile) => Promise<boolean>;
+	validate?: (v: DriveFile) => Promise<boolean>;
 };
 
 export type Form = Record<string, FormItem>;
@@ -96,7 +96,7 @@ type GetItemType<Item extends FormItem> =
 	Item['type'] extends 'enum' ? string :
 	Item['type'] extends 'array' ? unknown[] :
 	Item['type'] extends 'object' ? Record<string, unknown> :
-	Item['type'] extends 'drive-file' ? Misskey.entities.DriveFile | undefined :
+	Item['type'] extends 'drive-file' ? DriveFile | undefined :
 	never;
 
 export type GetFormResultType<F extends Form> = {

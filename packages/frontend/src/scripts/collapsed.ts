@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as Misskey from 'misskey-js';
+import type { Note } from 'misskey-js/entities.js';
 
-export function shouldCollapsed(note: Misskey.entities.Note, urls: string[]): boolean {
+export function shouldCollapsed(note: Note, urls: string[]): boolean {
 	const collapsed = note.cw == null && (
 		note.text != null && (
 			(note.text.includes('$[x2')) ||

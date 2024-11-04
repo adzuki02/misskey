@@ -22,13 +22,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Hashtag } from 'misskey-js/entities.js';
 import MkUserList from '@/components/MkUserList.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 
-const tagsList = ref<Misskey.entities.Hashtag[]>([]);
+const tagsList = ref<Hashtag[]>([]);
 
 const pinnedUsers = { endpoint: 'pinned-users' as const, noPaging: true, limit: 10 };
 

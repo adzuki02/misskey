@@ -33,7 +33,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 // SPECIFICATION: https://misskey-hub.net/docs/for-users/features/share-form/
 
 import { ref, computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import { noteVisibilities } from 'misskey-js/consts.js';
+import { parse as parseAcct } from 'misskey-js/acct.js';
+import type { Note, DriveFile, UserDetailed } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
 import * as os from '@/os.js';
@@ -44,19 +46,19 @@ import { i18n } from '@/i18n.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const localOnlyQuery = urlParams.get('localOnly');
-const visibilityQuery = urlParams.get('visibility') as typeof Misskey.noteVisibilities[number];
+const visibilityQuery = urlParams.get('visibility') as typeof noteVisibilities[number];
 
 const state = ref<'fetching' | 'writing' | 'posted'>('fetching');
 const title = ref(urlParams.get('title'));
 const text = urlParams.get('text');
 const url = urlParams.get('url');
-const initialText = ref<string | undefined>();
-const reply = ref<Misskey.entities.Note | undefined>();
-const renote = ref<Misskey.entities.Note | undefined>();
-const visibility = ref(Misskey.noteVisibilities.includes(visibilityQuery) ? visibilityQuery : undefined);
+const initialText = ref<string>();
+const reply = ref<Note>();
+const renote = ref<Note>();
+const visibility = ref(noteVisibilities.includes(visibilityQuery) ? visibilityQuery : undefined);
 const localOnly = ref(localOnlyQuery === '0' ? false : localOnlyQuery === '1' ? true : undefined);
-const files = ref([] as Misskey.entities.DriveFile[]);
-const visibleUsers = ref([] as Misskey.entities.UserDetailed[]);
+const files = ref<DriveFile[]>([]);
+const visibleUsers = ref<UserDetailed[]>([]);
 
 async function init() {
 	let noteText = '';
@@ -100,7 +102,7 @@ async function init() {
 		await Promise.all(
 			[
 				...(visibleUserIds ? visibleUserIds.split(',').map(userId => ({ userId })) : []),
-				...(visibleAccts ? visibleAccts.split(',').map(Misskey.acct.parse) : []),
+				...(visibleAccts ? visibleAccts.split(',').map(parseAcct) : []),
 			]
 			// TypeScriptの指示通りに変換する
 				.map(q => 'username' in q ? { username: q.username, host: q.host === null ? undefined : q.host } : q)

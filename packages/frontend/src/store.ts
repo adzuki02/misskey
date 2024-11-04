@@ -4,8 +4,9 @@
  */
 
 import { markRaw, ref } from 'vue';
-import * as Misskey from 'misskey-js';
 import { miLocalStorage } from './local-storage.js';
+import type { Note, UserList, UserDetailed } from 'misskey-js/entities.js';
+import type { noteVisibilities } from 'misskey-js/consts.js';
 import type { SoundType } from '@/scripts/sound.js';
 import { Storage } from '@/pizzax.js';
 
@@ -16,16 +17,16 @@ interface PostFormAction {
 
 interface UserAction {
 	title: string,
-	handler: (user: Misskey.entities.UserDetailed) => void;
+	handler: (user: UserDetailed) => void;
 }
 
 interface NoteAction {
 	title: string,
-	handler: (note: Misskey.entities.Note) => void;
+	handler: (note: Note) => void;
 }
 
 interface NoteViewInterruptor {
-	handler: (note: Misskey.entities.Note) => unknown;
+	handler: (note: Note) => unknown;
 }
 
 interface NotePostInterruptor {
@@ -75,7 +76,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	defaultNoteVisibility: {
 		where: 'account',
-		default: 'public' as (typeof Misskey.noteVisibilities)[number],
+		default: 'public' as (typeof noteVisibilities)[number],
 	},
 	defaultNoteLocalOnly: {
 		where: 'account',
@@ -130,7 +131,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	visibility: {
 		where: 'deviceAccount',
-		default: 'public' as (typeof Misskey.noteVisibilities)[number],
+		default: 'public' as (typeof noteVisibilities)[number],
 	},
 	localOnly: {
 		where: 'deviceAccount',
@@ -164,7 +165,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'deviceAccount',
 		default: {
 			src: 'home' as 'home' | 'global' | `list:${string}`,
-			userList: null as Misskey.entities.UserList | null,
+			userList: null as UserList | null,
 			filter: {
 				withReplies: true,
 				withRenotes: true,
@@ -175,7 +176,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	pinnedUserLists: {
 		where: 'deviceAccount',
-		default: [] as Misskey.entities.UserList[],
+		default: [] as UserList[],
 	},
 
 	overridedDeviceKind: {

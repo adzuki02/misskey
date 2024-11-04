@@ -3,12 +3,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { acct as MisskeyAcct, type Acct } from 'misskey-js';
+import { toString as acctToString, type Acct } from 'misskey-js/acct.js';
 import type { User } from 'misskey-js/entities.js';
 import { url } from '@/config.js';
 
 export const acct = (user: Acct) => {
-	return MisskeyAcct.toString(user);
+	return acctToString(user);
 };
 
 export const userName = (user: User) => {

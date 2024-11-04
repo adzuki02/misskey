@@ -4,13 +4,13 @@
  */
 
 import { shallowRef, computed, markRaw, watch } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { EmojiSimple } from 'misskey-js/entities.js';
 import { misskeyApi, misskeyApiGet } from '@/scripts/misskey-api.js';
 import { useStream } from '@/stream.js';
 import { get, set } from '@/scripts/idb-proxy.js';
 
 const storageCache = await get('emojis');
-export const customEmojis = shallowRef<Misskey.entities.EmojiSimple[]>(Array.isArray(storageCache) ? storageCache : []);
+export const customEmojis = shallowRef<EmojiSimple[]>(Array.isArray(storageCache) ? storageCache : []);
 export const customEmojiCategories = computed<string[]>(() => {
 	const categories = new Set<string>();
 	for (const emoji of customEmojis.value) {
@@ -21,7 +21,7 @@ export const customEmojiCategories = computed<string[]>(() => {
 	return markRaw(Array.from(categories));
 });
 
-export const customEmojisMap = new Map<string, Misskey.entities.EmojiSimple>();
+export const customEmojisMap = new Map<string, EmojiSimple>();
 watch(customEmojis, emojis => {
 	customEmojisMap.clear();
 	for (const emoji of emojis) {

@@ -133,7 +133,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { AdminMetaResponse, FederationInstance } from 'misskey-js/entities.js';
 import MkChart, { type ChartSrc } from '@/components/MkChart.vue';
 import MkObjectView from '@/components/MkObjectView.vue';
 import FormLink from '@/components/form/link.vue';
@@ -163,8 +163,8 @@ const props = defineProps<{
 const tab = ref('overview');
 
 const chartSrc = ref<ChartSrc>('instance-requests');
-const meta = ref<Misskey.entities.AdminMetaResponse | null>(null);
-const instance = ref<Misskey.entities.FederationInstance | null>(null);
+const meta = ref<AdminMetaResponse>();
+const instance = ref<FederationInstance>();
 const suspensionState = ref<'none' | 'manuallySuspended' | 'goneSuspended' | 'autoSuspendedForNotResponding'>('none');
 const isBlocked = ref(false);
 const isSilenced = ref(false);

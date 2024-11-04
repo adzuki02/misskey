@@ -3,15 +3,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as Misskey from 'misskey-js';
-import { MaybeRefOrGetter, Ref, inject, isRef, onActivated, onBeforeUnmount, provide, ref, toValue, watch } from 'vue';
+import type { User } from 'misskey-js/entities.js';
+import { type MaybeRefOrGetter, type Ref, inject, isRef, onActivated, onBeforeUnmount, provide, ref, toValue, watch } from 'vue';
 
 export type PageMetadata = {
 	title: string;
 	subtitle?: string;
 	icon?: string | null;
-	avatar?: Misskey.entities.User | null;
-	userName?: Misskey.entities.User | null;
+	avatar?: User | null;
+	userName?: User | null;
 	needWideArea?: boolean;
 };
 

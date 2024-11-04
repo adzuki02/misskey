@@ -35,7 +35,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { watch, computed, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { UserList, UserDetailed } from 'misskey-js/entities.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { userPage } from '@/filters/user.js';
@@ -49,9 +49,9 @@ const props = defineProps<{
 	listId: string;
 }>();
 
-const list = ref<Misskey.entities.UserList | null>(null);
+const list = ref<UserList>();
 const error = ref();
-const users = ref<Misskey.entities.UserDetailed[]>([]);
+const users = ref<UserDetailed[]>([]);
 
 function fetchList(): void {
 	misskeyApi('users/lists/show', {

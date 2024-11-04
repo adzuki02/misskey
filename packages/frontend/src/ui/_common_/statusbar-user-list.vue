@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Note } from 'misskey-js/entities.js';
 import MarqueeText from '@/components/MkMarquee.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { useInterval } from '@/scripts/use-interval.js';
@@ -48,7 +48,7 @@ const props = defineProps<{
 	refreshIntervalSec?: number;
 }>();
 
-const notes = ref<Misskey.entities.Note[]>([]);
+const notes = ref<Note[]>([]);
 const fetching = ref(true);
 const key = ref(0);
 

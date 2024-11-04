@@ -3,8 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { defineAsyncComponent, Ref, ShallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import { defineAsyncComponent, type Ref, type ShallowRef } from 'vue';
+import type { noteVisibilities } from 'misskey-js/consts.js';
+import type { Note, Clip, NotesTranslateResponse } from 'misskey-js/entities.js';
 import type { MenuItem, MenuDivider } from '@/types/menu.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
@@ -22,11 +23,11 @@ import { isSupportShare } from '@/scripts/navigator.js';
 import { getAppearNote } from '@/scripts/get-appear-note.js';
 
 export async function getNoteClipMenu(props: {
-	note: Misskey.entities.Note;
+	note: Note;
 	isDeleted: Ref<boolean>;
-	currentClip?: Misskey.entities.Clip;
+	currentClip?: Clip;
 }) {
-	function getClipName(clip: Misskey.entities.Clip) {
+	function getClipName(clip: Clip) {
 		if ($i && clip.userId === $i.id && clip.notesCount != null) {
 			return `${clip.name} (${clip.notesCount}/${$i.policies.noteEachClipsLimit})`;
 		} else {
@@ -120,7 +121,7 @@ export async function getNoteClipMenu(props: {
 	return menu;
 }
 
-export function getAbuseNoteMenu(note: Misskey.entities.Note, text: string): MenuItem {
+export function getAbuseNoteMenu(note: Note, text: string): MenuItem {
 	return {
 		icon: 'ti ti-exclamation-circle',
 		text,
@@ -139,7 +140,7 @@ export function getAbuseNoteMenu(note: Misskey.entities.Note, text: string): Men
 	};
 }
 
-export function getCopyNoteLinkMenu(note: Misskey.entities.Note, text: string): MenuItem {
+export function getCopyNoteLinkMenu(note: Note, text: string): MenuItem {
 	return {
 		icon: 'ti ti-link',
 		text,
@@ -151,11 +152,11 @@ export function getCopyNoteLinkMenu(note: Misskey.entities.Note, text: string): 
 }
 
 export function getNoteMenu(props: {
-	note: Misskey.entities.Note;
-	translation: Ref<Misskey.entities.NotesTranslateResponse | null>;
+	note: Note;
+	translation: Ref<NotesTranslateResponse | null>;
 	translating: Ref<boolean>;
 	isDeleted: Ref<boolean>;
-	currentClip?: Misskey.entities.Clip;
+	currentClip?: Clip;
 }) {
 	const appearNote = getAppearNote(props.note);
 
@@ -427,7 +428,7 @@ export function getNoteMenu(props: {
 	};
 }
 
-type Visibility = (typeof Misskey.noteVisibilities)[number];
+type Visibility = (typeof noteVisibilities)[number];
 
 function smallerVisibility(a: Visibility, b: Visibility): Visibility {
 	if (a === 'specified' || b === 'specified') return 'specified';
@@ -438,7 +439,7 @@ function smallerVisibility(a: Visibility, b: Visibility): Visibility {
 }
 
 export function getRenoteMenu(props: {
-	note: Misskey.entities.Note;
+	note: Note;
 	renoteButton: ShallowRef<HTMLElement | undefined>;
 	mock?: boolean;
 }) {

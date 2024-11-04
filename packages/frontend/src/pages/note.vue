@@ -49,7 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, watch, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Note, Clip } from 'misskey-js/entities.js';
 import type { Paging } from '@/components/MkPagination.vue';
 import MkNoteDetailed from '@/components/MkNoteDetailed.vue';
 import MkNotes from '@/components/MkNotes.vue';
@@ -68,8 +68,8 @@ const props = defineProps<{
 	initialTab?: 'replies' | 'renotes' | 'reactions';
 }>();
 
-const note = ref<null | Misskey.entities.Note>();
-const clips = ref<Misskey.entities.Clip[]>();
+const note = ref<Note>();
+const clips = ref<Clip[]>([]);
 const showPrev = ref<'user' | 'channel' | false>(false);
 const showNext = ref<'user' | 'channel' | false>(false);
 const error = ref();
@@ -115,7 +115,7 @@ const nextChannelPagination: Paging = {
 function fetchNote() {
 	showPrev.value = false;
 	showNext.value = false;
-	note.value = null;
+	note.value = undefined;
 	misskeyApi('notes/show', {
 		noteId: props.noteId,
 	}).then(res => {

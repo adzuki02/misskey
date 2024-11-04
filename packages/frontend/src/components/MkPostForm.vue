@@ -104,7 +104,7 @@ import { inject, watch, nextTick, onMounted, defineAsyncComponent, provide, shal
 import * as mfm from 'mfm-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import { toASCII } from 'punycode/';
-import { acct as MisskeyAcct, type noteVisibilities } from 'misskey-js';
+import type { noteVisibilities } from 'misskey-js/consts.js';
 import type { Note, Channel, User, UserDetailed, DriveFile } from 'misskey-js/entities.js';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkNotePreview from '@/components/MkNotePreview.vue';
@@ -129,6 +129,7 @@ import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { miLocalStorage } from '@/local-storage.js';
 import { emojiPicker } from '@/scripts/emoji-picker.js';
 import { mfmFunctionPicker } from '@/scripts/mfm-function-picker.js';
+import { acct } from '@/filters/user';
 
 const $i = signinRequired();
 
@@ -554,7 +555,7 @@ function addVisibleUser() {
 		pushVisibleUser(user);
 
 		if (!text.value.toLowerCase().includes(`@${user.username.toLowerCase()}`)) {
-			text.value = `@${MisskeyAcct.toString(user)} ${text.value}`;
+			text.value = `@${acct(user)} ${text.value}`;
 		}
 	});
 }
@@ -858,7 +859,7 @@ function cancel() {
 
 function insertMention() {
 	os.selectUser({ localOnly: localOnly.value, includeSelf: true }).then(user => {
-		insertTextAtCursor(textareaEl.value, '@' + MisskeyAcct.toString(user) + ' ');
+		insertTextAtCursor(textareaEl.value, '@' + acct(user) + ' ');
 	});
 }
 

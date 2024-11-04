@@ -61,7 +61,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onDeactivated, onUnmounted, Ref, ref, watch, shallowRef, defineAsyncComponent } from 'vue';
+import { computed, onDeactivated, onUnmounted, type Ref, ref, watch, shallowRef, defineAsyncComponent } from 'vue';
 import { Interpreter, Parser, values } from '@syuilo/aiscript';
 import type { Flash } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';

@@ -4,7 +4,7 @@
  */
 
 import { reactive, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile } from 'misskey-js/entities.js';
 import { readAndCompressImage } from '@misskey-dev/browser-image-resizer';
 import { getCompressionConfig } from './upload/compress-config.js';
 import { defaultStore } from '@/store.js';
@@ -34,7 +34,7 @@ export function uploadFile(
 	folder?: any,
 	name?: string,
 	keepOriginal: boolean = defaultStore.state.keepOriginalUploading,
-): Promise<Misskey.entities.DriveFile> {
+): Promise<DriveFile> {
 	if (folder && typeof folder === 'object') folder = folder.id;
 
 	if (file.size > instance.maxFileSize) {

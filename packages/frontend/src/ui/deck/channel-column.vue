@@ -20,9 +20,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, shallowRef, watch } from 'vue';
-import * as Misskey from 'misskey-js';
 import XColumn from './column.vue';
 import { updateColumn, Column } from './deck-store.js';
+import type { Channel } from 'misskey-js/entities.js';
 import MkTimeline from '@/components/MkTimeline.vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
@@ -40,7 +40,7 @@ const props = defineProps<{
 }>();
 
 const timeline = shallowRef<InstanceType<typeof MkTimeline>>();
-const channel = shallowRef<Misskey.entities.Channel>();
+const channel = shallowRef<Channel>();
 const soundSetting = ref<SoundStore>(props.column.soundSetting ?? { type: null, volume: 1 });
 
 if (props.column.channelId == null) {

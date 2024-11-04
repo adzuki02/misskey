@@ -3,8 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as Misskey from 'misskey-js';
 import { ref } from 'vue';
+import type { Endpoints as MisskeyEndpoints } from 'misskey-js';
+import type { SwitchCaseResponseType } from 'misskey-js/api.types.js';
 import { apiUrl } from '@/config.js';
 import { $i } from '@/account.js';
 export const pendingApiRequestsCount = ref(0);
@@ -12,9 +13,9 @@ export const pendingApiRequestsCount = ref(0);
 // Implements Misskey.api.ApiClient.request
 export function misskeyApi<
 	ResT = void,
-	E extends keyof Misskey.Endpoints = keyof Misskey.Endpoints,
-	P extends Misskey.Endpoints[E]['req'] = Misskey.Endpoints[E]['req'],
-	_ResT = ResT extends void ? Misskey.api.SwitchCaseResponseType<E, P> : ResT,
+	E extends keyof MisskeyEndpoints = keyof MisskeyEndpoints,
+	P extends MisskeyEndpoints[E]['req'] = MisskeyEndpoints[E]['req'],
+	_ResT = ResT extends void ? SwitchCaseResponseType<E, P> : ResT,
 >(
 	endpoint: E,
 	data: P = {} as any,
@@ -65,9 +66,9 @@ export function misskeyApi<
 // Implements Misskey.api.ApiClient.request
 export function misskeyApiGet<
 	ResT = void,
-	E extends keyof Misskey.Endpoints = keyof Misskey.Endpoints,
-	P extends Misskey.Endpoints[E]['req'] = Misskey.Endpoints[E]['req'],
-	_ResT = ResT extends void ? Misskey.api.SwitchCaseResponseType<E, P> : ResT,
+	E extends keyof MisskeyEndpoints = keyof MisskeyEndpoints,
+	P extends MisskeyEndpoints[E]['req'] = MisskeyEndpoints[E]['req'],
+	_ResT = ResT extends void ? SwitchCaseResponseType<E, P> : ResT,
 >(
 	endpoint: E,
 	data: P = {} as any,

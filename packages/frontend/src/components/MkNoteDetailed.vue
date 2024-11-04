@@ -198,7 +198,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, inject, onMounted, provide, ref, shallowRef } from 'vue';
 import * as mfm from 'mfm-js';
-import { note as MisskeyNote } from 'misskey-js';
+import { isPureRenote } from 'misskey-js/note.js';
 import type { Note, Clip, NotesTranslateResponse } from 'misskey-js/entities.js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
@@ -268,7 +268,7 @@ if (noteViewInterruptors.length > 0) {
 	});
 }
 
-const isRenote = MisskeyNote.isPureRenote(note.value);
+const isRenote = isPureRenote(note.value);
 
 const rootEl = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();

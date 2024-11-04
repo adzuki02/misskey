@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import { parse as parseAcct } from 'misskey-js/acct.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
@@ -62,7 +62,7 @@ function fetch() {
 		if (uri.startsWith('acct:')) {
 			uri = uri.slice(5);
 		}
-		promise = misskeyApi('users/show', Misskey.acct.parse(uri));
+		promise = misskeyApi('users/show', parseAcct(uri));
 		promise.then(user => {
 			mainRouter.replace(user.host ? `/@${user.username}@${user.host}` : `/@${user.username}`);
 		});

@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as Misskey from 'misskey-js';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import { $i } from '@/account.js';
 
-export function isFollowingVisibleForMe(user: Misskey.entities.UserDetailed): boolean {
+export function isFollowingVisibleForMe(user: UserDetailed): boolean {
 	if ($i && ($i.id === user.id || $i.isAdmin || $i.isModerator)) return true;
 
 	if (user.followingVisibility === 'private') return false;
@@ -14,7 +14,7 @@ export function isFollowingVisibleForMe(user: Misskey.entities.UserDetailed): bo
 
 	return true;
 }
-export function isFollowersVisibleForMe(user: Misskey.entities.UserDetailed): boolean {
+export function isFollowersVisibleForMe(user: UserDetailed): boolean {
 	if ($i && ($i.id === user.id || $i.isAdmin || $i.isModerator)) return true;
 
 	if (user.followersVisibility === 'private') return false;

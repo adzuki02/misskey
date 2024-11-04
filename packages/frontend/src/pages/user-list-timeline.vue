@@ -24,8 +24,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, ref, shallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import { computed, watch, ref, useTemplateRef } from 'vue';
+import type { UserList } from 'misskey-js/entities.js';
 import MkTimeline from '@/components/MkTimeline.vue';
 import { scroll } from '@/scripts/scroll.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -39,10 +39,10 @@ const props = defineProps<{
 	listId: string;
 }>();
 
-const list = ref<Misskey.entities.UserList | null>(null);
+const list = ref<UserList>();
 const queue = ref(0);
-const tlEl = shallowRef<InstanceType<typeof MkTimeline>>();
-const rootEl = shallowRef<HTMLElement>();
+const tlEl = useTemplateRef('tlEl');
+const rootEl = useTemplateRef('rootEl');
 
 watch(() => props.listId, async () => {
 	list.value = await misskeyApi('users/lists/show', {

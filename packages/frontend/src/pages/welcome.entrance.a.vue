@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { FederationInstance } from 'misskey-js/entities.js';
 import XTimeline from './welcome.timeline.vue';
 import MarqueeText from '@/components/MkMarquee.vue';
 import MkFeaturedPhotos from '@/components/MkFeaturedPhotos.vue';
@@ -46,9 +46,9 @@ import MkVisitorDashboard from '@/components/MkVisitorDashboard.vue';
 import { getProxiedImageUrl } from '@/scripts/media-proxy.js';
 import { instance as meta } from '@/instance.js';
 
-const instances = ref<Misskey.entities.FederationInstance[]>();
+const instances = ref<FederationInstance[]>([]);
 
-function getInstanceIcon(instance: Misskey.entities.FederationInstance): string {
+function getInstanceIcon(instance: FederationInstance): string {
 	if (!instance.iconUrl) {
 		return '';
 	}

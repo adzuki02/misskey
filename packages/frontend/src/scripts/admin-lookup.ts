@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as Misskey from 'misskey-js';
+import { parse as parseAcct } from 'misskey-js/acct.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -18,7 +18,7 @@ export async function lookupUser() {
 		os.pageWindow(`/admin/user/${user.id}`);
 	};
 
-	const usernamePromise = misskeyApi('users/show', Misskey.acct.parse(result));
+	const usernamePromise = misskeyApi('users/show', parseAcct(result));
 	const idPromise = misskeyApi('users/show', { userId: result });
 	let _notFound = false;
 	const notFound = () => {
@@ -36,7 +36,7 @@ export async function lookupUser() {
 			notFound();
 		}
 	});
-	idPromise.then(show).catch(err => {
+	idPromise.then(show).catch(() => {
 		notFound();
 	});
 }

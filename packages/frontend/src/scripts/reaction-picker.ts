@@ -3,15 +3,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as Misskey from 'misskey-js';
-import { defineAsyncComponent, Ref, ref } from 'vue';
+import { defineAsyncComponent, type Ref, ref } from 'vue';
+import type { Note } from 'misskey-js/entities.js';
 import { popup } from '@/os.js';
 import { defaultStore } from '@/store.js';
 
 class ReactionPicker {
 	private src: Ref<HTMLElement | undefined> = ref(undefined);
 	private manualShowing = ref(false);
-	private targetNote: Ref<Misskey.entities.Note | undefined> = ref(undefined);
+	private targetNote: Ref<Note | undefined> = ref(undefined);
 	private onChosen?: (reaction: string) => void;
 	private onClosed?: () => void;
 
@@ -41,7 +41,7 @@ class ReactionPicker {
 		});
 	}
 
-	public show(src: HTMLElement | undefined, targetNote: Misskey.entities.Note | undefined, onChosen?: ReactionPicker['onChosen'], onClosed?: ReactionPicker['onClosed']) {
+	public show(src: HTMLElement | undefined, targetNote: Note | undefined, onChosen?: ReactionPicker['onChosen'], onClosed?: ReactionPicker['onClosed']) {
 		this.src.value = src;
 		this.targetNote.value = targetNote;
 		this.manualShowing.value = true;
