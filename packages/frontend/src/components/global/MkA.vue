@@ -14,7 +14,7 @@ export type MkABehavior = 'window' | 'browser' | null;
 </script>
 
 <script lang="ts" setup>
-import { computed, inject, shallowRef } from 'vue';
+import { computed, inject, useTemplateRef } from 'vue';
 import * as os from '@/os.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import { url } from '@/config.js';
@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<{
 
 const behavior = props.behavior ?? inject<MkABehavior>('linkNavigationBehavior', null);
 
-const el = shallowRef<HTMLElement>();
+const el = useTemplateRef('el');
 
 defineExpose({ $el: el });
 
@@ -48,7 +48,7 @@ const active = computed(() => {
 	return resolved.route.name === router.currentRoute.value.name;
 });
 
-function onContextmenu(ev) {
+function onContextmenu(ev: MouseEvent) {
 	const selection = window.getSelection();
 	if (selection && selection.toString() !== '') return;
 	os.contextMenu([{

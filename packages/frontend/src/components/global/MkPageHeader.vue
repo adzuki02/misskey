@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, inject, shallowRef, computed } from 'vue';
+import { onMounted, onUnmounted, ref, inject, useTemplateRef, computed } from 'vue';
 import tinycolor from 'tinycolor2';
 import XTabs, { Tab } from './MkPageHeader.tabs.vue';
 import { scrollToTop } from '@/scripts/scroll.js';
@@ -66,11 +66,11 @@ const emit = defineEmits<{
 
 const pageMetadata = injectReactiveMetadata();
 
-const hideTitle = inject('shouldOmitHeaderTitle', false);
+const hideTitle = inject<boolean>('shouldOmitHeaderTitle', false);
 const thin_ = props.thin || inject('shouldHeaderThin', false);
 
-const el = shallowRef<HTMLElement | undefined>(undefined);
-const bg = ref<string | undefined>(undefined);
+const el = useTemplateRef('el');
+const bg = ref<string>();
 const narrow = ref(false);
 const hasTabs = computed(() => props.tabs.length > 0);
 const hasActions = computed(() => props.actions && props.actions.length > 0);
@@ -113,7 +113,7 @@ onMounted(() => {
 
 	if (el.value && el.value.parentElement) {
 		narrow.value = el.value.parentElement.offsetWidth < 500;
-		ro = new ResizeObserver((entries, observer) => {
+		ro = new ResizeObserver(() => {
 			if (el.value && el.value.parentElement && document.body.contains(el.value as HTMLElement)) {
 				narrow.value = el.value.parentElement.offsetWidth < 500;
 			}

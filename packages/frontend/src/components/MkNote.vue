@@ -160,7 +160,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, inject, onMounted, ref, shallowRef, Ref, watch, provide } from 'vue';
 import * as mfm from 'mfm-js';
-import * as Misskey from 'misskey-js';
+import { note as MisskeyNote } from 'misskey-js';
+import type { Note, Clip, NotesTranslateResponse } from 'misskey-js/entities.js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
@@ -200,7 +201,7 @@ import { focusPrev, focusNext } from '@/scripts/focus.js';
 import { getAppearNote } from '@/scripts/get-appear-note.js';
 
 const props = withDefaults(defineProps<{
-	note: Misskey.entities.Note;
+	note: Note;
 	pinned?: boolean;
 	mock?: boolean;
 	withHardMute?: boolean;
@@ -217,17 +218,17 @@ const emit = defineEmits<{
 
 const inTimeline = inject<boolean>('inTimeline', false);
 const inChannel = inject('inChannel', null);
-const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', null);
+const currentClip = inject<Ref<Clip> | null>('currentClip', null);
 
 const note = ref(deepClone(props.note));
 
 // plugin
 if (noteViewInterruptors.length > 0) {
 	onMounted(async () => {
-		let result: Misskey.entities.Note | null = deepClone(note.value);
+		let result: Note | null = deepClone(note.value);
 		for (const interruptor of noteViewInterruptors) {
 			try {
-				result = await interruptor.handler(result!) as Misskey.entities.Note | null;
+				result = await interruptor.handler(result!) as Note | null;
 				if (result === null) {
 					isDeleted.value = true;
 					return;
@@ -236,11 +237,11 @@ if (noteViewInterruptors.length > 0) {
 				console.error(err);
 			}
 		}
-		note.value = result as Misskey.entities.Note;
+		note.value = result as Note;
 	});
 }
 
-const isRenote = Misskey.note.isPureRenote(note.value);
+const isRenote = MisskeyNote.isPureRenote(note.value);
 
 const rootEl = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
@@ -259,7 +260,7 @@ const collapsed = ref(appearNote.value.cw == null && isLong);
 const isDeleted = ref(false);
 const muted = ref(checkMute(appearNote.value, $i?.mutedWords));
 const hardMuted = ref(props.withHardMute && checkMute(appearNote.value, $i?.hardMutedWords, true));
-const translation = ref<Misskey.entities.NotesTranslateResponse | null>(null);
+const translation = ref<NotesTranslateResponse | null>(null);
 const translating = ref(false);
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.value.user.instance);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.value.visibility) || (appearNote.value.visibility === 'followers' && appearNote.value.userId === $i?.id));
@@ -276,10 +277,10 @@ const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 }));
 
 /* Overload FunctionにLintが対応していないのでコメントアウト
-function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly: true): boolean;
-function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly: false): boolean | 'sensitiveMute';
+function checkMute(noteToCheck: Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly: true): boolean;
+function checkMute(noteToCheck: Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly: false): boolean | 'sensitiveMute';
 */
-function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly = false): boolean | 'sensitiveMute' {
+function checkMute(noteToCheck: Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly = false): boolean | 'sensitiveMute' {
 	if (mutedWords == null) return false;
 
 	if (checkWordMute(noteToCheck, $i, mutedWords)) return true;
@@ -473,7 +474,7 @@ function react(): void {
 	}
 }
 
-function undoReact(targetNote: Misskey.entities.Note): void {
+function undoReact(targetNote: Note): void {
 	const oldReaction = targetNote.myReaction;
 	if (!oldReaction) return;
 

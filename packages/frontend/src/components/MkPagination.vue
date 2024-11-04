@@ -44,7 +44,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts">
 import { computed, ComputedRef, isRef, nextTick, onActivated, onBeforeMount, onBeforeUnmount, onDeactivated, ref, shallowRef, watch, type Ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Endpoints as MisskeyEndpoints } from 'misskey-js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { onScrollTop, isTopVisible, getBodyScrollHeight, getScrollContainer, onScrollBottom, scrollToBottom, scroll, isBottomVisible } from '@/scripts/scroll.js';
 import { useDocumentVisibility } from '@/scripts/use-document-visibility.js';
@@ -56,10 +56,10 @@ const SECOND_FETCH_LIMIT = 30;
 const TOLERANCE = 16;
 const APPEAR_MINIMUM_INTERVAL = 600;
 
-export type Paging<E extends keyof Misskey.Endpoints = keyof Misskey.Endpoints> = {
+export type Paging<E extends keyof MisskeyEndpoints = keyof MisskeyEndpoints> = {
 	endpoint: E;
 	limit: number;
-	params?: Misskey.Endpoints[E]['req'] | ComputedRef<Misskey.Endpoints[E]['req']>;
+	params?: MisskeyEndpoints[E]['req'] | ComputedRef<MisskeyEndpoints[E]['req']>;
 
 	/**
 	 * 検索APIのような、ページング不可なエンドポイントを利用する場合
@@ -78,7 +78,7 @@ export type Paging<E extends keyof Misskey.Endpoints = keyof Misskey.Endpoints> 
 };
 </script>
 
-<script lang="ts" setup generic="E extends keyof Misskey.Endpoints = keyof Misskey.Endpoints">
+<script lang="ts" setup generic="E extends keyof MisskeyEndpoints = keyof MisskeyEndpoints">
 import { infoImageUrl } from '@/instance.js';
 import MkButton from '@/components/MkButton.vue';
 
@@ -102,7 +102,7 @@ const backed = ref(false);
 
 const scrollRemove = ref<(() => void) | null>(null);
 
-type Entity = Extract<Misskey.Endpoints[E]['res'], unknown[]>[number] & Pick<MisskeyEntity, 'id' | 'createdAt'>;
+type Entity = Extract<MisskeyEndpoints[E]['res'], unknown[]>[number] & Pick<MisskeyEntity, 'id' | 'createdAt'>;
 type EntityMap = Map<string, Entity>;
 
 function arrayToEntries(entities: Entity[]): [string, Entity][] {

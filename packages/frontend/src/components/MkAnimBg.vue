@@ -8,10 +8,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, shallowRef } from 'vue';
+import { onMounted, onUnmounted, useTemplateRef } from 'vue';
 import isChromatic from 'chromatic/isChromatic';
 
-const canvasEl = shallowRef<HTMLCanvasElement>();
+const canvasEl = useTemplateRef('canvasEl');
 
 const props = withDefaults(defineProps<{
 	scale?: number;
@@ -229,8 +229,8 @@ onMounted(() => {
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.DYNAMIC_DRAW);
 
 	if (isChromatic()) {
-		gl!.uniform1f(u_time, 0);
-		gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);
+		gl.uniform1f(u_time, 0);
+		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 	} else {
 		function render(timeStamp: number) {
 			let sizeChanged = false;

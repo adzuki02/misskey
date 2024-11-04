@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div ref="rootEl" :class="$style.root" class="_popup _shadow" :style="{ zIndex }" @contextmenu.prevent="() => {}">
 	<ol v-if="type === 'user'" ref="suggests" :class="$style.list">
 		<li v-for="user in users" tabindex="-1" :class="$style.item" @click="complete(type, user)" @keydown="onKeydown">
-			<img :class="$style.avatar" :src="user.avatarUrl"/>
+			<img :class="$style.avatar" :src="user.avatarUrl ?? undefined"/>
 			<span :class="$style.userName">
 				<MkUserName :key="user.id" :user="user"/>
 			</span>
@@ -48,6 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts">
 import { markRaw, ref, shallowRef, computed, onUpdated, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
+import type { UserLite } from 'misskey-js/entities.js';
 import contains from '@/scripts/contains.js';
 import { char2twemojiFilePath } from '@/scripts/emoji-base.js';
 import { acct } from '@/filters/user.js';
@@ -140,8 +141,8 @@ const suggests = ref<Element>();
 const rootEl = shallowRef<HTMLDivElement>();
 
 const fetching = ref(true);
-const users = ref<any[]>([]);
-const hashtags = ref<any[]>([]);
+const users = ref<UserLite[]>([]);
+const hashtags = ref<string[]>([]);
 const emojis = ref<(EmojiDef)[]>([]);
 const items = ref<Element[] | HTMLCollection>([]);
 const mfmTags = ref<string[]>([]);

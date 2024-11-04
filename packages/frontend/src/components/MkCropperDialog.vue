@@ -32,9 +32,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, shallowRef, ref } from 'vue';
-import * as Misskey from 'misskey-js';
 import Cropper from 'cropperjs';
 import tinycolor from 'tinycolor2';
+import type { DriveFile } from 'misskey-js/entities.js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import * as os from '@/os.js';
 import { $i } from '@/account.js';
@@ -44,13 +44,13 @@ import { i18n } from '@/i18n.js';
 import { getProxiedImageUrl } from '@/scripts/media-proxy.js';
 
 const emit = defineEmits<{
-	(ev: 'ok', cropped: Misskey.entities.DriveFile): void;
+	(ev: 'ok', cropped: DriveFile): void;
 	(ev: 'cancel'): void;
 	(ev: 'closed'): void;
 }>();
 
 const props = defineProps<{
-	file: Misskey.entities.DriveFile;
+	file: DriveFile;
 	aspectRatio: number;
 	uploadFolder?: string | null;
 }>();
@@ -62,7 +62,7 @@ let cropper: Cropper | null = null;
 const loading = ref(true);
 
 const ok = async () => {
-	const promise = new Promise<Misskey.entities.DriveFile>(async (res) => {
+	const promise = new Promise<DriveFile>(async (res) => {
 		const croppedImage = await cropper?.getCropperImage();
 		const croppedSection = await cropper?.getCropperSelection();
 

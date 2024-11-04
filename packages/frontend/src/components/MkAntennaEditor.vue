@@ -52,7 +52,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { watch, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import { acct } from 'misskey-js';
+import type { Antenna, AntennasCreateRequest, UserList } from 'misskey-js/entities.js';
+import type { DeepPartial } from '@/scripts/merge.js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
@@ -62,9 +64,8 @@ import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { deepMerge } from '@/scripts/merge.js';
-import type { DeepPartial } from '@/scripts/merge.js';
 
-type PartialAllowedAntenna = Omit<Misskey.entities.Antenna, 'id' | 'createdAt' | 'updatedAt'> & {
+type PartialAllowedAntenna = Omit<Antenna, 'id' | 'createdAt' | 'updatedAt'> & {
 	id?: string;
 	createdAt?: string;
 	updatedAt?: string;
@@ -92,13 +93,13 @@ const initialAntenna = deepMerge<PartialAllowedAntenna>(props.antenna ?? {}, {
 });
 
 const emit = defineEmits<{
-	(ev: 'created', newAntenna: Misskey.entities.Antenna): void,
-	(ev: 'updated', editedAntenna: Misskey.entities.Antenna): void,
+	(ev: 'created', newAntenna: Antenna): void,
+	(ev: 'updated', editedAntenna: Antenna): void,
 	(ev: 'deleted'): void,
 }>();
 
 const name = ref<string>(initialAntenna.name);
-const src = ref<Misskey.entities.AntennasCreateRequest['src']>(initialAntenna.src);
+const src = ref<AntennasCreateRequest['src']>(initialAntenna.src);
 const userListId = ref<string | null>(initialAntenna.userListId);
 const users = ref<string>(initialAntenna.users.join('\n'));
 const keywords = ref<string>(initialAntenna.keywords.map(x => x.join(' ')).join('\n'));
@@ -108,7 +109,7 @@ const localOnly = ref<boolean>(initialAntenna.localOnly);
 const excludeBots = ref<boolean>(initialAntenna.excludeBots);
 const withReplies = ref<boolean>(initialAntenna.withReplies);
 const withFile = ref<boolean>(initialAntenna.withFile);
-const userLists = ref<Misskey.entities.UserList[] | null>(null);
+const userLists = ref<UserList[] | null>(null);
 
 watch(() => src.value, async () => {
 	if (src.value === 'list' && userLists.value === null) {
@@ -160,7 +161,7 @@ async function deleteAntenna() {
 function addUser() {
 	os.selectUser({ includeSelf: true }).then(user => {
 		users.value = users.value.trim();
-		users.value += '\n@' + Misskey.acct.toString(user);
+		users.value += '\n@' + acct.toString(user);
 		users.value = users.value.trim();
 	});
 }

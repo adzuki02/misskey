@@ -25,15 +25,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { shallowRef, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import { ref, useTemplateRef } from 'vue';
+import type { DriveFile } from 'misskey-js/entities.js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
-	file: Misskey.entities.DriveFile;
+	file: DriveFile;
 	default: string;
 }>();
 
@@ -42,7 +42,7 @@ const emit = defineEmits<{
 	(ev: 'closed'): void;
 }>();
 
-const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
+const dialog = useTemplateRef('dialog');
 
 const caption = ref(props.default);
 

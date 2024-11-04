@@ -7,9 +7,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div>
 	<MkPagination v-slot="{items}" :pagination="pagination" class="urempief" :class="{ grid: viewMode === 'grid' }">
 		<MkA
-			v-for="file in (items as Misskey.entities.DriveFile[])"
+			v-for="file in (items as DriveFile[])"
 			:key="file.id"
-			v-tooltip.mfm="`${file.type}\n${bytes(file.size)}\n${dateString(file.createdAt)}\nby ${file.user ? '@' + Misskey.acct.toString(file.user) : 'system'}`"
+			v-tooltip.mfm="`${file.type}\n${bytes(file.size)}\n${dateString(file.createdAt)}\nby ${file.user ? '@' + acct.toString(file.user) : 'system'}`"
 			:to="`/admin/file/${file.id}`"
 			class="file _button"
 		>
@@ -36,8 +36,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </div>
 </template>
 
-<script lang="ts" setup generic="E extends keyof Misskey.Endpoints = keyof Misskey.Endpoints">
-import * as Misskey from 'misskey-js';
+<script lang="ts" setup generic="E extends keyof MisskeyEndpoints = keyof MisskeyEndpoints">
+import { acct, type Endpoints as MisskeyEndpoints } from 'misskey-js';
+import type { DriveFile } from 'misskey-js/entities.js';
 import MkPagination, { type Paging } from '@/components/MkPagination.vue';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
 import bytes from '@/filters/bytes.js';

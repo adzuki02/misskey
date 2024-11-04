@@ -16,13 +16,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { FederationInstance } from 'misskey-js/entities.js';
 import MkMiniChart from '@/components/MkMiniChart.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { getProxiedImageUrlNullable } from '@/scripts/media-proxy.js';
 
 const props = defineProps<{
-	instance: Misskey.entities.FederationInstance;
+	instance: FederationInstance;
 }>();
 
 const chartValues = ref<number[] | null>(null);

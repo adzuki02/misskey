@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile, DriveFolder } from 'misskey-js/entities.js';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
 import bytes from '@/filters/bytes.js';
 import * as os from '@/os.js';
@@ -54,8 +54,8 @@ const $i = signinRequired();
 const router = useRouter();
 
 const props = withDefaults(defineProps<{
-	file: Misskey.entities.DriveFile;
-	folder: Misskey.entities.DriveFolder | null;
+	file: DriveFile;
+	folder: DriveFolder | null;
 	isSelected?: boolean;
 	selectMode?: boolean;
 }>(), {
@@ -64,7 +64,7 @@ const props = withDefaults(defineProps<{
 });
 
 const emit = defineEmits<{
-	(ev: 'chosen', r: Misskey.entities.DriveFile): void;
+	(ev: 'chosen', r: DriveFile): void;
 	(ev: 'dragstart'): void;
 	(ev: 'dragend'): void;
 }>();

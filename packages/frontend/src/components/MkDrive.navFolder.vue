@@ -19,35 +19,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile, DriveFolder } from 'misskey-js/entities.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
-	folder?: Misskey.entities.DriveFolder;
-	parentFolder: Misskey.entities.DriveFolder | null;
+	folder?: DriveFolder;
+	parentFolder: DriveFolder | null;
 }>();
 
 const emit = defineEmits<{
-	(ev: 'move', v?: Misskey.entities.DriveFolder): void;
-	(ev: 'upload', file: File, folder?: Misskey.entities.DriveFolder | null): void;
-	(ev: 'removeFile', v: Misskey.entities.DriveFile['id']): void;
-	(ev: 'removeFolder', v: Misskey.entities.DriveFolder['id']): void;
+	(ev: 'move', v?: DriveFolder): void;
+	(ev: 'upload', file: File, folder?: DriveFolder | null): void;
+	(ev: 'removeFile', v: DriveFile['id']): void;
+	(ev: 'removeFolder', v: DriveFolder['id']): void;
 }>();
 
-const hover = ref(false);
 const draghover = ref(false);
 
 function onClick() {
 	emit('move', props.folder);
-}
-
-function onMouseover() {
-	hover.value = true;
-}
-
-function onMouseout() {
-	hover.value = false;
 }
 
 function onDragover(ev: DragEvent) {

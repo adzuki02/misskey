@@ -25,14 +25,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile } from 'misskey-js/entities.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
 import * as os from '@/os.js';
 import MkMediaAudio from '@/components/MkMediaAudio.vue';
 
 const props = defineProps<{
-	media: Misskey.entities.DriveFile;
+	media: DriveFile;
 }>();
 
 const hide = ref(true);

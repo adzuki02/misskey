@@ -56,8 +56,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import * as Misskey from 'misskey-js';
 import { defineProps, shallowRef } from 'vue';
+import type { DriveFile, EmojiDetailed } from 'misskey-js/entities.js';
 import MkLink from '@/components/MkLink.vue';
 import { i18n } from '@/i18n.js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
@@ -65,11 +65,11 @@ import MkKeyValue from '@/components/MkKeyValue.vue';
 import { defaultStore } from '@/store';
 
 const props = defineProps<{
-  emoji: ({ host: null } & { [K in Exclude<keyof Misskey.entities.EmojiDetailed, 'host'>]: Misskey.entities.EmojiDetailed[K] }) | ({ host: string, name: string } & { [K in Exclude<keyof Misskey.entities.EmojiDetailed, 'host' | 'name'>]?: undefined }),
+  emoji: ({ host: null } & { [K in Exclude<keyof EmojiDetailed, 'host'>]: EmojiDetailed[K] }) | ({ host: string, name: string } & { [K in Exclude<keyof EmojiDetailed, 'host' | 'name'>]?: undefined }),
 }>();
 
 const emit = defineEmits<{
-	(ev: 'ok', cropped: Misskey.entities.DriveFile): void;
+	(ev: 'ok', cropped: DriveFile): void;
 	(ev: 'cancel'): void;
 	(ev: 'closed'): void;
 }>();

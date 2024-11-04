@@ -110,7 +110,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, shallowRef, computed, watch, onDeactivated, onActivated, onMounted } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile } from 'misskey-js/entities.js';
 import type { MenuItem } from '@/types/menu.js';
 import { type Keymap } from '@/scripts/hotkey.js';
 import bytes from '@/filters/bytes.js';
@@ -124,7 +124,7 @@ import MkMediaRange from '@/components/MkMediaRange.vue';
 import { $i, iAmModerator } from '@/account.js';
 
 const props = defineProps<{
-	video: Misskey.entities.DriveFile;
+	video: DriveFile;
 }>();
 
 const keymap = {
@@ -263,7 +263,7 @@ function showMenu(ev: MouseEvent) {
 	});
 }
 
-function toggleSensitive(file: Misskey.entities.DriveFile) {
+function toggleSensitive(file: DriveFile) {
 	os.apiWithDialog('drive/files/update', {
 		fileId: file.id,
 		isSensitive: !file.isSensitive,

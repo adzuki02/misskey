@@ -21,12 +21,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Flash } from 'misskey-js/entities.js';
 import { userName } from '@/filters/user.js';
 
-const props = defineProps<{
-	flash: Misskey.entities.Flash;
+defineProps<{
+	flash: Flash;
 }>();
 </script>
 

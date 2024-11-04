@@ -198,7 +198,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, inject, onMounted, provide, ref, shallowRef } from 'vue';
 import * as mfm from 'mfm-js';
-import * as Misskey from 'misskey-js';
+import { note as MisskeyNote } from 'misskey-js';
+import type { Note, Clip, NotesTranslateResponse } from 'misskey-js/entities.js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
@@ -238,7 +239,7 @@ import { getAppearNote } from '@/scripts/get-appear-note.js';
 import { type Keymap } from '@/scripts/hotkey.js';
 
 const props = withDefaults(defineProps<{
-	note: Misskey.entities.Note;
+	note: Note;
 	initialTab?: 'replies' | 'renotes' | 'reactions';
 }>(), {
 	initialTab: 'replies',
@@ -251,10 +252,10 @@ const note = ref(deepClone(props.note));
 // plugin
 if (noteViewInterruptors.length > 0) {
 	onMounted(async () => {
-		let result: Misskey.entities.Note | null = deepClone(note.value);
+		let result: Note | null = deepClone(note.value);
 		for (const interruptor of noteViewInterruptors) {
 			try {
-				result = await interruptor.handler(result!) as Misskey.entities.Note | null;
+				result = await interruptor.handler(result!) as Note | null;
 				if (result === null) {
 					isDeleted.value = true;
 					return;
@@ -263,11 +264,11 @@ if (noteViewInterruptors.length > 0) {
 				console.error(err);
 			}
 		}
-		note.value = result as Misskey.entities.Note;
+		note.value = result as Note;
 	});
 }
 
-const isRenote = Misskey.note.isPureRenote(note.value);
+const isRenote = MisskeyNote.isPureRenote(note.value);
 
 const rootEl = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
@@ -281,13 +282,13 @@ const isMyRenote = $i && ($i.id === note.value.userId);
 const showContent = ref(false);
 const isDeleted = ref(false);
 const muted = ref($i ? checkWordMute(appearNote.value, $i, $i.mutedWords) : false);
-const translation = ref<Misskey.entities.NotesTranslateResponse | null>(null);
+const translation = ref<NotesTranslateResponse | null>(null);
 const translating = ref(false);
 const parsed = appearNote.value.text ? mfm.parse(appearNote.value.text) : null;
 const urls = parsed ? extractUrlFromMfm(parsed).filter((url) => appearNote.value.renote?.url !== url && appearNote.value.renote?.uri !== url) : null;
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.value.user.instance);
-const conversation = ref<Misskey.entities.Note[]>([]);
-const replies = ref<Misskey.entities.Note[]>([]);
+const conversation = ref<Note[]>([]);
+const replies = ref<Note[]>([]);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.value.visibility) || appearNote.value.userId === $i?.id);
 
 const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
@@ -449,7 +450,7 @@ function react(): void {
 	}
 }
 
-function undoReact(targetNote: Misskey.entities.Note): void {
+function undoReact(targetNote: Note): void {
 	const oldReaction = targetNote.myReaction;
 	if (!oldReaction) return;
 	misskeyApi('notes/reactions/delete', {

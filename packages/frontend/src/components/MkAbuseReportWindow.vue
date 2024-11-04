@@ -30,8 +30,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script setup lang="ts">
-import { ref, shallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import { ref, useTemplateRef } from 'vue';
+import type { UserLite } from 'misskey-js/entities.js';
 import MkWindow from '@/components/MkWindow.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -39,7 +39,7 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
-	user: Misskey.entities.UserLite;
+	user: UserLite;
 	initialComment?: string;
 }>();
 
@@ -47,14 +47,14 @@ const emit = defineEmits<{
 	(ev: 'closed'): void;
 }>();
 
-const uiWindow = shallowRef<InstanceType<typeof MkWindow>>();
+const uiWindow = useTemplateRef('uiWindow');
 const comment = ref(props.initialComment ?? '');
 
 function send() {
 	os.apiWithDialog('users/report-abuse', {
 		userId: props.user.id,
 		comment: comment.value,
-	}, undefined).then(res => {
+	}, undefined).then(() => {
 		os.alert({
 			type: 'success',
 			text: i18n.ts.abuseReported,

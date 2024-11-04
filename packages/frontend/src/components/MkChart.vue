@@ -46,7 +46,7 @@ export type ChartSrc =
 */
 import { onMounted, ref, shallowRef, watch } from 'vue';
 import { Chart } from 'chart.js';
-import * as Misskey from 'misskey-js';
+import type { UserLite } from 'misskey-js/entities.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore } from '@/store.js';
 import { useChartTooltip } from '@/scripts/use-chart-tooltip.js';
@@ -64,7 +64,7 @@ const props = withDefaults(defineProps<{
 	src: ChartSrc;
 	args?: {
 		host?: string;
-		user?: Misskey.entities.UserLite;
+		user?: UserLite;
 		withoutAll?: boolean;
 	};
 	limit?: number;
@@ -291,10 +291,6 @@ const render = () => {
 		},
 		plugins: [chartVLine(vLineColor), ...(props.detailed && legendEl.value ? [chartLegend(legendEl.value)] : [])],
 	});
-};
-
-const exportData = () => {
-	// TODO
 };
 
 const fetchFederationChart = async (): Promise<typeof chartData> => {

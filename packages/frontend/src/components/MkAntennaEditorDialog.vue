@@ -23,31 +23,31 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { shallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import { useTemplateRef } from 'vue';
+import type { Antenna } from 'misskey-js/entities.js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import XAntennaEditor from '@/components/MkAntennaEditor.vue';
 import { i18n } from '@/i18n.js';
 
 defineProps<{
-	antenna?: Misskey.entities.Antenna;
+	antenna?: Antenna;
 }>();
 
 const emit = defineEmits<{
-	(ev: 'created', newAntenna: Misskey.entities.Antenna): void,
-	(ev: 'updated', editedAntenna: Misskey.entities.Antenna): void,
+	(ev: 'created', newAntenna: Antenna): void,
+	(ev: 'updated', editedAntenna: Antenna): void,
 	(ev: 'deleted'): void,
 	(ev: 'closed'): void,
 }>();
 
-const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
+const dialog = useTemplateRef('dialog');
 
-function onAntennaCreated(newAntenna: Misskey.entities.Antenna) {
+function onAntennaCreated(newAntenna: Antenna) {
 	emit('created', newAntenna);
 	dialog.value?.close();
 }
 
-function onAntennaUpdated(editedAntenna: Misskey.entities.Antenna) {
+function onAntennaUpdated(editedAntenna: Antenna) {
 	emit('updated', editedAntenna);
 	dialog.value?.close();
 }
