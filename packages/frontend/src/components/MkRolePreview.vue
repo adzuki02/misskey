@@ -34,12 +34,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
-import * as Misskey from 'misskey-js';
-import { i18n } from '@/i18n.js';
+import type { Role, RoleLite } from 'misskey-js/entities.js';
 
-const props = withDefaults(defineProps<{
-	role: Misskey.entities.RoleLite & Partial<Misskey.entities.Role>;
+withDefaults(defineProps<{
+	role: RoleLite & Partial<Role>;
 	forModeration: boolean;
 	detailed?: boolean;
 }>(), {

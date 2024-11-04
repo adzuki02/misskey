@@ -46,9 +46,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
-import * as Misskey from 'misskey-js';
 import { swInject } from './sw-inject.js';
 import XNotification from './notification.vue';
+import type { Notification } from 'misskey-js/entities.js';
 import { popups } from '@/os.js';
 import { pendingApiRequestsCount } from '@/scripts/misskey-api.js';
 import { uploads } from '@/scripts/upload.js';
@@ -64,9 +64,9 @@ const XUpload = defineAsyncComponent(() => import('./upload.vue'));
 
 const dev = _DEV_;
 
-const notifications = ref<Misskey.entities.Notification[]>([]);
+const notifications = ref<Notification[]>([]);
 
-function onNotification(notification: Misskey.entities.Notification, isClient = false) {
+function onNotification(notification: Notification, isClient = false) {
 	if (document.visibilityState === 'visible') {
 		if (!isClient && notification.type !== 'test') {
 			// サーバーサイドのテスト通知の際は自動で既読をつけない（テストできないので）

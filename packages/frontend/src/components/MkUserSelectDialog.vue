@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkModalWindow
 	ref="dialogEl"
 	:withOkButton="true"
-	:okButtonDisabled="selected == null"
+	:okButtonDisabled="selected === undefined"
 	@click="cancel()"
 	@close="cancel()"
 	@ok="ok()"
@@ -61,8 +61,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, shallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import { onMounted, ref, useTemplateRef } from 'vue';
+import type { UserLite, UserDetailed } from 'misskey-js/entities.js';
 import MkInput from '@/components/MkInput.vue';
 import FormSplit from '@/components/form/split.vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
@@ -70,10 +70,10 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { host as currentHost, hostname } from '@/config.js';
+import { hostname } from '@/config.js';
 
 const emit = defineEmits<{
-	(ev: 'ok', selected: Misskey.entities.UserDetailed): void;
+	(ev: 'ok', selected: UserDetailed): void;
 	(ev: 'cancel'): void;
 	(ev: 'closed'): void;
 }>();
@@ -88,10 +88,10 @@ const props = withDefaults(defineProps<{
 
 const username = ref('');
 const host = ref('');
-const users = ref<Misskey.entities.UserLite[]>([]);
-const recentUsers = ref<Misskey.entities.UserDetailed[]>([]);
-const selected = ref<Misskey.entities.UserLite | null>(null);
-const dialogEl = shallowRef<InstanceType<typeof MkModalWindow>>();
+const users = ref<UserLite[]>([]);
+const recentUsers = ref<UserDetailed[]>([]);
+const selected = ref<UserLite>();
+const dialogEl = useTemplateRef('dialogEl');
 
 function search() {
 	if (username.value === '' && host.value === '') {
@@ -115,7 +115,7 @@ function search() {
 }
 
 async function ok() {
-	if (selected.value == null) return;
+	if (selected.value === undefined) return;
 
 	const user = await misskeyApi('users/show', {
 		userId: selected.value.id,

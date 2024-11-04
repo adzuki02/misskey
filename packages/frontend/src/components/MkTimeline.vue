@@ -17,15 +17,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, onUnmounted, provide, ref, shallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import { computed, watch, onUnmounted, provide, shallowRef, useTemplateRef } from 'vue';
+import type { ChannelConnection, Channels, Endpoints as MisskeyEndpoints } from 'misskey-js';
 import type { BasicTimelineType } from '@/timelines.js';
 import MkNotes from '@/components/MkNotes.vue';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
 import { useStream } from '@/stream.js';
 import * as sound from '@/scripts/sound.js';
 import { $i } from '@/account.js';
-import { instance } from '@/instance.js';
 import { defaultStore } from '@/store.js';
 import { Paging } from '@/components/MkPagination.vue';
 
@@ -64,15 +63,11 @@ type TimelineQueryType = {
   roleId?: string
 }
 
-const prComponent = shallowRef<InstanceType<typeof MkPullToRefresh>>();
-const tlComponent = shallowRef<InstanceType<typeof MkNotes>>();
-
-let tlNotesCount = 0;
+const prComponent = useTemplateRef('prComponent');
+const tlComponent = useTemplateRef('tlComponent');
 
 function prepend(note) {
 	if (tlComponent.value == null) return;
-
-	tlNotesCount++;
 
 	tlComponent.value.pagingComponent?.prepend(note);
 
@@ -83,8 +78,8 @@ function prepend(note) {
 	}
 }
 
-let connection: Misskey.ChannelConnection | null = null;
-let connection2: Misskey.ChannelConnection | null = null;
+let connection: ChannelConnection | null = null;
+let connection2: ChannelConnection | null = null;
 let paginationQuery: Paging | null = null;
 
 const stream = useStream();
@@ -92,46 +87,46 @@ const stream = useStream();
 function connectChannel() {
 	if (props.src === 'antenna') {
 		if (props.antenna == null) return;
-		(connection as Misskey.ChannelConnection<Misskey.Channels['antenna']>) = stream.useChannel('antenna', {
+		(connection as ChannelConnection<Channels['antenna']>) = stream.useChannel('antenna', {
 			antennaId: props.antenna,
 		});
 	} else if (props.src === 'home') {
-		(connection as Misskey.ChannelConnection<Misskey.Channels['homeTimeline']>) = stream.useChannel('homeTimeline', {
+		(connection as ChannelConnection<Channels['homeTimeline']>) = stream.useChannel('homeTimeline', {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
 		});
-		(connection2 as Misskey.ChannelConnection<Misskey.Channels['main']>) = stream.useChannel('main');
+		(connection2 as ChannelConnection<Channels['main']>) = stream.useChannel('main');
 	} else if (props.src === 'global') {
-		(connection as Misskey.ChannelConnection<Misskey.Channels['globalTimeline']>) = stream.useChannel('globalTimeline', {
+		(connection as ChannelConnection<Channels['globalTimeline']>) = stream.useChannel('globalTimeline', {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
 		});
 	} else if (props.src === 'mentions') {
-		(connection as Misskey.ChannelConnection<Misskey.Channels['main']>) = stream.useChannel('main');
-		(connection as Misskey.ChannelConnection<Misskey.Channels['main']>).on('mention', prepend);
+		(connection as ChannelConnection<Channels['main']>) = stream.useChannel('main');
+		(connection as ChannelConnection<Channels['main']>).on('mention', prepend);
 	} else if (props.src === 'directs') {
 		const onNote = note => {
 			if (note.visibility === 'specified') {
 				prepend(note);
 			}
 		};
-		(connection as Misskey.ChannelConnection<Misskey.Channels['main']>) = stream.useChannel('main');
-		(connection as Misskey.ChannelConnection<Misskey.Channels['main']>).on('mention', onNote);
+		(connection as ChannelConnection<Channels['main']>) = stream.useChannel('main');
+		(connection as ChannelConnection<Channels['main']>).on('mention', onNote);
 	} else if (props.src === 'list') {
 		if (props.list == null) return;
-		(connection as Misskey.ChannelConnection<Misskey.Channels['userList']>) = stream.useChannel('userList', {
+		(connection as ChannelConnection<Channels['userList']>) = stream.useChannel('userList', {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
 			listId: props.list,
 		});
 	} else if (props.src === 'channel') {
 		if (props.channel == null) return;
-		(connection as Misskey.ChannelConnection<Misskey.Channels['channel']>) = stream.useChannel('channel', {
+		(connection as ChannelConnection<Channels['channel']>) = stream.useChannel('channel', {
 			channelId: props.channel,
 		});
 	} else if (props.src === 'role') {
 		if (props.role == null) return;
-		(connection as Misskey.ChannelConnection<Misskey.Channels['roleTimeline']>) = stream.useChannel('roleTimeline', {
+		(connection as ChannelConnection<Channels['roleTimeline']>) = stream.useChannel('roleTimeline', {
 			roleId: props.role,
 		});
 	}
@@ -144,7 +139,7 @@ function disconnectChannel() {
 }
 
 function updatePaginationQuery() {
-	let endpoint: keyof Misskey.Endpoints | null;
+	let endpoint: keyof MisskeyEndpoints | null;
 	let query: TimelineQueryType | null;
 
 	if (props.src === 'antenna') {
@@ -228,8 +223,6 @@ onUnmounted(() => {
 function reloadTimeline() {
 	return new Promise<void>((res) => {
 		if (tlComponent.value == null) return;
-
-		tlNotesCount = 0;
 
 		tlComponent.value.pagingComponent?.reload().then(() => {
 			res();

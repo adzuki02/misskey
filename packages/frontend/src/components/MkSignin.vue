@@ -64,8 +64,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
 import { toUnicode } from 'punycode/';
-import * as Misskey from 'misskey-js';
 import { supported as webAuthnSupported, get as webAuthnRequest, parseRequestOptionsFromJSON } from '@github/webauthn-json/browser-ponyfill';
+import type { UserDetailed, SigninResponse } from 'misskey-js/entities.js';
 import type { OpenOnRemoteOptions } from '@/scripts/please-login.js';
 import { showSuspendedDialog } from '@/scripts/show-suspended-dialog.js';
 import MkButton from '@/components/MkButton.vue';
@@ -79,7 +79,7 @@ import { login } from '@/account.js';
 import { i18n } from '@/i18n.js';
 
 const signing = ref(false);
-const user = ref<Misskey.entities.UserDetailed | null>(null);
+const user = ref<UserDetailed | null>(null);
 const username = ref('');
 const password = ref('');
 const token = ref('');
@@ -90,7 +90,7 @@ const queryingKey = ref(false);
 let credentialRequest: CredentialRequestOptions | null = null;
 
 const emit = defineEmits<{
-	(ev: 'login', v: Misskey.entities.SigninResponse): void;
+	(ev: 'login', v: SigninResponse): void;
 }>();
 
 const props = withDefaults(defineProps<{
@@ -115,7 +115,7 @@ function onUsernameChange(): void {
 	});
 }
 
-function onLogin(res: Misskey.entities.SigninResponse): Promise<void> | void {
+function onLogin(res: SigninResponse): Promise<void> | void {
 	if (props.autoSet) {
 		return login(res.i);
 	}

@@ -10,24 +10,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { shallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import { useTemplateRef } from 'vue';
+import type { noteVisibilities } from 'misskey-js';
+import type { Note, User, UserDetailed, DriveFile } from 'misskey-js/entities.js';
 import MkModal from '@/components/MkModal.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
 
 const props = withDefaults(defineProps<{
-	reply?: Misskey.entities.Note;
-	renote?: Misskey.entities.Note;
+	reply?: Note;
+	renote?: Note;
 	channel?: any; // TODO
-	mention?: Misskey.entities.User;
-	specified?: Misskey.entities.UserDetailed;
+	mention?: User;
+	specified?: UserDetailed;
 	initialText?: string;
 	initialCw?: string;
-	initialVisibility?: (typeof Misskey.noteVisibilities)[number];
-	initialFiles?: Misskey.entities.DriveFile[];
+	initialVisibility?: (typeof noteVisibilities)[number];
+	initialFiles?: DriveFile[];
 	initialLocalOnly?: boolean;
-	initialVisibleUsers?: Misskey.entities.UserDetailed[];
-	initialNote?: Misskey.entities.Note;
+	initialVisibleUsers?: UserDetailed[];
+	initialNote?: Note;
 	instant?: boolean;
 	fixed?: boolean;
 	autofocus?: boolean;
@@ -39,8 +40,8 @@ const emit = defineEmits<{
 	(ev: 'closed'): void;
 }>();
 
-const modal = shallowRef<InstanceType<typeof MkModal>>();
-const form = shallowRef<InstanceType<typeof MkPostForm>>();
+const modal = useTemplateRef('modal');
+const form = useTemplateRef('form');
 
 function onPosted() {
 	modal.value?.close({
