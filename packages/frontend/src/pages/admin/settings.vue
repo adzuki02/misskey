@@ -174,6 +174,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</div>
 						</div>
 					</FormSection>
+
+					<FormSection>
+						<template #label>{{ i18n.ts.federation }}</template>
+
+						<div class="_gaps_m">
+							<MkRadios v-model="federation">
+								<option value="all">{{ i18n.ts.all }}</option>
+								<option value="specified">{{ i18n.ts.specifyHost }}</option>
+								<option value="none">{{ i18n.ts.none }}</option>
+							</MkRadios>
+
+							<MkTextarea v-model="federationHosts">
+								<template #label>{{ i18n.ts.federationAllowedHosts }}</template>
+								<template #caption>{{ i18n.ts.federationAllowedHostsDescription }}</template>
+							</MkTextarea>
+						</div>
+					</FormSection>
 				</div>
 			</FormSuspense>
 		</MkSpacer>
@@ -191,6 +208,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import XHeader from './_header_.vue';
+import type { AdminMetaResponse } from 'misskey-js/entities.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
@@ -204,8 +222,7 @@ import { fetchInstance, instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkButton from '@/components/MkButton.vue';
-import MkFolder from '@/components/MkFolder.vue';
-import MkSelect from '@/components/MkSelect.vue';
+import MkRadios from '@/components/MkRadios.vue';
 
 const name = ref<string | null>(null);
 const shortName = ref<string | null>(null);
@@ -232,6 +249,8 @@ const urlPreviewMaximumContentLength = ref<number>(1024 * 1024 * 10);
 const urlPreviewRequireContentLength = ref<boolean>(true);
 const urlPreviewUserAgent = ref<string | null>(null);
 const urlPreviewSummaryProxyUrl = ref<string | null>(null);
+const federation = ref<AdminMetaResponse['federation']>();
+const federationHosts = ref<string>('');
 
 async function init(): Promise<void> {
 	const meta = await misskeyApi('admin/meta');
@@ -260,6 +279,8 @@ async function init(): Promise<void> {
 	urlPreviewRequireContentLength.value = meta.urlPreviewRequireContentLength;
 	urlPreviewUserAgent.value = meta.urlPreviewUserAgent;
 	urlPreviewSummaryProxyUrl.value = meta.urlPreviewSummaryProxyUrl;
+	federation.value = meta.federation;
+	federationHosts.value = meta.federationHosts.join('\n');
 }
 
 async function save() {
@@ -289,6 +310,8 @@ async function save() {
 		urlPreviewRequireContentLength: urlPreviewRequireContentLength.value,
 		urlPreviewUserAgent: urlPreviewUserAgent.value,
 		urlPreviewSummaryProxyUrl: urlPreviewSummaryProxyUrl.value,
+		federation: federation.value,
+		federationHosts: federationHosts.value.split('\n').filter(h => h !== ''),
 	});
 
 	fetchInstance(true);
