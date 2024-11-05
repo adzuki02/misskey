@@ -6,7 +6,6 @@
 process.env.NODE_ENV = 'test';
 
 import * as assert from 'assert';
-import { DEFAULT_POLICIES } from '@/core/RoleService.js';
 import {
 	api,
 	failedApiCall,
@@ -162,29 +161,6 @@ describe('アンテナ', () => {
 		assert.deepStrictEqual(response, expected);
 	});
 
-	test('が上限いっぱいまで作成できること', async () => {
-		const response = await Promise.all([...Array(DEFAULT_POLICIES.antennaLimit)].map(() => successfulApiCall({
-			endpoint: 'antennas/create',
-			parameters: { ...defaultParam },
-			user: alice,
-		})));
-
-		const expected = await successfulApiCall({ endpoint: 'antennas/list', parameters: {}, user: alice });
-		assert.deepStrictEqual(
-			response.sort(compareBy(s => s.id)),
-			expected.sort(compareBy(s => s.id)));
-
-		failedApiCall({
-			endpoint: 'antennas/create',
-			parameters: { ...defaultParam },
-			user: alice,
-		}, {
-			status: 400,
-			code: 'TOO_MANY_ANTENNAS',
-			id: 'faf47050-e8b5-438c-913c-db2b1576fde4',
-		});
-	});
-
 	test('を作成するとき他人のリストを指定したらエラーになる', async () => {
 		failedApiCall({
 			endpoint: 'antennas/create',
@@ -237,7 +213,7 @@ describe('アンテナ', () => {
 			status: 400,
 			code: 'EMPTY_KEYWORD',
 			id: '53ee222e-1ddd-4f9a-92e5-9fb82ddb463a'
-		})
+		});
 	});
 	//#endregion
 	//#region 更新(antennas/update)
@@ -276,7 +252,7 @@ describe('アンテナ', () => {
 			status: 400,
 			code: 'EMPTY_KEYWORD',
 			id: '721aaff6-4e1b-4d88-8de6-877fae9f68c4'
-		})
+		});
 	});
 
 	//#endregion

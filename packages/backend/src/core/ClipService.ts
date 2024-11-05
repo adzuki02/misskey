@@ -9,7 +9,6 @@ import { DI } from '@/di-symbols.js';
 import type { ClipsRepository, MiNote, MiClip, ClipNotesRepository, NotesRepository } from '@/models/_.js';
 import { bindThis } from '@/decorators.js';
 import { isDuplicateKeyValueError } from '@/misc/is-duplicate-key-value-error.js';
-import { RoleService } from '@/core/RoleService.js';
 import { IdService } from '@/core/IdService.js';
 import type { MiLocalUser } from '@/models/User.js';
 
@@ -18,8 +17,6 @@ export class ClipService {
 	public static NoSuchNoteError = class extends Error {};
 	public static NoSuchClipError = class extends Error {};
 	public static AlreadyAddedError = class extends Error {};
-	public static TooManyClipNotesError = class extends Error {};
-	public static TooManyClipsError = class extends Error {};
 
 	constructor(
 		@Inject(DI.clipsRepository)
@@ -31,20 +28,12 @@ export class ClipService {
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
 
-		private roleService: RoleService,
 		private idService: IdService,
 	) {
 	}
 
 	@bindThis
 	public async create(me: MiLocalUser, name: string, isPublic: boolean, description: string | null): Promise<MiClip> {
-		const currentCount = await this.clipsRepository.countBy({
-			userId: me.id,
-		});
-		if (currentCount >= (await this.roleService.getUserPolicies(me.id)).clipLimit) {
-			throw new ClipService.TooManyClipsError();
-		}
-
 		const clip = await this.clipsRepository.insertOne({
 			id: this.idService.gen(),
 			userId: me.id,
@@ -97,13 +86,6 @@ export class ClipService {
 
 		if (clip == null) {
 			throw new ClipService.NoSuchClipError();
-		}
-
-		const currentCount = await this.clipNotesRepository.countBy({
-			clipId: clip.id,
-		});
-		if (currentCount >= (await this.roleService.getUserPolicies(me.id)).noteEachClipsLimit) {
-			throw new ClipService.TooManyClipNotesError();
 		}
 
 		try {

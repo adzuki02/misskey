@@ -3859,13 +3859,6 @@ export type components = {
       alwaysMarkNsfw: boolean;
       canUpdateBioMedia: boolean;
       pinLimit: number;
-      antennaLimit: number;
-      wordMuteLimit: number;
-      webhookLimit: number;
-      clipLimit: number;
-      noteEachClipsLimit: number;
-      userListLimit: number;
-      userEachUserListsLimit: number;
       rateLimitFactor: number;
       avatarDecorationLimit: number;
       canMakePureRenoteOfRemoteNotes: boolean;

@@ -39,11 +39,6 @@ export const meta = {
 			code: 'EMPTY_FILE',
 			id: '7f60115d-8d93-4b0f-bd0e-3815dcbb389f',
 		},
-		tooManyAntennas: {
-			message: 'You cannot create antenna any more.',
-			code: 'TOO_MANY_ANTENNAS',
-			id: '600917d4-a4cb-4cc5-8ba8-7ac8ea3c7779',
-		},
 	},
 } as const;
 
@@ -78,10 +73,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			if (file === null) throw new ApiError(meta.errors.noSuchFile);
 			if (file.size === 0) throw new ApiError(meta.errors.emptyFile);
 			const antennas: (_Antenna & { userListAccts: string[] | null })[] = JSON.parse(await this.downloadService.downloadTextFile(file.url));
-			const currentAntennasCount = await this.antennasRepository.countBy({ userId: me.id });
-			if (currentAntennasCount + antennas.length >= (await this.roleService.getUserPolicies(me.id)).antennaLimit) {
-				throw new ApiError(meta.errors.tooManyAntennas);
-			}
 			this.queueService.createImportAntennasJob(me, antennas);
 		});
 	}

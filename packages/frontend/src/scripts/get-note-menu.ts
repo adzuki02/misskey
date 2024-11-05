@@ -29,7 +29,7 @@ export async function getNoteClipMenu(props: {
 }) {
 	function getClipName(clip: Clip) {
 		if ($i && clip.userId === $i.id && clip.notesCount != null) {
-			return `${clip.name} (${clip.notesCount}/${$i.policies.noteEachClipsLimit})`;
+			return `${clip.name} (${clip.notesCount})`;
 		} else {
 			return clip.name;
 		}

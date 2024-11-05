@@ -3,11 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import type { MiClip } from '@/models/_.js';
 import { ClipEntityService } from '@/core/entities/ClipEntityService.js';
-import { ApiError } from '@/server/api/error.js';
 import { ClipService } from '@/core/ClipService.js';
 
 export const meta = {
@@ -23,14 +21,6 @@ export const meta = {
 		type: 'object',
 		optional: false, nullable: false,
 		ref: 'Clip',
-	},
-
-	errors: {
-		tooManyClips: {
-			message: 'You cannot create clip any more.',
-			code: 'TOO_MANY_CLIPS',
-			id: '920f7c2d-6208-4b76-8082-e632020f5883',
-		},
 	},
 } as const;
 
@@ -51,15 +41,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private clipService: ClipService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			let clip: MiClip;
-			try {
-				clip = await this.clipService.create(me, ps.name, ps.isPublic, ps.description ?? null);
-			} catch (e) {
-				if (e instanceof ClipService.TooManyClipsError) {
-					throw new ApiError(meta.errors.tooManyClips);
-				}
-				throw e;
-			}
+			const clip = await this.clipService.create(me, ps.name, ps.isPublic, ps.description ?? null);
 			return await this.clipEntityService.pack(clip, me);
 		});
 	}
