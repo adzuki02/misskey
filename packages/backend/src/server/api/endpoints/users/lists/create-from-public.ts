@@ -12,7 +12,6 @@ import { GetterService } from '@/server/api/GetterService.js';
 import { UserListEntityService } from '@/core/entities/UserListEntityService.js';
 import { DI } from '@/di-symbols.js';
 import { ApiError } from '@/server/api/error.js';
-import { RoleService } from '@/core/RoleService.js';
 import { UserListService } from '@/core/UserListService.js';
 
 export const meta = {
@@ -26,11 +25,6 @@ export const meta = {
 	},
 
 	errors: {
-		tooManyUserLists: {
-			message: 'You cannot create user list any more.',
-			code: 'TOO_MANY_USERLISTS',
-			id: 'e9c105b2-c595-47de-97fb-7f7c2c33e92f',
-		},
 		noSuchList: {
 			message: 'No such list.',
 			code: 'NO_SUCH_LIST',
@@ -52,12 +46,6 @@ export const meta = {
 			message: 'You cannot push this user because you have been blocked by this user.',
 			code: 'YOU_HAVE_BEEN_BLOCKED',
 			id: 'a2497f2a-2389-439c-8626-5298540530f4',
-		},
-
-		tooManyUsers: {
-			message: 'You can not push users any more.',
-			code: 'TOO_MANY_USERS',
-			id: '1845ea77-38d1-426e-8e4e-8b83b24f5bd7',
 		},
 	},
 } as const;
@@ -87,7 +75,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private userListEntityService: UserListEntityService,
 		private idService: IdService,
 		private getterService: GetterService,
-		private roleService: RoleService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const listExist = await this.userListsRepository.exists({
@@ -97,12 +84,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				},
 			});
 			if (!listExist) throw new ApiError(meta.errors.noSuchList);
-			const currentCount = await this.userListsRepository.countBy({
-				userId: me.id,
-			});
-			if (currentCount >= (await this.roleService.getUserPolicies(me.id)).userListLimit) {
-				throw new ApiError(meta.errors.tooManyUserLists);
-			}
 
 			const userList = await this.userListsRepository.insertOne({
 				id: this.idService.gen(),
@@ -143,14 +124,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					throw new ApiError(meta.errors.alreadyAdded);
 				}
 
-				try {
-					await this.userListService.addMember(currentUser, userList, me);
-				} catch (err) {
-					if (err instanceof UserListService.TooManyUsersError) {
-						throw new ApiError(meta.errors.tooManyUsers);
-					}
-					throw err;
-				}
+				await this.userListService.addMember(currentUser, userList, me);
 			}
 			return await this.userListEntityService.pack(userList);
 		});

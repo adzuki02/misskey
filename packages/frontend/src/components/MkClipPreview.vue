@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.description">
 			<div v-if="clip.description"><Mfm :text="clip.description" :plain="true" :nowrap="true"/></div>
 			<div v-if="clip.lastClippedAt">{{ i18n.ts.updatedAt }}: <MkTime :time="clip.lastClippedAt" mode="detail"/></div>
-			<div v-if="clip.notesCount != null">{{ i18n.ts.notesCount }}: {{ number(clip.notesCount) }} / {{ $i?.policies.noteEachClipsLimit }} ({{ i18n.tsx.remainingN({ n: remaining }) }})</div>
+			<div v-if="clip.notesCount != null">{{ i18n.ts.notesCount }}: {{ number(clip.notesCount) }}</div>
 		</div>
 		<template v-if="!props.noUserInfo">
 			<div :class="$style.divider"></div>
@@ -23,10 +23,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
 import type { Clip } from 'misskey-js/entities.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
 import number from '@/filters/number.js';
 
 const props = withDefaults(defineProps<{
@@ -34,10 +32,6 @@ const props = withDefaults(defineProps<{
 	noUserInfo?: boolean;
 }>(), {
 	noUserInfo: false,
-});
-
-const remaining = computed(() => {
-	return ($i?.policies && props.clip.notesCount != null) ? ($i.policies.noteEachClipsLimit - props.clip.notesCount) : i18n.ts.unknown;
 });
 </script>
 

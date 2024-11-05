@@ -6,7 +6,6 @@
 process.env.NODE_ENV = 'test';
 
 import * as assert from 'assert';
-import { DEFAULT_POLICIES } from '@/core/RoleService.js';
 import { api, ApiRequest, failedApiCall, hiddenNote, post, signup, successfulApiCall } from '../utils.js';
 import type * as Misskey from 'misskey-js';
 
@@ -150,23 +149,6 @@ describe('クリップ', () => {
 		assert.strictEqual(res.isPublic, false);
 		assert.strictEqual(res.favoritedCount, 0);
 		assert.strictEqual(res.isFavorited, false);
-	});
-
-	test('の作成はポリシーで定められた数以上はできない。', async () => {
-		const clipLimit = DEFAULT_POLICIES.clipLimit;
-		for (let i = 0; i < clipLimit; i++) {
-			await create();
-		}
-
-		await failedApiCall({
-			endpoint: 'clips/create',
-			parameters: defaultCreate(),
-			user: alice,
-		}, {
-			status: 400,
-			code: 'TOO_MANY_CLIPS',
-			id: '920f7c2d-6208-4b76-8082-e632020f5883',
-		});
 	});
 
 	const createClipAllowedPattern = [
@@ -323,20 +305,6 @@ describe('クリップ', () => {
 	test('の一覧(clips/list)が取得できる(空)', async () => {
 		const res = await list({});
 		assert.deepStrictEqual(res, []);
-	});
-
-	test('の一覧(clips/list)が取得できる(上限いっぱい)', async () => {
-		const clipLimit = DEFAULT_POLICIES.clipLimit;
-		const clips = await createMany({}, clipLimit);
-		const res = await list({
-			parameters: { limit: 1 }, // FIXME: 無視されて11全部返ってくる
-		});
-
-		// 返ってくる配列には順序保障がないのでidでソートして厳密比較
-		assert.deepStrictEqual(
-			res.sort(compareBy(s => s.id)),
-			clips.sort(compareBy(s => s.id)),
-		);
 	});
 
 	test('の一覧が取得できる(空)', async () => {
@@ -699,28 +667,6 @@ describe('クリップ', () => {
 				status: 400,
 				code: 'ALREADY_CLIPPED',
 				id: '734806c4-542c-463a-9311-15c512803965',
-			});
-		});
-
-		// TODO: 17000msくらいかかる...
-		test('をポリシーで定められた上限いっぱい(200)を超えて追加はできない。', async () => {
-			const noteLimit = DEFAULT_POLICIES.noteEachClipsLimit;
-			const noteList = await Promise.all([...Array(noteLimit)].map((_, i) => post(alice, {
-				text: `test ${i}`,
-			}) as unknown)) as Misskey.entities.Note[];
-			await Promise.all(noteList.map(s => addNote({ clipId: aliceClip.id, noteId: s.id })));
-
-			await failedApiCall({
-				endpoint: 'clips/add-note',
-				parameters: {
-					clipId: aliceClip.id,
-					noteId: aliceNote.id,
-				},
-				user: alice,
-			}, {
-				status: 400,
-				code: 'TOO_MANY_CLIP_NOTES',
-				id: 'f0dba960-ff73-4615-8df4-d6ac5d9dc118',
 			});
 		});
 

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import ms from 'ms';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { ClipService } from '@/core/ClipService.js';
@@ -41,12 +41,6 @@ export const meta = {
 			code: 'ALREADY_CLIPPED',
 			id: '734806c4-542c-463a-9311-15c512803965',
 		},
-
-		tooManyClipNotes: {
-			message: 'You cannot add notes to the clip any more.',
-			code: 'TOO_MANY_CLIP_NOTES',
-			id: 'f0dba960-ff73-4615-8df4-d6ac5d9dc118',
-		},
 	},
 } as const;
 
@@ -74,8 +68,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					throw new ApiError(meta.errors.noSuchNote);
 				} else if (e instanceof ClipService.AlreadyAddedError) {
 					throw new ApiError(meta.errors.alreadyClipped);
-				} else if (e instanceof ClipService.TooManyClipNotesError) {
-					throw new ApiError(meta.errors.tooManyClipNotes);
 				} else {
 					throw e;
 				}

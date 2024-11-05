@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Inject, Injectable, OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
 import * as Redis from 'ioredis';
 import { ModuleRef } from '@nestjs/core';
 import { IsNull } from 'typeorm';
@@ -20,14 +20,10 @@ import { ProxyAccountService } from '@/core/ProxyAccountService.js';
 import { bindThis } from '@/decorators.js';
 import { QueueService } from '@/core/QueueService.js';
 import { RedisKVCache } from '@/misc/cache.js';
-import { RoleService } from '@/core/RoleService.js';
 
 @Injectable()
-export class UserListService implements OnApplicationShutdown, OnModuleInit {
-	public static TooManyUsersError = class extends Error {};
-
+export class UserListService implements OnApplicationShutdown {
 	public membersCache: RedisKVCache<Set<string>>;
-	private roleService: RoleService;
 
 	constructor(
 		private moduleRef: ModuleRef,
@@ -59,10 +55,6 @@ export class UserListService implements OnApplicationShutdown, OnModuleInit {
 		});
 
 		this.redisForSub.on('message', this.onMessage);
-	}
-
-	async onModuleInit() {
-		this.roleService = this.moduleRef.get(RoleService.name);
 	}
 
 	@bindThis
@@ -98,13 +90,6 @@ export class UserListService implements OnApplicationShutdown, OnModuleInit {
 
 	@bindThis
 	public async addMember(target: MiUser, list: MiUserList, me: MiUser) {
-		const currentCount = await this.userListMembershipsRepository.countBy({
-			userListId: list.id,
-		});
-		if (currentCount >= (await this.roleService.getUserPolicies(me.id)).userEachUserListsLimit) {
-			throw new UserListService.TooManyUsersError();
-		}
-
 		await this.userListMembershipsRepository.insert({
 			id: this.idService.gen(),
 			userId: target.id,

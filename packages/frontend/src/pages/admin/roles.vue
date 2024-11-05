@@ -141,56 +141,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkInput>
 						</MkFolder>
 
-						<MkFolder v-if="matchQuery([i18n.ts._role._options.antennaMax, 'antennaLimit'])">
-							<template #label>{{ i18n.ts._role._options.antennaMax }}</template>
-							<template #suffix>{{ policies.antennaLimit }}</template>
-							<MkInput v-model="policies.antennaLimit" type="number">
-							</MkInput>
-						</MkFolder>
-
-						<MkFolder v-if="matchQuery([i18n.ts._role._options.wordMuteMax, 'wordMuteLimit'])">
-							<template #label>{{ i18n.ts._role._options.wordMuteMax }}</template>
-							<template #suffix>{{ policies.wordMuteLimit }}</template>
-							<MkInput v-model="policies.wordMuteLimit" type="number">
-								<template #suffix>chars</template>
-							</MkInput>
-						</MkFolder>
-
-						<MkFolder v-if="matchQuery([i18n.ts._role._options.webhookMax, 'webhookLimit'])">
-							<template #label>{{ i18n.ts._role._options.webhookMax }}</template>
-							<template #suffix>{{ policies.webhookLimit }}</template>
-							<MkInput v-model="policies.webhookLimit" type="number">
-							</MkInput>
-						</MkFolder>
-
-						<MkFolder v-if="matchQuery([i18n.ts._role._options.clipMax, 'clipLimit'])">
-							<template #label>{{ i18n.ts._role._options.clipMax }}</template>
-							<template #suffix>{{ policies.clipLimit }}</template>
-							<MkInput v-model="policies.clipLimit" type="number">
-							</MkInput>
-						</MkFolder>
-
-						<MkFolder v-if="matchQuery([i18n.ts._role._options.noteEachClipsMax, 'noteEachClipsLimit'])">
-							<template #label>{{ i18n.ts._role._options.noteEachClipsMax }}</template>
-							<template #suffix>{{ policies.noteEachClipsLimit }}</template>
-							<MkInput v-model="policies.noteEachClipsLimit" type="number">
-							</MkInput>
-						</MkFolder>
-
-						<MkFolder v-if="matchQuery([i18n.ts._role._options.userListMax, 'userListLimit'])">
-							<template #label>{{ i18n.ts._role._options.userListMax }}</template>
-							<template #suffix>{{ policies.userListLimit }}</template>
-							<MkInput v-model="policies.userListLimit" type="number">
-							</MkInput>
-						</MkFolder>
-
-						<MkFolder v-if="matchQuery([i18n.ts._role._options.userEachUserListsMax, 'userEachUserListsLimit'])">
-							<template #label>{{ i18n.ts._role._options.userEachUserListsMax }}</template>
-							<template #suffix>{{ policies.userEachUserListsLimit }}</template>
-							<MkInput v-model="policies.userEachUserListsLimit" type="number">
-							</MkInput>
-						</MkFolder>
-
 						<MkFolder v-if="matchQuery([i18n.ts._role._options.avatarDecorationLimit, 'avatarDecorationLimit'])">
 							<template #label>{{ i18n.ts._role._options.avatarDecorationLimit }}</template>
 							<template #suffix>{{ policies.avatarDecorationLimit }}</template>
@@ -271,7 +221,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { reactive, ref } from 'vue';
 import XHeader from './_header_.vue';
 import type { RolePolicies } from 'misskey-js/entities.js';
 import MkInput from '@/components/MkInput.vue';

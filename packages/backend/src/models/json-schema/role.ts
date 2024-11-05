@@ -228,34 +228,6 @@ export const packedRolePoliciesSchema = {
 			type: 'integer',
 			optional: false, nullable: false,
 		},
-		antennaLimit: {
-			type: 'integer',
-			optional: false, nullable: false,
-		},
-		wordMuteLimit: {
-			type: 'integer',
-			optional: false, nullable: false,
-		},
-		webhookLimit: {
-			type: 'integer',
-			optional: false, nullable: false,
-		},
-		clipLimit: {
-			type: 'integer',
-			optional: false, nullable: false,
-		},
-		noteEachClipsLimit: {
-			type: 'integer',
-			optional: false, nullable: false,
-		},
-		userListLimit: {
-			type: 'integer',
-			optional: false, nullable: false,
-		},
-		userEachUserListsLimit: {
-			type: 'integer',
-			optional: false, nullable: false,
-		},
 		rateLimitFactor: {
 			type: 'integer',
 			optional: false, nullable: false,

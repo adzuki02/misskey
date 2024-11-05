@@ -29,12 +29,6 @@ export const meta = {
 			id: '95063e93-a283-4b8b-9aa5-bcdb8df69a7f',
 		},
 
-		tooManyAntennas: {
-			message: 'You cannot create antenna any more.',
-			code: 'TOO_MANY_ANTENNAS',
-			id: 'faf47050-e8b5-438c-913c-db2b1576fde4',
-		},
-
 		emptyKeyword: {
 			message: 'Either keywords or excludeKeywords is required.',
 			code: 'EMPTY_KEYWORD',
@@ -94,13 +88,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		super(meta, paramDef, async (ps, me) => {
 			if (ps.keywords.flat().every(x => x === '') && ps.excludeKeywords.flat().every(x => x === '')) {
 				throw new ApiError(meta.errors.emptyKeyword);
-			}
-
-			const currentAntennasCount = await this.antennasRepository.countBy({
-				userId: me.id,
-			});
-			if (currentAntennasCount >= (await this.roleService.getUserPolicies(me.id)).antennaLimit) {
-				throw new ApiError(meta.errors.tooManyAntennas);
 			}
 
 			let userList;

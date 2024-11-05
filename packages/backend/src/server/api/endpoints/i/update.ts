@@ -85,12 +85,6 @@ export const meta = {
 			id: '0d786918-10df-41cd-8f33-8dec7d9a89a5',
 		},
 
-		tooManyMutedWords: {
-			message: 'Too many muted words.',
-			code: 'TOO_MANY_MUTED_WORDS',
-			id: '010665b1-a211-42d2-bc64-8f6609d79785',
-		},
-
 		noSuchUser: {
 			message: 'No such user.',
 			code: 'NO_SUCH_USER',
@@ -265,14 +259,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (ps.followingVisibility !== undefined) profileUpdates.followingVisibility = ps.followingVisibility;
 			if (ps.followersVisibility !== undefined) profileUpdates.followersVisibility = ps.followersVisibility;
 
-			function checkMuteWordCount(mutedWords: (string[] | string)[], limit: number) {
-				// TODO: ちゃんと数える
-				const length = JSON.stringify(mutedWords).length;
-				if (length > limit) {
-					throw new ApiError(meta.errors.tooManyMutedWords);
-				}
-			}
-
 			function validateMuteWordRegex(mutedWords: (string[] | string)[]) {
 				for (const mutedWord of mutedWords) {
 					if (typeof mutedWord !== 'string') continue;
@@ -283,16 +269,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			}
 
 			if (ps.mutedWords !== undefined) {
-				policies ??= await this.roleService.getUserPolicies(user.id);
-				checkMuteWordCount(ps.mutedWords, policies.wordMuteLimit);
 				validateMuteWordRegex(ps.mutedWords);
 
 				profileUpdates.mutedWords = ps.mutedWords;
 				profileUpdates.enableWordMute = ps.mutedWords.length > 0;
 			}
 			if (ps.hardMutedWords !== undefined) {
-				policies ??= await this.roleService.getUserPolicies(user.id);
-				checkMuteWordCount(ps.hardMutedWords, policies.wordMuteLimit);
 				validateMuteWordRegex(ps.hardMutedWords);
 				profileUpdates.hardMutedWords = ps.hardMutedWords;
 			}
