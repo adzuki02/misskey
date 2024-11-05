@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkKeyValue>
 			<MkKeyValue oneline>
 				<template #key>{{ i18n.ts.createdAt }}</template>
-				<template #value><span class="_monospace"><MkTime :time="user.createdAt" :mode="'detail'"/></span></template>
+				<template #value><span class="_monospace"><MkTime :time="(user as UserDetailed).createdAt" :mode="'detail'"/></span></template>
 			</MkKeyValue>
 		</div>
 
@@ -40,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { User, UserDetailed } from 'misskey-js/entities.js';
 import { acct } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
 import MkKeyValue from '@/components/MkKeyValue.vue';
@@ -48,11 +48,14 @@ import FormSection from '@/components/form/section.vue';
 import MkObjectView from '@/components/MkObjectView.vue';
 
 const props = defineProps<{
-	user: Misskey.entities.User;
+	user: User;
 }>();
 
+// @ts-expect-error isModeratorはUserLiteには存在しないがUserDetailedには存在する
 const moderator = computed(() => props.user.isModerator ?? false);
+// @ts-expect-error isModeratorはUserLiteには存在しないがUserDetailedには存在する
 const silenced = computed(() => props.user.isSilenced ?? false);
+// @ts-expect-error isModeratorはUserLiteには存在しないがUserDetailedには存在する
 const suspended = computed(() => props.user.isSuspended ?? false);
 </script>
 

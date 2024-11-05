@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader/></template>
 	<MkSpacer :contentMax="700">
 		<div v-if="channelId == null || channel != null" class="_gaps_m">
 			<MkInput v-model="name">
@@ -70,7 +70,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref, watch, defineAsyncComponent } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Channel, Note, ChannelsCreateRequest } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkColorInput from '@/components/MkColorInput.vue';
@@ -92,7 +92,7 @@ const props = defineProps<{
 	channelId?: string;
 }>();
 
-const channel = ref<Misskey.entities.Channel | null>(null);
+const channel = ref<Channel | null>(null);
 const name = ref<string | null>(null);
 const description = ref<string | null>(null);
 const bannerUrl = ref<string | null>(null);
@@ -100,7 +100,7 @@ const bannerId = ref<string | null>(null);
 const color = ref('#000');
 const isSensitive = ref(false);
 const allowRenoteToExternal = ref(true);
-const pinnedNotes = ref<{ id: Misskey.entities.Note['id'] }[]>([]);
+const pinnedNotes = ref<{ id: Note['id'] }[]>([]);
 
 watch(() => bannerId.value, async () => {
 	if (bannerId.value == null) {
@@ -118,6 +118,8 @@ async function fetchChannel() {
 	channel.value = await misskeyApi('channels/show', {
 		channelId: props.channelId,
 	});
+
+	if (!channel.value) return;
 
 	name.value = channel.value.name;
 	description.value = channel.value.description;
@@ -137,9 +139,9 @@ async function addPinnedNote() {
 	const { canceled, result: value } = await os.inputText({
 		title: i18n.ts.noteIdOrUrl,
 	});
-	if (canceled) return;
+	if (canceled || !value) return;
 	const note = await os.apiWithDialog('notes/show', {
-		noteId: value.includes('/') ? value.split('/').pop() : value,
+		noteId: value.includes('/') ? value.split('/').pop() as string : value,
 	});
 	pinnedNotes.value = [{
 		id: note.id,
@@ -152,7 +154,7 @@ function removePinnedNote(index: number) {
 
 function save() {
 	const params = {
-		name: name.value,
+		name: name.value ?? undefined,
 		description: description.value,
 		bannerId: bannerId.value,
 		pinnedNoteIds: pinnedNotes.value.map(x => x.id),
@@ -162,10 +164,12 @@ function save() {
 	};
 
 	if (props.channelId) {
-		params.channelId = props.channelId;
-		os.apiWithDialog('channels/update', params);
+		os.apiWithDialog('channels/update', {
+			...params,
+			channelId: props.channelId,
+		});
 	} else {
-		os.apiWithDialog('channels/create', params).then(created => {
+		os.apiWithDialog('channels/create', params as ChannelsCreateRequest).then(created => {
 			router.push(`/channels/${created.id}`);
 		});
 	}
@@ -174,14 +178,16 @@ function save() {
 async function archive() {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		title: i18n.tsx.channelArchiveConfirmTitle({ name: name.value }),
+		title: i18n.tsx.channelArchiveConfirmTitle({ name: name.value ?? i18n.ts.channel }),
 		text: i18n.ts.channelArchiveConfirmDescription,
 	});
 
 	if (canceled) return;
 
 	misskeyApi('channels/update', {
-		channelId: props.channelId,
+		// @click="archive()"が指定されている要素はv-if="props.channelId"も指定されている
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		channelId: props.channelId!,
 		isArchived: true,
 	}).then(() => {
 		os.success();
@@ -197,10 +203,6 @@ function setBannerImage(evt) {
 function removeBannerImage() {
 	bannerId.value = null;
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: props.channelId ? i18n.ts._channel.edit : i18n.ts._channel.create,

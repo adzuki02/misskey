@@ -13,13 +13,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
 import MkMention from './MkMention.vue';
+import type { UserLite } from 'misskey-js/entities.js';
 import { i18n } from '@/i18n.js';
 import { host as localHost } from '@/config.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 
-const user = ref<Misskey.entities.UserLite>();
+const user = ref<UserLite>();
 
 const props = defineProps<{
 	movedTo: string; // user id

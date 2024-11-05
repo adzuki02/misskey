@@ -56,7 +56,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import { parse as parseAcct } from 'misskey-js/acct.js';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 import { userPage } from '@/filters/user.js';
 import * as os from '@/os.js';
@@ -82,7 +83,7 @@ const emit = defineEmits<{
 }>();
 
 const zIndex = os.claimZIndex('middle');
-const user = ref<Misskey.entities.UserDetailed | null>(null);
+const user = ref<UserDetailed | null>(null);
 const top = ref(0);
 const left = ref(0);
 
@@ -97,7 +98,7 @@ onMounted(() => {
 		user.value = props.q;
 	} else {
 		const query = props.q.startsWith('@') ?
-			Misskey.acct.parse(props.q.substring(1)) :
+			parseAcct(props.q.substring(1)) :
 			{ userId: props.q };
 
 		misskeyApi('users/show', query).then(res => {

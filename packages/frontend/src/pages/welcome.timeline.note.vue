@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="note.poll">
 			<MkPoll :noteId="note.id" :poll="note.poll" :readOnly="true"/>
 		</div>
-		<div v-if="note.reactionCount > 0" :class="$style.reactions">
+		<div v-if="Object.keys(note.reactions).length > 0" :class="$style.reactions">
 			<MkReactionsViewer :note="note" :maxNumber="16"/>
 		</div>
 	</div>
@@ -34,18 +34,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef, onUpdated, onMounted } from 'vue';
-import * as Misskey from 'misskey-js';
+import { ref, onUpdated, onMounted, useTemplateRef } from 'vue';
+import type { Note } from 'misskey-js/entities.js';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkPoll from '@/components/MkPoll.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 
 defineProps<{
-	note: Misskey.entities.Note;
+	note: Note;
 }>();
 
-const noteTextEl = shallowRef<HTMLDivElement>();
+const noteTextEl = useTemplateRef('noteTextEl');
 const shouldCollapse = ref(false);
 const showContent = ref(false);
 

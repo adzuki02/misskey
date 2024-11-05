@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { MetaResponse } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import MkLink from '@/components/MkLink.vue';
 import { version } from '@/config.js';
@@ -38,14 +38,15 @@ import { miLocalStorage } from '@/local-storage.js';
 import { defaultStore } from '@/store.js';
 import { serverErrorImageUrl } from '@/instance.js';
 
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
 	error?: Error;
 }>(), {
+	error: undefined,
 });
 
 const loaded = ref(false);
 const serverIsDead = ref(false);
-const meta = ref<Misskey.entities.MetaResponse | null>(null);
+const meta = ref<MetaResponse>();
 
 misskeyApi('meta', {
 	detail: false,
@@ -62,10 +63,6 @@ misskeyApi('meta', {
 function reload() {
 	unisonReload();
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.error,

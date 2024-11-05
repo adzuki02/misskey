@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader/></template>
 	<MkSpacer :contentMax="700">
 		<Transition :name="defaultStore.state.animation ? 'fade' : ''" mode="out-in">
 			<div v-if="flash" :key="flash.id">
@@ -61,9 +61,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onDeactivated, onUnmounted, Ref, ref, watch, shallowRef, defineAsyncComponent } from 'vue';
-import * as Misskey from 'misskey-js';
+import { computed, onDeactivated, onUnmounted, type Ref, ref, watch, shallowRef, defineAsyncComponent } from 'vue';
 import { Interpreter, Parser, values } from '@syuilo/aiscript';
+import type { Flash } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -86,11 +86,11 @@ const props = defineProps<{
 	id: string;
 }>();
 
-const flash = ref<Misskey.entities.Flash | null>(null);
+const flash = ref<Flash>();
 const error = ref<any>(null);
 
 function fetchFlash() {
-	flash.value = null;
+	flash.value = undefined;
 	misskeyApi('flash/show', {
 		flashId: props.id,
 	}).then(_flash => {
@@ -150,8 +150,9 @@ function like() {
 	os.apiWithDialog('flash/like', {
 		flashId: flash.value.id,
 	}).then(() => {
-		flash.value!.isLiked = true;
-		flash.value!.likedCount++;
+		if (!flash.value) return;
+		flash.value.isLiked = true;
+		flash.value.likedCount = (flash.value.likedCount ?? 0) + 1;
 	});
 }
 
@@ -167,8 +168,9 @@ async function unlike() {
 	os.apiWithDialog('flash/unlike', {
 		flashId: flash.value.id,
 	}).then(() => {
-		flash.value!.isLiked = false;
-		flash.value!.likedCount--;
+		if (!flash.value) return;
+		flash.value.isLiked = false;
+		flash.value.likedCount = (flash.value.likedCount ?? 1) - 1;
 	});
 }
 
@@ -225,7 +227,7 @@ async function run() {
 		os.alert({
 			type: 'error',
 			title: 'AiScript Error',
-			text: err.message,
+			text: (err as Error).message,
 		});
 	}
 }
@@ -289,10 +291,6 @@ onDeactivated(() => {
 onUnmounted(() => {
 	reset();
 });
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: flash.value ? flash.value.title : 'Play',

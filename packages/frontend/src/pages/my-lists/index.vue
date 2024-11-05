@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader :actions="headerActions"/></template>
 	<MkSpacer :contentMax="700">
 		<div class="_gaps">
 			<div v-if="items.length === 0" class="empty">
@@ -19,8 +19,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<div v-if="items.length > 0" class="_gaps">
 				<MkA v-for="list in items" :key="list.id" class="_panel" :class="$style.list" :to="`/my/lists/${ list.id }`">
-					<div style="margin-bottom: 4px;">{{ list.name }} <span :class="$style.nUsers">({{ i18n.tsx.nUsers({ n: `${list.userIds.length}/${$i.policies['userEachUserListsLimit']}` }) }})</span></div>
-					<MkAvatars :userIds="list.userIds" :limit="10"/>
+					<div style="margin-bottom: 4px;">{{ list.name }} <span :class="$style.nUsers">({{ i18n.tsx.nUsers({ n: `${list.userIds?.length ?? '?' }/${$i.policies['userEachUserListsLimit']}` }) }})</span></div>
+					<MkAvatars :userIds="list.userIds ?? []" :limit="10"/>
 				</MkA>
 			</div>
 		</div>
@@ -68,8 +68,6 @@ const headerActions = computed(() => [{
 		fetch();
 	},
 }]);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.manageLists,

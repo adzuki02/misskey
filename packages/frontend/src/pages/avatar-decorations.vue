@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader :actions="headerActions"/></template>
 	<MkSpacer :contentMax="900">
 		<div class="_gaps">
 			<MkFolder v-for="avatarDecoration in avatarDecorations" :key="avatarDecoration.id ?? avatarDecoration._id" :defaultOpen="avatarDecoration.id == null">
@@ -47,7 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { AdminAvatarDecorationsListResponse } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
@@ -58,14 +58,16 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkFolder from '@/components/MkFolder.vue';
 
-const avatarDecorations = ref<Misskey.entities.AdminAvatarDecorationsListResponse>([]);
+type AvatarDecoration = AdminAvatarDecorationsListResponse[number];
+
+const avatarDecorations = ref<(Omit<AvatarDecoration, 'id' | 'createdAt' | 'updatedAt' | 'roleIdsThatCanBeUsedThisDecoration'> & Partial<Pick<AvatarDecoration, 'id'>> & { _id?: string })[]>([]);
 
 const $i = signinRequired();
 
 function add() {
 	avatarDecorations.value.unshift({
 		_id: Math.random().toString(36),
-		id: null,
+		id: undefined,
 		name: '',
 		description: '',
 		url: '',
@@ -106,8 +108,6 @@ const headerActions = computed(() => [{
 	text: i18n.ts.add,
 	handler: add,
 }]);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.avatarDecorations,

@@ -3,15 +3,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { onUnmounted, Ref, ShallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import { onUnmounted, type Ref, type ShallowRef } from 'vue';
+import type { Note } from 'misskey-js/entities.js';
 import { useStream } from '@/stream.js';
 import { $i } from '@/account.js';
 
 export function useNoteCapture(props: {
 	rootEl: ShallowRef<HTMLElement | undefined>;
-	note: Ref<Misskey.entities.Note>;
-	pureNote: Ref<Misskey.entities.Note>;
+	note: Ref<Note>;
+	pureNote: Ref<Note>;
 	isDeletedRef: Ref<boolean>;
 }) {
 	const note = props.note;
@@ -60,7 +60,7 @@ export function useNoteCapture(props: {
 			case 'pollVoted': {
 				const choice = body.choice;
 
-				const choices = [...note.value.poll.choices];
+				const choices = note.value.poll ? [...note.value.poll.choices] : [];
 				choices[choice] = {
 					...choices[choice],
 					votes: choices[choice].votes + 1,
@@ -69,7 +69,7 @@ export function useNoteCapture(props: {
 					} : {}),
 				};
 
-				note.value.poll.choices = choices;
+				if (note.value.poll) note.value.poll.choices = choices;
 				break;
 			}
 

@@ -102,9 +102,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { inject, watch, nextTick, onMounted, defineAsyncComponent, provide, shallowRef, ref, computed } from 'vue';
 import * as mfm from 'mfm-js';
-import * as Misskey from 'misskey-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import { toASCII } from 'punycode/';
+import type { noteVisibilities } from 'misskey-js/consts.js';
+import type { Note, Channel, User, UserDetailed, DriveFile } from 'misskey-js/entities.js';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
@@ -121,31 +122,32 @@ import { defaultStore, notePostInterruptors, postFormActions } from '@/store.js'
 import MkInfo from '@/components/MkInfo.vue';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
-import { signinRequired, notesCount, incNotesCount, getAccounts, openAccountMenu as openAccountMenu_ } from '@/account.js';
+import { signinRequired, incNotesCount, getAccounts, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { uploadFile } from '@/scripts/upload.js';
 import { deepClone } from '@/scripts/clone.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { miLocalStorage } from '@/local-storage.js';
 import { emojiPicker } from '@/scripts/emoji-picker.js';
 import { mfmFunctionPicker } from '@/scripts/mfm-function-picker.js';
+import { acct } from '@/filters/user';
 
 const $i = signinRequired();
 
 const modal = inject('modal');
 
 const props = withDefaults(defineProps<{
-	reply?: Misskey.entities.Note;
-	renote?: Misskey.entities.Note;
-	channel?: Misskey.entities.Channel; // TODO
-	mention?: Misskey.entities.User;
-	specified?: Misskey.entities.UserDetailed;
+	reply?: Note;
+	renote?: Note;
+	channel?: Channel; // TODO
+	mention?: User;
+	specified?: UserDetailed;
 	initialText?: string;
 	initialCw?: string;
-	initialVisibility?: (typeof Misskey.noteVisibilities)[number];
-	initialFiles?: Misskey.entities.DriveFile[];
+	initialVisibility?: (typeof noteVisibilities)[number];
+	initialFiles?: DriveFile[];
 	initialLocalOnly?: boolean;
-	initialVisibleUsers?: Misskey.entities.UserDetailed[];
-	initialNote?: Misskey.entities.Note;
+	initialVisibleUsers?: UserDetailed[];
+	initialNote?: Note;
 	instant?: boolean;
 	fixed?: boolean;
 	autofocus?: boolean;
@@ -187,7 +189,7 @@ watch(showAddMfmFunction, () => defaultStore.set('enableQuickAddMfmFunction', sh
 const cw = ref<string | null>(props.initialCw ?? null);
 const localOnly = ref(props.initialLocalOnly ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly));
 const visibility = ref(props.initialVisibility ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility));
-const visibleUsers = ref<Misskey.entities.UserDetailed[]>([]);
+const visibleUsers = ref<UserDetailed[]>([]);
 if (props.initialVisibleUsers) {
 	props.initialVisibleUsers.forEach(u => pushVisibleUser(u));
 }
@@ -445,7 +447,7 @@ function updateFileName(file, name) {
 	files.value[files.value.findIndex(x => x.id === file.id)].name = name;
 }
 
-function replaceFile(file: Misskey.entities.DriveFile, newFile: Misskey.entities.DriveFile): void {
+function replaceFile(file: DriveFile, newFile: DriveFile): void {
 	files.value[files.value.findIndex(x => x.id === file.id)] = newFile;
 }
 
@@ -536,13 +538,13 @@ async function toggleReactionAcceptance() {
 			{ value: 'nonSensitiveOnlyForLocalLikeOnlyForRemote' as const, text: i18n.ts.nonSensitiveOnlyForLocalLikeOnlyForRemote },
 			{ value: 'likeOnly' as const, text: i18n.ts.likeOnly },
 		],
-		default: reactionAcceptance.value,
+		default: reactionAcceptance.value ?? undefined,
 	});
 	if (select.canceled) return;
 	reactionAcceptance.value = select.result;
 }
 
-function pushVisibleUser(user: Misskey.entities.UserDetailed) {
+function pushVisibleUser(user: UserDetailed) {
 	if (!visibleUsers.value.some(u => u.username === user.username && u.host === user.host)) {
 		visibleUsers.value.push(user);
 	}
@@ -553,7 +555,7 @@ function addVisibleUser() {
 		pushVisibleUser(user);
 
 		if (!text.value.toLowerCase().includes(`@${user.username.toLowerCase()}`)) {
-			text.value = `@${Misskey.acct.toString(user)} ${text.value}`;
+			text.value = `@${acct(user)} ${text.value}`;
 		}
 	});
 }
@@ -857,7 +859,7 @@ function cancel() {
 
 function insertMention() {
 	os.selectUser({ localOnly: localOnly.value, includeSelf: true }).then(user => {
-		insertTextAtCursor(textareaEl.value, '@' + Misskey.acct.toString(user) + ' ');
+		insertTextAtCursor(textareaEl.value, '@' + acct(user) + ' ');
 	});
 }
 
@@ -915,7 +917,7 @@ function showActions(ev: MouseEvent) {
 	})), ev.currentTarget ?? ev.target);
 }
 
-const postAccount = ref<Misskey.entities.UserDetailed | null>(null);
+const postAccount = ref<UserDetailed | null>(null);
 
 function openAccountMenu(ev: MouseEvent) {
 	if (props.mock) return;

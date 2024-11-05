@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkReactionIcon :class="$style.reaction" :reaction="item.type" :noStyle="true"/>
 				<MkTime :time="item.createdAt" :class="$style.createdAt"/>
 			</div>
-			<MkNote :key="item.id" :note="item.note"/>
+			<MkNote :key="item.id" :note="item.note!"/>
 		</div>
 	</MkPagination>
 </MkSpacer>
@@ -20,13 +20,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { User } from 'misskey-js/entities.js';
 import MkPagination from '@/components/MkPagination.vue';
 import MkNote from '@/components/MkNote.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 
 const props = defineProps<{
-	user: Misskey.entities.User;
+	user: User;
 }>();
 
 const pagination = {

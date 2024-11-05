@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div>
 	<MkStickyContainer>
-		<template #header><XHeader :tabs="headerTabs"/></template>
+		<template #header><XHeader/></template>
 		<MkSpacer :contentMax="600" :marginMin="16" :marginMax="32">
 			<XEditor v-if="data" v-model="data"/>
 		</MkSpacer>
@@ -23,10 +23,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import * as Misskey from 'misskey-js';
 import { v4 as uuid } from 'uuid';
 import XHeader from './_header_.vue';
 import XEditor from './roles.editor.vue';
+import type { AdminRolesCreateRequest, Role } from 'misskey-js/entities.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
@@ -41,8 +41,8 @@ const props = defineProps<{
 	id?: string;
 }>();
 
-const role = ref<Misskey.entities.Role | null>(null);
-const data = ref<any>(null);
+const role = ref<Role>();
+const data = ref<Record<string, unknown>>();
 
 if (props.id) {
 	role.value = await misskeyApi('admin/roles/show', {
@@ -80,12 +80,10 @@ async function save() {
 	} else {
 		const created = await os.apiWithDialog('admin/roles/create', {
 			...data.value,
-		});
+		} as AdminRolesCreateRequest);
 		router.push('/admin/roles/' + created.id);
 	}
 }
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: role.value ? `${i18n.ts._role.edit}: ${role.value.name}` : i18n.ts._role.new,

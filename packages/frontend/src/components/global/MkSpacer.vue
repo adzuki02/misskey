@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<{
 	marginMax: 24,
 });
 
-const forceSpacerMin = inject('forceSpacerMin', false) || deviceKind === 'smartphone';
+const forceSpacerMin = inject<boolean>('forceSpacerMin', false) || deviceKind === 'smartphone';
 </script>
 
 <style lang="scss" module>

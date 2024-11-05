@@ -28,14 +28,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { UserList } from 'misskey-js/entities.js';
 import MkSelect from '@/components/MkSelect.vue';
 import MkButton from '@/components/MkButton.vue';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
 	value: any;
-	userLists: Misskey.entities.UserList[];
+	userLists: UserList[];
 }>();
 
 const emit = defineEmits<{

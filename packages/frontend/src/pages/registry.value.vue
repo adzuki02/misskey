@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader/></template>
 	<MkSpacer :contentMax="600" :marginMin="16">
 		<div class="_gaps_m">
 			<FormInfo warn>{{ i18n.ts.editTheseSettingsMayBreakAccount }}</FormInfo>
@@ -63,7 +63,7 @@ const props = defineProps<{
 }>();
 
 const scope = computed(() => props.path.split('/').slice(0, -1));
-const key = computed(() => props.path.split('/').at(-1));
+const key = computed(() => props.path.split('/').at(-1) as string);
 
 const value = ref<any>(null);
 const valueForEditor = ref<string | null>(null);
@@ -118,10 +118,6 @@ function del() {
 }
 
 watch(() => props.path, fetchValue, { immediate: true });
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.registry,

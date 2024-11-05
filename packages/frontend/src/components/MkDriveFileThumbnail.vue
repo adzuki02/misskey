@@ -27,11 +27,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile } from 'misskey-js/entities.js';
 import ImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
 
 const props = defineProps<{
-	file: Misskey.entities.DriveFile;
+	file: DriveFile;
 	fit: 'cover' | 'contain';
 	highlightWhenSensitive?: boolean;
 }>();

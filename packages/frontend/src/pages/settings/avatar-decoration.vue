@@ -16,7 +16,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.decorations">
 				<XDecoration
 					v-for="(avatarDecoration, i) in $i.avatarDecorations"
-					:decoration="avatarDecorations.find(d => d.id === avatarDecoration.id)"
+					:key="avatarDecoration.id"
+					:decoration="avatarDecorations.find(d => d.id === avatarDecoration.id)!"
 					:angle="avatarDecoration.angle"
 					:flipH="avatarDecoration.flipH"
 					:offsetX="avatarDecoration.offsetX"
@@ -45,9 +46,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, defineAsyncComponent, computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import { ref, defineAsyncComponent } from 'vue';
 import XDecoration from './avatar-decoration.decoration.vue';
+import type { GetAvatarDecorationsResponse } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -59,17 +60,17 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 const $i = signinRequired();
 
 const loading = ref(true);
-const avatarDecorations = ref<Misskey.entities.GetAvatarDecorationsResponse>([]);
+const avatarDecorations = ref<GetAvatarDecorationsResponse>([]);
 
 misskeyApi('get-avatar-decorations').then(_avatarDecorations => {
 	avatarDecorations.value = _avatarDecorations;
 	loading.value = false;
 });
 
-function openDecoration(avatarDecoration, index?: number) {
+function openDecoration(avatarDecoration: { id: string, url: string, name?: string }, index?: number) {
 	const { dispose } = os.popup(defineAsyncComponent(() => import('./avatar-decoration.dialog.vue')), {
 		decoration: avatarDecoration,
-		usingIndex: index,
+		usingIndex: index ?? null,
 	}, {
 		'attach': async (payload) => {
 			const decoration = {
@@ -78,6 +79,7 @@ function openDecoration(avatarDecoration, index?: number) {
 				flipH: payload.flipH,
 				offsetX: payload.offsetX,
 				offsetY: payload.offsetY,
+				url: avatarDecoration.url,
 			};
 			const update = [...$i.avatarDecorations, decoration];
 			await os.apiWithDialog('i/update', {
@@ -86,12 +88,14 @@ function openDecoration(avatarDecoration, index?: number) {
 			$i.avatarDecorations = update;
 		},
 		'update': async (payload) => {
+			if (index === undefined) return;
 			const decoration = {
 				id: avatarDecoration.id,
 				angle: payload.angle,
 				flipH: payload.flipH,
 				offsetX: payload.offsetX,
 				offsetY: payload.offsetY,
+				url: avatarDecoration.url,
 			};
 			const update = [...$i.avatarDecorations];
 			update[index] = decoration;
@@ -101,6 +105,7 @@ function openDecoration(avatarDecoration, index?: number) {
 			$i.avatarDecorations = update;
 		},
 		'detach': async () => {
+			if (index === undefined) return;
 			const update = [...$i.avatarDecorations];
 			update.splice(index, 1);
 			await os.apiWithDialog('i/update', {
@@ -124,10 +129,6 @@ function detachAllDecorations() {
 		$i.avatarDecorations = [];
 	});
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.avatarDecorations,

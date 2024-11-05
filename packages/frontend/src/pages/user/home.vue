@@ -23,6 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkUserName class="name" :user="user" :nowrap="true"/>
 							<div class="bottom">
 								<span class="username"><MkAcct :user="user" :detail="true"/></span>
+								<!-- @vue-expect-error isAdminはUserDetailedNotMeには存在しないがMeDetailedには存在する -->
 								<span v-if="user.isAdmin" :title="i18n.ts.administrator" style="color: var(--badge);"><i class="ti ti-shield"></i></span>
 								<span v-if="user.isLocked" :title="i18n.ts._role._condition.isLocked"><i class="ti ti-lock"></i></span>
 								<span v-if="user.isBot" :title="i18n.ts._role._condition.isBot"><i class="ti ti-robot"></i></span>
@@ -42,13 +43,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkUserName :user="user" :nowrap="false" class="name"/>
 						<div class="bottom">
 							<span class="username"><MkAcct :user="user" :detail="true"/></span>
+							<!-- @vue-expect-error isAdminはUserDetailedNotMeには存在しないがMeDetailedには存在する -->
 							<span v-if="user.isAdmin" :title="i18n.ts.administrator" style="color: var(--badge);"><i class="ti ti-shield"></i></span>
 							<span v-if="user.isLocked" :title="i18n.ts._role._condition.isLocked"><i class="ti ti-lock"></i></span>
 							<span v-if="user.isBot" :title="i18n.ts._role._condition.isBot"><i class="ti ti-robot"></i></span>
 						</div>
 					</div>
 					<div v-if="user.roles.length > 0" class="roles">
-						<span v-for="role in user.roles" :key="role.id" v-tooltip="role.description" class="role" :style="{ '--color': role.color }">
+						<span v-for="role in user.roles" :key="role.id" v-tooltip="role.description" class="role" :style="{ '--color': role.color ?? '' }">
 							<MkA v-adaptive-bg :to="`/roles/${role.id}`">
 								<img v-if="role.iconUrl" style="height: 1.3em; vertical-align: -22%;" :src="role.iconUrl"/>
 								{{ role.name }}
@@ -148,7 +150,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, computed, onMounted, onUnmounted, nextTick, watch, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import MkNote from '@/components/MkNote.vue';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 import MkAccountMoved from '@/components/MkAccountMoved.vue';
@@ -190,9 +192,9 @@ const XFiles = defineAsyncComponent(() => import('./index.files.vue'));
 const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
 
 const props = withDefaults(defineProps<{
-	user: Misskey.entities.UserDetailed;
+	user: UserDetailed;
 	/** Test only; MkNotes currently causes problems in vitest */
-	disableNotes: boolean;
+	disableNotes?: boolean;
 }>(), {
 	disableNotes: false,
 });
@@ -211,7 +213,7 @@ const moderationNote = ref(props.user.moderationNote);
 const editModerationNote = ref(false);
 
 watch(moderationNote, async () => {
-	await misskeyApi('admin/update-user-note', { userId: props.user.id, text: moderationNote.value });
+	await misskeyApi('admin/update-user-note', { userId: props.user.id, text: moderationNote.value ?? '' });
 });
 
 const style = computed(() => {
@@ -228,7 +230,7 @@ const style = computed(() => {
 });
 
 const age = computed(() => {
-	return calcAge(props.user.birthday);
+	return props.user.birthday ? calcAge(props.user.birthday) : NaN;
 });
 
 function menu(ev: MouseEvent) {

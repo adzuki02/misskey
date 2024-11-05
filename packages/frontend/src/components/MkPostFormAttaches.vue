@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, inject } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile } from 'misskey-js/entities.js';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -39,9 +39,9 @@ const mock = inject<boolean>('mock', false);
 const emit = defineEmits<{
 	(ev: 'update:modelValue', value: any[]): void;
 	(ev: 'detach', id: string): void;
-	(ev: 'changeSensitive', file: Misskey.entities.DriveFile, isSensitive: boolean): void;
-	(ev: 'changeName', file: Misskey.entities.DriveFile, newName: string): void;
-	(ev: 'replaceFile', file: Misskey.entities.DriveFile, newFile: Misskey.entities.DriveFile): void;
+	(ev: 'changeSensitive', file: DriveFile, isSensitive: boolean): void;
+	(ev: 'changeName', file: DriveFile, newName: string): void;
+	(ev: 'replaceFile', file: DriveFile, newFile: DriveFile): void;
 }>();
 
 let menuShowing = false;
@@ -56,7 +56,7 @@ function detachMedia(id: string) {
 	}
 }
 
-async function detachAndDeleteMedia(file: Misskey.entities.DriveFile) {
+async function detachAndDeleteMedia(file: DriveFile) {
 	if (mock) return;
 
 	detachMedia(file.id);
@@ -125,14 +125,14 @@ async function describe(file) {
 	});
 }
 
-async function crop(file: Misskey.entities.DriveFile): Promise<void> {
+async function crop(file: DriveFile): Promise<void> {
 	if (mock) return;
 
 	const newFile = await os.cropImage(file, { aspectRatio: NaN });
 	emit('replaceFile', file, newFile);
 }
 
-function showFileMenu(file: Misskey.entities.DriveFile, ev: MouseEvent): void {
+function showFileMenu(file: DriveFile, ev: MouseEvent): void {
 	if (menuShowing) return;
 
 	const isImage = file.type.startsWith('image/');

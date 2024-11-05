@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { useStream } from '@/stream.js';
@@ -47,7 +47,7 @@ import { $i } from '@/account.js';
 import { defaultStore } from '@/store.js';
 
 const props = withDefaults(defineProps<{
-	user: Misskey.entities.UserDetailed,
+	user: UserDetailed,
 	full?: boolean,
 	large?: boolean,
 }>(), {
@@ -56,7 +56,7 @@ const props = withDefaults(defineProps<{
 });
 
 const emit = defineEmits<{
-	(_: 'update:user', value: Misskey.entities.UserDetailed): void
+	(_: 'update:user', value: UserDetailed): void
 }>();
 
 const isFollowing = ref(props.user.isFollowing);
@@ -71,7 +71,7 @@ if (props.user.isFollowing == null && $i) {
 		.then(onFollowChange);
 }
 
-function onFollowChange(user: Misskey.entities.UserDetailed) {
+function onFollowChange(user: UserDetailed) {
 	if (user.id === props.user.id) {
 		isFollowing.value = user.isFollowing;
 		hasPendingFollowRequestFromYou.value = user.hasPendingFollowRequestFromYou;

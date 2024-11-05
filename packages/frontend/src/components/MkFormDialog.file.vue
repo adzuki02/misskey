@@ -11,8 +11,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script setup lang="ts">
-import * as Misskey from 'misskey-js';
 import { computed, ref } from 'vue';
+import type { DriveFile } from 'misskey-js/entities.js';
 import { i18n } from '@/i18n.js';
 import MkButton from '@/components/MkButton.vue';
 import { selectFile } from '@/scripts/select-file.js';
@@ -20,11 +20,11 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 
 const props = defineProps<{
 	fileId?: string | null;
-	validate?: (file: Misskey.entities.DriveFile) => Promise<boolean>;
+	validate?: (file: DriveFile) => Promise<boolean>;
 }>();
 
 const emit = defineEmits<{
-	(ev: 'update', result: Misskey.entities.DriveFile): void;
+	(ev: 'update', result: DriveFile): void;
 }>();
 
 const fileUrl = ref('');

@@ -47,21 +47,23 @@ export type Tab = {
 		}
 	| {
 			iconOnly: true;
+			title?: undefined;
 			icon: string;
 		}
 );
 </script>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, watch, nextTick, shallowRef } from 'vue';
+import { onMounted, onUnmounted, watch, nextTick, useTemplateRef } from 'vue';
 import { defaultStore } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	tabs?: Tab[];
 	tab?: string;
-	rootEl?: HTMLElement;
+	rootEl: HTMLElement | null;
 }>(), {
 	tabs: () => ([] as Tab[]),
+	tab: undefined,
 });
 
 const emit = defineEmits<{
@@ -69,9 +71,9 @@ const emit = defineEmits<{
 	(ev: 'tabClick', key: string);
 }>();
 
-const el = shallowRef<HTMLElement | null>(null);
+const el = useTemplateRef('el');
 const tabRefs: Record<string, HTMLElement | null> = {};
-const tabHighlightEl = shallowRef<HTMLElement | null>(null);
+const tabHighlightEl = useTemplateRef('tabHighlightEl');
 
 function onTabMousedown(tab: Tab, ev: MouseEvent): void {
 	// ユーザビリティの観点からmousedown時にはonClickは呼ばない

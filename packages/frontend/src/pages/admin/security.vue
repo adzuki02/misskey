@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><XHeader/></template>
 	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
 		<FormSuspense :p="init">
 			<div class="_gaps_m">
@@ -128,6 +128,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { ref, computed } from 'vue';
 import XBotProtection from './bot-protection.vue';
 import XHeader from './_header_.vue';
+import type { AdminUpdateMetaRequest } from 'misskey-js/entities.js';
 import MkFolder from '@/components/MkFolder.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -146,8 +147,8 @@ const enableHcaptcha = ref<boolean>(false);
 const enableMcaptcha = ref<boolean>(false);
 const enableRecaptcha = ref<boolean>(false);
 const enableTurnstile = ref<boolean>(false);
-const sensitiveMediaDetection = ref<string>('none');
-const sensitiveMediaDetectionSensitivity = ref<number>(0);
+const sensitiveMediaDetection = ref<AdminUpdateMetaRequest['sensitiveMediaDetection']>('none');
+const sensitiveMediaDetectionSensitivity = ref<0 | 1 | 2 | 3 | 4>(0);
 const setSensitiveFlagAutomatically = ref<boolean>(false);
 const enableSensitiveMediaDetectionForVideos = ref<boolean>(false);
 const enableIpLogging = ref<boolean>(false);
@@ -192,8 +193,7 @@ function save() {
 			sensitiveMediaDetectionSensitivity.value === 1 ? 'low' :
 			sensitiveMediaDetectionSensitivity.value === 2 ? 'medium' :
 			sensitiveMediaDetectionSensitivity.value === 3 ? 'high' :
-			sensitiveMediaDetectionSensitivity.value === 4 ? 'veryHigh' :
-			0,
+			'veryHigh',
 		setSensitiveFlagAutomatically: setSensitiveFlagAutomatically.value,
 		enableSensitiveMediaDetectionForVideos: enableSensitiveMediaDetectionForVideos.value,
 		enableIpLogging: enableIpLogging.value,
@@ -208,10 +208,6 @@ function save() {
 		fetchInstance(true);
 	});
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.security,

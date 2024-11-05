@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<XChannelFollowButton :channel="channel" :full="true" :class="$style.subscribe"/>
 					<MkButton v-if="favorited" v-tooltip="i18n.ts.unfavorite" asLike class="button" rounded primary :class="$style.favorite" @click="unfavorite()"><i class="ti ti-star"></i></MkButton>
 					<MkButton v-else v-tooltip="i18n.ts.favorite" asLike class="button" rounded :class="$style.favorite" @click="favorite()"><i class="ti ti-star"></i></MkButton>
-					<div :style="{ backgroundImage: channel.bannerUrl ? `url(${channel.bannerUrl})` : undefined }" :class="$style.banner">
+					<div :style="{ backgroundImage: channel.bannerUrl ? `url(${channel.bannerUrl})` : '' }" :class="$style.banner">
 						<div :class="$style.bannerStatus">
 							<div><i class="ti ti-users ti-fw"></i><I18n :src="i18n.ts._channel.usersCount" tag="span" style="margin-left: 4px;"><template #n><b>{{ channel.usersCount }}</b></template></I18n></div>
 							<div><i class="ti ti-pencil ti-fw"></i><I18n :src="i18n.ts._channel.notesCount" tag="span" style="margin-left: 4px;"><template #n><b>{{ channel.notesCount }}</b></template></I18n></div>
@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<!-- スマホ・タブレットの場合、キーボードが表示されると投稿が見づらくなるので、デスクトップ場合のみ自動でフォーカスを当てる -->
 				<MkPostForm v-if="$i && defaultStore.reactiveState.showFixedPostFormInChannel.value" :channel="channel" class="post-form _panel" fixed :autofocus="deviceKind === 'desktop'"/>
 
-				<MkTimeline :key="channelId" src="channel" :channel="channelId" @before="before" @after="after" @note="miLocalStorage.setItemAsJson(`channelLastReadedAt:${channel.id}`, Date.now())"/>
+				<MkTimeline :key="channelId" src="channel" :channel="channelId" @note="miLocalStorage.setItemAsJson(`channelLastReadedAt:${channel.id}`, Date.now())"/>
 			</div>
 			<div v-else-if="tab === 'search'" key="search">
 				<div class="_gaps">
@@ -68,7 +68,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, watch, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Channel } from 'misskey-js/entities.js';
 import MkPostForm from '@/components/MkPostForm.vue';
 import MkTimeline from '@/components/MkTimeline.vue';
 import XChannelFollowButton from '@/components/MkChannelFollowButton.vue';
@@ -102,16 +102,17 @@ const props = defineProps<{
 
 const tab = ref('overview');
 
-const channel = ref<Misskey.entities.Channel | null>(null);
+const channel = ref<Channel>();
 const favorited = ref(false);
 const searchQuery = ref('');
 const searchPagination = ref();
 const searchKey = ref('');
 
 watch(() => props.channelId, async () => {
-	channel.value = await misskeyApi('channels/show', {
+	const res = await misskeyApi('channels/show', {
 		channelId: props.channelId,
 	});
+	channel.value = res;
 	favorited.value = channel.value.isFavorited ?? false;
 	if (favorited.value || channel.value.isFollowing) {
 		tab.value = 'timeline';
@@ -219,7 +220,7 @@ const headerActions = computed(() => {
 			});
 		}
 
-		if (($i && $i.id === channel.value.userId) || iAmModerator) {
+		if (($i !== null && $i.id === channel.value.userId) || iAmModerator) {
 			headerItems.push({
 				icon: 'ti ti-settings',
 				text: i18n.ts.edit,
@@ -227,9 +228,9 @@ const headerActions = computed(() => {
 			});
 		}
 
-		return headerItems.length > 0 ? headerItems : null;
+		return headerItems.length > 0 ? headerItems : undefined;
 	} else {
-		return null;
+		return undefined;
 	}
 });
 

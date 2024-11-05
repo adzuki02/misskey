@@ -69,7 +69,7 @@ const emit = defineEmits<{
 	(ev: 'updateWidgets', widgets: Widget[]): void;
 	(ev: 'addWidget', widget: Widget): void;
 	(ev: 'removeWidget', widget: Widget): void;
-	(ev: 'updateWidget', widget: Partial<Widget>): void;
+	(ev: 'updateWidget', widget: Pick<Widget, 'id'> & Partial<Widget>): void;
 	(ev: 'exit'): void;
 }>();
 
@@ -92,7 +92,7 @@ const addWidget = () => {
 const removeWidget = (widget) => {
 	emit('removeWidget', widget);
 };
-const updateWidget = (id, data) => {
+const updateWidget = (id: Widget['id'], data) => {
 	emit('updateWidget', { id, data });
 };
 

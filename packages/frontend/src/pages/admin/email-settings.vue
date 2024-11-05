@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><XHeader :tabs="headerTabs"/></template>
+	<template #header><XHeader/></template>
 	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
 		<FormSuspense :p="init">
 			<div class="_gaps_m">
@@ -82,10 +82,10 @@ import MkButton from '@/components/MkButton.vue';
 const enableEmail = ref<boolean>(false);
 const email = ref<string | null>(null);
 const smtpSecure = ref<boolean>(false);
-const smtpHost = ref<string>('');
-const smtpPort = ref<number>(0);
-const smtpUser = ref<string>('');
-const smtpPass = ref<string>('');
+const smtpHost = ref<string | null>(null);
+const smtpPort = ref<number | null>(null);
+const smtpUser = ref<string | null>(null);
+const smtpPass = ref<string | null>(null);
 
 async function init() {
 	const meta = await misskeyApi('admin/meta');
@@ -100,7 +100,7 @@ async function init() {
 
 async function testEmail() {
 	const { canceled, result: destination } = await os.inputText({
-		title: i18n.ts.destination,
+		title: i18n.ts.emailAddress,
 		type: 'email',
 		default: instance.maintainerEmail ?? '',
 		placeholder: 'test@example.com',
@@ -127,8 +127,6 @@ function save() {
 		fetchInstance(true);
 	});
 }
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.emailServer,

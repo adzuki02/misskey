@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.bdayFRoot">
 		<MkLoading v-if="fetching"/>
 		<div v-else-if="users.length > 0" :class="$style.bdayFGrid">
-			<MkAvatar v-for="user in users" :key="user.id" :user="user.followee" link preview></MkAvatar>
+			<MkAvatar v-for="user in users" :key="user.id" :user="user.followee!" link preview></MkAvatar>
 		</div>
 		<div v-else :class="$style.bdayFFallback">
 			<img :src="infoImageUrl" class="_ghost" :class="$style.bdayFFallbackImage"/>
@@ -24,8 +24,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
 import { useWidgetPropsManager, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
+import type { UsersFollowingResponse } from 'misskey-js/entities.js';
 import { GetFormResultType } from '@/scripts/form.js';
 import MkContainer from '@/components/MkContainer.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -54,7 +54,7 @@ const { widgetProps, configure } = useWidgetPropsManager(name,
 	emit,
 );
 
-const users = ref<Misskey.Endpoints['users/following']['res']>([]);
+const users = ref<UsersFollowingResponse>([]);
 const fetching = ref(true);
 let lastFetchedAt = '1970-01-01';
 

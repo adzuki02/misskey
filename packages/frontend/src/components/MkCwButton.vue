@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Note, DriveFile } from 'misskey-js/entities.js';
 import type { PollEditorModelValue } from '@/components/MkPollEditor.vue';
 import { concat } from '@/scripts/array.js';
 import { i18n } from '@/i18n.js';
@@ -18,9 +18,9 @@ import MkButton from '@/components/MkButton.vue';
 const props = defineProps<{
 	modelValue: boolean;
 	text: string | null;
-	renote?: Misskey.entities.Note | null;
-	files?: Misskey.entities.DriveFile[];
-	poll?: Misskey.entities.Note['poll'] | PollEditorModelValue | null;
+	renote?: Note | null;
+	files?: DriveFile[];
+	poll?: Note['poll'] | PollEditorModelValue | null;
 }>();
 
 const emit = defineEmits<{

@@ -35,6 +35,11 @@ export const packedChannelSchema = {
 			nullable: true, optional: false,
 			format: 'id',
 		},
+		bannerId: {
+			type: 'string',
+			nullable: true, optional: false,
+			format: 'id',
+		},
 		bannerUrl: {
 			type: 'string',
 			format: 'url',

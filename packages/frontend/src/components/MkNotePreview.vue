@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile, User } from 'misskey-js/entities.js';
 import type { PollEditorModelValue } from '@/components/MkPollEditor.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 import { defaultStore } from '@/store.js';
@@ -34,11 +34,11 @@ const showContent = ref(false);
 
 const props = defineProps<{
 	text: string;
-	files: Misskey.entities.DriveFile[];
+	files: DriveFile[];
 	poll?: PollEditorModelValue;
 	useCw: boolean;
 	cw: string | null;
-	user: Misskey.entities.User;
+	user: User;
 }>();
 </script>
 

@@ -55,8 +55,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { markRaw, onMounted, onBeforeUnmount, nextTick, shallowRef, ref, computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import { markRaw, onMounted, onBeforeUnmount, nextTick, shallowRef, ref, useTemplateRef } from 'vue';
 import XFederation from './overview.federation.vue';
 import XInstances from './overview.instances.vue';
 import XQueue from './overview.queue.vue';
@@ -66,6 +65,7 @@ import XStats from './overview.stats.vue';
 import XModerators from './overview.moderators.vue';
 import XHeatmap from './overview.heatmap.vue';
 import type { InstanceForPie } from './overview.pie.vue';
+import type { UserDetailed, FederationInstance, ServerInfoResponse } from 'misskey-js/entities.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { useStream } from '@/stream.js';
@@ -73,39 +73,19 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 
-const rootEl = shallowRef<HTMLElement>();
-const serverInfo = ref<Misskey.entities.ServerInfoResponse | null>(null);
+const rootEl = useTemplateRef('rootEl');
+const serverInfo = ref<ServerInfoResponse | null>(null);
 const topSubInstancesForPie = ref<InstanceForPie[] | null>(null);
 const topPubInstancesForPie = ref<InstanceForPie[] | null>(null);
 const federationPubActive = ref<number | null>(null);
 const federationPubActiveDiff = ref<number | null>(null);
 const federationSubActive = ref<number | null>(null);
 const federationSubActiveDiff = ref<number | null>(null);
-const newUsers = ref<Misskey.entities.UserDetailed[] | null>(null);
-const activeInstances = shallowRef<Misskey.entities.FederationInstance | null>(null);
+const newUsers = ref<UserDetailed[] | null>(null);
+const activeInstances = shallowRef<FederationInstance[] | null>(null);
 const queueStatsConnection = markRaw(useStream().useChannel('queueStats'));
-const now = new Date();
-const filesPagination = {
-	endpoint: 'admin/drive/files' as const,
-	limit: 9,
-	noPaging: true,
-};
-
-function onInstanceClick(i) {
-	os.pageWindow(`/instance-info/${i.host}`);
-}
 
 onMounted(async () => {
-	/*
-	const magicGrid = new MagicGrid({
-		container: rootEl,
-		static: true,
-		animate: true,
-	});
-
-	magicGrid.listen();
-	*/
-
 	misskeyApi('charts/federation', { limit: 2, span: 'day' }).then(chart => {
 		federationPubActive.value = chart.pubActive[0];
 		federationPubActiveDiff.value = chart.pubActive[0] - chart.pubActive[1];
@@ -167,10 +147,6 @@ onMounted(async () => {
 onBeforeUnmount(() => {
 	queueStatsConnection.dispose();
 });
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.dashboard,

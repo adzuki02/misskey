@@ -34,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import * as Misskey from 'misskey-js';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 import number from '@/filters/number.js';
 import { userPage } from '@/filters/user.js';
@@ -45,7 +45,7 @@ import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { defaultStore } from '@/store.js';
 
 defineProps<{
-	user: Misskey.entities.UserDetailed;
+	user: UserDetailed;
 }>();
 </script>
 

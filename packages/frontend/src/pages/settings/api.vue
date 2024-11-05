@@ -42,10 +42,6 @@ function generateToken() {
 	});
 }
 
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
-
 definePageMetadata(() => ({
 	title: 'API',
 	icon: 'ti ti-api',

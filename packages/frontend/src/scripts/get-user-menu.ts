@@ -5,7 +5,7 @@
 
 import { toUnicode } from 'punycode';
 import { defineAsyncComponent, ref, watch } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import { i18n } from '@/i18n.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import { host, url } from '@/config.js';
@@ -19,7 +19,7 @@ import { antennasCache, rolesCache, userListsCache } from '@/cache.js';
 import { mainRouter } from '@/router/main.js';
 import { MenuItem } from '@/types/menu.js';
 
-export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter = mainRouter) {
+export function getUserMenu(user: UserDetailed, router: IRouter = mainRouter) {
 	const meId = $i ? $i.id : null;
 
 	const cleanups = [] as (() => void)[];
@@ -238,21 +238,21 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		children: async () => {
 			const lists = await userListsCache.fetch();
 			return lists.map(list => {
-				const isListed = ref(list.userIds.includes(user.id));
+				const isListed = ref(list.userIds && list.userIds.includes(user.id));
 				cleanups.push(watch(isListed, () => {
 					if (isListed.value) {
 						os.apiWithDialog('users/lists/push', {
 							listId: list.id,
 							userId: user.id,
 						}).then(() => {
-							list.userIds.push(user.id);
+							list.userIds?.push(user.id);
 						});
 					} else {
 						os.apiWithDialog('users/lists/pull', {
 							listId: list.id,
 							userId: user.id,
 						}).then(() => {
-							list.userIds.splice(list.userIds.indexOf(user.id), 1);
+							list.userIds?.splice(list.userIds.indexOf(user.id), 1);
 						});
 					}
 				}));
@@ -338,7 +338,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 
 		// フォローしたとしても user.isFollowing はリアルタイム更新されないので不便なため
 		//if (user.isFollowing) {
-		const withRepliesRef = ref(user.withReplies);
+		const withRepliesRef = ref(user.withReplies ?? false);
 		menu = menu.concat([{
 			type: 'switch',
 			icon: 'ti ti-messages',

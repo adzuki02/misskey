@@ -26,5 +26,10 @@ export const packedNoteReactionSchema = {
 			type: 'string',
 			optional: false, nullable: false,
 		},
+		note: {
+			type: 'object',
+			optional: true, nullable: false,
+			ref: 'Note',
+		},
 	},
 } as const;

@@ -26,12 +26,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Channel } from 'misskey-js/entities.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 
 const props = withDefaults(defineProps<{
-	channel: Misskey.entities.Channel;
+	channel: Channel;
 	full?: boolean;
 }>(), {
 	full: false,
@@ -88,14 +88,6 @@ async function onClick() {
 
 	&:focus-visible {
 		outline-offset: 2px;
-	}
-
-	&:hover {
-		//background: mix($primary, #fff, 20);
-	}
-
-	&:active {
-		//background: mix($primary, #fff, 40);
 	}
 
 	&.active {

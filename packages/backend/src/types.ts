@@ -74,9 +74,6 @@ export const moderationLogTypes = [
 	'unmarkSensitiveDriveFile',
 	'resolveAbuseReport',
 	'createInvitation',
-	'createAd',
-	'updateAd',
-	'deleteAd',
 	'createAvatarDecoration',
 	'updateAvatarDecoration',
 	'deleteAvatarDecoration',
@@ -208,19 +205,6 @@ export type ModerationLogPayloads = {
 	};
 	createInvitation: {
 		invitations: any[];
-	};
-	createAd: {
-		adId: string;
-		ad: any;
-	};
-	updateAd: {
-		adId: string;
-		before: any;
-		after: any;
-	};
-	deleteAd: {
-		adId: string;
-		ad: any;
 	};
 	createAvatarDecoration: {
 		avatarDecorationId: string;

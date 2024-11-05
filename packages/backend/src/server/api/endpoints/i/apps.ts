@@ -38,6 +38,14 @@ export const meta = {
 					optional: true,
 					format: 'date-time',
 				},
+				description: {
+					type: 'string',
+					nullable: true, optional: false,
+				},
+				iconUrl: {
+					type: 'string',
+					nullable: true, optional: false,
+				},
 				permission: {
 					type: 'array',
 					optional: false,
@@ -87,6 +95,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				name: token.name ?? token.app?.name,
 				createdAt: this.idService.parse(token.id).date.toISOString(),
 				lastUsedAt: token.lastUsedAt?.toISOString(),
+				description: token.description,
+				iconUrl: token.iconUrl,
 				permission: token.permission,
 			})));
 		});

@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><XHeader :actions="headerActions"/></template>
 	<MkSpacer :contentMax="800">
 		<div class="_gaps">
 			<div v-for="relay in relays" :key="relay.inbox" class="relaycxt _panel" style="padding: 16px;">
@@ -25,15 +25,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import * as Misskey from 'misskey-js';
 import XHeader from './_header_.vue';
+import type { AdminRelaysListResponse } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
-const relays = ref<Misskey.entities.AdminRelaysListResponse>([]);
+const relays = ref<AdminRelaysListResponse>([]);
 
 async function addRelay() {
 	const { canceled, result: inbox } = await os.inputText({
@@ -44,9 +44,9 @@ async function addRelay() {
 	if (canceled) return;
 	misskeyApi('admin/relays/add', {
 		inbox,
-	}).then((relay: any) => {
+	}).then(() => {
 		refresh();
-	}).catch((err: any) => {
+	}).catch((err) => {
 		os.alert({
 			type: 'error',
 			text: err.message || err,
@@ -81,8 +81,6 @@ const headerActions = computed(() => [{
 	text: i18n.ts.addRelay,
 	handler: addRelay,
 }]);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.relays,

@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><XHeader/></template>
 	<MkSpacer :contentMax="800">
 		<div class="_gaps_m">
 			<MkFolder :expanded="false">
@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkInput v-if="!noExpirationDate" v-model="expiresAt" type="datetime-local">
 						<template #label>{{ i18n.ts.expirationDate }}</template>
 					</MkInput>
-					<MkInput v-model="createCount" type="number" min="1">
+					<MkInput v-model="createCount" type="number" :min="1">
 						<template #label>{{ i18n.ts.createCount }}</template>
 					</MkInput>
 					<MkButton primary rounded @click="createWithOptions">{{ i18n.ts.create }}</MkButton>
@@ -56,6 +56,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref, shallowRef } from 'vue';
+import type { ComponentExposed } from 'vue-component-type-helpers';
 import XHeader from './_header_.vue';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
@@ -69,7 +70,7 @@ import MkPagination, { Paging } from '@/components/MkPagination.vue';
 import MkInviteCode from '@/components/MkInviteCode.vue';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
-const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const pagingComponent = shallowRef<ComponentExposed<typeof MkPagination>>();
 
 const type = ref('all');
 const sort = ref('+createdAt');
@@ -109,9 +110,6 @@ function deleted(id: string) {
 		pagingComponent.value.items.delete(id);
 	}
 }
-
-const headerActions = computed(() => []);
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.invite,

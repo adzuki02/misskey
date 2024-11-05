@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div>
 	<MkStickyContainer>
-		<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
+		<template #header><XHeader/></template>
 		<MkSpacer :contentMax="700">
 			<div class="_gaps">
 				<div class="_buttons">
@@ -80,7 +80,7 @@ import { useRouter } from '@/router/supplier.js';
 const router = useRouter();
 
 const props = defineProps<{
-	id?: string;
+	id: string;
 }>();
 
 const usersPagination = {
@@ -91,7 +91,7 @@ const usersPagination = {
 	})),
 };
 
-const expandedItems = ref([]);
+const expandedItems = ref<string[]>([]);
 
 const role = reactive(await misskeyApi('admin/roles/show', {
 	roleId: props.id,
@@ -165,10 +165,6 @@ async function toggleItem(item) {
 		expandedItems.value.push(item.id);
 	}
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: `${i18n.ts.role}: ${role.name}`,

@@ -18,9 +18,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, shallowRef, watch } from 'vue';
-import * as Misskey from 'misskey-js';
+import { computed, inject, onMounted, useTemplateRef, watch } from 'vue';
 import MkCustomEmojiDetailedDialog from './MkCustomEmojiDetailedDialog.vue';
+import type { Note } from 'misskey-js/entities.js';
 import XDetails from '@/components/MkReactionsViewer.details.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import * as os from '@/os.js';
@@ -39,7 +39,7 @@ const props = defineProps<{
 	reaction: string;
 	count: number;
 	isInitial: boolean;
-	note: Misskey.entities.Note;
+	note: Note;
 }>();
 
 const mock = inject<boolean>('mock', false);
@@ -48,7 +48,7 @@ const emit = defineEmits<{
 	(ev: 'reactionToggled', emoji: string, newCount: number): void;
 }>();
 
-const buttonEl = shallowRef<HTMLElement>();
+const buttonEl = useTemplateRef('buttonEl');
 
 const emojiName = computed(() => props.reaction.replace(/:/g, '').replace(/@\./, ''));
 const emoji = computed(() => customEmojisMap.get(emojiName.value) ?? getUnicodeEmoji(props.reaction));
@@ -142,6 +142,8 @@ onMounted(() => {
 
 if (!mock) {
 	useTooltip(buttonEl, async (showing) => {
+		if (!buttonEl.value) return;
+
 		const reactions = await misskeyApiGet('notes/reactions', {
 			noteId: props.note.id,
 			type: props.reaction,

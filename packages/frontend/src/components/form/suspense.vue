@@ -33,9 +33,6 @@ const rejected = ref(false);
 const result = ref<T | undefined>(undefined);
 
 const process = () => {
-	if (props.p == null) {
-		return;
-	}
 	const promise = props.p();
 	pending.value = true;
 	resolved.value = false;

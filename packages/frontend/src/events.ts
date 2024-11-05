@@ -4,10 +4,10 @@
  */
 
 import { EventEmitter } from 'eventemitter3';
-import * as Misskey from 'misskey-js';
+import type { Notification } from 'misskey-js/entities.js';
 
 export const globalEvents = new EventEmitter<{
 	themeChanged: () => void;
-	clientNotification: (notification: Misskey.entities.Notification) => void;
+	clientNotification: (notification: Notification) => void;
 	requestClearPageCache: () => void;
 }>();

@@ -11,7 +11,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				[$style.logGreen]: [
 					'createRole',
 					'addCustomEmoji',
-					'createAd',
 					'createInvitation',
 					'createAvatarDecoration',
 					'createSystemWebhook',
@@ -28,7 +27,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					'deleteCustomEmoji',
 					'deleteNote',
 					'deleteDriveFile',
-					'deleteAd',
 					'deleteAvatarDecoration',
 					'deleteSystemWebhook',
 					'deleteAbuseReportNotificationRecipient',
@@ -69,7 +67,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span v-else-if="log.type === 'deleteFlash'">: @{{ log.info.flashUserUsername }}</span>
 	</template>
 	<template #icon>
-		<MkAvatar :user="log.user" :class="$style.avatar"/>
+		<MkAvatar v-if="log.user" :user="log.user" :class="$style.avatar"/>
+		<div v-else :class="$style.avatar"></div>
 	</template>
 	<template #suffix>
 		<MkTime :time="log.createdAt"/>
@@ -117,11 +116,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<CodeDiff :context="5" :hideHeader="true" :oldString="JSON5.stringify(log.info.before, null, '\t')" :newString="JSON5.stringify(log.info.after, null, '\t')" language="javascript" maxHeight="300px"/>
 			</div>
 		</template>
-		<template v-else-if="log.type === 'updateAd'">
-			<div :class="$style.diff">
-				<CodeDiff :context="5" :hideHeader="true" :oldString="JSON5.stringify(log.info.before, null, '\t')" :newString="JSON5.stringify(log.info.after, null, '\t')" language="javascript" maxHeight="300px"/>
-			</div>
-		</template>
 		<template v-else-if="log.type === 'updateAvatarDecoration'">
 			<div :class="$style.diff">
 				<CodeDiff :context="5" :hideHeader="true" :oldString="JSON5.stringify(log.info.before, null, '\t')" :newString="JSON5.stringify(log.info.after, null, '\t')" language="javascript" maxHeight="300px"/>
@@ -152,14 +146,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import * as Misskey from 'misskey-js';
 import { CodeDiff } from 'v-code-diff';
 import JSON5 from 'json5';
+import type { ModerationLog } from 'misskey-js/entities.js';
 import { i18n } from '@/i18n.js';
 import MkFolder from '@/components/MkFolder.vue';
 
-const props = defineProps<{
-	log: Misskey.entities.ModerationLog;
+defineProps<{
+	log: ModerationLog;
 }>();
 </script>
 

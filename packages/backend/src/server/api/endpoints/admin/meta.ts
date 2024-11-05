@@ -120,7 +120,7 @@ export const meta = {
 			},
 			silencedHosts: {
 				type: 'array',
-				optional: true,
+				optional: false,
 				nullable: false,
 				items: {
 					type: 'string',
@@ -199,10 +199,12 @@ export const meta = {
 			},
 			sensitiveMediaDetection: {
 				type: 'string',
+				enum: ['none', 'all', 'local', 'remote'],
 				optional: false, nullable: false,
 			},
 			sensitiveMediaDetectionSensitivity: {
 				type: 'string',
+				enum: ['medium', 'low', 'high', 'veryLow', 'veryHigh'],
 				optional: false, nullable: false,
 			},
 			setSensitiveFlagAutomatically: {
@@ -397,6 +399,10 @@ export const meta = {
 			disableRegistration: {
 				type: 'boolean',
 				optional: false, nullable: false,
+			},
+			feedbackUrl: {
+				type: 'string',
+				optional: false, nullable: true,
 			},
 			impressumUrl: {
 				type: 'string',

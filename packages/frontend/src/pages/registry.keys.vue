@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader/></template>
 	<MkSpacer :contentMax="600" :marginMin="16">
 		<div class="_gaps_m">
 			<FormSplit>
@@ -67,10 +67,12 @@ async function createKey() {
 	const { canceled, result } = await os.form(i18n.ts._registry.createKey, {
 		key: {
 			type: 'string',
+			default: null,
 			label: i18n.ts._registry.key,
 		},
 		value: {
 			type: 'string',
+			default: null,
 			multiline: true,
 			label: i18n.ts.value,
 		},
@@ -91,10 +93,6 @@ async function createKey() {
 }
 
 watch(() => props.path, fetchKeys, { immediate: true });
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.registry,

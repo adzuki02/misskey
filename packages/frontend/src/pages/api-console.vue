@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader/></template>
 	<MkSpacer :contentMax="700">
 		<div class="_gaps_m">
 			<div class="_gaps_m">
@@ -70,7 +70,7 @@ function send() {
 function onEndpointChange() {
 	misskeyApi('endpoint', { endpoint: endpoint.value }, withCredential.value ? undefined : null).then(resp => {
 		const endpointBody = {};
-		for (const p of resp.params) {
+		for (const p of resp?.params ?? []) {
 			endpointBody[p.name] =
 				p.type === 'String' ? '' :
 				p.type === 'Number' ? 0 :
@@ -82,10 +82,6 @@ function onEndpointChange() {
 		body.value = JSON5.stringify(endpointBody, null, 2);
 	});
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: 'API console',

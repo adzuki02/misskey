@@ -10,12 +10,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Notification } from 'misskey-js/entities.js';
 import XNotification from '@/components/MkNotification.vue';
 
 defineProps<{
-	notification: Misskey.entities.Notification;
+	notification: Notification;
 }>();
 </script>
 

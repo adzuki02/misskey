@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:initialWidth="400"
 	:initialHeight="500"
 	:canResize="false"
-	@close="windowEl.close()"
+	@close="windowEl?.close()"
 	@closed="$emit('closed')"
 >
 	<template v-if="emoji" #header>:{{ emoji.name }}:</template>
@@ -80,7 +80,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, watch, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile, Role } from 'misskey-js/entities.js';
 import MkWindow from '@/components/MkWindow.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
@@ -106,8 +106,8 @@ const license = ref<string>(props.emoji ? (props.emoji.license ?? '') : '');
 const isSensitive = ref(props.emoji ? props.emoji.isSensitive : false);
 const localOnly = ref(props.emoji ? props.emoji.localOnly : false);
 const roleIdsThatCanBeUsedThisEmojiAsReaction = ref(props.emoji ? props.emoji.roleIdsThatCanBeUsedThisEmojiAsReaction : []);
-const rolesThatCanBeUsedThisEmojiAsReaction = ref<Misskey.entities.Role[]>([]);
-const file = ref<Misskey.entities.DriveFile>();
+const rolesThatCanBeUsedThisEmojiAsReaction = ref<Role[]>([]);
+const file = ref<DriveFile>();
 
 watch(roleIdsThatCanBeUsedThisEmojiAsReaction, async () => {
 	rolesThatCanBeUsedThisEmojiAsReaction.value = (await Promise.all(roleIdsThatCanBeUsedThisEmojiAsReaction.value.map((id) => misskeyApi('admin/roles/show', { roleId: id }).catch(() => null)))).filter(x => x != null);
@@ -135,7 +135,7 @@ async function addRole() {
 	const { canceled, result: role } = await os.select({
 		items: roles.filter(r => r.isPublic).filter(r => !currentRoleIds.includes(r.id)).map(r => ({ text: r.name, value: r })),
 	});
-	if (canceled || role == null) return;
+	if (canceled) return;
 
 	rolesThatCanBeUsedThisEmojiAsReaction.value.push(role);
 }
@@ -153,6 +153,7 @@ async function done() {
 		isSensitive: isSensitive.value,
 		localOnly: localOnly.value,
 		roleIdsThatCanBeUsedThisEmojiAsReaction: rolesThatCanBeUsedThisEmojiAsReaction.value.map(x => x.id),
+		fileId: undefined as string | undefined,
 	};
 
 	if (file.value) {
@@ -172,15 +173,18 @@ async function done() {
 			},
 		});
 
-		windowEl.value.close();
+		windowEl.value?.close();
 	} else {
-		const created = await os.apiWithDialog('admin/emoji/add', params);
+		const created = await os.apiWithDialog('admin/emoji/add', {
+			...params,
+			fileId: file.value?.id as string,
+		});
 
 		emit('done', {
 			created: created,
 		});
 
-		windowEl.value.close();
+		windowEl.value?.close();
 	}
 }
 
@@ -197,7 +201,7 @@ async function del() {
 		emit('done', {
 			deleted: true,
 		});
-		windowEl.value.close();
+		windowEl.value?.close();
 	});
 }
 </script>

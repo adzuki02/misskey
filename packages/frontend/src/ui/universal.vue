@@ -94,7 +94,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, provide, onMounted, computed, ref, watch, shallowRef, Ref } from 'vue';
+import { defineAsyncComponent, provide, onMounted, computed, ref, watch, shallowRef, type Ref } from 'vue';
 import XCommon from './_common_/common.vue';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
 import { instanceName } from '@/config.js';
@@ -198,6 +198,7 @@ const onContextmenu = (ev) => {
 		if (el.parentElement) {
 			return isLink(el.parentElement);
 		}
+		return false;
 	};
 	if (isLink(ev.target)) return;
 	if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes(ev.target.tagName) || ev.target.attributes['contenteditable']) return;
@@ -216,7 +217,7 @@ const onContextmenu = (ev) => {
 };
 
 function top() {
-	contents.value.rootEl.scrollTo({
+	contents.value?.rootEl?.scrollTo({
 		top: 0,
 		behavior: 'smooth',
 	});
@@ -239,7 +240,7 @@ watch(navFooter, () => {
 	immediate: true,
 });
 
-useScrollPositionManager(() => contents.value.rootEl, mainRouter);
+useScrollPositionManager(() => contents.value?.rootEl ?? null, mainRouter);
 </script>
 
 <style>

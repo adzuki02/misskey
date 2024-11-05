@@ -5,7 +5,7 @@
 
 import { VNode, h, SetupContext, provide } from 'vue';
 import * as mfm from 'mfm-js';
-import * as Misskey from 'misskey-js';
+import type { UserLite } from 'misskey-js/entities.js';
 import MkUrl from '@/components/global/MkUrl.vue';
 import MkTime from '@/components/global/MkTime.vue';
 import MkLink from '@/components/MkLink.vue';
@@ -35,7 +35,7 @@ type MfmProps = {
 	text: string;
 	plain?: boolean;
 	nowrap?: boolean;
-	author?: Misskey.entities.UserLite;
+	author?: UserLite;
 	isNote?: boolean;
 	emojiUrls?: Record<string, string>;
 	rootScale?: number;

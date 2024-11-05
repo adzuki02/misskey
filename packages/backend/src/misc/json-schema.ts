@@ -46,7 +46,6 @@ import {
 	packedRolePoliciesSchema,
 	packedRoleSchema,
 } from '@/models/json-schema/role.js';
-import { packedAdSchema } from '@/models/json-schema/ad.js';
 import {
 	packedMetaDetailedOnlySchema,
 	packedMetaDetailedSchema,
@@ -65,7 +64,6 @@ export const refs = {
 	User: packedUserSchema,
 
 	UserList: packedUserListSchema,
-	Ad: packedAdSchema,
 	App: packedAppSchema,
 	Note: packedNoteSchema,
 	NoteReaction: packedNoteReactionSchema,

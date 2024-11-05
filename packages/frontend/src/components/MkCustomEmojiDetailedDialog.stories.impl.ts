@@ -30,7 +30,10 @@ export const Default = {
 		};
 	},
 	args: {
-		emoji: emojiDetailed(),
+		emoji: {
+			...emojiDetailed(),
+			host: null,
+		},
 	},
 	parameters: {
 		layout: 'centered',

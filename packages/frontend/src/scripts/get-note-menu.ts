@@ -3,8 +3,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { defineAsyncComponent, Ref, ShallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import { defineAsyncComponent, type Ref, type ShallowRef } from 'vue';
+import type { noteVisibilities } from 'misskey-js/consts.js';
+import type { Note, Clip, NotesTranslateResponse } from 'misskey-js/entities.js';
+import type { MenuItem, MenuDivider } from '@/types/menu.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
@@ -16,17 +18,16 @@ import { defaultStore, noteActions } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { getUserMenu } from '@/scripts/get-user-menu.js';
 import { clipsCache, favoritedChannelsCache } from '@/cache.js';
-import { MenuItem } from '@/types/menu.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { isSupportShare } from '@/scripts/navigator.js';
 import { getAppearNote } from '@/scripts/get-appear-note.js';
 
 export async function getNoteClipMenu(props: {
-	note: Misskey.entities.Note;
+	note: Note;
 	isDeleted: Ref<boolean>;
-	currentClip?: Misskey.entities.Clip;
+	currentClip?: Clip;
 }) {
-	function getClipName(clip: Misskey.entities.Clip) {
+	function getClipName(clip: Clip) {
 		if ($i && clip.userId === $i.id && clip.notesCount != null) {
 			return `${clip.name} (${clip.notesCount}/${$i.policies.noteEachClipsLimit})`;
 		} else {
@@ -92,12 +93,14 @@ export async function getNoteClipMenu(props: {
 				name: {
 					type: 'string',
 					label: i18n.ts.name,
+					default: '',
 				},
 				description: {
 					type: 'string',
 					required: false,
 					multiline: true,
 					label: i18n.ts.description,
+					default: null,
 				},
 				isPublic: {
 					type: 'boolean',
@@ -118,7 +121,7 @@ export async function getNoteClipMenu(props: {
 	return menu;
 }
 
-export function getAbuseNoteMenu(note: Misskey.entities.Note, text: string): MenuItem {
+export function getAbuseNoteMenu(note: Note, text: string): MenuItem {
 	return {
 		icon: 'ti ti-exclamation-circle',
 		text,
@@ -137,7 +140,7 @@ export function getAbuseNoteMenu(note: Misskey.entities.Note, text: string): Men
 	};
 }
 
-export function getCopyNoteLinkMenu(note: Misskey.entities.Note, text: string): MenuItem {
+export function getCopyNoteLinkMenu(note: Note, text: string): MenuItem {
 	return {
 		icon: 'ti ti-link',
 		text,
@@ -149,11 +152,11 @@ export function getCopyNoteLinkMenu(note: Misskey.entities.Note, text: string): 
 }
 
 export function getNoteMenu(props: {
-	note: Misskey.entities.Note;
-	translation: Ref<Misskey.entities.NotesTranslateResponse | null>;
+	note: Note;
+	translation: Ref<NotesTranslateResponse | null>;
 	translating: Ref<boolean>;
 	isDeleted: Ref<boolean>;
-	currentClip?: Misskey.entities.Clip;
+	currentClip?: Clip;
 }) {
 	const appearNote = getAppearNote(props.note);
 
@@ -206,14 +209,7 @@ export function getNoteMenu(props: {
 	function togglePin(pin: boolean): void {
 		os.apiWithDialog(pin ? 'i/pin' : 'i/unpin', {
 			noteId: appearNote.id,
-		}, undefined, null, res => {
-			if (res.id === '72dab508-c64d-498f-8740-a8eec1ba385a') {
-				os.alert({
-					type: 'error',
-					text: i18n.ts.pinLimitExceeded,
-				});
-			}
-		});
+		}, undefined);
 	}
 
 	async function unclip(): Promise<void> {
@@ -258,7 +254,7 @@ export function getNoteMenu(props: {
 					text: i18n.ts.unclip,
 					danger: true,
 					action: unclip,
-				}, { type: 'divider' }] : []
+				}, { type: 'divider' } as MenuDivider] : []
 			), {
 				icon: 'ti ti-info-circle',
 				text: i18n.ts.details,
@@ -285,7 +281,7 @@ export function getNoteMenu(props: {
 				text: i18n.ts.translate,
 				action: translate,
 			} : undefined,
-			{ type: 'divider' },
+			{ type: 'divider' } as MenuDivider,
 			{
 				type: 'parent' as const,
 				icon: 'ti ti-paperclip',
@@ -322,13 +318,13 @@ export function getNoteMenu(props: {
 				},
 			},
 			...(appearNote.userId !== $i.id ? [
-				{ type: 'divider' },
+				{ type: 'divider' } as MenuDivider,
 				appearNote.userId !== $i.id ? getAbuseNoteMenu(appearNote, i18n.ts.reportAbuse) : undefined,
 			]
 			: []
 			),
 			...(appearNote.channel && (appearNote.channel.userId === $i.id || $i.isModerator || $i.isAdmin) ? [
-				{ type: 'divider' },
+				{ type: 'divider' } as MenuDivider,
 				{
 					type: 'parent' as const,
 					icon: 'ti ti-device-tv',
@@ -364,7 +360,7 @@ export function getNoteMenu(props: {
 			: []
 			),
 			...(appearNote.userId === $i.id || $i.isModerator || $i.isAdmin ? [
-				{ type: 'divider' },
+				{ type: 'divider' } as MenuDivider,
 				appearNote.userId === $i.id ? {
 					icon: 'ti ti-edit',
 					text: i18n.ts.deleteAndEdit,
@@ -432,7 +428,7 @@ export function getNoteMenu(props: {
 	};
 }
 
-type Visibility = (typeof Misskey.noteVisibilities)[number];
+type Visibility = (typeof noteVisibilities)[number];
 
 function smallerVisibility(a: Visibility, b: Visibility): Visibility {
 	if (a === 'specified' || b === 'specified') return 'specified';
@@ -443,7 +439,7 @@ function smallerVisibility(a: Visibility, b: Visibility): Visibility {
 }
 
 export function getRenoteMenu(props: {
-	note: Misskey.entities.Note;
+	note: Note;
 	renoteButton: ShallowRef<HTMLElement | undefined>;
 	mock?: boolean;
 }) {

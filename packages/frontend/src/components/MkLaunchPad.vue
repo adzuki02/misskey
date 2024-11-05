@@ -37,6 +37,7 @@ const props = withDefaults(defineProps<{
 	src?: HTMLElement;
 	anchor?: { x: string; y: string; };
 }>(), {
+	src: undefined,
 	anchor: () => ({ x: 'right', y: 'center' }),
 });
 
@@ -52,7 +53,7 @@ const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const menu = defaultStore.state.menu;
 
-const items = Object.keys(navbarItemDef).filter(k => !menu.includes(k)).map(k => navbarItemDef[k]).filter(def => def.show == null ? true : def.show).map(def => ({
+const items = Object.keys(navbarItemDef).filter(k => !menu.includes(k)).map(k => navbarItemDef[k]).filter(def => def.show ?? true).map(def => ({
 	type: def.to ? 'link' : 'button',
 	text: def.title,
 	icon: def.icon,

@@ -48,7 +48,7 @@ const widgetPropsDef = {
 			value: tz.name.toLowerCase(),
 		})), {
 			label: '(auto)',
-			value: null,
+			value: null as unknown as string,
 		}],
 	},
 };
@@ -64,10 +64,14 @@ const { widgetProps, configure } = useWidgetPropsManager(name,
 	emit,
 );
 
+// タイムゾーンの自動設定を意味するnullをstring型として格納しているので必要
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 const tzAbbrev = computed(() => (widgetProps.timezone === null
 	? timezones.find((tz) => tz.name.toLowerCase() === Intl.DateTimeFormat().resolvedOptions().timeZone.toLowerCase())?.abbrev
 	: timezones.find((tz) => tz.name.toLowerCase() === widgetProps.timezone)?.abbrev) ?? '?');
 
+// タイムゾーンの自動設定を意味するnullをstring型として格納しているので必要
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 const tzOffset = computed(() => widgetProps.timezone === null
 	? 0 - new Date().getTimezoneOffset()
 	: timezones.find((tz) => tz.name.toLowerCase() === widgetProps.timezone)?.offset ?? 0);

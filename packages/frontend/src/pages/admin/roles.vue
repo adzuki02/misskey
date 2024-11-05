@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div>
 	<MkStickyContainer>
-		<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
+		<template #header><XHeader/></template>
 		<MkSpacer :contentMax="700">
 			<div class="_gaps">
 				<MkFolder>
@@ -273,6 +273,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, reactive, ref } from 'vue';
 import XHeader from './_header_.vue';
+import type { RolePolicies } from 'misskey-js/entities.js';
 import MkInput from '@/components/MkInput.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -293,9 +294,9 @@ const baseRoleQ = ref('');
 
 const roles = await misskeyApi('admin/roles/list');
 
-const policies = reactive<Record<typeof ROLE_POLICIES[number], any>>({});
+const policies = reactive<RolePolicies>({} as RolePolicies);
 for (const ROLE_POLICY of ROLE_POLICIES) {
-	policies[ROLE_POLICY] = instance.policies[ROLE_POLICY];
+	(policies[ROLE_POLICY] as number | boolean) = instance.policies[ROLE_POLICY];
 }
 
 function matchQuery(keywords: string[]): boolean {
@@ -305,6 +306,7 @@ function matchQuery(keywords: string[]): boolean {
 
 async function updateBaseRole() {
 	await os.apiWithDialog('admin/roles/update-default-policies', {
+		// @ts-expect-error misskey-jsの型がおかしい
 		policies,
 	});
 	fetchInstance(true);
@@ -313,10 +315,6 @@ async function updateBaseRole() {
 function create() {
 	router.push('/admin/roles/new');
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.roles,

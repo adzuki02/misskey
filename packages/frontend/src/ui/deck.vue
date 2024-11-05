@@ -181,7 +181,7 @@ const addColumn = async (ev) => {
 			value: column, text: i18n.ts._deck._columns[column],
 		})),
 	});
-	if (canceled || column == null) return;
+	if (canceled) return;
 
 	addColumnToStore({
 		type: column,
@@ -231,7 +231,7 @@ function changeProfile(ev: MouseEvent) {
 					title: i18n.ts._deck.profile,
 					minLength: 1,
 				});
-				if (canceled || name == null) return;
+				if (canceled) return;
 
 				deckStore.set('profile', name);
 				unisonReload();

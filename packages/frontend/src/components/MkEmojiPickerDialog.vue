@@ -36,8 +36,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import * as Misskey from 'misskey-js';
 import { shallowRef } from 'vue';
+import type { Note } from 'misskey-js/entities.js';
 import MkModal from '@/components/MkModal.vue';
 import MkEmojiPicker from '@/components/MkEmojiPicker.vue';
 import { defaultStore } from '@/store.js';
@@ -48,7 +48,7 @@ const props = withDefaults(defineProps<{
 	showPinned?: boolean;
   pinnedEmojis?: string[],
 	asReactionPicker?: boolean;
-	targetNote?: Misskey.entities.Note;
+	targetNote?: Note;
   choseAndClose?: boolean;
 }>(), {
 	manualShowing: null,

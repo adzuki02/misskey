@@ -77,7 +77,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script setup lang="ts">
 import { ref, computed, defineAsyncComponent, onMounted } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile, DriveFolder } from 'misskey-js/entities.js';
 import MkInfo from '@/components/MkInfo.vue';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
@@ -95,12 +95,12 @@ const props = defineProps<{
 }>();
 
 const fetching = ref(true);
-const file = ref<Misskey.entities.DriveFile>();
+const file = ref<DriveFile>();
 const folderHierarchy = computed(() => {
 	if (!file.value) return [i18n.ts.drive];
 	const folderNames = [i18n.ts.drive];
 	
-	function get(folder: Misskey.entities.DriveFolder) {
+	function get(folder: DriveFolder) {
 		if (folder.parent) get(folder.parent);
 		folderNames.push(folder.name);
 	}
@@ -144,6 +144,7 @@ function move() {
 	if (!file.value) return;
 
 	os.selectDriveFolder(false).then(folder => {
+		if (!file.value) return;
 		misskeyApi('drive/files/update', {
 			fileId: file.value.id,
 			folderId: folder[0] ? folder[0].id : null,
@@ -178,7 +179,7 @@ function rename() {
 		placeholder: i18n.ts.inputNewFileName,
 		default: file.value.name,
 	}).then(({ canceled, result: name }) => {
-		if (canceled) return;
+		if (canceled || !file.value) return;
 		os.apiWithDialog('drive/files/update', {
 			fileId: file.value.id,
 			name: name,
@@ -196,6 +197,7 @@ function describe() {
 		file: file.value,
 	}, {
 		done: caption => {
+			if (!file.value) return;
 			os.apiWithDialog('drive/files/update', {
 				fileId: file.value.id,
 				comment: caption.length === 0 ? null : caption,

@@ -234,7 +234,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Notification } from 'misskey-js/entities.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkRadios from '@/components/MkRadios.vue';
@@ -410,10 +410,9 @@ function removePinnedList() {
 }
 
 function testNotification(): void {
-	const notification: Misskey.entities.Notification = {
+	const notification: Notification = {
 		id: Math.random().toString(),
 		createdAt: new Date().toUTCString(),
-		isRead: false,
 		type: 'test',
 	};
 
@@ -441,10 +440,6 @@ watch(dataSaver, (to) => {
 }, {
 	deep: true,
 });
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.general,

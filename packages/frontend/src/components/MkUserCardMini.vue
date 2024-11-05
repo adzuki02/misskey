@@ -14,11 +14,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import * as Misskey from 'misskey-js';
+import type { User } from 'misskey-js/entities.js';
 import { acct } from '@/filters/user.js';
 
 defineProps<{
-	user: Misskey.entities.User;
+	user: User;
 }>();
 </script>
 

@@ -17,13 +17,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, onBeforeUnmount, ref } from 'vue';
-import * as Misskey from 'misskey-js';
 import XPie from './pie.vue';
+import type { ChannelConnection, Channels } from 'misskey-js';
+import type { ServerInfoResponse, ServerStats } from 'misskey-js/entities.js';
 import bytes from '@/filters/bytes.js';
 
 const props = defineProps<{
-	connection: Misskey.ChannelConnection<Misskey.Channels['serverStats']>,
-	meta: Misskey.entities.ServerInfoResponse
+	connection: ChannelConnection<Channels['serverStats']>,
+	meta: ServerInfoResponse
 }>();
 
 const usage = ref<number>(0);
@@ -31,7 +32,7 @@ const total = ref<number>(0);
 const used = ref<number>(0);
 const free = ref<number>(0);
 
-function onStats(stats: Misskey.entities.ServerStats) {
+function onStats(stats: ServerStats) {
 	usage.value = stats.mem.active / props.meta.mem.total;
 	total.value = props.meta.mem.total;
 	used.value = stats.mem.active;

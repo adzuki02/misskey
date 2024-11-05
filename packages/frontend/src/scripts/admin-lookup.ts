@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as Misskey from 'misskey-js';
+import { parse as parseAcct } from 'misskey-js/acct.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -14,11 +14,11 @@ export async function lookupUser() {
 	});
 	if (canceled) return;
 
-	const show = (user) => {
+	const show = (user: { id: string }) => {
 		os.pageWindow(`/admin/user/${user.id}`);
 	};
 
-	const usernamePromise = misskeyApi('users/show', Misskey.acct.parse(result));
+	const usernamePromise = misskeyApi('users/show', parseAcct(result));
 	const idPromise = misskeyApi('users/show', { userId: result });
 	let _notFound = false;
 	const notFound = () => {
@@ -36,7 +36,7 @@ export async function lookupUser() {
 			notFound();
 		}
 	});
-	idPromise.then(show).catch(err => {
+	idPromise.then(show).catch(() => {
 		notFound();
 	});
 }
@@ -53,7 +53,7 @@ export async function lookupUserByEmail() {
 
 		os.pageWindow(`/admin/user/${user.id}`);
 	} catch (err) {
-		if (err.code === 'USER_NOT_FOUND') {
+		if (err !== null && typeof err === 'object' && 'code' in err && err.code === 'USER_NOT_FOUND') {
 			os.alert({
 				type: 'error',
 				text: i18n.ts.noSuchUser,
@@ -71,7 +71,7 @@ export async function lookupFile() {
 	});
 	if (canceled) return;
 
-	const show = (file) => {
+	const show = (file: { id: string }) => {
 		os.pageWindow(`/admin/file/${file.id}`);
 	};
 

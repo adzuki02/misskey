@@ -64,8 +64,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
 import { toUnicode } from 'punycode/';
-import * as Misskey from 'misskey-js';
 import { supported as webAuthnSupported, get as webAuthnRequest, parseRequestOptionsFromJSON } from '@github/webauthn-json/browser-ponyfill';
+import type { UserDetailed, SigninResponse } from 'misskey-js/entities.js';
 import type { OpenOnRemoteOptions } from '@/scripts/please-login.js';
 import { showSuspendedDialog } from '@/scripts/show-suspended-dialog.js';
 import MkButton from '@/components/MkButton.vue';
@@ -79,7 +79,7 @@ import { login } from '@/account.js';
 import { i18n } from '@/i18n.js';
 
 const signing = ref(false);
-const user = ref<Misskey.entities.UserDetailed | null>(null);
+const user = ref<UserDetailed | null>(null);
 const username = ref('');
 const password = ref('');
 const token = ref('');
@@ -90,7 +90,7 @@ const queryingKey = ref(false);
 let credentialRequest: CredentialRequestOptions | null = null;
 
 const emit = defineEmits<{
-	(ev: 'login', v: any): void;
+	(ev: 'login', v: SigninResponse): void;
 }>();
 
 const props = withDefaults(defineProps<{
@@ -115,7 +115,7 @@ function onUsernameChange(): void {
 	});
 }
 
-function onLogin(res: any): Promise<void> | void {
+function onLogin(res: SigninResponse): Promise<void> | void {
 	if (props.autoSet) {
 		return login(res.i);
 	}
@@ -182,8 +182,8 @@ function onSubmit(): void {
 	}
 }
 
-function loginFailed(err: any): void {
-	switch (err.id) {
+function loginFailed(err: unknown): void {
+	switch (err !== null && typeof err === 'object' && 'id' in err ? err.id : undefined) {
 		case '6cc579cc-885d-43d8-95c2-b8c7fc963280': {
 			os.alert({
 				type: 'error',
@@ -273,10 +273,8 @@ async function specifyHostAndOpenRemote(options: OpenOnRemoteOptions): Promise<v
 
 	if (canceled) return;
 
-	let targetHost: string | null = hostTemp;
-
 	// ドメイン部分だけを取り出す
-	targetHost = extractDomain(targetHost);
+	const targetHost = extractDomain(hostTemp);
 	if (targetHost == null) {
 		os.alert({
 			type: 'error',

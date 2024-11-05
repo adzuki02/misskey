@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-model:tab="tab" :tabs="headerTabs"/></template>
 	<div>
 		<div v-if="user">
 			<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
@@ -28,7 +28,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, computed, watch, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import { parse as parseAcct } from 'misskey-js/acct.js';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import { acct as getAcct } from '@/filters/user.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
@@ -53,13 +54,12 @@ const props = withDefaults(defineProps<{
 
 const tab = ref(props.page);
 
-const user = ref<null | Misskey.entities.UserDetailed>(null);
+const user = ref<UserDetailed>();
 const error = ref<any>(null);
 
 function fetchUser(): void {
-	if (props.acct == null) return;
-	user.value = null;
-	misskeyApi('users/show', Misskey.acct.parse(props.acct)).then(u => {
+	user.value = undefined;
+	misskeyApi('users/show', parseAcct(props.acct)).then(u => {
 		user.value = u;
 	}).catch(err => {
 		error.value = err;
@@ -69,8 +69,6 @@ function fetchUser(): void {
 watch(() => props.acct, fetchUser, {
 	immediate: true,
 });
-
-const headerActions = computed(() => []);
 
 const headerTabs = computed(() => user.value ? [{
 	key: 'home',

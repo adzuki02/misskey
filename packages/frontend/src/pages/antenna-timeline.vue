@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader :actions="headerActions"/></template>
 	<MkSpacer :contentMax="800">
 		<div ref="rootEl">
 			<div v-if="queue > 0" :class="$style.new"><button class="_buttonPrimary" :class="$style.newButton" @click="top()">{{ i18n.ts.newNoteRecived }}</button></div>
@@ -24,11 +24,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, ref, shallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import { computed, watch, ref, useTemplateRef } from 'vue';
+import type { Antenna } from 'misskey-js/entities.js';
 import MkTimeline from '@/components/MkTimeline.vue';
 import { scroll } from '@/scripts/scroll.js';
-import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
@@ -40,34 +39,30 @@ const props = defineProps<{
 	antennaId: string;
 }>();
 
-const antenna = ref<Misskey.entities.Antenna | null>(null);
+const antenna = ref<Antenna>();
 const queue = ref(0);
-const rootEl = shallowRef<HTMLElement>();
-const tlEl = shallowRef<InstanceType<typeof MkTimeline>>();
+const rootEl = useTemplateRef('rootEl');
+const tlEl = useTemplateRef('tlEl');
 
 function queueUpdated(q) {
 	queue.value = q;
 }
 
 function top() {
-	scroll(rootEl.value, { top: 0 });
+	if (rootEl.value)	scroll(rootEl.value, { top: 0 });
 }
 
-async function timetravel() {
+/* async function timetravel() {
 	const { canceled, result: date } = await os.inputDate({
-		title: i18n.ts.date,
+		title: i18n.ts.jumpToSpecifiedDate,
 	});
 	if (canceled) return;
 
 	tlEl.value.timetravel(date);
-}
+} */
 
 function settings() {
 	router.push(`/my/antennas/${props.antennaId}`);
-}
-
-function focus() {
-	tlEl.value.focus();
 }
 
 watch(() => props.antennaId, async () => {
@@ -76,17 +71,18 @@ watch(() => props.antennaId, async () => {
 	});
 }, { immediate: true });
 
-const headerActions = computed(() => antenna.value ? [{
-	icon: 'ti ti-calendar-time',
-	text: i18n.ts.jumpToSpecifiedDate,
-	handler: timetravel,
-}, {
-	icon: 'ti ti-settings',
-	text: i18n.ts.settings,
-	handler: settings,
-}] : []);
-
-const headerTabs = computed(() => []);
+const headerActions = computed(() => antenna.value ? [
+	/* {
+		icon: 'ti ti-calendar-time',
+		text: i18n.ts.jumpToSpecifiedDate,
+		handler: timetravel,
+	}, */
+	{
+		icon: 'ti ti-settings',
+		text: i18n.ts.settings,
+		handler: settings,
+	},
+] : []);
 
 definePageMetadata(() => ({
 	title: antenna.value ? antenna.value.name : i18n.ts.antennas,

@@ -9254,6 +9254,10 @@ export interface Locale extends ILocale {
              * 連携アプリからの通知
              */
             "app": string;
+            /**
+             * テスト
+             */
+            "test": string;
         };
         "_actions": {
             /**

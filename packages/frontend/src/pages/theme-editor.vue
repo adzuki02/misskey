@@ -5,19 +5,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader :actions="headerActions"/></template>
 	<MkSpacer :contentMax="800" :marginMin="16" :marginMax="32">
 		<div class="cwepdizn _gaps_m">
 			<MkFolder :defaultOpen="true">
 				<template #label>{{ i18n.ts.backgroundColor }}</template>
 				<div class="cwepdizn-colors">
 					<div class="row">
-						<button v-for="color in bgColors.filter(x => x.kind === 'light')" :key="color.color" class="color _button" :class="{ active: theme.props.bg === color.color }" @click="setBgColor(color)">
+						<button v-for="color in bgColors.filter(x => x.kind === 'light')" :key="color.color" class="color _button" :class="{ active: theme.props?.bg === color.color }" @click="setBgColor(color)">
 							<div class="preview" :style="{ background: color.forPreview }"></div>
 						</button>
 					</div>
 					<div class="row">
-						<button v-for="color in bgColors.filter(x => x.kind === 'dark')" :key="color.color" class="color _button" :class="{ active: theme.props.bg === color.color }" @click="setBgColor(color)">
+						<button v-for="color in bgColors.filter(x => x.kind === 'dark')" :key="color.color" class="color _button" :class="{ active: theme.props?.bg === color.color }" @click="setBgColor(color)">
 							<div class="preview" :style="{ background: color.forPreview }"></div>
 						</button>
 					</div>
@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #label>{{ i18n.ts.accentColor }}</template>
 				<div class="cwepdizn-colors">
 					<div class="row">
-						<button v-for="color in accentColors" :key="color" class="color rounded _button" :class="{ active: theme.props.accent === color }" @click="setAccentColor(color)">
+						<button v-for="color in accentColors" :key="color" class="color rounded _button" :class="{ active: theme.props?.accent === color }" @click="setAccentColor(color)">
 							<div class="preview" :style="{ background: color }"></div>
 						</button>
 					</div>
@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #label>{{ i18n.ts.textColor }}</template>
 				<div class="cwepdizn-colors">
 					<div class="row">
-						<button v-for="color in fgColors" :key="color" class="color char _button" :class="{ active: (theme.props.fg === color.forLight) || (theme.props.fg === color.forDark) }" @click="setFgColor(color)">
+						<button v-for="color in fgColors" :key="color.color" class="color char _button" :class="{ active: (theme.props?.fg === color.forLight) || (theme.props?.fg === color.forDark) }" @click="setFgColor(color)">
 							<div class="preview" :style="{ color: color.forPreview ? color.forPreview : theme.base === 'light' ? '#5f5f5f' : '#dadada' }">A</div>
 						</button>
 					</div>
@@ -84,7 +84,7 @@ import MkCodeEditor from '@/components/MkCodeEditor.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkFolder from '@/components/MkFolder.vue';
 
-import { $i } from '@/account.js';
+import { signinRequired } from '@/account.js';
 import { Theme, applyTheme } from '@/scripts/theme.js';
 import lightTheme from '@/themes/_light.json5';
 import darkTheme from '@/themes/_dark.json5';
@@ -95,6 +95,8 @@ import { addTheme } from '@/theme-store.js';
 import { i18n } from '@/i18n.js';
 import { useLeaveGuard } from '@/scripts/use-leave-guard.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+
+const $i = signinRequired();
 
 const bgColors = [
 	{ color: '#f5f5f5', kind: 'light', forPreview: '#f5f5f5' },
@@ -125,7 +127,7 @@ const fgColors = [
 	{ color: 'pink', forLight: '#84667d', forDark: '#e4d1e0', forPreview: '#b12390' },
 ];
 
-const theme = ref<Partial<Theme>>({
+const theme = ref<Pick<Theme, 'base' | 'props'> & Partial<Theme>>({
 	base: 'light',
 	props: lightTheme.props,
 });
@@ -167,7 +169,7 @@ function setFgColor(color) {
 
 function apply() {
 	themeCode.value = JSON5.stringify(theme.value, null, '\t');
-	applyTheme(theme.value, false);
+	applyTheme(theme.value as Theme, false);
 	changed.value = true;
 }
 
@@ -175,7 +177,11 @@ function applyThemeCode() {
 	let parsed;
 
 	try {
-		parsed = JSON5.parse(themeCode.value);
+		if (themeCode.value) {
+			parsed = JSON5.parse(themeCode.value);
+		} else {
+			throw new Error();
+		}
 	} catch (err) {
 		os.alert({
 			type: 'error',
@@ -198,12 +204,12 @@ async function saveAs() {
 	theme.value.name = name;
 	theme.value.author = `@${$i.username}@${toUnicode(host)}`;
 	if (description.value) theme.value.desc = description.value;
-	await addTheme(theme.value);
-	applyTheme(theme.value);
+	await addTheme(theme.value as Theme);
+	applyTheme(theme.value as Theme);
 	if (defaultStore.state.darkMode) {
-		ColdDeviceStorage.set('darkTheme', theme.value);
+		ColdDeviceStorage.set('darkTheme', theme.value as Theme);
 	} else {
-		ColdDeviceStorage.set('lightTheme', theme.value);
+		ColdDeviceStorage.set('lightTheme', theme.value as Theme);
 	}
 	changed.value = false;
 	os.alert({
@@ -225,8 +231,6 @@ const headerActions = computed(() => [{
 	text: i18n.ts.saveAs,
 	handler: saveAs,
 }]);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.themeEditor,

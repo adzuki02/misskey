@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { nextTick, Ref, ref, defineAsyncComponent } from 'vue';
+import { nextTick, type Ref, ref, defineAsyncComponent } from 'vue';
 import getCaretCoordinates from 'textarea-caret';
 import { toASCII } from 'punycode/';
 import { popup } from '@/os.js';
@@ -74,7 +74,7 @@ export class Autocomplete {
 	 */
 	private onInput() {
 		const caretPos = this.textarea.selectionStart;
-		const text = this.text.substring(0, caretPos).split('\n').pop()!;
+		const text = this.text.substring(0, caretPos ?? undefined).split('\n').pop()!;
 
 		const mentionIndex = text.lastIndexOf('@');
 		const hashtagIndex = text.lastIndexOf('#');
@@ -227,14 +227,14 @@ export class Autocomplete {
 	private complete({ type, value }) {
 		this.close();
 
-		const caret = this.textarea.selectionStart;
+		const caret = this.textarea.selectionStart ?? undefined;
 
 		if (type === 'user') {
 			const source = this.text;
 
 			const before = source.substring(0, caret);
 			const trimmedBefore = before.substring(0, before.lastIndexOf('@'));
-			const after = source.substring(caret);
+			const after = source.substring(caret ?? 0);
 
 			const acct = value.host === null ? value.username : `${value.username}@${toASCII(value.host)}`;
 
@@ -252,7 +252,7 @@ export class Autocomplete {
 
 			const before = source.substring(0, caret);
 			const trimmedBefore = before.substring(0, before.lastIndexOf('#'));
-			const after = source.substring(caret);
+			const after = source.substring(caret ?? 0);
 
 			// 挿入
 			this.text = `${trimmedBefore}#${value} ${after}`;
@@ -268,7 +268,7 @@ export class Autocomplete {
 
 			const before = source.substring(0, caret);
 			const trimmedBefore = before.substring(0, before.lastIndexOf(':'));
-			const after = source.substring(caret);
+			const after = source.substring(caret ?? 0);
 
 			// 挿入
 			this.text = trimmedBefore + value + after;
@@ -284,7 +284,7 @@ export class Autocomplete {
 
 			const before = source.substring(0, caret);
 			const trimmedBefore = before.substring(0, before.lastIndexOf('$'));
-			const after = source.substring(caret);
+			const after = source.substring(caret ?? 0);
 
 			// 挿入
 			this.text = `${trimmedBefore}$[${value} ]${after}`;
@@ -300,7 +300,7 @@ export class Autocomplete {
 
 			const before = source.substring(0, caret);
 			const trimmedBefore = before.substring(0, before.lastIndexOf('.'));
-			const after = source.substring(caret);
+			const after = source.substring(caret ?? 0);
 
 			// 挿入
 			this.text = `${trimmedBefore}.${value}${after}`;

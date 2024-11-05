@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as Misskey from 'misskey-js';
 import { defineAsyncComponent } from 'vue';
+import type { DriveFile, DriveFolder } from 'misskey-js/entities.js';
 import { i18n } from '@/i18n.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import * as os from '@/os.js';
@@ -12,7 +12,7 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import { MenuItem } from '@/types/menu.js';
 import { defaultStore } from '@/store.js';
 
-function rename(file: Misskey.entities.DriveFile) {
+function rename(file: DriveFile) {
 	os.inputText({
 		title: i18n.ts.renameFile,
 		placeholder: i18n.ts.inputNewFileName,
@@ -26,7 +26,7 @@ function rename(file: Misskey.entities.DriveFile) {
 	});
 }
 
-function describe(file: Misskey.entities.DriveFile) {
+function describe(file: DriveFile) {
 	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkFileCaptionEditWindow.vue')), {
 		default: file.comment ?? '',
 		file: file,
@@ -41,7 +41,7 @@ function describe(file: Misskey.entities.DriveFile) {
 	});
 }
 
-function move(file: Misskey.entities.DriveFile) {
+function move(file: DriveFile) {
 	os.selectDriveFolder(false).then(folder => {
 		misskeyApi('drive/files/update', {
 			fileId: file.id,
@@ -50,7 +50,7 @@ function move(file: Misskey.entities.DriveFile) {
 	});
 }
 
-function toggleSensitive(file: Misskey.entities.DriveFile) {
+function toggleSensitive(file: DriveFile) {
 	misskeyApi('drive/files/update', {
 		fileId: file.id,
 		isSensitive: !file.isSensitive,
@@ -63,7 +63,7 @@ function toggleSensitive(file: Misskey.entities.DriveFile) {
 	});
 }
 
-function copyUrl(file: Misskey.entities.DriveFile) {
+function copyUrl(file: DriveFile) {
 	copyToClipboard(file.url);
 	os.success();
 }
@@ -73,7 +73,7 @@ function addApp() {
 	alert('not implemented yet');
 }
 */
-async function deleteFile(file: Misskey.entities.DriveFile) {
+async function deleteFile(file: DriveFile) {
 	const { canceled } = await os.confirm({
 		type: 'warning',
 		text: i18n.tsx.driveFileDeleteConfirm({ name: file.name }),
@@ -85,7 +85,7 @@ async function deleteFile(file: Misskey.entities.DriveFile) {
 	});
 }
 
-export function getDriveFileMenu(file: Misskey.entities.DriveFile, folder?: Misskey.entities.DriveFolder | null): MenuItem[] {
+export function getDriveFileMenu(file: DriveFile, folder?: DriveFolder | null): MenuItem[] {
 	const isImage = file.type.startsWith('image/');
 	let menu;
 	menu = [{

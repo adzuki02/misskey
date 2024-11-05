@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div>
 	<MkStickyContainer>
-		<template #header><XHeader :actions="headerActions"/></template>
+		<template #header><XHeader/></template>
 		<MkSpacer :contentMax="900">
 			<div class="_gaps">
 				<div>
@@ -58,9 +58,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import * as Misskey from 'misskey-js';
 import { computed, ref } from 'vue';
 import XHeader from './_header_.vue';
+import type { FederationInstance, FederationInstancesRequest } from 'misskey-js/entities.js';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkPagination from '@/components/MkPagination.vue';
@@ -71,7 +71,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 const host = ref('');
 const state = ref('federating');
-const sort = ref('+pubSub');
+const sort = ref<Exclude<FederationInstancesRequest['sort'], null | undefined>>('+pubSub');
 const pagination = {
 	endpoint: 'federation/instances' as const,
 	limit: 10,
@@ -91,7 +91,7 @@ const pagination = {
 	})),
 };
 
-function getStatus(instance: Misskey.entities.FederationInstance) {
+function getStatus(instance: FederationInstance) {
 	switch (instance.suspensionState) {
 		case 'manuallySuspended':
 			return 'Manually Suspended';
@@ -107,10 +107,6 @@ function getStatus(instance: Misskey.entities.FederationInstance) {
 	if (instance.isNotResponding) return 'Error';
 	return 'Alive';
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.federation,

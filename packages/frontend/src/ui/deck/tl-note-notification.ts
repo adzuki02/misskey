@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as Misskey from 'misskey-js';
-import { Ref } from 'vue';
+import type { DriveFile } from 'misskey-js/entities.js';
+import type { Ref } from 'vue';
 import { SoundStore } from '@/store.js';
 import { getSoundDuration, playMisskeySfxFile, soundsTypes, SoundType } from '@/scripts/sound.js';
 import { i18n } from '@/i18n.js';
@@ -36,7 +36,7 @@ export async function soundSettingsButton(soundSetting: Ref<SoundStore>): Promis
 			label: i18n.ts.file,
 			defaultFileId: soundSetting.value.type === '_driveFile_' ? soundSetting.value.fileId : null,
 			hidden: v => v.type !== '_driveFile_',
-			validate: async (file: Misskey.entities.DriveFile) => {
+			validate: async (file: DriveFile) => {
 				if (!file.type.startsWith('audio')) {
 					os.alert({
 						type: 'warning',

@@ -22,21 +22,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, provide, inject, Ref, ref, watch, shallowRef } from 'vue';
+import { onMounted, onUnmounted, provide, inject, type Ref, ref, watch, useTemplateRef } from 'vue';
 
 import { CURRENT_STICKY_BOTTOM, CURRENT_STICKY_TOP } from '@/const.js';
 
-const rootEl = shallowRef<HTMLElement>();
-const headerEl = shallowRef<HTMLElement>();
-const footerEl = shallowRef<HTMLElement>();
-const bodyEl = shallowRef<HTMLElement>();
+const rootEl = useTemplateRef('rootEl');
+const headerEl = useTemplateRef('headerEl');
+const footerEl = useTemplateRef('footerEl');
+const bodyEl = useTemplateRef('bodyEl');
 
-const headerHeight = ref<string | undefined>();
+const headerHeight = ref<string>();
 const childStickyTop = ref(0);
 const parentStickyTop = inject<Ref<number>>(CURRENT_STICKY_TOP, ref(0));
 provide(CURRENT_STICKY_TOP, childStickyTop);
 
-const footerHeight = ref<string | undefined>();
+const footerHeight = ref<string>();
 const childStickyBottom = ref(0);
 const parentStickyBottom = inject<Ref<number>>(CURRENT_STICKY_BOTTOM, ref(0));
 provide(CURRENT_STICKY_BOTTOM, childStickyBottom);

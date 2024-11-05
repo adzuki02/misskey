@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-else-if="notification.type === 'renote:grouped'" :class="[$style.icon, $style.icon_renoteGroup]"><i class="ti ti-repeat" style="line-height: 1;"></i></div>
 		<img v-else-if="notification.type === 'test'" :class="$style.icon" :src="infoImageUrl"/>
 		<MkAvatar v-else-if="'user' in notification" :class="$style.icon" :user="notification.user" link preview/>
-		<img v-else-if="'icon' in notification" :class="[$style.icon, $style.icon_app]" :src="notification.icon" alt=""/>
+		<img v-else-if="'icon' in notification" :class="[$style.icon, $style.icon_app]" :src="notification.icon ?? undefined" alt=""/>
 		<div
 			:class="[$style.subIcon, {
 				[$style.t_follow]: notification.type === 'follow',
@@ -133,7 +133,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Notification } from 'misskey-js/entities.js';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkButton from '@/components/MkButton.vue';
 import { getNoteSummary } from '@/scripts/get-note-summary.js';
@@ -147,7 +147,7 @@ import { infoImageUrl } from '@/instance.js';
 const $i = signinRequired();
 
 const props = withDefaults(defineProps<{
-	notification: Misskey.entities.Notification;
+	notification: Notification;
 	withTime?: boolean;
 	full?: boolean;
 }>(), {
@@ -169,7 +169,7 @@ const rejectFollowRequest = () => {
 	misskeyApi('following/requests/reject', { userId: props.notification.user.id });
 };
 
-function getActualReactedUsersCount(notification: Misskey.entities.Notification) {
+function getActualReactedUsersCount(notification: Notification) {
 	if (notification.type !== 'reaction:grouped') return 0;
 	return new Set(notification.reactions.map((reaction) => reaction.user.id)).size;
 }

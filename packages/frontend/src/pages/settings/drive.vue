@@ -26,13 +26,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</FormSection>
 
 	<FormSection>
-		<template #label>{{ i18n.ts.statistics }}</template>
-		<MkChart src="per-user-drive" :args="{ user: $i }" span="day" :limit="7 * 5" :bar="true" :stacked="true" :detailed="false" :aspectRatio="6"/>
-	</FormSection>
-
-	<FormSection>
 		<div class="_gaps_m">
-			<FormLink @click="chooseUploadFolder()">
+			<FormLink to="/settings/drive" @click="chooseUploadFolder()">
 				{{ i18n.ts.uploadFolder }}
 				<template #suffix>{{ uploadFolder ? uploadFolder.name : '-' }}</template>
 				<template #suffixIcon><i class="ti ti-folder"></i></template>
@@ -62,8 +57,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import * as Misskey from 'misskey-js';
 import tinycolor from 'tinycolor2';
+import type { DriveFolder } from 'misskey-js/entities.js';
 import FormLink from '@/components/form/link.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import FormSection from '@/components/form/section.vue';
@@ -73,7 +68,6 @@ import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import bytes from '@/filters/bytes.js';
 import { defaultStore } from '@/store.js';
-import MkChart from '@/components/MkChart.vue';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { signinRequired } from '@/account.js';
@@ -81,9 +75,9 @@ import { signinRequired } from '@/account.js';
 const $i = signinRequired();
 
 const fetching = ref(true);
-const usage = ref<number | null>(null);
-const capacity = ref<number | null>(null);
-const uploadFolder = ref<Misskey.entities.DriveFolder | null>(null);
+const usage = ref<number>();
+const capacity = ref<number>();
+const uploadFolder = ref<DriveFolder>();
 const alwaysMarkNsfw = ref($i.alwaysMarkNsfw);
 const autoSensitive = ref($i.autoSensitive);
 
@@ -125,7 +119,7 @@ function chooseUploadFolder() {
 				folderId: defaultStore.state.uploadFolder,
 			});
 		} else {
-			uploadFolder.value = null;
+			uploadFolder.value = undefined;
 		}
 	});
 }
@@ -143,10 +137,6 @@ function saveProfile() {
 		alwaysMarkNsfw.value = true;
 	});
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.drive,

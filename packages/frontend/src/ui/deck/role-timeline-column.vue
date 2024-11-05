@@ -53,7 +53,7 @@ async function setRole() {
 		})),
 		default: props.column.roleId,
 	});
-	if (canceled || role == null) return;
+	if (canceled) return;
 	updateColumn(props.column.id, {
 		roleId: role.id,
 	});

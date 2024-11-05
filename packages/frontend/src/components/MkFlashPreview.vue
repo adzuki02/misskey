@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<Mfm class="summaryMfm" :text="flash.summary" :plain="true" :nowrap="true"/>
 		</p>
 		<footer>
-			<img class="icon" :src="flash.user.avatarUrl"/>
+			<img class="icon" :src="flash.user.avatarUrl ?? undefined"/>
 			<p>{{ userName(flash.user) }}</p>
 		</footer>
 	</article>
@@ -21,12 +21,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Flash } from 'misskey-js/entities.js';
 import { userName } from '@/filters/user.js';
 
-const props = defineProps<{
-	flash: Misskey.entities.Flash;
+defineProps<{
+	flash: Flash;
 }>();
 </script>
 

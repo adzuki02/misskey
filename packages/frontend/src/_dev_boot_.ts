@@ -37,7 +37,7 @@ async function main() {
 	}
 
 	// TODO:今のままだと言語ファイル変更後はpnpm devをリスタートする必要があるので、chokidarを使ったり等で対応できるようにする
-	const locale = _LANGS_FULL_.find(it => it[0] === lang);
+	const locale = _LANGS_FULL_.find(it => it[0] === lang) as string[];
 	localStorage.setItem('lang', lang);
 	localStorage.setItem('locale', JSON.stringify(locale[1]));
 	localStorage.setItem('localeVersion', _VERSION_);
@@ -47,13 +47,13 @@ async function main() {
 	const theme = localStorage.getItem('theme');
 	if (theme) {
 		for (const [k, v] of Object.entries(JSON.parse(theme))) {
-			document.documentElement.style.setProperty(`--${k}`, v.toString());
+			document.documentElement.style.setProperty(`--${k}`, (v as any)?.toString());
 
 			// HTMLの theme-color 適用
 			if (k === 'htmlThemeColor') {
 				for (const tag of document.head.children) {
 					if (tag.tagName === 'META' && tag.getAttribute('name') === 'theme-color') {
-						tag.setAttribute('content', v);
+						tag.setAttribute('content', v as string);
 						break;
 					}
 				}

@@ -15,10 +15,6 @@ import MkSample from '@/components/MkPreview.vue';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
-
 definePageMetadata(computed(() => ({
 	title: i18n.ts.preview,
 	icon: 'ti ti-eye',

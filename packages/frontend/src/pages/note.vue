@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader/></template>
 	<MkSpacer :contentMax="800">
 		<div>
 			<Transition :name="defaultStore.state.animation ? 'fade' : ''" mode="out-in">
@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkButton rounded :class="$style.loadButton" @click="showNext = 'user'"><i class="ti ti-chevron-up"></i> <i class="ti ti-user"></i></MkButton>
 						</div>
 						<div class="_margin _gaps_s">
-							<MkRemoteCaution v-if="note.user.host != null" :href="note.url ?? note.uri"/>
+							<MkRemoteCaution v-if="note.user.host != null" :href="note.url ?? note.uri!"/>
 							<MkNoteDetailed :key="note.id" v-model:note="note" :initialTab="initialTab" :class="$style.note"/>
 						</div>
 						<div v-if="clips && clips.length > 0" class="_margin">
@@ -49,7 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, watch, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Note, Clip } from 'misskey-js/entities.js';
 import type { Paging } from '@/components/MkPagination.vue';
 import MkNoteDetailed from '@/components/MkNoteDetailed.vue';
 import MkNotes from '@/components/MkNotes.vue';
@@ -61,14 +61,15 @@ import { i18n } from '@/i18n.js';
 import { dateString } from '@/filters/date.js';
 import MkClipPreview from '@/components/MkClipPreview.vue';
 import { defaultStore } from '@/store.js';
+import { acct } from '@/filters/user';
 
 const props = defineProps<{
 	noteId: string;
-	initialTab?: string;
+	initialTab?: 'replies' | 'renotes' | 'reactions';
 }>();
 
-const note = ref<null | Misskey.entities.Note>();
-const clips = ref<Misskey.entities.Clip[]>();
+const note = ref<Note>();
+const clips = ref<Clip[]>([]);
 const showPrev = ref<'user' | 'channel' | false>(false);
 const showNext = ref<'user' | 'channel' | false>(false);
 const error = ref();
@@ -114,13 +115,13 @@ const nextChannelPagination: Paging = {
 function fetchNote() {
 	showPrev.value = false;
 	showNext.value = false;
-	note.value = null;
+	note.value = undefined;
 	misskeyApi('notes/show', {
 		noteId: props.noteId,
 	}).then(res => {
 		note.value = res;
 		// 古いノートは被クリップ数をカウントしていないので、2023-10-01以前のものは強制的にnotes/clipsを叩く
-		if (note.value.clippedCount > 0 || new Date(note.value.createdAt).getTime() < new Date('2023-10-01').getTime()) {
+		if ((note.value.clippedCount !== undefined && note.value.clippedCount > 0) || new Date(note.value.createdAt).getTime() < new Date('2023-10-01').getTime()) {
 			misskeyApi('notes/clips', {
 				noteId: note.value.id,
 			}).then((_clips) => {
@@ -136,10 +137,6 @@ watch(() => props.noteId, fetchNote, {
 	immediate: true,
 });
 
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
-
 definePageMetadata(() => ({
 	title: i18n.ts.note,
 	...note.value ? {
@@ -147,7 +144,7 @@ definePageMetadata(() => ({
 		avatar: note.value.user,
 		path: `/notes/${note.value.id}`,
 		share: {
-			title: i18n.tsx.noteOf({ user: note.value.user.name }),
+			title: i18n.tsx.noteOf({ user: note.value.user.name ?? acct(note.value.user) }),
 			text: note.value.text,
 		},
 	} : {},

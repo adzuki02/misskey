@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { UserLite } from 'misskey-js/entities.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 
 const props = withDefaults(defineProps<{
@@ -24,11 +24,11 @@ const props = withDefaults(defineProps<{
 	limit: Infinity,
 });
 
-const users = ref<Misskey.entities.UserLite[]>([]);
+const users = ref<UserLite[]>([]);
 
 onMounted(async () => {
 	users.value = await misskeyApi('users/show', {
 		userIds: props.userIds,
-	}) as unknown as Misskey.entities.UserLite[];
+	});
 });
 </script>

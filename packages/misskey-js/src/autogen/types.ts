@@ -3178,24 +3178,6 @@ export type components = {
       userIds?: string[];
       isPublic: boolean;
     };
-    Ad: {
-      /**
-       * Format: id
-       * @example xxxxxxxxxx
-       */
-      id: string;
-      /** Format: date-time */
-      expiresAt: string;
-      /** Format: date-time */
-      startsAt: string;
-      place: string;
-      priority: string;
-      ratio: number;
-      url: string;
-      imageUrl: string;
-      memo: string;
-      dayOfWeek: number;
-    };
     App: {
       id: string;
       name: string;
@@ -3292,6 +3274,7 @@ export type components = {
       createdAt: string;
       user: components['schemas']['UserLite'];
       type: string;
+      note?: components['schemas']['Note'];
     };
     Notification: {
       /** Format: id */
@@ -3611,6 +3594,8 @@ export type components = {
       description: string | null;
       /** Format: id */
       userId: string | null;
+      /** Format: id */
+      bannerId: string | null;
       /** Format: url */
       bannerUrl: string | null;
       pinnedNoteIds: string[];
@@ -4048,7 +4033,7 @@ export type operations = {
             enableEmail: boolean;
             enableServiceWorker: boolean;
             translatorAvailable: boolean;
-            silencedHosts?: string[];
+            silencedHosts: string[];
             mediaSilencedHosts: string[];
             pinnedUsers: string[];
             blockedHosts: string[];
@@ -4060,8 +4045,10 @@ export type operations = {
             mcaptchaSecretKey: string | null;
             recaptchaSecretKey: string | null;
             turnstileSecretKey: string | null;
-            sensitiveMediaDetection: string;
-            sensitiveMediaDetectionSensitivity: string;
+            /** @enum {string} */
+            sensitiveMediaDetection: 'none' | 'all' | 'local' | 'remote';
+            /** @enum {string} */
+            sensitiveMediaDetectionSensitivity: 'medium' | 'low' | 'high' | 'veryLow' | 'veryHigh';
             setSensitiveFlagAutomatically: boolean;
             enableSensitiveMediaDetectionForVideos: boolean;
             /** Format: id */
@@ -4111,6 +4098,7 @@ export type operations = {
             defaultLightTheme: string | null;
             description: string | null;
             disableRegistration: boolean;
+            feedbackUrl: string | null;
             impressumUrl: string | null;
             maintainerEmail: string | null;
             maintainerName: string | null;
@@ -4227,6 +4215,7 @@ export type operations = {
               reporter: components['schemas']['UserDetailedNotMe'];
               targetUser: components['schemas']['UserDetailedNotMe'];
               assignee?: components['schemas']['UserDetailedNotMe'] | null;
+              forwarded: boolean;
             })[];
         };
       };
@@ -5332,6 +5321,10 @@ export type operations = {
             folderId: string | null;
             isSensitive: boolean;
             isLink: boolean;
+            requestIp: string | null;
+            requestHeaders: {
+              [key: string]: unknown;
+            } | null;
           };
         };
       };
@@ -14488,7 +14481,7 @@ export type operations = {
       /** @description OK (with results) */
       200: {
         content: {
-          'application/json': {
+          'application/json': ({
               /** Format: misskey:id */
               id: string;
               name?: string;
@@ -14496,8 +14489,10 @@ export type operations = {
               createdAt: string;
               /** Format: date-time */
               lastUsedAt?: string;
+              description: string | null;
+              iconUrl: string | null;
               permission: string[];
-            }[];
+            })[];
         };
       };
       /** @description Client error */

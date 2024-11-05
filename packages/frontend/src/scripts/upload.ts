@@ -4,10 +4,10 @@
  */
 
 import { reactive, ref } from 'vue';
-import * as Misskey from 'misskey-js';
 import { v4 as uuid } from 'uuid';
 import { readAndCompressImage } from '@misskey-dev/browser-image-resizer';
 import { getCompressionConfig } from './upload/compress-config.js';
+import type { DriveFile } from 'misskey-js/entities.js';
 import { defaultStore } from '@/store.js';
 import { apiUrl } from '@/config.js';
 import { $i } from '@/account.js';
@@ -35,9 +35,7 @@ export function uploadFile(
 	folder?: any,
 	name?: string,
 	keepOriginal: boolean = defaultStore.state.keepOriginalUploading,
-): Promise<Misskey.entities.DriveFile> {
-	if ($i == null) throw new Error('Not logged in');
-
+): Promise<DriveFile> {
 	if (folder && typeof folder === 'object') folder = folder.id;
 
 	if (file.size > instance.maxFileSize) {
@@ -89,7 +87,7 @@ export function uploadFile(
 			}
 
 			const formData = new FormData();
-			formData.append('i', $i.token);
+			if ($i) formData.append('i', $i.token);
 			formData.append('force', 'true');
 			formData.append('file', resizedImage ?? file);
 			formData.append('name', ctx.name);

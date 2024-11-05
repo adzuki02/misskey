@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, watch, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Role } from 'misskey-js/entities.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import MkUserList from '@/components/MkUserList.vue';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
@@ -54,7 +54,7 @@ const props = withDefaults(defineProps<{
 });
 
 const tab = ref(props.initialTab);
-const role = ref<Misskey.entities.Role>();
+const role = ref<Role>();
 const error = ref();
 const visible = ref(false);
 

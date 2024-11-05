@@ -4,7 +4,7 @@
  */
 
 import { computed, reactive } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { MetaDetailed } from 'misskey-js/entities.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { DEFAULT_INFO_IMAGE_URL, DEFAULT_NOT_FOUND_IMAGE_URL, DEFAULT_SERVER_ERROR_IMAGE_URL } from '@/const.js';
@@ -28,7 +28,7 @@ if (providedAt > cachedAt) {
 
 // TODO: instanceをリアクティブにするかは再考の余地あり
 
-export const instance: Misskey.entities.MetaDetailed = reactive(cachedMeta ?? {});
+export const instance: MetaDetailed = reactive(cachedMeta ?? {});
 
 export const serverErrorImageUrl = computed(() => instance.serverErrorImageUrl ?? DEFAULT_SERVER_ERROR_IMAGE_URL);
 
@@ -38,7 +38,7 @@ export const notFoundImageUrl = computed(() => instance.notFoundImageUrl ?? DEFA
 
 export const isEnabledUrlPreview = computed(() => instance.enableUrlPreview ?? true);
 
-export async function fetchInstance(force = false): Promise<Misskey.entities.MetaDetailed> {
+export async function fetchInstance(force = false): Promise<MetaDetailed> {
 	if (!force) {
 		const cachedAt = miLocalStorage.getItem('instanceCachedAt') ? parseInt(miLocalStorage.getItem('instanceCachedAt')!) : 0;
 

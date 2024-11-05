@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader :actions="headerActions"/></template>
 	<MkSpacer :contentMax="800">
 		<div ref="rootEl">
 			<div v-if="queue > 0" :class="$style.new"><button class="_buttonPrimary" :class="$style.newButton" @click="top()">{{ i18n.ts.newNoteRecived }}</button></div>
@@ -24,8 +24,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, ref, shallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import { computed, watch, ref, useTemplateRef } from 'vue';
+import type { UserList } from 'misskey-js/entities.js';
 import MkTimeline from '@/components/MkTimeline.vue';
 import { scroll } from '@/scripts/scroll.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -39,10 +39,10 @@ const props = defineProps<{
 	listId: string;
 }>();
 
-const list = ref<Misskey.entities.UserList | null>(null);
+const list = ref<UserList>();
 const queue = ref(0);
-const tlEl = shallowRef<InstanceType<typeof MkTimeline>>();
-const rootEl = shallowRef<HTMLElement>();
+const tlEl = useTemplateRef('tlEl');
+const rootEl = useTemplateRef('rootEl');
 
 watch(() => props.listId, async () => {
 	list.value = await misskeyApi('users/lists/show', {
@@ -55,6 +55,7 @@ function queueUpdated(q) {
 }
 
 function top() {
+	if (!rootEl.value) return;
 	scroll(rootEl.value, { top: 0 });
 }
 
@@ -67,8 +68,6 @@ const headerActions = computed(() => list.value ? [{
 	text: i18n.ts.settings,
 	handler: settings,
 }] : []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: list.value ? list.value.name : i18n.ts.lists,

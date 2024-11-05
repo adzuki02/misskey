@@ -123,7 +123,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, Ref, watch } from 'vue';
+import { computed, ref, type Ref, watch } from 'vue';
 import Sortable from 'vuedraggable';
 import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -157,7 +157,7 @@ const chooseEmoji = (ev: MouseEvent) => pickEmoji(pinnedEmojis, ev);
 const setDefaultEmoji = () => setDefault(pinnedEmojis);
 
 function previewReaction(ev: MouseEvent) {
-	reactionPicker.show(getHTMLElement(ev), null);
+	reactionPicker.show(getHTMLElement(ev), undefined);
 }
 
 function previewEmoji(ev: MouseEvent) {

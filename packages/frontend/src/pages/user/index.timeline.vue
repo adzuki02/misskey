@@ -18,14 +18,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { UserDetailed } from 'misskey-js/entities.js';
 import MkNotes from '@/components/MkNotes.vue';
 import MkTab from '@/components/MkTab.vue';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 
 const props = defineProps<{
-	user: Misskey.entities.UserDetailed;
+	user: UserDetailed;
 }>();
 
 const tab = ref<string | null>($i ? null : 'all');

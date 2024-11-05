@@ -8,11 +8,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { User } from 'misskey-js/entities.js';
 
-const props = withDefaults(defineProps<{
-	user: Misskey.entities.User;
+withDefaults(defineProps<{
+	user: User;
 	nowrap?: boolean;
 }>(), {
 	nowrap: true,

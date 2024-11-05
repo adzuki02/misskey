@@ -34,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Note, DriveFile, UserDetailed } from 'misskey-js/entities.js';
 import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { notePage } from '@/filters/note.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -44,17 +44,17 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
-	user: Misskey.entities.UserDetailed;
+	user: UserDetailed;
 }>();
 
 const fetching = ref(true);
 const files = ref<{
-	note: Misskey.entities.Note;
-	file: Misskey.entities.DriveFile;
+	note: Note;
+	file: DriveFile;
 }[]>([]);
 const showingFiles = ref<string[]>([]);
 
-function thumbnail(image: Misskey.entities.DriveFile): string {
+function thumbnail(image: DriveFile): string | null {
 	return defaultStore.state.disableShowingAnimatedImages
 		? getStaticImageUrl(image.url)
 		: image.thumbnailUrl;
@@ -67,6 +67,7 @@ onMounted(() => {
 		limit: 15,
 	}).then(notes => {
 		for (const note of notes) {
+			if (!note.files) continue;
 			for (const file of note.files) {
 				files.value.push({
 					note,

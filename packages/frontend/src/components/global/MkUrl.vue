@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <component
-	:is="self ? 'MkA' : 'a'" ref="el" :class="$style.root" class="_link" :[attr]="self ? props.url.substring(local.length) : props.url" :rel="rel ?? 'nofollow noopener'" :target="target"
+	:is="self ? 'MkA' : 'a'" ref="el" :class="$style.root" class="_link" :[attr]="self ? props.url.substring(local.length) : props.url" :rel="rel" :target="target"
 	:behavior="props.navigationBehavior"
 	@contextmenu.stop="() => {}"
 >
@@ -27,12 +27,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
 import { toUnicode as decodePunycode } from 'punycode/';
+import type { MkABehavior } from '@/components/global/MkA.vue';
 import { url as local } from '@/config.js';
 import * as os from '@/os.js';
 import { useTooltip } from '@/scripts/use-tooltip.js';
 import { safeURIDecode } from '@/scripts/safe-uri-decode.js';
 import { isEnabledUrlPreview } from '@/instance.js';
-import { MkABehavior } from '@/components/global/MkA.vue';
 
 const props = withDefaults(defineProps<{
 	url: string;
@@ -40,7 +40,9 @@ const props = withDefaults(defineProps<{
 	showUrlPreview?: boolean;
 	navigationBehavior?: MkABehavior;
 }>(), {
+	rel: 'nofollow noopener',
 	showUrlPreview: true,
+	navigationBehavior: null,
 });
 
 const self = props.url.startsWith(local);

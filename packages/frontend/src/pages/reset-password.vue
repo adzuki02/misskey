@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader/></template>
 	<MkSpacer v-if="token" :contentMax="700" :marginMin="16" :marginMax="32">
 		<div class="_gaps_m">
 			<MkInput v-model="password" type="password">
@@ -36,7 +36,9 @@ const password = ref('');
 
 async function save() {
 	await os.apiWithDialog('reset-password', {
-		token: props.token,
+		// v-if="token"があるので問題ない
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		token: props.token!,
 		password: password.value,
 	});
 	mainRouter.push('/');
@@ -50,10 +52,6 @@ onMounted(() => {
 		mainRouter.push('/');
 	}
 });
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.resetPassword,

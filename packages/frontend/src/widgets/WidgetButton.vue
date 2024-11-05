@@ -57,10 +57,10 @@ const run = async () => {
 		token: $i?.token,
 	}), {
 		in: aiScriptReadline,
-		out: (value) => {
+		out: () => {
 			// nop
 		},
-		log: (type, params) => {
+		log: () => {
 			// nop
 		},
 	});
@@ -80,7 +80,7 @@ const run = async () => {
 	} catch (err) {
 		os.alert({
 			type: 'error',
-			text: err,
+			text: typeof err === 'string' ? err : err instanceof Error ? err.toString() : JSON.stringify(err),
 		});
 	}
 };

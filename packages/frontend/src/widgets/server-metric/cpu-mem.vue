@@ -76,17 +76,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, onBeforeUnmount, ref } from 'vue';
-import * as Misskey from 'misskey-js';
 import { v4 as uuid } from 'uuid';
+import type { ChannelConnection, Channels } from 'misskey-js';
+import type { ServerInfoResponse, ServerStatsLog, ServerStats } from 'misskey-js/entities.js';
 
 const props = defineProps<{
-	connection: Misskey.ChannelConnection<Misskey.Channels['serverStats']>,
-	meta: Misskey.entities.ServerInfoResponse
+	connection: ChannelConnection<Channels['serverStats']>,
+	meta: ServerInfoResponse
 }>();
 
 const viewBoxX = ref<number>(50);
 const viewBoxY = ref<number>(30);
-const stats = ref<Misskey.entities.ServerStats[]>([]);
+const stats = ref<ServerStats[]>([]);
 const cpuGradientId = uuid();
 const cpuMaskId = uuid();
 const memGradientId = uuid();
@@ -116,7 +117,7 @@ onBeforeUnmount(() => {
 	props.connection.off('statsLog', onStatsLog);
 });
 
-function onStats(connStats: Misskey.entities.ServerStats) {
+function onStats(connStats: ServerStats) {
 	stats.value.push(connStats);
 	if (stats.value.length > 50) stats.value.shift();
 
@@ -137,7 +138,7 @@ function onStats(connStats: Misskey.entities.ServerStats) {
 	memP.value = (connStats.mem.active / props.meta.mem.total * 100).toFixed(0);
 }
 
-function onStatsLog(statsLog: Misskey.entities.ServerStatsLog) {
+function onStatsLog(statsLog: ServerStatsLog) {
 	for (const revStats of statsLog.toReversed()) {
 		onStats(revStats);
 	}

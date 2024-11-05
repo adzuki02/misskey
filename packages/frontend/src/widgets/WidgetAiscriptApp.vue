@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, Ref, ref, watch } from 'vue';
+import { onMounted, type Ref, ref, watch } from 'vue';
 import { Interpreter, Parser } from '@syuilo/aiscript';
 import { useWidgetPropsManager, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
 import { GetFormResultType } from '@/scripts/form.js';
@@ -89,7 +89,7 @@ async function run() {
 		os.alert({
 			type: 'error',
 			title: 'AiScript Error',
-			text: err.message,
+			text: err instanceof Error ? err.message : JSON.stringify(err),
 		});
 	}
 }

@@ -28,11 +28,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, shallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import { computed, onMounted, onUnmounted, useTemplateRef } from 'vue';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import PhotoSwipe from 'photoswipe';
 import 'photoswipe/style.css';
+import type { DriveFile } from 'misskey-js/entities.js';
 import XBanner from '@/components/MkMediaBanner.vue';
 import XImage from '@/components/MkMediaImage.vue';
 import XVideo from '@/components/MkMediaVideo.vue';
@@ -42,11 +42,11 @@ import { defaultStore } from '@/store.js';
 import { focusParent } from '@/scripts/focus.js';
 
 const props = defineProps<{
-	mediaList: Misskey.entities.DriveFile[];
+	mediaList: DriveFile[];
 	raw?: boolean;
 }>();
 
-const gallery = shallowRef<HTMLDivElement>();
+const gallery = useTemplateRef('gallery');
 const pswpZIndex = os.claimZIndex('middle');
 document.documentElement.style.setProperty('--mk-pswp-root-z-index', pswpZIndex.toString());
 const count = computed(() => props.mediaList.filter(media => previewable(media)).length);
@@ -113,7 +113,7 @@ onMounted(() => {
 				}
 				return item;
 			}),
-		gallery: gallery.value,
+		gallery: gallery.value ?? undefined,
 		mainClass: 'pswp',
 		children: '.image',
 		thumbSelector: '.image',
@@ -206,7 +206,7 @@ onUnmounted(() => {
 	activeEl = null;
 });
 
-const previewable = (file: Misskey.entities.DriveFile): boolean => {
+const previewable = (file: DriveFile): boolean => {
 	if (file.type === 'image/svg+xml') return true; // svgのwebpublic/thumbnailはpngなのでtrue
 	// FILE_TYPE_BROWSERSAFEに適合しないものはブラウザで表示するのに不適切
 	return (file.type.startsWith('video') || file.type.startsWith('image')) && FILE_TYPE_BROWSERSAFE.includes(file.type);

@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div class="body">
 					<div class="value">
 						{{ number(federationSubActive) }}
-						<MkNumberDiff v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="federationSubActiveDiff"></MkNumberDiff>
+						<MkNumberDiff v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="federationSubActiveDiff ?? NaN"></MkNumberDiff>
 					</div>
 					<div class="label">Sub</div>
 				</div>
@@ -35,7 +35,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div class="body">
 					<div class="value">
 						{{ number(federationPubActive) }}
-						<MkNumberDiff v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="federationPubActiveDiff"></MkNumberDiff>
+						<MkNumberDiff v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="federationPubActiveDiff ?? NaN"></MkNumberDiff>
 					</div>
 					<div class="label">Pub</div>
 				</div>

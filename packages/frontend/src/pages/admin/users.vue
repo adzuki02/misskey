@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div>
 	<MkStickyContainer>
-		<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
+		<template #header><XHeader :actions="headerActions"/></template>
 		<MkSpacer :contentMax="900">
 			<div class="_gaps">
 				<div :class="$style.inputs">
@@ -37,7 +37,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #prefix>@</template>
 						<template #label>{{ i18n.ts.username }}</template>
 					</MkInput>
-					<MkInput v-model="searchHost" style="flex: 1;" type="text" :spellcheck="false" :disabled="pagination.params.origin === 'local'">
+					<!-- @vue-expect-error originプロパティはあるはずなので無視 -->
+					<MkInput v-model="searchHost" style="flex: 1;" type="text" :spellcheck="false" :disabled="pagination.params?.origin === 'local'">
 						<template #prefix>@</template>
 						<template #label>{{ i18n.ts.host }}</template>
 					</MkInput>
@@ -45,7 +46,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<MkPagination v-slot="{items}" ref="paginationComponent" :pagination="pagination">
 					<div :class="$style.users">
-						<MkA v-for="user in items" :key="user.id" v-tooltip.mfm="`Last posted: ${dateString(user.updatedAt)}`" :class="$style.user" :to="`/admin/user/${user.id}`">
+						<MkA v-for="user in items" :key="user.id" v-tooltip.mfm="`Last posted: ${dateString(user.updatedAt ?? '1970-01-01')}`" :class="$style.user" :to="`/admin/user/${user.id}`">
 							<MkUserCardMini :user="user"/>
 						</MkA>
 					</div>
@@ -58,10 +59,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, shallowRef, ref } from 'vue';
+import { ComponentExposed } from 'vue-component-type-helpers';
 import XHeader from './_header_.vue';
+import type { AdminShowUsersRequest } from 'misskey-js/entities.js';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
-import MkPagination from '@/components/MkPagination.vue';
+import MkPagination, { type Paging } from '@/components/MkPagination.vue';
 import * as os from '@/os.js';
 import { lookupUser } from '@/scripts/admin-lookup.js';
 import { i18n } from '@/i18n.js';
@@ -69,14 +72,14 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { dateString } from '@/filters/date.js';
 
-const paginationComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const paginationComponent = shallowRef<ComponentExposed<typeof MkPagination>>();
 
-const sort = ref('+createdAt');
-const state = ref('all');
-const origin = ref('local');
+const sort = ref<Exclude<AdminShowUsersRequest['sort'], undefined>>('+createdAt');
+const state = ref<Exclude<AdminShowUsersRequest['state'], undefined>>('all');
+const origin = ref<Exclude<AdminShowUsersRequest['origin'], undefined>>('local');
 const searchUsername = ref('');
 const searchHost = ref('');
-const pagination = {
+const pagination: Paging<'admin/show-users'> = {
 	endpoint: 'admin/show-users' as const,
 	limit: 10,
 	params: computed(() => ({
@@ -110,8 +113,8 @@ async function addUser() {
 	os.apiWithDialog('admin/accounts/create', {
 		username: username,
 		password: password,
-	}).then(res => {
-		paginationComponent.value.reload();
+	}).then(() => {
+		paginationComponent.value?.reload();
 	});
 }
 
@@ -134,8 +137,6 @@ const headerActions = computed(() => [{
 	text: i18n.ts.lookup,
 	handler: lookupUser,
 }]);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.users,

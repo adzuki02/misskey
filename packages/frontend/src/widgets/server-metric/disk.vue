@@ -17,12 +17,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import * as Misskey from 'misskey-js';
 import XPie from './pie.vue';
+import type { ServerInfoResponse } from 'misskey-js/entities.js';
 import bytes from '@/filters/bytes.js';
 
 const props = defineProps<{
-	meta: Misskey.entities.ServerInfoResponse;
+	meta: ServerInfoResponse;
 }>();
 
 const usage = computed(() => props.meta.fs.used / props.meta.fs.total);

@@ -75,6 +75,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref, shallowRef } from 'vue';
+import { ComponentExposed } from 'vue-component-type-helpers';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkPagination from '@/components/MkPagination.vue';
@@ -86,7 +87,7 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
-const emojisPaginationComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const emojisPaginationComponent = shallowRef<ComponentExposed<typeof MkPagination>>();
 
 const tab = ref('local');
 const query = ref<string | null>(null);
@@ -113,6 +114,8 @@ const remotePagination = {
 };
 
 const selectAll = () => {
+	if (!emojisPaginationComponent.value) return;
+
 	if (selectedEmojis.value.length > 0) {
 		selectedEmojis.value = [];
 	} else {
@@ -133,7 +136,7 @@ const add = async (ev: MouseEvent) => {
 	}, {
 		done: result => {
 			if (result.created) {
-				emojisPaginationComponent.value.prepend(result.created);
+				emojisPaginationComponent.value?.prepend(result.created);
 			}
 		},
 		closed: () => dispose(),
@@ -145,6 +148,8 @@ const edit = (emoji) => {
 		emoji: emoji,
 	}, {
 		done: result => {
+			if (!emojisPaginationComponent.value) return;
+
 			if (result.updated) {
 				emojisPaginationComponent.value.updateItem(result.updated.id, (oldEmoji: any) => ({
 					...oldEmoji,
@@ -218,6 +223,8 @@ const menu = (ev: MouseEvent) => {
 };
 
 const setCategoryBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
 	const { canceled, result } = await os.inputText({
 		title: 'Category',
 	});
@@ -230,6 +237,8 @@ const setCategoryBulk = async () => {
 };
 
 const setLicenseBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
 	const { canceled, result } = await os.inputText({
 		title: 'License',
 	});
@@ -242,6 +251,8 @@ const setLicenseBulk = async () => {
 };
 
 const addTagBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
 	const { canceled, result } = await os.inputText({
 		title: 'Tag',
 	});
@@ -254,6 +265,8 @@ const addTagBulk = async () => {
 };
 
 const removeTagBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
 	const { canceled, result } = await os.inputText({
 		title: 'Tag',
 	});
@@ -266,6 +279,8 @@ const removeTagBulk = async () => {
 };
 
 const setTagBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
 	const { canceled, result } = await os.inputText({
 		title: 'Tag',
 	});
@@ -278,6 +293,8 @@ const setTagBulk = async () => {
 };
 
 const delBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
 	const { canceled } = await os.confirm({
 		type: 'warning',
 		text: i18n.ts.deleteConfirm,

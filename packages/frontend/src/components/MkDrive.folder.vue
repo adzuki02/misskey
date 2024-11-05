@@ -35,7 +35,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile, DriveFolder } from 'misskey-js/entities.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
@@ -44,7 +44,7 @@ import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import { MenuItem } from '@/types/menu.js';
 
 const props = withDefaults(defineProps<{
-	folder: Misskey.entities.DriveFolder;
+	folder: DriveFolder;
 	isSelected?: boolean;
 	selectMode?: boolean;
 }>(), {
@@ -53,12 +53,12 @@ const props = withDefaults(defineProps<{
 });
 
 const emit = defineEmits<{
-	(ev: 'chosen', v: Misskey.entities.DriveFolder): void;
-	(ev: 'unchose', v: Misskey.entities.DriveFolder): void;
-	(ev: 'move', v: Misskey.entities.DriveFolder): void;
-	(ev: 'upload', file: File, folder: Misskey.entities.DriveFolder);
-	(ev: 'removeFile', v: Misskey.entities.DriveFile['id']): void;
-	(ev: 'removeFolder', v: Misskey.entities.DriveFolder['id']): void;
+	(ev: 'chosen', v: DriveFolder): void;
+	(ev: 'unchose', v: DriveFolder): void;
+	(ev: 'move', v: DriveFolder): void;
+	(ev: 'upload', file: File, folder: DriveFolder);
+	(ev: 'removeFile', v: DriveFile['id']): void;
+	(ev: 'removeFolder', v: DriveFolder['id']): void;
 	(ev: 'dragstart'): void;
 	(ev: 'dragend'): void;
 }>();
@@ -209,10 +209,6 @@ function onDragend() {
 	emit('dragend');
 }
 
-function go() {
-	emit('move', props.folder);
-}
-
 function rename() {
 	os.inputText({
 		title: i18n.ts.renameFolder,
@@ -261,10 +257,6 @@ function deleteFolder() {
 				});
 		}
 	});
-}
-
-function setAsUploadFolder() {
-	defaultStore.set('uploadFolder', props.folder.id);
 }
 
 function onContextmenu(ev: MouseEvent) {

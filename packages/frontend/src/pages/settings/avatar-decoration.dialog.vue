@@ -60,7 +60,7 @@ const props = defineProps<{
 	decoration: {
 		id: string;
 		url: string;
-		name: string;
+		name?: string;
 	};
 }>();
 
@@ -107,7 +107,7 @@ const decorationsForPreview = computed(() => {
 });
 
 function cancel() {
-	dialog.value.close();
+	dialog.value?.close();
 }
 
 async function update() {
@@ -117,7 +117,7 @@ async function update() {
 		offsetX: offsetX.value,
 		offsetY: offsetY.value,
 	});
-	dialog.value.close();
+	dialog.value?.close();
 }
 
 async function attach() {
@@ -127,12 +127,12 @@ async function attach() {
 		offsetX: offsetX.value,
 		offsetY: offsetY.value,
 	});
-	dialog.value.close();
+	dialog.value?.close();
 }
 
 async function detach() {
 	emit('detach');
-	dialog.value.close();
+	dialog.value?.close();
 }
 </script>
 

@@ -6,10 +6,10 @@
 import { action } from '@storybook/addon-actions';
 import { StoryObj } from '@storybook/vue3';
 import { http, HttpResponse } from 'msw';
-import * as Misskey from 'misskey-js';
-import MkDrive from './MkDrive.vue';
 import { file, folder } from '../../.storybook/fakes.js';
 import { commonHandlers } from '../../.storybook/mocks.js';
+import MkDrive from './MkDrive.vue';
+import type { DriveFoldersCreateRequest, DriveFoldersUpdateRequest } from 'misskey-js/entities.js';
 export const Default = {
 	render(args) {
 		return {
@@ -58,7 +58,7 @@ export const Default = {
 					return HttpResponse.json([folder(crypto.randomUUID())]);
 				}),
 				http.post('/api/drive/folders/create', async ({ request }) => {
-					const req = await request.json() as Misskey.entities.DriveFoldersCreateRequest;
+					const req = await request.json() as DriveFoldersCreateRequest;
 					action('POST /api/drive/folders/create')(req);
 					return HttpResponse.json(folder(crypto.randomUUID(), req.name, req.parentId));
 				}),
@@ -67,7 +67,7 @@ export const Default = {
 					return HttpResponse.json(undefined, { status: 204 });
 				}),
 				http.post('/api/drive/folders/update', async ({ request }) => {
-					const req = await request.json() as Misskey.entities.DriveFoldersUpdateRequest;
+					const req = await request.json() as DriveFoldersUpdateRequest;
 					action('POST /api/drive/folders/update')(req);
 					return HttpResponse.json({
 						...folder(),

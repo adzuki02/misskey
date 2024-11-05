@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, watch, provide, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Clip } from 'misskey-js/entities.js';
 import MkNotes from '@/components/MkNotes.vue';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
@@ -49,7 +49,7 @@ const props = defineProps<{
 	clipId: string,
 }>();
 
-const clip = ref<Misskey.entities.Clip | null>(null);
+const clip = ref<Clip>();
 const favorited = ref(false);
 const pagination = {
 	endpoint: 'clips/notes' as const,
@@ -59,13 +59,13 @@ const pagination = {
 	})),
 };
 
-const isOwned = computed<boolean | null>(() => $i && clip.value && ($i.id === clip.value.userId));
+const isOwned = computed<boolean | null>(() => ($i && clip.value && ($i.id === clip.value.userId)) ?? null);
 
 watch(() => props.clipId, async () => {
 	clip.value = await misskeyApi('clips/show', {
 		clipId: props.clipId,
 	});
-	favorited.value = clip.value.isFavorited;
+	favorited.value = clip.value?.isFavorited ?? false;
 }, {
 	immediate: true,
 });
@@ -97,6 +97,8 @@ const headerActions = computed(() => clip.value && isOwned.value ? [{
 	icon: 'ti ti-pencil',
 	text: i18n.ts.edit,
 	handler: async (): Promise<void> => {
+		if (!clip.value) return;
+
 		const { canceled, result } = await os.form(clip.value.name, {
 			name: {
 				type: 'string',
@@ -130,6 +132,7 @@ const headerActions = computed(() => clip.value && isOwned.value ? [{
 	icon: 'ti ti-link',
 	text: i18n.ts.copyUrl,
 	handler: async (): Promise<void> => {
+		if (!clip.value) return;
 		copyToClipboard(`${url}/clips/${clip.value.id}`);
 		os.success();
 	},
@@ -137,9 +140,10 @@ const headerActions = computed(() => clip.value && isOwned.value ? [{
 	icon: 'ti ti-share',
 	text: i18n.ts.share,
 	handler: async (): Promise<void> => {
+		if (!clip.value) return;
 		navigator.share({
 			title: clip.value.name,
-			text: clip.value.description,
+			text: clip.value.description ?? '',
 			url: `${url}/clips/${clip.value.id}`,
 		});
 	},
@@ -148,6 +152,8 @@ const headerActions = computed(() => clip.value && isOwned.value ? [{
 	text: i18n.ts.delete,
 	danger: true,
 	handler: async (): Promise<void> => {
+		if (!clip.value) return;
+
 		const { canceled } = await os.confirm({
 			type: 'warning',
 			text: i18n.tsx.deleteAreYouSure({ x: clip.value.name }),
@@ -160,7 +166,7 @@ const headerActions = computed(() => clip.value && isOwned.value ? [{
 
 		clipsCache.delete();
 	},
-}] : null);
+}] : undefined);
 
 definePageMetadata(() => ({
 	title: clip.value ? clip.value.name : i18n.ts.clip,

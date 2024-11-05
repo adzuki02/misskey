@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps_m">
 	<div class="_panel">
-		<div :class="$style.banner" :style="{ backgroundImage: $i.bannerUrl ? `url(${ $i.bannerUrl })` : null }">
+		<div :class="$style.banner" :style="{ backgroundImage: $i.bannerUrl ? `url(${ $i.bannerUrl })` : 'none' }">
 			<MkButton primary rounded :class="$style.bannerEdit" @click="changeBanner">{{ i18n.ts._profile.changeBanner }}</MkButton>
 		</div>
 		<div :class="$style.avatarContainer">
@@ -188,7 +188,7 @@ function save() {
 		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 		birthday: profile.birthday || null,
 		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-		lang: profile.lang || null,
+		lang: (profile.lang || null) as keyof typeof langmap | null,
 		isBot: !!profile.isBot,
 		isCat: !!profile.isCat,
 	});
@@ -246,10 +246,6 @@ function changeBanner(ev) {
 		globalEvents.emit('requestClearPageCache');
 	});
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.profile,

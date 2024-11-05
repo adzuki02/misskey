@@ -12,8 +12,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div class="icon"><i class="ti ti-users"></i></div>
 				<div class="body">
 					<div class="value">
-						<MkNumber :value="stats.originalUsersCount" style="margin-right: 0.5em;"/>
-						<MkNumberDiff v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="usersComparedToThePrevDay"></MkNumberDiff>
+						<MkNumber :value="stats?.originalUsersCount ?? NaN" style="margin-right: 0.5em;"/>
+						<MkNumberDiff v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="usersComparedToThePrevDay ?? NaN"></MkNumberDiff>
 					</div>
 					<div class="label">Users</div>
 				</div>
@@ -22,8 +22,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div class="icon"><i class="ti ti-pencil"></i></div>
 				<div class="body">
 					<div class="value">
-						<MkNumber :value="stats.originalNotesCount" style="margin-right: 0.5em;"/>
-						<MkNumberDiff v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="notesComparedToThePrevDay"></MkNumberDiff>
+						<MkNumber :value="stats?.originalNotesCount ?? NaN" style="margin-right: 0.5em;"/>
+						<MkNumberDiff v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="notesComparedToThePrevDay ?? NaN"></MkNumberDiff>
 					</div>
 					<div class="label">Notes</div>
 				</div>
@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div class="icon"><i class="ti ti-planet"></i></div>
 				<div class="body">
 					<div class="value">
-						<MkNumber :value="stats.instances" style="margin-right: 0.5em;"/>
+						<MkNumber :value="stats?.instances ?? NaN" style="margin-right: 0.5em;"/>
 					</div>
 					<div class="label">Instances</div>
 				</div>
@@ -53,7 +53,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { StatsResponse } from 'misskey-js/entities.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import MkNumberDiff from '@/components/MkNumberDiff.vue';
 import MkNumber from '@/components/MkNumber.vue';
@@ -61,7 +61,7 @@ import { i18n } from '@/i18n.js';
 import { customEmojis } from '@/custom-emojis.js';
 import { defaultStore } from '@/store.js';
 
-const stats = ref<Misskey.entities.StatsResponse | null>(null);
+const stats = ref<StatsResponse>();
 const usersComparedToThePrevDay = ref<number>();
 const notesComparedToThePrevDay = ref<number>();
 const fetching = ref(true);
@@ -71,11 +71,11 @@ onMounted(async () => {
 	stats.value = _stats;
 
 	misskeyApi('charts/users', { limit: 2, span: 'day' }).then(chart => {
-		usersComparedToThePrevDay.value = stats.value!.originalUsersCount - chart.local.total[1];
+		usersComparedToThePrevDay.value = _stats.originalUsersCount - chart.local.total[1];
 	});
 
 	misskeyApi('charts/notes', { limit: 2, span: 'day' }).then(chart => {
-		notesComparedToThePrevDay.value = stats.value!.originalNotesCount - chart.local.total[1];
+		notesComparedToThePrevDay.value = _stats.originalNotesCount - chart.local.total[1];
 	});
 
 	fetching.value = false;

@@ -50,17 +50,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, onBeforeUnmount, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { ChannelConnection, Channels } from 'misskey-js';
+import type { ServerInfoResponse, ServerStatsLog, ServerStats } from 'misskey-js/entities.js';
 import bytes from '@/filters/bytes.js';
 
 const props = defineProps<{
-	connection: Misskey.ChannelConnection<Misskey.Channels['serverStats']>,
-	meta: Misskey.entities.ServerInfoResponse
+	connection: ChannelConnection<Channels['serverStats']>,
+	meta: ServerInfoResponse
 }>();
 
 const viewBoxX = ref<number>(50);
 const viewBoxY = ref<number>(30);
-const stats = ref<Misskey.entities.ServerStats[]>([]);
+const stats = ref<ServerStats[]>([]);
 const inPolylinePoints = ref<string>('');
 const outPolylinePoints = ref<string>('');
 const inPolygonPoints = ref<string>('');
@@ -86,7 +87,7 @@ onBeforeUnmount(() => {
 	props.connection.off('statsLog', onStatsLog);
 });
 
-function onStats(connStats: Misskey.entities.ServerStats) {
+function onStats(connStats: ServerStats) {
 	stats.value.push(connStats);
 	if (stats.value.length > 50) stats.value.shift();
 
@@ -110,7 +111,7 @@ function onStats(connStats: Misskey.entities.ServerStats) {
 	outRecent.value = connStats.net.tx;
 }
 
-function onStatsLog(statsLog: Misskey.entities.ServerStatsLog) {
+function onStatsLog(statsLog: ServerStatsLog) {
 	for (const revStats of statsLog.toReversed()) {
 		onStats(revStats);
 	}

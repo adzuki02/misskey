@@ -16,9 +16,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, ref, computed } from 'vue';
-import * as Misskey from 'misskey-js';
 import { v4 as uuid } from 'uuid';
 import XStatusbar from './statusbar.statusbar.vue';
+import type { UserList } from 'misskey-js/entities.js';
 import MkFolder from '@/components/MkFolder.vue';
 import MkButton from '@/components/MkButton.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -28,7 +28,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 const statusbars = defaultStore.reactiveState.statusbars;
 
-const userLists = ref<Misskey.entities.UserList[] | null>(null);
+const userLists = ref<UserList[]>();
 
 onMounted(() => {
 	misskeyApi('users/lists/list').then(res => {
@@ -39,16 +39,13 @@ onMounted(() => {
 async function add() {
 	defaultStore.push('statusbars', {
 		id: uuid(),
-		type: null,
+		name: '',
+		type: null as unknown as string,
 		black: false,
 		size: 'medium',
 		props: {},
 	});
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.statusbar,

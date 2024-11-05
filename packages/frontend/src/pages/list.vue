@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader/></template>
 	<MKSpacer v-if="!(typeof error === 'undefined')" :contentMax="1200">
 		<div :class="$style.root">
 			<img :class="$style.img" :src="serverErrorImageUrl" class="_ghost"/>
@@ -26,8 +26,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 		</div>
-		<MkButton v-if="list.isLiked" v-tooltip="i18n.ts.unlike" inline :class="$style.button" asLike primary @click="unlike()"><i class="ti ti-heart-off"></i><span v-if="list.likedCount > 0" class="count">{{ list.likedCount }}</span></MkButton>
-		<MkButton v-if="!list.isLiked" v-tooltip="i18n.ts.like" inline :class="$style.button" asLike @click="like()"><i class="ti ti-heart"></i><span v-if="1 > 0" class="count">{{ list.likedCount }}</span></MkButton>
+		<MkButton v-if="(list as unknown as { 'isLiked'?: boolean }).isLiked" v-tooltip="i18n.ts.unlike" inline :class="$style.button" asLike primary @click="unlike()"><i class="ti ti-heart-off"></i><span v-if="(list as unknown as { 'likedCount': number }).likedCount > 0" class="count">{{ (list as unknown as { 'likedCount'?: number }).likedCount }}</span></MkButton>
+		<MkButton v-else v-tooltip="i18n.ts.like" inline :class="$style.button" asLike @click="like()"><i class="ti ti-heart"></i><span v-if="(list as unknown as { 'likedCount'?: number }).likedCount" class="count">{{ (list as unknown as { 'likedCount': number }).likedCount }}</span></MkButton>
 		<MkButton inline @click="create()"><i class="ti ti-download" :class="$style.import"></i>{{ i18n.ts.import }}</MkButton>
 	</MkSpacer>
 </MkStickyContainer>
@@ -35,7 +35,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { watch, computed, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { UserList, UserDetailed } from 'misskey-js/entities.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { userPage } from '@/filters/user.js';
@@ -49,9 +49,9 @@ const props = defineProps<{
 	listId: string;
 }>();
 
-const list = ref<Misskey.entities.UserList | null>(null);
+const list = ref<UserList>();
 const error = ref();
-const users = ref<Misskey.entities.UserDetailed[]>([]);
+const users = ref<UserDetailed[]>([]);
 
 function fetchList(): void {
 	misskeyApi('users/lists/show', {
@@ -70,24 +70,27 @@ function fetchList(): void {
 }
 
 function like() {
+	if (!list.value) return;
 	os.apiWithDialog('users/lists/favorite', {
 		listId: list.value.id,
 	}).then(() => {
-		list.value.isLiked = true;
-		list.value.likedCount++;
+		(list.value as unknown as { isLiked: boolean }).isLiked = true;
+		(list.value as unknown as { likedCount: number }).likedCount++;
 	});
 }
 
 function unlike() {
+	if (!list.value) return;
 	os.apiWithDialog('users/lists/unfavorite', {
 		listId: list.value.id,
 	}).then(() => {
-		list.value.isLiked = false;
-		list.value.likedCount--;
+		(list.value as unknown as { isLiked: boolean}).isLiked = false;
+		(list.value as unknown as { likedCount: number }).likedCount--;
 	});
 }
 
 async function create() {
+	if (!list.value) return;
 	const { canceled, result: name } = await os.inputText({
 		title: i18n.ts.enterListName,
 	});
@@ -96,10 +99,6 @@ async function create() {
 }
 
 watch(() => props.listId, fetchList, { immediate: true });
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: list.value ? list.value.name : i18n.ts.lists,

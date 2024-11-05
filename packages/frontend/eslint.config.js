@@ -94,4 +94,10 @@ export default [
 			'vue/attribute-hyphenation': ['error', 'never'],
 		},
 	},
+	{
+		files: ['src/pages/**/*.vue', 'src/ui/**/*.vue', 'src/widgets/server-metric/*.vue'],
+		rules: {
+			'vue/multi-word-component-names': 'off',
+		},
+	},
 ];

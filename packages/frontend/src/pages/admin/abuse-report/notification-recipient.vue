@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkStickyContainer>
 	<template #header>
-		<XHeader :actions="headerActions" :tabs="headerTabs"/>
+		<XHeader/>
 	</template>
 
 	<MkSpacer :contentMax="900">
@@ -85,8 +85,6 @@ const filteredRecipients = computed(() => {
 		return true;
 	});
 });
-const headerActions = computed(() => []);
-const headerTabs = computed(() => []);
 
 async function onAddButtonClicked() {
 	await showEditor('create');

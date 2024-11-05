@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkContainer :showHeader="widgetProps.showHeader" :foldable="foldable" :scrollable="scrollable" data-cy-mkw-federation class="mkw-federation">
+<MkContainer :showHeader="widgetProps.showHeader" :foldable="false" :scrollable="true" data-cy-mkw-federation class="mkw-federation">
 	<template #icon><i class="ti ti-whirl"></i></template>
 	<template #header>{{ i18n.ts._widgets.federation }}</template>
 
@@ -26,8 +26,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
 import { useWidgetPropsManager, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
+import type { FederationInstance, ChartsInstanceResponse } from 'misskey-js/entities.js';
 import { GetFormResultType } from '@/scripts/form.js';
 import MkContainer from '@/components/MkContainer.vue';
 import MkMiniChart from '@/components/MkMiniChart.vue';
@@ -57,8 +57,8 @@ const { widgetProps, configure } = useWidgetPropsManager(name,
 	emit,
 );
 
-const instances = ref<Misskey.entities.FederationInstance[]>([]);
-const charts = ref<Misskey.entities.ChartsInstanceResponse[]>([]);
+const instances = ref<FederationInstance[]>([]);
+const charts = ref<ChartsInstanceResponse[]>([]);
 const fetching = ref(true);
 
 const fetch = async () => {

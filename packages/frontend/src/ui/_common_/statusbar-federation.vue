@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			mode="default"
 		>
 			<MarqueeText :key="key" :duration="marqueeDuration" :reverse="marqueeReverse">
-				<span v-for="instance in instances" :key="instance.id" :class="[$style.item, { [$style.colored]: colored }]" :style="{ background: colored ? instance.themeColor : null }">
+				<span v-for="instance in instances" :key="instance.id" :class="[$style.item, { [$style.colored]: colored }]" :style="{ background: colored && instance.themeColor ? instance.themeColor : '' }">
 					<img :class="$style.icon" :src="getInstanceIcon(instance)" alt=""/>
 					<MkA :to="`/instance-info/${instance.host}`" :class="$style.host" class="_monospace">
 						{{ instance.host }}
@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { FederationInstance } from 'misskey-js/entities.js';
 import MarqueeText from '@/components/MkMarquee.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { useInterval } from '@/scripts/use-interval.js';
@@ -47,7 +47,7 @@ const props = defineProps<{
 	refreshIntervalSec?: number;
 }>();
 
-const instances = ref<Misskey.entities.FederationInstance[]>([]);
+const instances = ref<FederationInstance[]>([]);
 const fetching = ref(true);
 const key = ref(0);
 
@@ -62,7 +62,7 @@ const tick = () => {
 	});
 };
 
-useInterval(tick, Math.max(5000, props.refreshIntervalSec * 1000), {
+useInterval(tick, Math.max(5000, (props.refreshIntervalSec ?? 5) * 1000), {
 	immediate: true,
 	afterMounted: true,
 });

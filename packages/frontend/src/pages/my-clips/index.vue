@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-model:tab="tab" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="700">
 		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
 			<div v-if="tab === 'my'" key="my" class="_gaps">
@@ -25,7 +25,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { watch, ref, shallowRef, computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import { ComponentExposed } from 'vue-component-type-helpers';
+import type { Clip } from 'misskey-js/entities.js';
 import MkPagination from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkClipPreview from '@/components/MkClipPreview.vue';
@@ -44,9 +45,9 @@ const pagination = {
 
 const tab = ref('my');
 
-const favorites = ref<Misskey.entities.Clip[] | null>(null);
+const favorites = ref<Clip[]>();
 
-const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const pagingComponent = shallowRef<ComponentExposed<typeof MkPagination>>();
 
 watch(tab, async () => {
 	favorites.value = await misskeyApi('clips/my-favorites');
@@ -56,10 +57,12 @@ async function create() {
 	const { canceled, result } = await os.form(i18n.ts.createNewClip, {
 		name: {
 			type: 'string',
+			default: null,
 			label: i18n.ts.name,
 		},
 		description: {
 			type: 'string',
+			default: null,
 			required: false,
 			multiline: true,
 			treatAsMfm: true,
@@ -77,18 +80,8 @@ async function create() {
 
 	clipsCache.delete();
 
-	pagingComponent.value.reload();
+	pagingComponent.value?.reload();
 }
-
-function onClipCreated() {
-	pagingComponent.value.reload();
-}
-
-function onClipDeleted() {
-	pagingComponent.value.reload();
-}
-
-const headerActions = computed(() => []);
 
 const headerTabs = computed(() => [{
 	key: 'my',

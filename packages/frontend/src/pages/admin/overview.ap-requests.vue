@@ -71,10 +71,7 @@ onMounted(async () => {
 	const succColor = '#87e000';
 	const failColor = '#ff4400';
 
-	const succMax = Math.max(...raw.deliverSucceeded);
-	const failMax = Math.max(...raw.deliverFailed);
-
-	new Chart(chartEl.value, {
+	new Chart(chartEl.value!, {
 		type: 'line',
 		data: {
 			datasets: [{
@@ -123,7 +120,6 @@ onMounted(async () => {
 					stacked: true,
 					offset: false,
 					time: {
-						stepSize: 1,
 						unit: 'day',
 					},
 					grid: {
@@ -146,7 +142,7 @@ onMounted(async () => {
 					ticks: {
 						display: true,
 						//mirror: true,
-						callback: (value, index, values) => value < 0 ? -value : value,
+						callback: (value) => parseInt(value as string) < 0 ? -parseInt(value as string) : value,
 					},
 				},
 			},
@@ -172,13 +168,14 @@ onMounted(async () => {
 					},
 					external: externalTooltipHandler,
 				},
+				// @ts-expect-error 問題ない
 				gradient,
 			},
 		},
 		plugins: [chartVLine(vLineColor)],
 	});
 
-	new Chart(chartEl2.value, {
+	new Chart(chartEl2.value!, {
 		type: 'bar',
 		data: {
 			datasets: [{
@@ -212,7 +209,6 @@ onMounted(async () => {
 					type: 'time',
 					offset: false,
 					time: {
-						stepSize: 1,
 						unit: 'day',
 						displayFormats: {
 							day: 'M/d',
@@ -259,6 +255,7 @@ onMounted(async () => {
 					},
 					external: externalTooltipHandler2,
 				},
+				// @ts-expect-error 問題ない
 				gradient,
 			},
 		},

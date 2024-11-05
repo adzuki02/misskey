@@ -43,9 +43,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts">
-import { computed, ComputedRef, isRef, nextTick, onActivated, onBeforeMount, onBeforeUnmount, onDeactivated, ref, shallowRef, watch } from 'vue';
-import * as Misskey from 'misskey-js';
-import * as os from '@/os.js';
+import { computed, type ComputedRef, isRef, nextTick, onActivated, onBeforeMount, onBeforeUnmount, onDeactivated, ref, shallowRef, watch, type Ref } from 'vue';
+import type { Endpoints as MisskeyEndpoints } from 'misskey-js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { onScrollTop, isTopVisible, getBodyScrollHeight, getScrollContainer, onScrollBottom, scrollToBottom, scroll, isBottomVisible } from '@/scripts/scroll.js';
 import { useDocumentVisibility } from '@/scripts/use-document-visibility.js';
@@ -57,10 +56,10 @@ const SECOND_FETCH_LIMIT = 30;
 const TOLERANCE = 16;
 const APPEAR_MINIMUM_INTERVAL = 600;
 
-export type Paging<E extends keyof Misskey.Endpoints = keyof Misskey.Endpoints> = {
+export type Paging<E extends keyof MisskeyEndpoints = keyof MisskeyEndpoints> = {
 	endpoint: E;
 	limit: number;
-	params?: Misskey.Endpoints[E]['req'] | ComputedRef<Misskey.Endpoints[E]['req']>;
+	params?: MisskeyEndpoints[E]['req'] | ComputedRef<MisskeyEndpoints[E]['req']>;
 
 	/**
 	 * 検索APIのような、ページング不可なエンドポイントを利用する場合
@@ -77,24 +76,14 @@ export type Paging<E extends keyof Misskey.Endpoints = keyof Misskey.Endpoints> 
 
 	pageEl?: HTMLElement;
 };
-
-type MisskeyEntityMap = Map<string, MisskeyEntity>;
-
-function arrayToEntries(entities: MisskeyEntity[]): [string, MisskeyEntity][] {
-	return entities.map(en => [en.id, en]);
-}
-
-function concatMapWithArray(map: MisskeyEntityMap, entities: MisskeyEntity[]): MisskeyEntityMap {
-	return new Map([...map, ...arrayToEntries(entities)]);
-}
-
 </script>
-<script lang="ts" setup>
+
+<script lang="ts" setup generic="E extends keyof MisskeyEndpoints = keyof MisskeyEndpoints">
 import { infoImageUrl } from '@/instance.js';
 import MkButton from '@/components/MkButton.vue';
 
 const props = withDefaults(defineProps<{
-	pagination: Paging;
+	pagination: Paging<E>;
 	disableAutoLoad?: boolean;
 	displayLimit?: number;
 }>(), {
@@ -113,17 +102,28 @@ const backed = ref(false);
 
 const scrollRemove = ref<(() => void) | null>(null);
 
+type Entity = Extract<MisskeyEndpoints[E]['res'], unknown[]>[number] & Pick<MisskeyEntity, 'id' | 'createdAt'>;
+type EntityMap = Map<string, Entity>;
+
+function arrayToEntries(entities: Entity[]): [string, Entity][] {
+	return entities.map(en => [en.id, en]);
+}
+
+function concatMapWithArray(map: EntityMap, entities: Entity[]): EntityMap {
+	return new Map([...map, ...arrayToEntries(entities)]);
+}
+
 /**
  * 表示するアイテムのソース
  * 最新が0番目
  */
-const items = ref<MisskeyEntityMap>(new Map());
+const items = ref<EntityMap>(new Map()) as Ref<EntityMap>;
 
 /**
  * タブが非アクティブなどの場合に更新を貯めておく
  * 最新が0番目
  */
-const queue = ref<MisskeyEntityMap>(new Map());
+const queue = ref<EntityMap>(new Map()) as Ref<EntityMap>;
 
 const offset = ref(0);
 
@@ -204,16 +204,11 @@ async function init(): Promise<void> {
 	queue.value = new Map();
 	fetching.value = true;
 	const params = props.pagination.params ? isRef(props.pagination.params) ? props.pagination.params.value : props.pagination.params : {};
-	await misskeyApi<MisskeyEntity[]>(props.pagination.endpoint, {
+	await misskeyApi<Entity[]>(props.pagination.endpoint, {
 		...params,
 		limit: props.pagination.limit ?? 10,
 		allowPartial: true,
 	}).then(res => {
-		for (let i = 0; i < res.length; i++) {
-			const item = res[i];
-			if (i === 3) item._shouldInsertAd_ = true;
-		}
-
 		if (res.length === 0 || props.pagination.noPaging) {
 			concatItems(res);
 			more.value = false;
@@ -240,7 +235,7 @@ const fetchMore = async (): Promise<void> => {
 	if (!more.value || fetching.value || moreFetching.value || items.value.size === 0) return;
 	moreFetching.value = true;
 	const params = props.pagination.params ? isRef(props.pagination.params) ? props.pagination.params.value : props.pagination.params : {};
-	await misskeyApi<MisskeyEntity[]>(props.pagination.endpoint, {
+	await misskeyApi<Entity[]>(props.pagination.endpoint, {
 		...params,
 		limit: SECOND_FETCH_LIMIT,
 		...(props.pagination.offsetMode ? {
@@ -249,11 +244,6 @@ const fetchMore = async (): Promise<void> => {
 			untilId: Array.from(items.value.keys()).at(-1),
 		}),
 	}).then(res => {
-		for (let i = 0; i < res.length; i++) {
-			const item = res[i];
-			if (i === 10) item._shouldInsertAd_ = true;
-		}
-
 		const reverseConcat = _res => {
 			const oldHeight = scrollableElement.value ? scrollableElement.value.scrollHeight : getBodyScrollHeight();
 			const oldScroll = scrollableElement.value ? scrollableElement.value.scrollTop : window.scrollY;
@@ -304,7 +294,7 @@ const fetchMoreAhead = async (): Promise<void> => {
 	if (!more.value || fetching.value || moreFetching.value || items.value.size === 0) return;
 	moreFetching.value = true;
 	const params = props.pagination.params ? isRef(props.pagination.params) ? props.pagination.params.value : props.pagination.params : {};
-	await misskeyApi<MisskeyEntity[]>(props.pagination.endpoint, {
+	await misskeyApi<Entity[]>(props.pagination.endpoint, {
 		...params,
 		limit: SECOND_FETCH_LIMIT,
 		...(props.pagination.offsetMode ? {
@@ -379,7 +369,7 @@ watch(visibility, () => {
  * ストリーミングから降ってきたアイテムはこれで追加する
  * @param item アイテム
  */
-const prepend = (item: MisskeyEntity): void => {
+const prepend = (item: Entity): void => {
 	if (items.value.size === 0) {
 		items.value.set(item.id, item);
 		fetching.value = false;
@@ -394,7 +384,7 @@ const prepend = (item: MisskeyEntity): void => {
  * 新着アイテムをitemsの先頭に追加し、displayLimitを適用する
  * @param newItems 新しいアイテムの配列
  */
-function unshiftItems(newItems: MisskeyEntity[]) {
+function unshiftItems(newItems: Entity[]) {
 	const length = newItems.length + items.value.size;
 	items.value = new Map([...arrayToEntries(newItems), ...items.value].slice(0, props.displayLimit));
 
@@ -405,7 +395,7 @@ function unshiftItems(newItems: MisskeyEntity[]) {
  * 古いアイテムをitemsの末尾に追加し、displayLimitを適用する
  * @param oldItems 古いアイテムの配列
  */
-function concatItems(oldItems: MisskeyEntity[]) {
+function concatItems(oldItems: Entity[]) {
 	const length = oldItems.length + items.value.size;
 	items.value = new Map([...items.value, ...arrayToEntries(oldItems)].slice(0, props.displayLimit));
 
@@ -417,14 +407,14 @@ function executeQueue() {
 	queue.value = new Map();
 }
 
-function prependQueue(newItem: MisskeyEntity) {
-	queue.value = new Map([[newItem.id, newItem], ...queue.value].slice(0, props.displayLimit) as [string, MisskeyEntity][]);
+function prependQueue(newItem: Entity) {
+	queue.value = new Map([[newItem.id, newItem], ...queue.value].slice(0, props.displayLimit) as [string, Entity][]);
 }
 
 /*
  * アイテムを末尾に追加する（使うの？）
  */
-const appendItem = (item: MisskeyEntity): void => {
+const appendItem = (item: Entity): void => {
 	items.value.set(item.id, item);
 };
 
@@ -433,7 +423,7 @@ const removeItem = (id: string) => {
 	queue.value.delete(id);
 };
 
-const updateItem = (id: MisskeyEntity['id'], replacer: (old: MisskeyEntity) => MisskeyEntity): void => {
+const updateItem = (id: Entity['id'], replacer: (old: Entity) => Entity): void => {
 	const item = items.value.get(id);
 	if (item) items.value.set(id, replacer(item));
 

@@ -93,7 +93,8 @@ export const loadDeck = async () => {
 			key: deckStore.state.profile,
 		});
 	} catch (err) {
-		if (err.code === 'NO_SUCH_KEY') {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		if ((err as any).code === 'NO_SUCH_KEY') {
 			// 後方互換性のため
 			if (deckStore.state.profile === 'default') {
 				saveDeck();
@@ -175,6 +176,7 @@ export function swapLeftColumn(id: Column['id']) {
 			}
 			return true;
 		}
+		return false;
 	});
 	saveDeck();
 }
@@ -191,6 +193,7 @@ export function swapRightColumn(id: Column['id']) {
 			}
 			return true;
 		}
+		return false;
 	});
 	saveDeck();
 }
@@ -211,6 +214,7 @@ export function swapUpColumn(id: Column['id']) {
 			}
 			return true;
 		}
+		return false;
 	});
 	saveDeck();
 }
@@ -231,6 +235,7 @@ export function swapDownColumn(id: Column['id']) {
 			}
 			return true;
 		}
+		return false;
 	});
 	saveDeck();
 }

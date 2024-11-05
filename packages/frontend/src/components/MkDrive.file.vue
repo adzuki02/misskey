@@ -14,11 +14,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@dragend="onDragend"
 >
 	<div style="pointer-events: none;">
-		<div v-if="$i?.avatarId == file.id" :class="[$style.label]">
+		<div v-if="$i.avatarId == file.id" :class="[$style.label]">
 			<img :class="$style.labelImg" src="/client-assets/label.svg"/>
 			<p :class="$style.labelText">{{ i18n.ts.avatar }}</p>
 		</div>
-		<div v-if="$i?.bannerId == file.id" :class="[$style.label]">
+		<div v-if="$i.bannerId == file.id" :class="[$style.label]">
 			<img :class="$style.labelImg" src="/client-assets/label.svg"/>
 			<p :class="$style.labelText">{{ i18n.ts.banner }}</p>
 		</div>
@@ -39,21 +39,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { DriveFile, DriveFolder } from 'misskey-js/entities.js';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
 import bytes from '@/filters/bytes.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
+import { signinRequired } from '@/account.js';
 import { getDriveFileMenu } from '@/scripts/get-drive-file-menu.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { useRouter } from '@/router/supplier.js';
 
+const $i = signinRequired();
+
 const router = useRouter();
 
 const props = withDefaults(defineProps<{
-	file: Misskey.entities.DriveFile;
-	folder: Misskey.entities.DriveFolder | null;
+	file: DriveFile;
+	folder: DriveFolder | null;
 	isSelected?: boolean;
 	selectMode?: boolean;
 }>(), {
@@ -62,7 +64,7 @@ const props = withDefaults(defineProps<{
 });
 
 const emit = defineEmits<{
-	(ev: 'chosen', r: Misskey.entities.DriveFile): void;
+	(ev: 'chosen', r: DriveFile): void;
 	(ev: 'dragstart'): void;
 	(ev: 'dragend'): void;
 }>();

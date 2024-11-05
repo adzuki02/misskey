@@ -62,7 +62,7 @@ import { instance } from '@/instance.js';
 
 const $i = signinRequired();
 
-const emailAddress = ref($i.email);
+const emailAddress = computed(() => $i.email ?? null);
 
 const onChangeReceiveAnnouncementEmail = (v) => {
 	misskeyApi('i/update', {
@@ -108,10 +108,6 @@ onMounted(() => {
 		saveEmailAddress();
 	});
 });
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.email,

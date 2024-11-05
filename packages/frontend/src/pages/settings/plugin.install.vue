@@ -44,14 +44,10 @@ async function install() {
 		os.alert({
 			type: 'error',
 			title: 'Install failed',
-			text: err.toString() ?? null,
+			text: err instanceof Error ? err.toString() : JSON.stringify(err),
 		});
 	}
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts._plugin.install,

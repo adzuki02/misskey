@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<option value="local">{{ i18n.ts.local }}</option>
 						<option value="remote">{{ i18n.ts.remote }}</option>
 					</MkSelect>
-					<MkInput v-model="searchHost" :debounce="true" type="search" style="margin: 0; flex: 1;" :disabled="pagination.params.origin === 'local'">
+					<MkInput v-model="searchHost" :debounce="true" type="search" style="margin: 0; flex: 1;" :disabled="origin === 'local'">
 						<template #label>{{ i18n.ts.host }}</template>
 					</MkInput>
 				</div>
@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label>MIME type</template>
 					</MkInput>
 				</div>
-				<MkFileListForAdmin :pagination="pagination" :viewMode="viewMode"/>
+				<MkFileListForAdmin :pagination="pagination" :viewMode="'grid'"/>
 			</div>
 		</MkSpacer>
 	</MkStickyContainer>
@@ -46,11 +46,10 @@ import { lookupFile } from '@/scripts/admin-lookup.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
-const origin = ref('local');
+const origin = ref<'combined' | 'local' | 'remote'>('local');
 const type = ref<string | null>(null);
 const searchHost = ref('');
 const userId = ref('');
-const viewMode = ref('grid');
 const pagination = {
 	endpoint: 'admin/drive/files' as const,
 	limit: 10,
@@ -82,8 +81,6 @@ const headerActions = computed(() => [{
 	icon: 'ti ti-trash',
 	handler: clear,
 }]);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.files,

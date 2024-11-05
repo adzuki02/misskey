@@ -46,7 +46,7 @@ export type ChartSrc =
 */
 import { onMounted, ref, shallowRef, watch } from 'vue';
 import { Chart } from 'chart.js';
-import * as Misskey from 'misskey-js';
+import type { UserLite } from 'misskey-js/entities.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore } from '@/store.js';
 import { useChartTooltip } from '@/scripts/use-chart-tooltip.js';
@@ -64,7 +64,7 @@ const props = withDefaults(defineProps<{
 	src: ChartSrc;
 	args?: {
 		host?: string;
-		user?: Misskey.entities.UserLite;
+		user?: UserLite;
 		withoutAll?: boolean;
 	};
 	limit?: number;
@@ -291,10 +291,6 @@ const render = () => {
 		},
 		plugins: [chartVLine(vLineColor), ...(props.detailed && legendEl.value ? [chartLegend(legendEl.value)] : [])],
 	});
-};
-
-const exportData = () => {
-	// TODO
 };
 
 const fetchFederationChart = async (): Promise<typeof chartData> => {
@@ -535,7 +531,9 @@ const fetchDriveFilesChart = async (): Promise<typeof chartData> => {
 };
 
 const fetchInstanceRequestsChart = async (): Promise<typeof chartData> => {
-	const raw = await misskeyApi('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
+	if (props.args?.host === undefined) return new Promise(r => r(null));
+
+	const raw = await misskeyApi('charts/instance', { host: props.args.host, limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'In',
@@ -557,7 +555,9 @@ const fetchInstanceRequestsChart = async (): Promise<typeof chartData> => {
 };
 
 const fetchInstanceUsersChart = async (total: boolean): Promise<typeof chartData> => {
-	const raw = await misskeyApi('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
+	if (props.args?.host === undefined) return new Promise(r => r(null));
+
+	const raw = await misskeyApi('charts/instance', { host: props.args.host, limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'Users',
@@ -572,7 +572,9 @@ const fetchInstanceUsersChart = async (total: boolean): Promise<typeof chartData
 };
 
 const fetchInstanceNotesChart = async (total: boolean): Promise<typeof chartData> => {
-	const raw = await misskeyApi('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
+	if (props.args?.host === undefined) return new Promise(r => r(null));
+
+	const raw = await misskeyApi('charts/instance', { host: props.args.host, limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'Notes',
@@ -587,7 +589,9 @@ const fetchInstanceNotesChart = async (total: boolean): Promise<typeof chartData
 };
 
 const fetchInstanceFfChart = async (total: boolean): Promise<typeof chartData> => {
-	const raw = await misskeyApi('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
+	if (props.args?.host === undefined) return new Promise(r => r(null));
+
+	const raw = await misskeyApi('charts/instance', { host: props.args.host, limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'Following',
@@ -610,7 +614,9 @@ const fetchInstanceFfChart = async (total: boolean): Promise<typeof chartData> =
 };
 
 const fetchInstanceDriveUsageChart = async (total: boolean): Promise<typeof chartData> => {
-	const raw = await misskeyApi('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
+	if (props.args?.host === undefined) return new Promise(r => r(null));
+
+	const raw = await misskeyApi('charts/instance', { host: props.args.host, limit: props.limit, span: props.span });
 	return {
 		bytes: true,
 		series: [{
@@ -626,7 +632,9 @@ const fetchInstanceDriveUsageChart = async (total: boolean): Promise<typeof char
 };
 
 const fetchInstanceDriveFilesChart = async (total: boolean): Promise<typeof chartData> => {
-	const raw = await misskeyApi('charts/instance', { host: props.args?.host, limit: props.limit, span: props.span });
+	if (props.args?.host === undefined) return new Promise(r => r(null));
+
+	const raw = await misskeyApi('charts/instance', { host: props.args.host, limit: props.limit, span: props.span });
 	return {
 		series: [{
 			name: 'Drive files',

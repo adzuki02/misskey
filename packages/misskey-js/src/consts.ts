@@ -1,7 +1,6 @@
 import type { operations } from './autogen/types.js';
 import type {
 	AbuseReportNotificationRecipient,
-	Ad,
 	EmojiDetailed,
 	Flash,
 	InviteCode,
@@ -12,7 +11,7 @@ import type {
 	UserLite,
 } from './autogen/models.js';
 
-export const notificationTypes = ['note', 'follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollVote', 'pollEnded', 'receiveFollowRequest', 'followRequestAccepted', 'groupInvited', 'app', 'roleAssigned', 'achievementEarned'] as const;
+export const notificationTypes = ['note', 'follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded', 'receiveFollowRequest', 'followRequestAccepted', 'app', 'roleAssigned'] as const;
 
 export const noteVisibilities = ['public', 'home', 'followers', 'specified'] as const;
 
@@ -127,9 +126,6 @@ export const moderationLogTypes = [
 	'unmarkSensitiveDriveFile',
 	'resolveAbuseReport',
 	'createInvitation',
-	'createAd',
-	'updateAd',
-	'deleteAd',
 	'createAvatarDecoration',
 	'updateAvatarDecoration',
 	'deleteAvatarDecoration',
@@ -145,7 +141,7 @@ export const moderationLogTypes = [
 	'deleteFlash',
 ] as const;
 
-type AvatarDecoration = UserLite['avatarDecorations'][number];
+type AvatarDecoration = UserLite['avatarDecorations'][number] & { name: string };
 
 type ReceivedAbuseReport = {
 	reportId: AbuseReportNotificationRecipient['id'];
@@ -269,19 +265,6 @@ export type ModerationLogPayloads = {
 	};
 	createInvitation: {
 		invitations: InviteCode[];
-	};
-	createAd: {
-		adId: string;
-		ad: Ad;
-	};
-	updateAd: {
-		adId: string;
-		before: Ad;
-		after: Ad;
-	};
-	deleteAd: {
-		adId: string;
-		ad: Ad;
 	};
 	createAvatarDecoration: {
 		avatarDecorationId: string;

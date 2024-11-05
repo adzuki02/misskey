@@ -5,8 +5,8 @@
 
 import { utils, values } from '@syuilo/aiscript';
 import { v4 as uuid } from 'uuid';
-import { ref, Ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import { ref, type Ref } from 'vue';
+import { noteVisibilities } from 'misskey-js/consts.js';
 
 export type AsUiComponentBase = {
 	id: string;
@@ -119,7 +119,7 @@ export type AsUiFolder = AsUiComponentBase & {
 type PostFormPropsForAsUi = {
 	text: string;
 	cw?: string;
-	visibility?: (typeof Misskey.noteVisibilities)[number];
+	visibility?: (typeof noteVisibilities)[number];
 	localOnly?: boolean;
 };
 
@@ -462,7 +462,7 @@ function getPostFormProps(form: values.VObj): PostFormPropsForAsUi {
 	return {
 		text: text.value,
 		cw: cw?.value,
-		visibility: (visibility?.value && (Misskey.noteVisibilities as readonly string[]).includes(visibility.value)) ? visibility.value as typeof Misskey.noteVisibilities[number] : undefined,
+		visibility: (visibility?.value && (noteVisibilities as readonly string[]).includes(visibility.value)) ? visibility.value as typeof noteVisibilities[number] : undefined,
 		localOnly: localOnly?.value,
 	};
 }

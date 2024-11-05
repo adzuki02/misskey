@@ -58,7 +58,7 @@ export const navbarItemDef = reactive({
 	lookup: {
 		title: i18n.ts.lookup,
 		icon: 'ti ti-world-search',
-		action: (ev) => {
+		action: () => {
 			lookup();
 		},
 	},
@@ -128,14 +128,14 @@ export const navbarItemDef = reactive({
 	reload: {
 		title: i18n.ts.reload,
 		icon: 'ti ti-refresh',
-		action: (ev) => {
+		action: () => {
 			location.reload();
 		},
 	},
 	reconnect: {
 		title: i18n.ts.reconnect,
 		icon: 'ti ti-refresh',
-		action: (ev) => {
+		action: () => {
 			useStream().reconnect();
 		},
 	},
@@ -148,7 +148,7 @@ export const navbarItemDef = reactive({
 	cacheClear: {
 		title: i18n.ts.clearCache,
 		icon: 'ti ti-trash',
-		action: (ev) => {
+		action: () => {
 			clearCache();
 		},
 	},

@@ -10,10 +10,11 @@
 		"declaration": false,
 		"sourceMap": false,
 		"target": "ES2022",
-		"module": "nodenext",
-		"moduleResolution": "nodenext",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
 		"removeComments": false,
 		"noLib": false,
+		"skipLibCheck": true,
 		"strict": true,
 		"strictNullChecks": true,
 		"experimentalDecorators": true,
@@ -28,7 +29,6 @@
 		"typeRoots": [
 			"./@types",
 			"./node_modules/@types",
-			"./node_modules/@vue-macros",
 			"./node_modules"
 		],
 		"types": [
@@ -48,6 +48,7 @@
 		"./**/*.vue"
 	],
 	"exclude": [
-		".storybook/**/*"
+		".storybook/**/*",
+		"src/**/*.stories.ts"
 	]
 }

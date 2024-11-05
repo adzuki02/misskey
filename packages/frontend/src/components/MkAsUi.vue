@@ -63,7 +63,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import * as os from '@/os.js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
@@ -77,8 +77,8 @@ import MkPostForm from '@/components/MkPostForm.vue';
 const props = withDefaults(defineProps<{
 	component: AsUiComponent;
 	components: Ref<AsUiComponent>[];
-	size: 'small' | 'medium' | 'large';
-	align: 'left' | 'center' | 'right';
+	size?: 'small' | 'medium' | 'large';
+	align?: 'left' | 'center' | 'right';
 }>(), {
 	size: 'medium',
 	align: 'left',

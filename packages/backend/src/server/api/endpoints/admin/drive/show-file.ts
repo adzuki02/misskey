@@ -157,6 +157,15 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			requestIp: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
+			requestHeaders: {
+				type: 'object',
+				optional: false, nullable: true,
+				additionalProperties: true,
+			},
 		},
 	},
 } as const;

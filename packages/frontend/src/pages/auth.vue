@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader/></template>
 	<MkSpacer :contentMax="500">
 		<div v-if="state == 'fetch-session-error'">
 			<p>{{ i18n.ts.somethingHappened }}</p>
@@ -42,9 +42,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import { onMounted, ref } from 'vue';
 import XForm from './auth.form.vue';
+import type { AuthSessionShowResponse } from 'misskey-js/entities.js';
 import MkSignin from '@/components/MkSignin.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { $i, login } from '@/account.js';
@@ -56,7 +56,7 @@ const props = defineProps<{
 }>();
 
 const state = ref<'waiting' | 'accepted' | 'fetch-session-error' | 'denied' | null>(null);
-const session = ref<Misskey.entities.AuthSessionShowResponse | null>(null);
+const session = ref<AuthSessionShowResponse>();
 
 function accepted() {
 	state.value = 'accepted';
@@ -75,9 +75,11 @@ onMounted(async () => {
 	if (!$i) return;
 
 	try {
-		session.value = await misskeyApi('auth/session/show', {
+		const res = await misskeyApi('auth/session/show', {
 			token: props.token,
 		});
+
+		session.value = res;
 
 		// 既に連携していた場合
 		if (session.value.app.isAuthorized) {
@@ -92,10 +94,6 @@ onMounted(async () => {
 		state.value = 'fetch-session-error';
 	}
 });
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts._auth.shareAccessTitle,

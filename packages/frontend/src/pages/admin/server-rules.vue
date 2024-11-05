@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div>
 	<MkStickyContainer>
-		<template #header><XHeader :tabs="headerTabs"/></template>
+		<template #header><XHeader/></template>
 		<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
 			<div class="_gaps_m">
 				<div>{{ i18n.ts._serverRules.description }}</div>
@@ -64,8 +64,6 @@ const save = async () => {
 const remove = (index: number): void => {
 	serverRules.value.splice(index, 1);
 };
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.serverRules,

@@ -59,7 +59,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { InviteCode } from 'misskey-js/entities.js';
 import MkFolder from '@/components/MkFolder.vue';
 import MkButton from '@/components/MkButton.vue';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
@@ -67,7 +67,7 @@ import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 
 const props = defineProps<{
-	invite: Misskey.entities.InviteCode;
+	invite: InviteCode;
 	moderator?: boolean;
 }>();
 

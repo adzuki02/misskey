@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		>
 			<MarqueeText :key="key" :duration="marqueeDuration" :reverse="marqueeReverse">
 				<span v-for="note in notes" :key="note.id" :class="$style.item">
-					<img :class="$style.avatar" :src="note.user.avatarUrl" decoding="async"/>
+					<img :class="$style.avatar" :src="note.user.avatarUrl ?? undefined" decoding="async"/>
 					<MkA :class="$style.text" :to="notePage(note)">
 						<Mfm :text="getNoteSummary(note)" :plain="true" :nowrap="true"/>
 					</MkA>
@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Note } from 'misskey-js/entities.js';
 import MarqueeText from '@/components/MkMarquee.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { useInterval } from '@/scripts/use-interval.js';
@@ -48,7 +48,7 @@ const props = defineProps<{
 	refreshIntervalSec?: number;
 }>();
 
-const notes = ref<Misskey.entities.Note[]>([]);
+const notes = ref<Note[]>([]);
 const fetching = ref(true);
 const key = ref(0);
 
@@ -65,7 +65,7 @@ const tick = () => {
 
 watch(() => props.userListId, tick);
 
-useInterval(tick, Math.max(5000, props.refreshIntervalSec * 1000), {
+useInterval(tick, Math.max(5000, (props.refreshIntervalSec ?? 5) * 1000), {
 	immediate: true,
 	afterMounted: true,
 });

@@ -5,15 +5,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-model:tab="tab" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="600" :marginMin="16" :marginMax="32">
 		<FormSuspense :p="init">
 			<div v-if="tab === 'overview'" class="_gaps_m">
 				<div class="aeakzknw">
-					<MkAvatar class="avatar" :user="user" link preview/>
+					<MkAvatar class="avatar" :user="user!" link preview/>
 					<div class="body">
-						<span class="name"><MkUserName class="name" :user="user"/></span>
-						<span class="sub"><span class="acct _monospace">@{{ acct(user) }}</span></span>
+						<span class="name"><MkUserName class="name" :user="user!"/></span>
+						<span class="sub"><span class="acct _monospace">@{{ acct(user!) }}</span></span>
 						<span class="state">
 							<span v-if="suspended" class="suspended">Suspended</span>
 							<span v-if="silenced" class="silenced">Silenced</span>
@@ -22,24 +22,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</div>
 
-				<MkInfo v-if="['instance.actor', 'relay.actor'].includes(user.username)">{{ i18n.ts.isSystemAccount }}</MkInfo>
+				<MkInfo v-if="['instance.actor', 'relay.actor'].includes(user!.username)">{{ i18n.ts.isSystemAccount }}</MkInfo>
 
-				<FormLink v-if="user.host" :to="`/instance-info/${user.host}`">{{ i18n.ts.instanceInfo }}</FormLink>
+				<FormLink v-if="user!.host" :to="`/instance-info/${user!.host}`">{{ i18n.ts.instanceInfo }}</FormLink>
 
 				<div style="display: flex; flex-direction: column; gap: 1em;">
-					<MkKeyValue :copy="user.id" oneline>
+					<MkKeyValue :copy="user!.id" oneline>
 						<template #key>ID</template>
-						<template #value><span class="_monospace">{{ user.id }}</span></template>
+						<template #value><span class="_monospace">{{ user!.id }}</span></template>
 					</MkKeyValue>
-					<!-- 要る？
-					<MkKeyValue v-if="ips.length > 0" :copy="user.id" oneline>
-						<template #key>IP (recent)</template>
-						<template #value><span class="_monospace">{{ ips[0].ip }}</span></template>
-					</MkKeyValue>
-					-->
 					<MkKeyValue oneline>
 						<template #key>{{ i18n.ts.createdAt }}</template>
-						<template #value><span class="_monospace"><MkTime :time="user.createdAt" :mode="'detail'"/></span></template>
+						<template #value><span class="_monospace"><MkTime :time="user!.createdAt" :mode="'detail'"/></span></template>
 					</MkKeyValue>
 					<MkKeyValue v-if="info" oneline>
 						<template #key>{{ i18n.ts.email }}</template>
@@ -51,56 +45,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts.moderationNote }}</template>
 				</MkTextarea>
 
-				<!--
-				<FormSection>
-					<template #label>ActivityPub</template>
-
-					<div class="_gaps_m">
-						<div style="display: flex; flex-direction: column; gap: 1em;">
-							<MkKeyValue v-if="user.host" oneline>
-								<template #key>{{ i18n.ts.instanceInfo }}</template>
-								<template #value><MkA :to="`/instance-info/${user.host}`" class="_link">{{ user.host }} <i class="ti ti-chevron-right"></i></MkA></template>
-							</MkKeyValue>
-							<MkKeyValue v-else oneline>
-								<template #key>{{ i18n.ts.instanceInfo }}</template>
-								<template #value>(Local user)</template>
-							</MkKeyValue>
-							<MkKeyValue oneline>
-								<template #key>{{ i18n.ts.updatedAt }}</template>
-								<template #value><MkTime v-if="user.lastFetchedAt" mode="detail" :time="user.lastFetchedAt"/><span v-else>N/A</span></template>
-							</MkKeyValue>
-							<MkKeyValue v-if="ap" oneline>
-								<template #key>Type</template>
-								<template #value><span class="_monospace">{{ ap.type }}</span></template>
-							</MkKeyValue>
-						</div>
-
-						<MkButton v-if="user.host != null" @click="updateRemoteUser"><i class="ti ti-refresh"></i> {{ i18n.ts.updateRemoteUser }}</MkButton>
-
-						<MkFolder>
-							<template #label>Raw</template>
-
-							<MkObjectView v-if="ap" tall :value="ap">
-							</MkObjectView>
-						</MkFolder>
-					</div>
-				</FormSection>
-			-->
-
 				<FormSection>
 					<div class="_gaps">
 						<MkSwitch v-model="suspended" @update:modelValue="toggleSuspend">{{ i18n.ts.suspend }}</MkSwitch>
 
 						<div>
-							<MkButton v-if="user.host == null" inline style="margin-right: 8px;" @click="resetPassword"><i class="ti ti-key"></i> {{ i18n.ts.resetPassword }}</MkButton>
+							<MkButton v-if="user && user.host == null" inline style="margin-right: 8px;" @click="resetPassword"><i class="ti ti-key"></i> {{ i18n.ts.resetPassword }}</MkButton>
 						</div>
 
 						<MkFolder>
 							<template #icon><i class="ti ti-license"></i></template>
 							<template #label>{{ i18n.ts._role.policies }}</template>
 							<div class="_gaps">
-								<div v-for="policy in Object.keys(info.policies)" :key="policy">
-									{{ policy }} ... {{ info.policies[policy] }}
+								<div v-for="policy in Object.keys(info!.policies)" :key="policy">
+									{{ policy }} ... {{ info!.policies[policy] }}
 								</div>
 							</div>
 						</MkFolder>
@@ -128,9 +86,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 
 			<div v-else-if="tab === 'roles'" class="_gaps">
-				<MkButton v-if="user.host == null" primary rounded @click="assignRole"><i class="ti ti-plus"></i> {{ i18n.ts.assign }}</MkButton>
+				<MkButton v-if="user!.host == null" primary rounded @click="assignRole"><i class="ti ti-plus"></i> {{ i18n.ts.assign }}</MkButton>
 
-				<div v-for="role in info.roles" :key="role.id">
+				<div v-for="role in info!.roles" :key="role.id">
 					<div :class="$style.roleItemMain">
 						<MkRolePreview :class="$style.role" :role="role" :forModeration="true"/>
 						<button class="_button" @click="toggleRoleItem(role)"><i class="ti ti-chevron-down"></i></button>
@@ -138,8 +96,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<button v-else class="_button" :class="$style.roleUnassign" disabled><i class="ti ti-ban"></i></button>
 					</div>
 					<div v-if="expandedRoles.includes(role.id)" :class="$style.roleItemSub">
-						<div>Assigned: <MkTime :time="info.roleAssigns.find(a => a.roleId === role.id).createdAt" mode="detail"/></div>
-						<div v-if="info.roleAssigns.find(a => a.roleId === role.id).expiresAt">Period: {{ new Date(info.roleAssigns.find(a => a.roleId === role.id).expiresAt).toLocaleString() }}</div>
+						<div>Assigned: <MkTime :time="info!.roleAssigns.find(a => a.roleId === role.id)?.createdAt ?? null" mode="detail"/></div>
+						<div v-if="info!.roleAssigns.find(a => a.roleId === role.id)?.expiresAt">Period: {{ new Date(info!.roleAssigns.find(a => a.roleId === role.id)?.expiresAt ?? 0).toLocaleString() }}</div>
 						<div v-else>Period: {{ i18n.ts.indefinitely }}</div>
 					</div>
 				</div>
@@ -149,27 +107,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkFileListForAdmin :pagination="filesPagination" viewMode="grid"/>
 			</div>
 
-			<div v-else-if="tab === 'chart'" class="_gaps_m">
-				<div class="cmhjzshm">
-					<div class="selects">
-						<MkSelect v-model="chartSrc" style="margin: 0 10px 0 0; flex: 1;">
-							<option value="per-user-notes">{{ i18n.ts.notes }}</option>
-						</MkSelect>
-					</div>
-					<div class="charts">
-						<div class="label">{{ i18n.tsx.recentNHours({ n: 90 }) }}</div>
-						<MkChart class="chart" :src="chartSrc" span="hour" :limit="90" :args="{ user, withoutAll: true }" :detailed="true"></MkChart>
-						<div class="label">{{ i18n.tsx.recentNDays({ n: 90 }) }}</div>
-						<MkChart class="chart" :src="chartSrc" span="day" :limit="90" :args="{ user, withoutAll: true }" :detailed="true"></MkChart>
-					</div>
-				</div>
-			</div>
-
 			<div v-else-if="tab === 'raw'" class="_gaps_m">
 				<MkObjectView v-if="info && $i.isAdmin" tall :value="info">
 				</MkObjectView>
 
-				<MkObjectView tall :value="user">
+				<MkObjectView tall :value="user ?? {}">
 				</MkObjectView>
 			</div>
 		</FormSuspense>
@@ -178,9 +120,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, watch, ref } from 'vue';
-import * as Misskey from 'misskey-js';
-import MkChart from '@/components/MkChart.vue';
+import { computed, watch, ref } from 'vue';
+import type { UserDetailed, Role, AdminShowUserResponse, AdminGetUserIpsResponse } from 'misskey-js/entities.js';
 import MkObjectView from '@/components/MkObjectView.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -189,7 +130,6 @@ import FormSection from '@/components/form/section.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
-import MkSelect from '@/components/MkSelect.vue';
 import FormSuspense from '@/components/form/suspense.vue';
 import MkFileListForAdmin from '@/components/MkFileListForAdmin.vue';
 import MkInfo from '@/components/MkInfo.vue';
@@ -199,9 +139,8 @@ import { url } from '@/config.js';
 import { acct } from '@/filters/user.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
-import { iAmAdmin, $i, iAmModerator } from '@/account.js';
+import { signinRequired, iAmAdmin, iAmModerator } from '@/account.js';
 import MkRolePreview from '@/components/MkRolePreview.vue';
-import MkPagination from '@/components/MkPagination.vue';
 
 const props = withDefaults(defineProps<{
 	userId: string;
@@ -210,12 +149,12 @@ const props = withDefaults(defineProps<{
 	initialTab: 'overview',
 });
 
+const $i = signinRequired();
 const tab = ref(props.initialTab);
-const chartSrc = ref('per-user-notes');
-const user = ref<null | Misskey.entities.UserDetailed>();
-const init = ref<ReturnType<typeof createFetcher>>();
-const info = ref<any>();
-const ips = ref<Misskey.entities.AdminGetUserIpsResponse | null>(null);
+const user = ref<UserDetailed>();
+const init = ref<ReturnType<typeof createFetcher>>(() => new Promise<void>(_r => {}));
+const info = ref<AdminShowUserResponse>();
+const ips = ref<AdminGetUserIpsResponse>();
 const ap = ref<any>(null);
 const moderator = ref(false);
 const silenced = ref(false);
@@ -228,7 +167,7 @@ const filesPagination = {
 		userId: props.userId,
 	})),
 };
-const expandedRoles = ref([]);
+const expandedRoles = ref<Role['id'][]>([]);
 
 function createFetcher() {
 	return () => Promise.all([misskeyApi('users/show', {
@@ -240,13 +179,14 @@ function createFetcher() {
 	}) : Promise.resolve(null)]).then(([_user, _info, _ips]) => {
 		user.value = _user;
 		info.value = _info;
-		ips.value = _ips;
+		ips.value = _ips ?? undefined;
 		moderator.value = info.value.isModerator;
 		silenced.value = info.value.isSilenced;
 		suspended.value = info.value.isSuspended;
 		moderationNote.value = info.value.moderationNote;
 
 		watch(moderationNote, async () => {
+			if (!user.value) return;
 			await misskeyApi('admin/update-user-note', { userId: user.value.id, text: moderationNote.value });
 			await refreshUser();
 		});
@@ -258,11 +198,13 @@ function refreshUser() {
 }
 
 async function updateRemoteUser() {
+	if (!user.value) return;
 	await os.apiWithDialog('federation/update-remote-user', { userId: user.value.id });
 	refreshUser();
 }
 
 async function resetPassword() {
+	if (!user.value) return;
 	const confirm = await os.confirm({
 		type: 'warning',
 		text: i18n.ts.resetPasswordConfirm,
@@ -281,6 +223,7 @@ async function resetPassword() {
 }
 
 async function toggleSuspend(v) {
+	if (!user.value) return;
 	const confirm = await os.confirm({
 		type: 'warning',
 		text: v ? i18n.ts.suspendConfirm : i18n.ts.unsuspendConfirm,
@@ -294,13 +237,14 @@ async function toggleSuspend(v) {
 }
 
 async function unsetUserAvatar() {
+	if (!user.value) return;
 	const confirm = await os.confirm({
 		type: 'warning',
 		text: i18n.ts.unsetUserAvatarConfirm,
 	});
 	if (confirm.canceled) return;
 	const process = async () => {
-		await misskeyApi('admin/unset-user-avatar', { userId: user.value.id });
+		await misskeyApi('admin/unset-user-avatar', { userId: user.value!.id });
 		os.success();
 	};
 	await process().catch(err => {
@@ -313,13 +257,14 @@ async function unsetUserAvatar() {
 }
 
 async function unsetUserBanner() {
+	if (!user.value) return;
 	const confirm = await os.confirm({
 		type: 'warning',
 		text: i18n.ts.unsetUserBannerConfirm,
 	});
 	if (confirm.canceled) return;
 	const process = async () => {
-		await misskeyApi('admin/unset-user-banner', { userId: user.value.id });
+		await misskeyApi('admin/unset-user-banner', { userId: user.value!.id });
 		os.success();
 	};
 	await process().catch(err => {
@@ -332,13 +277,15 @@ async function unsetUserBanner() {
 }
 
 async function deleteAllFiles() {
+	if (!user.value) return;
+
 	const confirm = await os.confirm({
 		type: 'warning',
 		text: i18n.ts.deleteAllFilesConfirm,
 	});
 	if (confirm.canceled) return;
 	const process = async () => {
-		await misskeyApi('admin/delete-all-files-of-a-user', { userId: user.value.id });
+		await misskeyApi('admin/delete-all-files-of-a-user', { userId: user.value!.id });
 		os.success();
 	};
 	await process().catch(err => {
@@ -351,6 +298,8 @@ async function deleteAllFiles() {
 }
 
 async function deleteAccount() {
+	if (!user.value) return;
+
 	const confirm = await os.confirm({
 		type: 'warning',
 		text: i18n.ts.deleteAccountConfirm,
@@ -358,11 +307,11 @@ async function deleteAccount() {
 	if (confirm.canceled) return;
 
 	const typed = await os.inputText({
-		text: i18n.tsx.typeToConfirm({ x: user.value?.username }),
+		text: i18n.tsx.typeToConfirm({ x: user.value.username }),
 	});
 	if (typed.canceled) return;
 
-	if (typed.result === user.value?.username) {
+	if (typed.result === user.value.username) {
 		await os.apiWithDialog('admin/delete-account', {
 			userId: user.value.id,
 		});
@@ -375,6 +324,8 @@ async function deleteAccount() {
 }
 
 async function assignRole() {
+	if (!user.value) return;
+
 	const roles = await misskeyApi('admin/roles/list');
 
 	const { canceled, result: roleId } = await os.select({
@@ -384,7 +335,7 @@ async function assignRole() {
 	if (canceled) return;
 
 	const { canceled: canceled2, result: period } = await os.select({
-		title: i18n.ts.period + ': ' + roles.find(r => r.id === roleId)!.name,
+		title: `${i18n.ts.period}: ${roles.find(r => r.id === roleId)?.name ?? ''}`,
 		items: [{
 			value: 'indefinitely', text: i18n.ts.indefinitely,
 		}, {
@@ -412,18 +363,19 @@ async function assignRole() {
 }
 
 async function unassignRole(role, ev) {
+	if (!user.value) return;
 	os.popupMenu([{
 		text: i18n.ts.unassign,
 		icon: 'ti ti-x',
 		danger: true,
 		action: async () => {
-			await os.apiWithDialog('admin/roles/unassign', { roleId: role.id, userId: user.value.id });
+			await os.apiWithDialog('admin/roles/unassign', { roleId: role.id, userId: user.value!.id });
 			refreshUser();
 		},
 	}], ev.currentTarget ?? ev.target);
 }
 
-function toggleRoleItem(role) {
+function toggleRoleItem(role: Role) {
 	if (expandedRoles.value.includes(role.id)) {
 		expandedRoles.value = expandedRoles.value.filter(x => x !== role.id);
 	} else {
@@ -438,14 +390,13 @@ watch(() => props.userId, () => {
 });
 
 watch(user, () => {
+	if (!user.value) return;
 	misskeyApi('ap/get', {
 		uri: user.value.uri ?? `${url}/users/${user.value.id}`,
 	}).then(res => {
 		ap.value = res;
 	});
 });
-
-const headerActions = computed(() => []);
 
 const headerTabs = computed(() => [{
 	key: 'overview',
@@ -459,10 +410,6 @@ const headerTabs = computed(() => [{
 	key: 'drive',
 	title: i18n.ts.drive,
 	icon: 'ti ti-cloud',
-}, {
-	key: 'chart',
-	title: i18n.ts.charts,
-	icon: 'ti ti-chart-line',
 }, {
 	key: 'raw',
 	title: 'Raw',

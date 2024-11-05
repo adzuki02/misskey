@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import type { Note } from 'misskey-js/entities.js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
@@ -53,7 +53,7 @@ import { userPage } from '@/filters/user.js';
 import { checkWordMute } from '@/scripts/check-word-mute.js';
 
 const props = withDefaults(defineProps<{
-	note: Misskey.entities.Note;
+	note: Note;
 	detail?: boolean;
 
 	// how many notes are in between this one and the note being viewed in detail
@@ -65,7 +65,7 @@ const props = withDefaults(defineProps<{
 const muted = ref($i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
 
 const showContent = ref(false);
-const replies = ref<Misskey.entities.Note[]>([]);
+const replies = ref<Note[]>([]);
 
 if (props.detail) {
 	misskeyApi('notes/children', {

@@ -40,9 +40,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { watch, ref, computed } from 'vue';
-import * as Misskey from 'misskey-js';
 import MkImgWithBlurhash from '../MkImgWithBlurhash.vue';
 import MkA from './MkA.vue';
+import type { UserLite, UserDetailed } from 'misskey-js/entities.js';
 import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { extractAvgColorFromBlurhash } from '@/scripts/extract-avg-color-from-blurhash.js';
 import { acct, userPage } from '@/filters/user.js';
@@ -50,14 +50,13 @@ import { defaultStore } from '@/store.js';
 
 const animation = ref(defaultStore.state.animation);
 const squareAvatars = ref(defaultStore.state.squareAvatars);
-const useBlurEffect = ref(defaultStore.state.useBlurEffect);
 
 const props = withDefaults(defineProps<{
-	user: Misskey.entities.User;
+	user: UserLite;
 	target?: string | null;
 	link?: boolean;
 	preview?: boolean;
-	decorations?: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>[];
+	decorations?: Omit<UserDetailed['avatarDecorations'][number], 'id'>[];
 	forceShowDecoration?: boolean;
 }>(), {
 	target: null,
@@ -88,22 +87,22 @@ function onClick(ev: MouseEvent): void {
 	emit('click', ev);
 }
 
-function getDecorationUrl(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+function getDecorationUrl(decoration: Omit<UserDetailed['avatarDecorations'][number], 'id'>) {
 	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar) return getStaticImageUrl(decoration.url);
 	return decoration.url;
 }
 
-function getDecorationAngle(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+function getDecorationAngle(decoration: Omit<UserDetailed['avatarDecorations'][number], 'id'>) {
 	const angle = decoration.angle ?? 0;
 	return angle === 0 ? undefined : `${angle * 360}deg`;
 }
 
-function getDecorationScale(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+function getDecorationScale(decoration: Omit<UserDetailed['avatarDecorations'][number], 'id'>) {
 	const scaleX = decoration.flipH ? -1 : 1;
 	return scaleX === 1 ? undefined : `${scaleX} 1`;
 }
 
-function getDecorationOffset(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+function getDecorationOffset(decoration: Omit<UserDetailed['avatarDecorations'][number], 'id'>) {
 	const offsetX = decoration.offsetX ?? 0;
 	const offsetY = decoration.offsetY ?? 0;
 	return offsetX === 0 && offsetY === 0 ? undefined : `${offsetX * 100}% ${offsetY * 100}%`;

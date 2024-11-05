@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><XHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><XHeader v-model:tab="tab" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
 		<FormSuspense :p="init">
 			<template v-if="tab === 'block'">
@@ -56,16 +56,14 @@ async function init() {
 
 function save() {
 	os.apiWithDialog('admin/update-meta', {
-		blockedHosts: blockedHosts.value.split('\n') || [],
-		silencedHosts: silencedHosts.value.split('\n') || [],
-		mediaSilencedHosts: mediaSilencedHosts.value.split('\n') || [],
+		blockedHosts: blockedHosts.value.split('\n').filter(host => host !== ''),
+		silencedHosts: silencedHosts.value.split('\n').filter(host => host !== ''),
+		mediaSilencedHosts: mediaSilencedHosts.value.split('\n').filter(host => host !== ''),
 
 	}).then(() => {
 		fetchInstance(true);
 	});
 }
-
-const headerActions = computed(() => []);
 
 const headerTabs = computed(() => [{
 	key: 'block',
