@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onActivated, onMounted, onUnmounted, provide, watch, ref, computed } from 'vue';
+import { onActivated, onMounted, onUnmounted, provide, watch, ref, computed, useTemplateRef } from 'vue';
 import { i18n } from '@/i18n.js';
 import MkSuperMenu from '@/components/MkSuperMenu.vue';
 import MkInfo from '@/components/MkInfo.vue';
@@ -39,8 +39,6 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import { lookupUser, lookupUserByEmail, lookupFile } from '@/scripts/admin-lookup.js';
 import { PageMetadata, definePageMetadata, provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
 import { useRouter } from '@/router/supplier.js';
-
-const isEmpty = (x: string | null) => x == null || x === '';
 
 const router = useRouter();
 
@@ -54,11 +52,9 @@ const indexInfo = {
 provide('shouldOmitHeaderTitle', false);
 
 const INFO = ref(indexInfo);
-const childInfo = ref<null | PageMetadata>(null);
+const childInfo = ref<PageMetadata>();
 const narrow = ref(false);
-const view = ref(null);
-const el = ref<HTMLDivElement | null>(null);
-const pageProps = ref({});
+const el = useTemplateRef('el');
 const noBotProtection = computed(() => !instance.disableRegistration && !instance.enableHcaptcha && !instance.enableRecaptcha && !instance.enableTurnstile && !instance.enableMcaptcha);
 const thereIsUnresolvedAbuseReport = ref(false);
 const currentPage = computed(() => router.currentRef.value.child);
@@ -71,7 +67,7 @@ misskeyApi('admin/abuse-user-reports', {
 });
 
 const NARROW_THRESHOLD = 600;
-const ro = new ResizeObserver((entries, observer) => {
+const ro = new ResizeObserver((entries) => {
 	if (entries.length === 0) return;
 	narrow.value = entries[0].borderBoxSize[0].inlineSize < NARROW_THRESHOLD;
 });
@@ -252,7 +248,7 @@ watch(router.currentRef, (to) => {
 provideMetadataReceiver((metadataGetter) => {
 	const info = metadataGetter();
 	if (info == null) {
-		childInfo.value = null;
+		childInfo.value = undefined;
 	} else {
 		childInfo.value = info;
 		INFO.value.needWideArea = info.needWideArea ?? undefined;
@@ -301,10 +297,6 @@ function adminLookup(ev: MouseEvent) {
 		},
 	}], ev.currentTarget ?? ev.target);
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => INFO.value);
 

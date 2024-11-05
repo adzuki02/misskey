@@ -226,10 +226,6 @@ async function saveHardMutedWords(hardMutedWords: (string | string[])[]) {
 	await misskeyApi('i/update', { hardMutedWords });
 }
 
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
-
 definePageMetadata(() => ({
 	title: i18n.ts.muteAndBlock,
 	icon: 'ti ti-ban',

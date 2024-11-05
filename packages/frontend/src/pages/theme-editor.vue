@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader :actions="headerActions"/></template>
 	<MkSpacer :contentMax="800" :marginMin="16" :marginMax="32">
 		<div class="cwepdizn _gaps_m">
 			<MkFolder :defaultOpen="true">
@@ -200,7 +200,7 @@ async function saveAs() {
 	});
 	if (canceled) return;
 
-	theme.value.id = crypto.randomUUID();
+	theme.value.id = uuid();
 	theme.value.name = name;
 	theme.value.author = `@${$i.username}@${toUnicode(host)}`;
 	if (description.value) theme.value.desc = description.value;
@@ -231,8 +231,6 @@ const headerActions = computed(() => [{
 	text: i18n.ts.saveAs,
 	handler: saveAs,
 }]);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.themeEditor,

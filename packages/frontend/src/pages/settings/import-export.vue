@@ -221,10 +221,6 @@ const importAntennas = async (ev) => {
 	misskeyApi('i/import-antennas', { fileId: file.id }).then(onImportSuccess).catch(onError);
 };
 
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
-
 definePageMetadata(() => ({
 	title: i18n.ts.importAndExport,
 	icon: 'ti ti-package',

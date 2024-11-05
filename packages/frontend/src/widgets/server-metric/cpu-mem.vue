@@ -76,6 +76,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { v4 as uuid } from 'uuid';
 import type { ChannelConnection, Channels } from 'misskey-js';
 import type { ServerInfoResponse, ServerStatsLog, ServerStats } from 'misskey-js/entities.js';
 
@@ -87,10 +88,10 @@ const props = defineProps<{
 const viewBoxX = ref<number>(50);
 const viewBoxY = ref<number>(30);
 const stats = ref<ServerStats[]>([]);
-const cpuGradientId = crypto.randomUUID();
-const cpuMaskId = crypto.randomUUID();
-const memGradientId = crypto.randomUUID();
-const memMaskId = crypto.randomUUID();
+const cpuGradientId = uuid();
+const cpuMaskId = uuid();
+const memGradientId = uuid();
+const memMaskId = uuid();
 const cpuPolylinePoints = ref<string>('');
 const memPolylinePoints = ref<string>('');
 const cpuPolygonPoints = ref<string>('');

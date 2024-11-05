@@ -142,10 +142,6 @@ watch([
 	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
-
 definePageMetadata(() => ({
 	title: i18n.ts.other,
 	icon: 'ti ti-dots',

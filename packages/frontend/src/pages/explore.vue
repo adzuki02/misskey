@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-model:tab="tab" :tabs="headerTabs"/></template>
 	<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
 		<div v-if="tab === 'users'" key="users">
 			<XUsers/>
@@ -33,8 +33,6 @@ const props = withDefaults(defineProps<{
 });
 
 const tab = ref(props.initialTab);
-
-const headerActions = computed(() => []);
 
 const headerTabs = computed(() => [{
 	key: 'users',

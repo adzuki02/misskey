@@ -53,7 +53,7 @@ import { PageHeaderItem } from '@/types/page-header.js';
 const props = withDefaults(defineProps<{
 	tabs?: Tab[];
 	tab?: string;
-	actions?: PageHeaderItem[] | null;
+	actions?: PageHeaderItem[];
 	thin?: boolean;
 	displayMyAvatar?: boolean;
 }>(), {

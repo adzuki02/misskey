@@ -144,10 +144,6 @@ onUnmounted(() => {
 	if (aiscript) aiscript.abort();
 });
 
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
-
 definePageMetadata(() => ({
 	title: i18n.ts.scratchpad,
 	icon: 'ti ti-terminal-2',

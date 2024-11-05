@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader/></template>
 	<MkSpacer :contentMax="600" :marginMin="16">
 		<MkButton primary @click="createKey">{{ i18n.ts._registry.createKey }}</MkButton>
 
@@ -71,10 +71,6 @@ async function createKey() {
 }
 
 fetchScopes();
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.registry,

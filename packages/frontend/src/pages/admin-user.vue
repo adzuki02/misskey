@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-model:tab="tab" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="600" :marginMin="16" :marginMax="32">
 		<FormSuspense :p="init">
 			<div v-if="tab === 'overview'" class="_gaps_m">
@@ -397,8 +397,6 @@ watch(user, () => {
 		ap.value = res;
 	});
 });
-
-const headerActions = computed(() => []);
 
 const headerTabs = computed(() => [{
 	key: 'overview',

@@ -16,6 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, ref, computed } from 'vue';
+import { v4 as uuid } from 'uuid';
 import XStatusbar from './statusbar.statusbar.vue';
 import type { UserList } from 'misskey-js/entities.js';
 import MkFolder from '@/components/MkFolder.vue';
@@ -37,7 +38,7 @@ onMounted(() => {
 
 async function add() {
 	defaultStore.push('statusbars', {
-		id: crypto.randomUUID(),
+		id: uuid(),
 		name: '',
 		type: null as unknown as string,
 		black: false,
@@ -45,10 +46,6 @@ async function add() {
 		props: {},
 	});
 }
-
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.statusbar,

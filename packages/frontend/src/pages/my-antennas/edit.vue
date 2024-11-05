@@ -5,14 +5,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
-
+	<template #header><MkPageHeader/></template>
 	<MkAntennaEditor v-if="antenna" :antenna="antenna" @updated="onAntennaUpdated"/>
 </MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import type { Antenna } from 'misskey-js/entities.js';
 import MkAntennaEditor from '@/components/MkAntennaEditor.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -37,9 +36,6 @@ function onAntennaUpdated() {
 misskeyApi('antennas/show', { antennaId: props.antennaId }).then((antennaResponse) => {
 	antenna.value = antennaResponse;
 });
-
-const headerActions = computed(() => []);
-const headerTabs = computed(() => []);
 
 definePageMetadata(() => ({
 	title: i18n.ts.editAntenna,

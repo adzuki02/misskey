@@ -166,7 +166,7 @@ const headerActions = computed(() => clip.value && isOwned.value ? [{
 
 		clipsCache.delete();
 	},
-}] : null);
+}] : undefined);
 
 definePageMetadata(() => ({
 	title: clip.value ? clip.value.name : i18n.ts.clip,

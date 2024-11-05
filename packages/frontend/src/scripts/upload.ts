@@ -4,9 +4,10 @@
  */
 
 import { reactive, ref } from 'vue';
-import type { DriveFile } from 'misskey-js/entities.js';
+import { v4 as uuid } from 'uuid';
 import { readAndCompressImage } from '@misskey-dev/browser-image-resizer';
 import { getCompressionConfig } from './upload/compress-config.js';
+import type { DriveFile } from 'misskey-js/entities.js';
 import { defaultStore } from '@/store.js';
 import { apiUrl } from '@/config.js';
 import { $i } from '@/account.js';
@@ -47,7 +48,7 @@ export function uploadFile(
 	}
 
 	return new Promise((resolve, reject) => {
-		const id = crypto.randomUUID();
+		const id = uuid();
 
 		const reader = new FileReader();
 		reader.onload = async (): Promise<void> => {

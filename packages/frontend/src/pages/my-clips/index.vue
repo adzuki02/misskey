@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-model:tab="tab" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="700">
 		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
 			<div v-if="tab === 'my'" key="my" class="_gaps">
@@ -82,8 +82,6 @@ async function create() {
 
 	pagingComponent.value?.reload();
 }
-
-const headerActions = computed(() => []);
 
 const headerTabs = computed(() => [{
 	key: 'my',

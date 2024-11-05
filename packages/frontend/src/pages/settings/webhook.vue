@@ -46,10 +46,6 @@ const pagination = {
 	noPaging: true,
 };
 
-const headerActions = computed(() => []);
-
-const headerTabs = computed(() => []);
-
 definePageMetadata(() => ({
 	title: 'Webhook',
 	icon: 'ti ti-webhook',
