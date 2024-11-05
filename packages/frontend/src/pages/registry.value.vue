@@ -63,7 +63,7 @@ const props = defineProps<{
 }>();
 
 const scope = computed(() => props.path.split('/').slice(0, -1));
-const key = computed(() => props.path.split('/').at(-1));
+const key = computed(() => props.path.split('/').at(-1) as string);
 
 const value = ref<any>(null);
 const valueForEditor = ref<string | null>(null);
