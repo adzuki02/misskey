@@ -14,7 +14,7 @@ import MkUrlPreview from '@/components/MkUrlPreview.vue';
 type SummalyResult = Awaited<ReturnType<typeof summaly>>;
 
 describe('MkUrlPreview', () => {
-	const renderPreviewBy = async (summary: Partial<SummalyResult>): Promise<RenderResult> => {
+	const renderPreviewBy = async (summary: Pick<SummalyResult, 'url'> & Partial<SummalyResult>): Promise<RenderResult> => {
 		if (!summary.player) {
 			summary.player = {
 				url: null,
@@ -47,7 +47,7 @@ describe('MkUrlPreview', () => {
 		return result;
 	};
 
-	const renderAndOpenPreview = async (summary: Partial<SummalyResult>): Promise<HTMLIFrameElement | null> => {
+	const renderAndOpenPreview = async (summary: Pick<SummalyResult, 'url'> & Partial<SummalyResult>): Promise<HTMLIFrameElement | null> => {
 		const mkUrlPreview = await renderPreviewBy(summary);
 		const buttons = mkUrlPreview.getAllByRole('button');
 		buttons[0].click();

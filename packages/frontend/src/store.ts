@@ -30,7 +30,7 @@ interface NoteViewInterruptor {
 }
 
 interface NotePostInterruptor {
-	handler: (note: FIXME) => unknown;
+	handler: (note: any) => unknown;
 }
 
 /** サウンド設定 */
