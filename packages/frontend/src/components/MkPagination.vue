@@ -125,8 +125,6 @@ const items = ref<EntityMap>(new Map()) as Ref<EntityMap>;
  */
 const queue = ref<EntityMap>(new Map()) as Ref<EntityMap>;
 
-const offset = ref(0);
-
 /**
  * 初期化中かどうか（trueならMkLoadingで全て隠す）
  */
@@ -179,7 +177,9 @@ watch([backed, contentEl], () => {
 	if (!backed.value) {
 		if (!contentEl.value) return;
 
-		scrollRemove.value = (props.pagination.reversed ? onScrollBottom : onScrollTop)(contentEl.value, executeQueue, TOLERANCE);
+		scrollRemove.value = props.pagination.reversed
+			? onScrollBottom(contentEl.value, executeQueue, TOLERANCE)
+			: onScrollTop(contentEl.value, (topVisible) => { if (topVisible) executeQueue(); }, TOLERANCE);
 	} else {
 		if (scrollRemove.value) scrollRemove.value();
 		scrollRemove.value = null;
@@ -218,7 +218,6 @@ async function init(): Promise<void> {
 			more.value = true;
 		}
 
-		offset.value = res.length;
 		error.value = false;
 		fetching.value = false;
 	}, err => {
@@ -239,7 +238,7 @@ const fetchMore = async (): Promise<void> => {
 		...params,
 		limit: SECOND_FETCH_LIMIT,
 		...(props.pagination.offsetMode ? {
-			offset: offset.value,
+			offset: items.value.size,
 		} : {
 			untilId: Array.from(items.value.keys()).at(-1),
 		}),
@@ -284,7 +283,6 @@ const fetchMore = async (): Promise<void> => {
 				moreFetching.value = false;
 			}
 		}
-		offset.value += res.length;
 	}, err => {
 		moreFetching.value = false;
 	});
@@ -298,7 +296,7 @@ const fetchMoreAhead = async (): Promise<void> => {
 		...params,
 		limit: SECOND_FETCH_LIMIT,
 		...(props.pagination.offsetMode ? {
-			offset: offset.value,
+			offset: items.value.size,
 		} : {
 			sinceId: Array.from(items.value.keys()).at(-1),
 		}),
@@ -310,7 +308,6 @@ const fetchMoreAhead = async (): Promise<void> => {
 			items.value = concatMapWithArray(items.value, res);
 			more.value = true;
 		}
-		offset.value += res.length;
 		moreFetching.value = false;
 	}, err => {
 		moreFetching.value = false;
