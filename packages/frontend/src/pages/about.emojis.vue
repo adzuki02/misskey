@@ -38,8 +38,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { watch, ref } from 'vue';
-import XEmoji from './emojis.emoji.vue';
 import type { EmojiSimple } from 'misskey-js/entities.js';
+import XEmoji from '@/pages/emojis.emoji.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
