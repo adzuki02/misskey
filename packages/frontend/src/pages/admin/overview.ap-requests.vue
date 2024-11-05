@@ -23,6 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, shallowRef, ref } from 'vue';
 import { Chart } from 'chart.js';
 import gradient from 'chartjs-plugin-gradient';
+import isChromatic from 'chromatic';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { useChartTooltip } from '@/scripts/use-chart-tooltip.js';
 import { chartVLine } from '@/scripts/chart-vline.js';
@@ -41,7 +42,7 @@ const { handler: externalTooltipHandler } = useChartTooltip();
 const { handler: externalTooltipHandler2 } = useChartTooltip();
 
 onMounted(async () => {
-	const now = new Date();
+	const now = isChromatic() ? new Date('2024-08-31T10:00:00Z') : new Date();
 
 	const getDate = (ago: number) => {
 		const y = now.getFullYear();
@@ -51,14 +52,14 @@ onMounted(async () => {
 		return new Date(y, m, d - ago);
 	};
 
-	const format = (arr) => {
+	const format = (arr: number[]) => {
 		return arr.map((v, i) => ({
 			x: getDate(i).getTime(),
 			y: v,
 		}));
 	};
 
-	const formatMinus = (arr) => {
+	const formatMinus = (arr: number[]) => {
 		return arr.map((v, i) => ({
 			x: getDate(i).getTime(),
 			y: -v,
@@ -75,7 +76,6 @@ onMounted(async () => {
 		type: 'line',
 		data: {
 			datasets: [{
-				stack: 'a',
 				parsing: false,
 				label: 'Out: Succ',
 				data: format(raw.deliverSucceeded).slice().reverse(),
@@ -89,7 +89,6 @@ onMounted(async () => {
 				fill: true,
 				clip: 8,
 			}, {
-				stack: 'a',
 				parsing: false,
 				label: 'Out: Fail',
 				data: formatMinus(raw.deliverFailed).slice().reverse(),
@@ -133,7 +132,6 @@ onMounted(async () => {
 					min: getDate(chartLimit).getTime(),
 				},
 				y: {
-					stacked: true,
 					position: 'left',
 					suggestedMax: 10,
 					grid: {
@@ -167,6 +165,9 @@ onMounted(async () => {
 						duration: 0,
 					},
 					external: externalTooltipHandler,
+					callbacks: {
+						label: context => `${context.dataset.label}: ${Math.abs(context.parsed.y)}`,
+					},
 				},
 				// @ts-expect-error 問題ない
 				gradient,
