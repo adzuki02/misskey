@@ -60,11 +60,10 @@ import { defaultStore } from '@/store.js';
 const props = withDefaults(defineProps<{
 	tabs?: Tab[];
 	tab?: string;
-	rootEl?: HTMLElement | null;
+	rootEl: HTMLElement | null;
 }>(), {
 	tabs: () => ([] as Tab[]),
 	tab: undefined,
-	rootEl: undefined,
 });
 
 const emit = defineEmits<{

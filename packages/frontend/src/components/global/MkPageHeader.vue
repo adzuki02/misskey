@@ -58,6 +58,8 @@ const props = withDefaults(defineProps<{
 	displayMyAvatar?: boolean;
 }>(), {
 	tabs: () => ([] as Tab[]),
+	tab: undefined,
+	actions: () => ([] as PageHeaderItem[]),
 });
 
 const emit = defineEmits<{
@@ -73,7 +75,7 @@ const el = useTemplateRef('el');
 const bg = ref<string>();
 const narrow = ref(false);
 const hasTabs = computed(() => props.tabs.length > 0);
-const hasActions = computed(() => props.actions && props.actions.length > 0);
+const hasActions = computed(() => props.actions.length > 0);
 const show = computed(() => {
 	return !hideTitle || hasTabs.value || hasActions.value;
 });
