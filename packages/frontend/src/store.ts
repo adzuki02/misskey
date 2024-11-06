@@ -118,13 +118,9 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: [
 			'notifications',
 			'clips',
-			'drive',
 			'followRequests',
 			'-',
-			'explore',
 			'search',
-			'-',
-			'ui',
 		],
 	},
 	visibility: {
@@ -138,17 +134,6 @@ export const defaultStore = markRaw(new Storage('base', {
 	showPreview: {
 		where: 'device',
 		default: false,
-	},
-	statusbars: {
-		where: 'deviceAccount',
-		default: [] as {
-			name: string;
-			id: string;
-			type: string;
-			size: 'verySmall' | 'small' | 'medium' | 'large' | 'veryLarge';
-			black: boolean;
-			props: Record<string, any>;
-		}[],
 	},
 	widgets: {
 		where: 'deviceAccount',
@@ -205,15 +190,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
-	enableQuickAddMfmFunction: {
-		where: 'device',
-		default: false,
-	},
 	loadRawImages: {
-		where: 'device',
-		default: false,
-	},
-	imageNewTab: {
 		where: 'device',
 		default: false,
 	},
@@ -293,10 +270,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: [] as string[],
 	},
-	defaultSideView: {
-		where: 'device',
-		default: false,
-	},
 	menuDisplay: {
 		where: 'device',
 		default: 'sideFull' as 'sideFull' | 'sideIcon' | 'top',
@@ -341,10 +314,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
-	aiChanMode: {
-		where: 'device',
-		default: false,
-	},
 	devMode: {
 		where: 'device',
 		default: false,
@@ -365,10 +334,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: {} as Record<string, Record<string, string[]>>,
 	},
-	keepScreenOn: {
-		where: 'device',
-		default: false,
-	},
 	defaultWithReplies: {
 		where: 'account',
 		default: false,
@@ -379,7 +344,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	useGroupedNotifications: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	dataSaver: {
 		where: 'device',
@@ -388,11 +353,11 @@ export const defaultStore = markRaw(new Storage('base', {
 			avatar: false,
 			urlPreview: false,
 			code: false,
-		} as Record<string, boolean>,
+		} as Record<'media' | 'avatar' | 'urlPreview' | 'code', boolean>,
 	},
 	enableHorizontalSwipe: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	useNativeUIForVideoAudioPlayer: {
 		where: 'device',
@@ -400,7 +365,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	keepOriginalFilename: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	alwaysConfirmFollow: {
 		where: 'device',
@@ -408,12 +373,12 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	confirmWhenRevealingSensitiveMedia: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
-  contextMenu: {
+	contextMenu: {
 		where: 'device',
 		default: 'app' as 'app' | 'appWithShift' | 'native',
-  },
+	},
 
 	sound_masterVolume: {
 		where: 'device',
@@ -429,7 +394,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	sound_note: {
 		where: 'device',
-		default: { type: 'syuilo/n-aec', volume: 1 } as SoundStore,
+		default: { type: null, volume: 1 } as SoundStore,
 	},
 	sound_noteMy: {
 		where: 'device',
@@ -437,11 +402,11 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	sound_notification: {
 		where: 'device',
-		default: { type: 'syuilo/n-ea', volume: 1 } as SoundStore,
+		default: { type: null, volume: 1 } as SoundStore,
 	},
 	sound_reaction: {
 		where: 'device',
-		default: { type: 'syuilo/bubble2', volume: 1 } as SoundStore,
+		default: { type: null, volume: 1 } as SoundStore,
 	},
 }));
 
