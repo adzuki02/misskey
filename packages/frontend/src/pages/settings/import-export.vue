@@ -14,15 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkFolder>
 	</FormSection>
 	<FormSection>
-		<template #label><i class="ti ti-star"></i> {{ i18n.ts._exportOrImport.favoritedNotes }}</template>
-		<MkFolder>
-			<template #label>{{ i18n.ts.export }}</template>
-			<template #icon><i class="ti ti-download"></i></template>
-			<MkButton primary :class="$style.button" inline @click="exportFavorites()"><i class="ti ti-download"></i> {{ i18n.ts.export }}</MkButton>
-		</MkFolder>
-	</FormSection>
-	<FormSection>
-		<template #label><i class="ti ti-star"></i> {{ i18n.ts._exportOrImport.clips }}</template>
+		<template #label><i class="ti ti-paperclip"></i> {{ i18n.ts._exportOrImport.clips }}</template>
 		<MkFolder>
 			<template #label>{{ i18n.ts.export }}</template>
 			<template #icon><i class="ti ti-download"></i></template>
@@ -159,10 +151,6 @@ const onError = (ev) => {
 
 const exportNotes = () => {
 	misskeyApi('i/export-notes', {}).then(onExportSuccess).catch(onError);
-};
-
-const exportFavorites = () => {
-	misskeyApi('i/export-favorites', {}).then(onExportSuccess).catch(onError);
 };
 
 const exportClips = () => {

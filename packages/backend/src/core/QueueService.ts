@@ -206,16 +206,6 @@ export class QueueService {
 	}
 
 	@bindThis
-	public createExportFavoritesJob(user: ThinUser) {
-		return this.dbQueue.add('exportFavorites', {
-			user: { id: user.id },
-		}, {
-			removeOnComplete: true,
-			removeOnFail: true,
-		});
-	}
-
-	@bindThis
 	public createExportFollowingJob(user: ThinUser, excludeMuting = false, excludeInactive = false) {
 		return this.dbQueue.add('exportFollowing', {
 			user: { id: user.id },
