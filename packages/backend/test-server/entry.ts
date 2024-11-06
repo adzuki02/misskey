@@ -1,5 +1,3 @@
-import { portToPid } from 'pid-port';
-import fkill from 'fkill';
 import Fastify from 'fastify';
 import { NestFactory } from '@nestjs/core';
 import { INestApplicationContext } from '@nestjs/common';
@@ -20,9 +18,7 @@ let serverService: ServerService;
  * テスト用のサーバインスタンスを起動する
  */
 async function launch() {
-	await killTestServer();
-
-	console.log(`launching application... (pid: ${process.pid}, ppid: ${process.ppid})`);
+	console.log('launching application...');
 
 	app = await NestFactory.createApplicationContext(MainModule, {
 		logger: new NestLogger(),
@@ -37,35 +33,6 @@ async function launch() {
 	// ジョブキューが動くとテスト結果の確認に支障が出ることがあるので意図的に動かさないでいる
 
 	console.log('application initialized.');
-}
-
-/**
- * 既に重複したポートで待ち受けしているサーバがある場合はkillする
- */
-async function killTestServer() {
-	//
-	try {
-		const pid = await portToPid(config.port);
-		console.log(`Test server process's pid is ${pid}`);
-		if (pid) {
-			await fkill(pid, { force: true });
-		}
-	} catch (e) {
-		// NOP;
-		console.log('Failed to kill test server:', (e as any)?.message);
-	}
-
-	// kill env update/reset server
-	try {
-		const pid = await portToPid(config.port + 1000);
-		console.log(`Env update/reset server process's pid is ${pid}`);
-		if (pid) {
-			await fkill(pid, { force: true });
-		}
-	} catch (e) {
-		// NOP;
-		console.log('Failed to kill env update/reset server:', (e as any)?.message);
-	}
 }
 
 /**
@@ -90,33 +57,12 @@ async function startControllerEndpoints(port = config.port + 1000) {
 	fastify.post<{ Body: { key?: string, value?: string } }>('/env-reset', async (req, res) => {
 		process.env = JSON.parse(originEnv);
 
-		// FIXME: dispose()のPromiseが返ってくるのを待たないと、killTestServerで強制的にプロセスを終了することになるのでなんとかしたい
-		await new Promise<void>(resolve => {
-			const timerId = setTimeout(() => {
-				console.log('force exiting server service');
-				resolve();
-			}, 1000 * 10);
-			serverService.dispose().then(() => {
-				clearTimeout(timerId);
-				resolve();
-			});
-		});
+		console.log('stopping application...');
 
-		// FIXME: 上と同じ
-		await new Promise<void>(resolve => {
-			const timerId = setTimeout(() => {
-				console.log('force exiting application');
-				resolve();
-			}, 1000 * 10);
-			app.close().then(() => {
-				clearTimeout(timerId);
-				resolve();
-			});
-		});
+		await serverService.dispose();
+		await app.close();
 
-		await killTestServer();
-
-		console.log(`restarting application... (pid: ${process.pid}, ppid: ${process.ppid})`);
+		console.log('restarting application...');
 
 		app = await NestFactory.createApplicationContext(MainModule, {
 			logger: new NestLogger(),
@@ -125,10 +71,13 @@ async function startControllerEndpoints(port = config.port + 1000) {
 		serverService = app.get(ServerService);
 		await serverService.launch();
 
+		console.log('application re-initialized.');
+
 		res.code(200).send({ success: true });
 	});
 
 	await fastify.listen({ port: port, host: 'localhost' });
 }
 
+// eslint-disable-next-line import/no-default-export
 export default launch;
