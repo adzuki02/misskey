@@ -19,7 +19,6 @@ import MkSparkle from '@/components/MkSparkle.vue';
 import MkA, { MkABehavior } from '@/components/global/MkA.vue';
 import { host } from '@/config.js';
 import { defaultStore } from '@/store.js';
-import { nyaize as doNyaize } from '@/scripts/nyaize.js';
 import { safeParseFloat } from '@/scripts/safe-parse.js';
 
 const QUOTE_STYLE = `
