@@ -571,6 +571,8 @@ export async function testPaginationConsistency<Entity extends { id: string, cre
 export async function initTestDb(justBorrow = false, initEntities?: any[]) {
 	if (process.env.NODE_ENV !== 'test') throw new Error('NODE_ENV is not a test');
 
+	console.log(`initializing test db... (pid: ${process.pid}, ppid: ${process.ppid})`);
+
 	const db = new DataSource({
 		type: 'postgres',
 		...(config.db.url ? {
@@ -582,8 +584,8 @@ export async function initTestDb(justBorrow = false, initEntities?: any[]) {
 		username: config.db.user,
 		password: config.db.pass,
 		database: config.db.db,
-		synchronize: true && !justBorrow,
-		dropSchema: true && !justBorrow,
+		synchronize: !justBorrow,
+		dropSchema: !justBorrow,
 		entities: initEntities ?? entities,
 	});
 

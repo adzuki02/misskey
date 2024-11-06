@@ -2,11 +2,11 @@ import { portToPid } from 'pid-port';
 import fkill from 'fkill';
 import Fastify from 'fastify';
 import { NestFactory } from '@nestjs/core';
+import { INestApplicationContext } from '@nestjs/common';
 import { MainModule } from '@/MainModule.js';
 import { ServerService } from '@/server/ServerService.js';
 import { loadConfig } from '@/config.js';
 import { NestLogger } from '@/NestLogger.js';
-import { INestApplicationContext } from '@nestjs/common';
 
 const config = loadConfig();
 const originEnv = JSON.stringify(process.env);
@@ -22,7 +22,7 @@ let serverService: ServerService;
 async function launch() {
 	await killTestServer();
 
-	console.log('starting application...');
+	console.log(`launching application... (pid: ${process.pid}, ppid: ${process.ppid})`);
 
 	app = await NestFactory.createApplicationContext(MainModule, {
 		logger: new NestLogger(),
@@ -45,21 +45,25 @@ async function killTestServer() {
 	//
 	try {
 		const pid = await portToPid(config.port);
+		console.log(`Test server is running on ${config.port} (pid: ${pid})`);
 		if (pid) {
 			await fkill(pid, { force: true });
 		}
 	} catch {
 		// NOP;
+		console.log('Failed to kill test server');
 	}
 
 	// kill env update/reset server
 	try {
 		const pid = await portToPid(config.port + 1000);
+		console.log(`Env update/reset server is running on ${config.port} (pid: ${pid})`);
 		if (pid) {
 			await fkill(pid, { force: true });
 		}
 	} catch {
 		// NOP;
+		console.log('Failed to kill env update/reset server');
 	}
 }
 
@@ -111,7 +115,7 @@ async function startControllerEndpoints(port = config.port + 1000) {
 
 		await killTestServer();
 
-		console.log('starting application...');
+		console.log(`restarting application... (pid: ${process.pid}, ppid: ${process.ppid})`);
 
 		app = await NestFactory.createApplicationContext(MainModule, {
 			logger: new NestLogger(),
