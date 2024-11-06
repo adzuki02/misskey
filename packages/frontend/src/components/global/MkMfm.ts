@@ -38,7 +38,6 @@ type MfmProps = {
 	isNote?: boolean;
 	emojiUrls?: Record<string, string>;
 	rootScale?: number;
-	nyaize?: boolean | 'respect';
 	parsedNodes?: mfm.MfmNode[] | null;
 	enableEmojiMenu?: boolean;
 	enableEmojiMenuReaction?: boolean;
@@ -79,9 +78,8 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 	 * Gen Vue Elements from MFM AST
 	 * @param ast MFM AST
 	 * @param scale How times large the text is
-	 * @param disableNyaize Whether nyaize is disabled or not
 	 */
-	const genEl = (ast: mfm.MfmNode[], scale: number, disableNyaize = false) => ast.map((token): VNode | string | (VNode | string)[] => {
+	const genEl = (ast: mfm.MfmNode[], scale: number) => ast.map((token): VNode | string | (VNode | string)[] => {
 		switch (token.type) {
 			case 'text': {
 				const text = token.props.text.replace(/(\r\n|\n|\r)/g, '\n');
@@ -346,7 +344,7 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 					url: token.props.url,
 					rel: 'nofollow noopener',
 					navigationBehavior: props.linkNavigationBehavior,
-				}, genEl(token.children, scale, true))];
+				}, genEl(token.children, scale))];
 			}
 
 			case 'mention': {
@@ -386,11 +384,11 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 				if (!props.nowrap) {
 					return [h('div', {
 						style: QUOTE_STYLE,
-					}, genEl(token.children, scale, true))];
+					}, genEl(token.children, scale))];
 				} else {
 					return [h('span', {
 						style: QUOTE_STYLE,
-					}, genEl(token.children, scale, true))];
+					}, genEl(token.children, scale))];
 				}
 			}
 
@@ -452,7 +450,7 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 			}
 
 			case 'plain': {
-				return [h('span', genEl(token.children, scale, true))];
+				return [h('span', genEl(token.children, scale))];
 			}
 
 			default: {
