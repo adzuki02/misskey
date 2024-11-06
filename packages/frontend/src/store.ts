@@ -110,10 +110,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: 'nonSensitiveOnly' as 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null,
 	},
-	mutedAds: {
-		where: 'account',
-		default: [] as string[],
-	},
 
 	menu: {
 		where: 'deviceAccount',
@@ -153,7 +149,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		}[],
 	},
 	widgets: {
-		where: 'account',
+		where: 'deviceAccount',
 		default: [] as {
 			name: string;
 			id: string;
@@ -193,7 +189,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	highlightSensitiveMedia: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	animation: {
 		where: 'device',
@@ -237,11 +233,11 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	useBlurEffectForModal: {
 		where: 'device',
-		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
+		default: false,
 	},
 	useBlurEffect: {
 		where: 'device',
-		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
+		default: false,
 	},
 	showFixedPostForm: {
 		where: 'device',
@@ -303,10 +299,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'sideFull' as 'sideFull' | 'sideIcon' | 'top',
 	},
-	reportError: {
-		where: 'device',
-		default: false,
-	},
 	squareAvatars: {
 		where: 'device',
 		default: false,
@@ -347,10 +339,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
-	forceShowAds: {
-		where: 'device',
-		default: false,
-	},
 	aiChanMode: {
 		where: 'device',
 		default: false,
@@ -370,10 +358,6 @@ export const defaultStore = markRaw(new Storage('base', {
 	notificationStackAxis: {
 		where: 'device',
 		default: 'horizontal' as 'vertical' | 'horizontal',
-	},
-	enableCondensedLineForAcct: {
-		where: 'device',
-		default: false,
 	},
 	additionalUnicodeEmojiIndexes: {
 		where: 'device',

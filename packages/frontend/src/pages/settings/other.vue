@@ -5,10 +5,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div class="_gaps_m">
-	<!--
-	<MkSwitch v-model="reportError">{{ i18n.ts.sendErrorReports }}<template #caption>{{ i18n.ts.sendErrorReportsDescription }}</template></MkSwitch>
-	-->
-
 	<FormSection first>
 		<div class="_gaps_s">
 			<MkFolder>
@@ -37,17 +33,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<FormInfo>{{ i18n.ts._accountDelete.sendEmail }}</FormInfo>
 					<MkButton v-if="!$i.isDeleted" danger @click="deleteAccount">{{ i18n.ts._accountDelete.requestAccountDelete }}</MkButton>
 					<MkButton v-else disabled>{{ i18n.ts._accountDelete.inProgress }}</MkButton>
-				</div>
-			</MkFolder>
-
-			<MkFolder>
-				<template #icon><i class="ti ti-flask"></i></template>
-				<template #label>{{ i18n.ts.experimentalFeatures }}</template>
-
-				<div class="_gaps_m">
-					<MkSwitch v-model="enableCondensedLineForAcct">
-						<template #label>Enable condensed line for acct</template>
-					</MkSwitch>
 				</div>
 			</MkFolder>
 
@@ -97,8 +82,6 @@ import FormSection from '@/components/form/section.vue';
 
 const $i = signinRequired();
 
-const reportError = computed(defaultStore.makeGetterSetter('reportError'));
-const enableCondensedLineForAcct = computed(defaultStore.makeGetterSetter('enableCondensedLineForAcct'));
 const devMode = computed(defaultStore.makeGetterSetter('devMode'));
 const defaultWithReplies = computed(defaultStore.makeGetterSetter('defaultWithReplies'));
 
@@ -135,12 +118,6 @@ async function updateRepliesAll(withReplies: boolean) {
 
 	misskeyApi('following/update-all', { withReplies });
 }
-
-watch([
-	enableCondensedLineForAcct,
-], async () => {
-	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
-});
 
 definePageMetadata(() => ({
 	title: i18n.ts.other,
