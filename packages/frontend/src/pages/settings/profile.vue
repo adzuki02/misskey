@@ -92,7 +92,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #label>{{ i18n.ts.advancedSettings }}</template>
 
 		<div class="_gaps_m">
-			<MkSwitch v-model="profile.isCat">{{ i18n.ts.flagAsCat }}<template #caption>{{ i18n.ts.flagAsCatDescription }}</template></MkSwitch>
 			<MkSwitch v-model="profile.isBot">{{ i18n.ts.flagAsBot }}<template #caption>{{ i18n.ts.flagAsBotDescription }}</template></MkSwitch>
 		</div>
 	</MkFolder>
@@ -141,7 +140,6 @@ const profile = reactive({
 	birthday: $i.birthday,
 	lang: $i.lang,
 	isBot: $i.isBot ?? false,
-	isCat: $i.isCat ?? false,
 });
 
 watch(() => profile, () => {
@@ -190,7 +188,6 @@ function save() {
 		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 		lang: (profile.lang || null) as keyof typeof langmap | null,
 		isBot: !!profile.isBot,
-		isCat: !!profile.isCat,
 	});
 	globalEvents.emit('requestClearPageCache');
 }

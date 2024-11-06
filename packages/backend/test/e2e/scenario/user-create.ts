@@ -87,7 +87,6 @@ describe('[シナリオ] ユーザ作成', () => {
 			expect(alice.avatarBlurhash).toBe(body.avatarBlurhash);
 			expect(alice.avatarDecorations).toEqual(body.avatarDecorations);
 			expect(alice.isBot).toBe(body.isBot);
-			expect(alice.isCat).toBe(body.isCat);
 			expect(alice.instance).toEqual(body.instance);
 			expect(alice.emojis).toEqual(body.emojis);
 			expect(alice.badgeRoles).toEqual(body.badgeRoles);

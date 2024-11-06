@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div v-if="renoteCollapsed" :class="$style.collapsedRenoteTarget">
 		<MkAvatar :class="$style.collapsedRenoteTargetAvatar" :user="appearNote.user" link preview/>
-		<Mfm :text="getNoteSummary(appearNote)" :plain="true" :nowrap="true" :author="appearNote.user" :nyaize="'respect'" :class="$style.collapsedRenoteTargetText" @click="renoteCollapsed = false"/>
+		<Mfm :text="getNoteSummary(appearNote)" :plain="true" :nowrap="true" :author="appearNote.user" :class="$style.collapsedRenoteTargetText" @click="renoteCollapsed = false"/>
 	</div>
 	<article v-else :class="$style.article" @contextmenu.stop="onContextmenu">
 		<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
@@ -55,7 +55,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 						v-if="appearNote.cw != ''"
 						:text="appearNote.cw"
 						:author="appearNote.user"
-						:nyaize="'respect'"
 						:enableEmojiMenu="true"
 						:enableEmojiMenuReaction="true"
 					/>
@@ -70,7 +69,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 							:parsedNodes="parsed"
 							:text="appearNote.text"
 							:author="appearNote.user"
-							:nyaize="'respect'"
 							:emojiUrls="appearNote.emojis"
 							:enableEmojiMenu="true"
 							:enableEmojiMenuReaction="true"
@@ -79,7 +77,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkLoading v-if="translating" mini/>
 							<div v-else-if="translation">
 								<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}: </b>
-								<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'respect'" :emojiUrls="appearNote.emojis"/>
+								<Mfm :text="translation.text" :author="appearNote.user" :emojiUrls="appearNote.emojis"/>
 							</div>
 						</div>
 					</div>

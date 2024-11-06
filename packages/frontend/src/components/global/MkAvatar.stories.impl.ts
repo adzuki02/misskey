@@ -54,10 +54,7 @@ export const ProfilePageCat = {
 	...ProfilePage,
 	args: {
 		...ProfilePage.args,
-		user: {
-			...userDetailed(),
-			isCat: true,
-		},
+		user: userDetailed(),
 	},
 	parameters: {
 		...ProfilePage.parameters,

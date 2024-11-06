@@ -77,13 +77,6 @@ type CondFormulaValueIsBot = {
 };
 
 /**
- * 猫アカウントの場合のみ成立とする
- */
-type CondFormulaValueIsCat = {
-	type: 'isCat';
-};
-
-/**
  * 「ユーザを見つけやすくする」が有効なアカウントの場合のみ成立とする
  */
 type CondFormulaValueIsExplorable = {
@@ -163,7 +156,6 @@ export type RoleCondFormulaValue = { id: string } & (
 	CondFormulaValueIsSuspended |
 	CondFormulaValueIsLocked |
 	CondFormulaValueIsBot |
-	CondFormulaValueIsCat |
 	CondFormulaValueIsExplorable |
 	CondFormulaValueRoleAssignedTo |
 	CondFormulaValueCreatedLessThan |

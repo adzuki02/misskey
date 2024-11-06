@@ -19,7 +19,6 @@ import MkSparkle from '@/components/MkSparkle.vue';
 import MkA, { MkABehavior } from '@/components/global/MkA.vue';
 import { host } from '@/config.js';
 import { defaultStore } from '@/store.js';
-import { nyaize as doNyaize } from '@/scripts/nyaize.js';
 import { safeParseFloat } from '@/scripts/safe-parse.js';
 
 const QUOTE_STYLE = `
@@ -39,7 +38,6 @@ type MfmProps = {
 	isNote?: boolean;
 	emojiUrls?: Record<string, string>;
 	rootScale?: number;
-	nyaize?: boolean | 'respect';
 	parsedNodes?: mfm.MfmNode[] | null;
 	enableEmojiMenu?: boolean;
 	enableEmojiMenuReaction?: boolean;
@@ -57,7 +55,6 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 	//provide('linkNavigationBehavior', props.linkNavigationBehavior);
 
 	const isNote = props.isNote ?? true;
-	const shouldNyaize = props.nyaize ? props.nyaize === 'respect' ? props.author?.isCat : false : false;
 
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (props.text == null || props.text === '') return;
@@ -81,15 +78,11 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 	 * Gen Vue Elements from MFM AST
 	 * @param ast MFM AST
 	 * @param scale How times large the text is
-	 * @param disableNyaize Whether nyaize is disabled or not
 	 */
-	const genEl = (ast: mfm.MfmNode[], scale: number, disableNyaize = false) => ast.map((token): VNode | string | (VNode | string)[] => {
+	const genEl = (ast: mfm.MfmNode[], scale: number) => ast.map((token): VNode | string | (VNode | string)[] => {
 		switch (token.type) {
 			case 'text': {
-				let text = token.props.text.replace(/(\r\n|\n|\r)/g, '\n');
-				if (!disableNyaize && shouldNyaize) {
-					text = doNyaize(text);
-				}
+				const text = token.props.text.replace(/(\r\n|\n|\r)/g, '\n');
 
 				if (!props.plain) {
 					const res: (VNode | string)[] = [];
@@ -281,17 +274,11 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 					case 'ruby': {
 						if (token.children.length === 1) {
 							const child = token.children[0];
-							let text = child.type === 'text' ? child.props.text : '';
-							if (!disableNyaize && shouldNyaize) {
-								text = doNyaize(text);
-							}
+							const text = child.type === 'text' ? child.props.text : '';
 							return h('ruby', {}, [text.split(' ')[0], h('rt', text.split(' ')[1])]);
 						} else {
 							const rt = token.children.at(-1)!;
-							let text = rt.type === 'text' ? rt.props.text : '';
-							if (!disableNyaize && shouldNyaize) {
-								text = doNyaize(text);
-							}
+							const text = rt.type === 'text' ? rt.props.text : '';
 							return h('ruby', {}, [...genEl(token.children.slice(0, token.children.length - 1), scale), h('rt', text.trim())]);
 						}
 					}
@@ -357,7 +344,7 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 					url: token.props.url,
 					rel: 'nofollow noopener',
 					navigationBehavior: props.linkNavigationBehavior,
-				}, genEl(token.children, scale, true))];
+				}, genEl(token.children, scale))];
 			}
 
 			case 'mention': {
@@ -397,11 +384,11 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 				if (!props.nowrap) {
 					return [h('div', {
 						style: QUOTE_STYLE,
-					}, genEl(token.children, scale, true))];
+					}, genEl(token.children, scale))];
 				} else {
 					return [h('span', {
 						style: QUOTE_STYLE,
-					}, genEl(token.children, scale, true))];
+					}, genEl(token.children, scale))];
 				}
 			}
 
@@ -463,7 +450,7 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 			}
 
 			case 'plain': {
-				return [h('span', genEl(token.children, scale, true))];
+				return [h('span', genEl(token.children, scale))];
 			}
 
 			default: {

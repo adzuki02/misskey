@@ -503,7 +503,6 @@ export class ApRendererService {
 			manuallyApprovesFollowers: user.isLocked,
 			discoverable: user.isExplorable,
 			publicKey: this.renderKey(user, keypair, '#main-key'),
-			isCat: user.isCat,
 			attachment: attachment.length ? attachment : undefined,
 		};
 
