@@ -27,6 +27,7 @@ async function launch() {
 	app = await NestFactory.createApplicationContext(MainModule, {
 		logger: new NestLogger(),
 	});
+	app.enableShutdownHooks();
 	serverService = app.get(ServerService);
 	await serverService.launch();
 
@@ -45,27 +46,25 @@ async function killTestServer() {
 	//
 	try {
 		const pid = await portToPid(config.port);
-		console.log(`Test server is running on ${config.port} (pid: ${pid})`);
+		console.log(`Test server process's pid is ${pid}`);
 		if (pid) {
 			await fkill(pid, { force: true });
 		}
 	} catch (e) {
 		// NOP;
-		console.log('Failed to kill test server');
-		console.log(e);
+		console.log('Failed to kill test server:', (e as any)?.message);
 	}
 
 	// kill env update/reset server
 	try {
 		const pid = await portToPid(config.port + 1000);
-		console.log(`Env update/reset server is running on ${config.port + 1000} (pid: ${pid})`);
+		console.log(`Env update/reset server process's pid is ${pid}`);
 		if (pid) {
 			await fkill(pid, { force: true });
 		}
 	} catch (e) {
 		// NOP;
-		console.log('Failed to kill env update/reset server');
-		console.log(e);
+		console.log('Failed to kill env update/reset server:', (e as any)?.message);
 	}
 }
 
@@ -122,6 +121,7 @@ async function startControllerEndpoints(port = config.port + 1000) {
 		app = await NestFactory.createApplicationContext(MainModule, {
 			logger: new NestLogger(),
 		});
+		app.enableShutdownHooks();
 		serverService = app.get(ServerService);
 		await serverService.launch();
 
