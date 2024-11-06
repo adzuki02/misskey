@@ -49,21 +49,23 @@ async function killTestServer() {
 		if (pid) {
 			await fkill(pid, { force: true });
 		}
-	} catch {
+	} catch (e) {
 		// NOP;
 		console.log('Failed to kill test server');
+		console.log(e);
 	}
 
 	// kill env update/reset server
 	try {
 		const pid = await portToPid(config.port + 1000);
-		console.log(`Env update/reset server is running on ${config.port} (pid: ${pid})`);
+		console.log(`Env update/reset server is running on ${config.port + 1000} (pid: ${pid})`);
 		if (pid) {
 			await fkill(pid, { force: true });
 		}
-	} catch {
+	} catch (e) {
 		// NOP;
 		console.log('Failed to kill env update/reset server');
+		console.log(e);
 	}
 }
 
