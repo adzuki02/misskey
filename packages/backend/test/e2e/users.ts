@@ -39,7 +39,6 @@ describe('ユーザー', () => {
 			avatarBlurhash: user.avatarBlurhash,
 			avatarDecorations: user.avatarDecorations,
 			isBot: user.isBot,
-			isCat: user.isCat,
 			instance: user.instance,
 			emojis: user.emojis,
 			badgeRoles: user.badgeRoles,
@@ -298,7 +297,6 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.avatarBlurhash, null);
 		assert.deepStrictEqual(response.avatarDecorations, []);
 		assert.strictEqual(response.isBot, false);
-		assert.strictEqual(response.isCat, false);
 		assert.strictEqual(response.instance, undefined);
 		assert.deepStrictEqual(response.emojis, {});
 		assert.deepStrictEqual(response.badgeRoles, []);
@@ -419,8 +417,6 @@ describe('ユーザー', () => {
 		{ parameters: () => ({ preventAiLearning: true }) },
 		{ parameters: () => ({ isBot: true }) },
 		{ parameters: () => ({ isBot: false }) },
-		{ parameters: () => ({ isCat: true }) },
-		{ parameters: () => ({ isCat: false }) },
 		{ parameters: () => ({ receiveAnnouncementEmail: true }) },
 		{ parameters: () => ({ receiveAnnouncementEmail: false }) },
 		{ parameters: () => ({ alwaysMarkNsfw: true }) },

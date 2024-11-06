@@ -12,7 +12,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<option value="isSuspended">{{ i18n.ts._role._condition.isSuspended }}</option>
 			<option value="isLocked">{{ i18n.ts._role._condition.isLocked }}</option>
 			<option value="isBot">{{ i18n.ts._role._condition.isBot }}</option>
-			<option value="isCat">{{ i18n.ts._role._condition.isCat }}</option>
 			<option value="isExplorable">{{ i18n.ts._role._condition.isExplorable }}</option>
 			<option value="roleAssignedTo">{{ i18n.ts._role._condition.roleAssignedTo }}</option>
 			<option value="createdLessThan">{{ i18n.ts._role._condition.createdLessThan }}</option>

@@ -164,12 +164,6 @@ export class MiUser {
 
 	@Column('boolean', {
 		default: false,
-		comment: 'Whether the User is a cat.',
-	})
-	public isCat: boolean;
-
-	@Column('boolean', {
-		default: false,
 		comment: 'Whether the User is the root.',
 	})
 	public isRoot: boolean;

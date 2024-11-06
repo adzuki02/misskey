@@ -2908,7 +2908,6 @@ export type components = {
           offsetY?: number;
         }[];
       isBot?: boolean;
-      isCat?: boolean;
       instance?: {
         name: string | null;
         softwareName: string | null;
@@ -3764,7 +3763,7 @@ export type components = {
     RoleCondFormulaValueUserSettingBooleanSchema: {
       id: string;
       /** @enum {string} */
-      type: 'isSuspended' | 'isLocked' | 'isBot' | 'isCat' | 'isExplorable';
+      type: 'isSuspended' | 'isLocked' | 'isBot' | 'isExplorable';
     };
     RoleCondFormulaValueAssignedRole: {
       id: string;
@@ -16351,7 +16350,6 @@ export type operations = {
           noCrawle?: boolean;
           preventAiLearning?: boolean;
           isBot?: boolean;
-          isCat?: boolean;
           receiveAnnouncementEmail?: boolean;
           alwaysMarkNsfw?: boolean;
           autoSensitive?: boolean;

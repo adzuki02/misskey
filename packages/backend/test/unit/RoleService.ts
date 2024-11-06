@@ -369,18 +369,14 @@ describe('RoleService', () => {
 	describe('conditional role', () => {
 		test('～かつ～', async () => {
 			const [user1, user2, user3, user4] = await Promise.all([
-				createUser({ isBot: true, isCat: false, isSuspended: false }),
-				createUser({ isBot: false, isCat: true, isSuspended: false }),
-				createUser({ isBot: true, isCat: true, isSuspended: false }),
-				createUser({ isBot: false, isCat: false, isSuspended: true }),
+				createUser({ isBot: true, isSuspended: false }),
+				createUser({ isBot: false, isSuspended: false }),
+				createUser({ isBot: true, isSuspended: true }),
+				createUser({ isBot: false, isSuspended: true }),
 			]);
 			const role1 = await createConditionalRole({
 				id: aidx(),
 				type: 'isBot',
-			});
-			const role2 = await createConditionalRole({
-				id: aidx(),
-				type: 'isCat',
 			});
 			const role3 = await createConditionalRole({
 				id: aidx(),
@@ -389,7 +385,7 @@ describe('RoleService', () => {
 			const role4 = await createConditionalRole({
 				id: aidx(),
 				type: 'and',
-				values: [role1.condFormula, role2.condFormula],
+				values: [role1.condFormula, role3.condFormula],
 			});
 
 			const actual1 = await roleService.getUserRoles(user1.id);
@@ -404,18 +400,14 @@ describe('RoleService', () => {
 
 		test('～または～', async () => {
 			const [user1, user2, user3, user4] = await Promise.all([
-				createUser({ isBot: true, isCat: false, isSuspended: false }),
-				createUser({ isBot: false, isCat: true, isSuspended: false }),
-				createUser({ isBot: true, isCat: true, isSuspended: false }),
-				createUser({ isBot: false, isCat: false, isSuspended: true }),
+				createUser({ isBot: true, isSuspended: false }),
+				createUser({ isBot: false, isSuspended: false }),
+				createUser({ isBot: true, isSuspended: true }),
+				createUser({ isBot: false, isSuspended: true }),
 			]);
 			const role1 = await createConditionalRole({
 				id: aidx(),
 				type: 'isBot',
-			});
-			const role2 = await createConditionalRole({
-				id: aidx(),
-				type: 'isCat',
 			});
 			const role3 = await createConditionalRole({
 				id: aidx(),
@@ -424,7 +416,7 @@ describe('RoleService', () => {
 			const role4 = await createConditionalRole({
 				id: aidx(),
 				type: 'or',
-				values: [role1.condFormula, role2.condFormula],
+				values: [role1.condFormula, role3.condFormula],
 			});
 
 			const actual1 = await roleService.getUserRoles(user1.id);
@@ -432,24 +424,20 @@ describe('RoleService', () => {
 			const actual3 = await roleService.getUserRoles(user3.id);
 			const actual4 = await roleService.getUserRoles(user4.id);
 			expect(actual1.some(r => r.id === role4.id)).toBe(true);
-			expect(actual2.some(r => r.id === role4.id)).toBe(true);
+			expect(actual2.some(r => r.id === role4.id)).toBe(false);
 			expect(actual3.some(r => r.id === role4.id)).toBe(true);
-			expect(actual4.some(r => r.id === role4.id)).toBe(false);
+			expect(actual4.some(r => r.id === role4.id)).toBe(true);
 		});
 
 		test('～ではない', async () => {
 			const [user1, user2, user3] = await Promise.all([
-				createUser({ isBot: true, isCat: false, isSuspended: false }),
-				createUser({ isBot: false, isCat: true, isSuspended: false }),
-				createUser({ isBot: true, isCat: true, isSuspended: false }),
+				createUser({ isBot: true, isSuspended: false }),
+				createUser({ isBot: false, isSuspended: false }),
+				createUser({ isBot: true, isSuspended: false }),
 			]);
 			const role1 = await createConditionalRole({
 				id: aidx(),
 				type: 'isBot',
-			});
-			const role2 = await createConditionalRole({
-				id: aidx(),
-				type: 'isCat',
 			});
 			const role4 = await createConditionalRole({
 				id: aidx(),
@@ -560,22 +548,6 @@ describe('RoleService', () => {
 			const role = await createConditionalRole({
 				id: aidx(),
 				type: 'isBot',
-			});
-
-			const actual1 = await roleService.getUserRoles(user1.id);
-			const actual2 = await roleService.getUserRoles(user2.id);
-			expect(actual1.some(r => r.id === role.id)).toBe(false);
-			expect(actual2.some(r => r.id === role.id)).toBe(true);
-		});
-
-		test('猫である', async () => {
-			const [user1, user2] = await Promise.all([
-				createUser({ isCat: false }),
-				createUser({ isCat: true }),
-			]);
-			const role = await createConditionalRole({
-				id: aidx(),
-				type: 'isCat',
 			});
 
 			const actual1 = await roleService.getUserRoles(user1.id);

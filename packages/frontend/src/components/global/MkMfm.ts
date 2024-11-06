@@ -57,7 +57,6 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 	//provide('linkNavigationBehavior', props.linkNavigationBehavior);
 
 	const isNote = props.isNote ?? true;
-	const shouldNyaize = props.nyaize ? props.nyaize === 'respect' ? props.author?.isCat : false : false;
 
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (props.text == null || props.text === '') return;
@@ -86,10 +85,7 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 	const genEl = (ast: mfm.MfmNode[], scale: number, disableNyaize = false) => ast.map((token): VNode | string | (VNode | string)[] => {
 		switch (token.type) {
 			case 'text': {
-				let text = token.props.text.replace(/(\r\n|\n|\r)/g, '\n');
-				if (!disableNyaize && shouldNyaize) {
-					text = doNyaize(text);
-				}
+				const text = token.props.text.replace(/(\r\n|\n|\r)/g, '\n');
 
 				if (!props.plain) {
 					const res: (VNode | string)[] = [];
@@ -281,17 +277,11 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 					case 'ruby': {
 						if (token.children.length === 1) {
 							const child = token.children[0];
-							let text = child.type === 'text' ? child.props.text : '';
-							if (!disableNyaize && shouldNyaize) {
-								text = doNyaize(text);
-							}
+							const text = child.type === 'text' ? child.props.text : '';
 							return h('ruby', {}, [text.split(' ')[0], h('rt', text.split(' ')[1])]);
 						} else {
 							const rt = token.children.at(-1)!;
-							let text = rt.type === 'text' ? rt.props.text : '';
-							if (!disableNyaize && shouldNyaize) {
-								text = doNyaize(text);
-							}
+							const text = rt.type === 'text' ? rt.props.text : '';
 							return h('ruby', {}, [...genEl(token.children.slice(0, token.children.length - 1), scale), h('rt', text.trim())]);
 						}
 					}
