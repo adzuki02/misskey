@@ -9,7 +9,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkSpacer :contentMax="800">
 		<MkHorizontalSwipe v-model:tab="src" :tabs="$i ? headerTabs : headerTabsWhenNotLogin">
 			<div :key="src" ref="rootEl">
-				<MkPostForm v-if="defaultStore.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--margin);"/>
 				<div v-if="queue > 0" :class="$style.new"><button class="_buttonPrimary" :class="$style.newButton" @click="top()">{{ i18n.ts.newNoteRecived }}</button></div>
 				<div :class="$style.tl">
 					<MkTimeline
@@ -325,10 +324,6 @@ definePageMetadata(() => ({
 	margin: var(--margin) auto 0 auto;
 	padding: 8px 16px;
 	border-radius: 32px;
-}
-
-.postForm {
-	border-radius: var(--radius);
 }
 
 .tl {

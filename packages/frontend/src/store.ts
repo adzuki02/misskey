@@ -8,6 +8,8 @@ import { miLocalStorage } from './local-storage.js';
 import type { Note, UserList, UserDetailed } from 'misskey-js/entities.js';
 import type { noteVisibilities } from 'misskey-js/consts.js';
 import type { SoundType } from '@/scripts/sound.js';
+import lightTheme from '@/themes/l-light.json5';
+import darkTheme from '@/themes/d-green-lime.json5';
 import { Storage } from '@/pizzax.js';
 
 interface PostFormAction {
@@ -62,10 +64,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: true,
 	},
-	showFullAcct: {
-		where: 'account',
-		default: false,
-	},
 	collapseRenotes: {
 		where: 'account',
 		default: true,
@@ -94,10 +92,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: false,
 	},
-	memo: {
-		where: 'account',
-		default: null as string | null,
-	},
 	reactions: {
 		where: 'account',
 		default: ['👍', '❤️', '😆', '🤔', '😮', '🎉', '💢', '😥', '😇', '🍮'],
@@ -110,23 +104,15 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: 'nonSensitiveOnly' as 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null,
 	},
-	mutedAds: {
-		where: 'account',
-		default: [] as string[],
-	},
 
 	menu: {
 		where: 'deviceAccount',
 		default: [
 			'notifications',
 			'clips',
-			'drive',
 			'followRequests',
 			'-',
-			'explore',
 			'search',
-			'-',
-			'ui',
 		],
 	},
 	visibility: {
@@ -141,19 +127,8 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
-	statusbars: {
-		where: 'deviceAccount',
-		default: [] as {
-			name: string;
-			id: string;
-			type: string;
-			size: 'verySmall' | 'small' | 'medium' | 'large' | 'veryLarge';
-			black: boolean;
-			props: Record<string, any>;
-		}[],
-	},
 	widgets: {
-		where: 'account',
+		where: 'deviceAccount',
 		default: [] as {
 			name: string;
 			id: string;
@@ -169,7 +144,7 @@ export const defaultStore = markRaw(new Storage('base', {
 			filter: {
 				withReplies: true,
 				withRenotes: true,
-				withSensitive: true,
+				withSensitive: false,
 				onlyFiles: false,
 			},
 		},
@@ -193,7 +168,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	highlightSensitiveMedia: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	animation: {
 		where: 'device',
@@ -207,15 +182,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
-	enableQuickAddMfmFunction: {
-		where: 'device',
-		default: false,
-	},
 	loadRawImages: {
-		where: 'device',
-		default: false,
-	},
-	imageNewTab: {
 		where: 'device',
 		default: false,
 	},
@@ -231,23 +198,15 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'twemoji', // twemoji / native
 	},
-	disableDrawer: {
+	menuStyle: {
 		where: 'device',
-		default: false,
+		default: 'auto' as 'auto' | 'popup' | 'drawer',
 	},
 	useBlurEffectForModal: {
 		where: 'device',
-		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
-	},
-	useBlurEffect: {
-		where: 'device',
-		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
-	},
-	showFixedPostForm: {
-		where: 'device',
 		default: false,
 	},
-	showFixedPostFormInChannel: {
+	useBlurEffect: {
 		where: 'device',
 		default: false,
 	},
@@ -295,17 +254,9 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: [] as string[],
 	},
-	defaultSideView: {
-		where: 'device',
-		default: false,
-	},
 	menuDisplay: {
 		where: 'device',
 		default: 'sideFull' as 'sideFull' | 'sideIcon' | 'top',
-	},
-	reportError: {
-		where: 'device',
-		default: false,
 	},
 	squareAvatars: {
 		where: 'device',
@@ -347,14 +298,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
-	forceShowAds: {
-		where: 'device',
-		default: false,
-	},
-	aiChanMode: {
-		where: 'device',
-		default: false,
-	},
 	devMode: {
 		where: 'device',
 		default: false,
@@ -371,17 +314,9 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'horizontal' as 'vertical' | 'horizontal',
 	},
-	enableCondensedLineForAcct: {
-		where: 'device',
-		default: false,
-	},
 	additionalUnicodeEmojiIndexes: {
 		where: 'device',
 		default: {} as Record<string, Record<string, string[]>>,
-	},
-	keepScreenOn: {
-		where: 'device',
-		default: false,
 	},
 	defaultWithReplies: {
 		where: 'account',
@@ -393,7 +328,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	useGroupedNotifications: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	dataSaver: {
 		where: 'device',
@@ -402,11 +337,11 @@ export const defaultStore = markRaw(new Storage('base', {
 			avatar: false,
 			urlPreview: false,
 			code: false,
-		} as Record<string, boolean>,
+		} as Record<'media' | 'avatar' | 'urlPreview' | 'code', boolean>,
 	},
 	enableHorizontalSwipe: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	useNativeUIForVideoAudioPlayer: {
 		where: 'device',
@@ -414,7 +349,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	keepOriginalFilename: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	alwaysConfirmFollow: {
 		where: 'device',
@@ -422,12 +357,12 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	confirmWhenRevealingSensitiveMedia: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
-  contextMenu: {
+	contextMenu: {
 		where: 'device',
 		default: 'app' as 'app' | 'appWithShift' | 'native',
-  },
+	},
 
 	sound_masterVolume: {
 		where: 'device',
@@ -443,7 +378,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	sound_note: {
 		where: 'device',
-		default: { type: 'syuilo/n-aec', volume: 1 } as SoundStore,
+		default: { type: null, volume: 1 } as SoundStore,
 	},
 	sound_noteMy: {
 		where: 'device',
@@ -451,11 +386,11 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	sound_notification: {
 		where: 'device',
-		default: { type: 'syuilo/n-ea', volume: 1 } as SoundStore,
+		default: { type: null, volume: 1 } as SoundStore,
 	},
 	sound_reaction: {
 		where: 'device',
-		default: { type: 'syuilo/bubble2', volume: 1 } as SoundStore,
+		default: { type: null, volume: 1 } as SoundStore,
 	},
 }));
 
@@ -486,8 +421,6 @@ interface Watcher {
 /**
  * 常にメモリにロードしておく必要がないような設定情報を保管するストレージ(非リアクティブ)
  */
-import lightTheme from '@/themes/l-light.json5';
-import darkTheme from '@/themes/d-green-lime.json5';
 
 export class ColdDeviceStorage {
 	public static default = {

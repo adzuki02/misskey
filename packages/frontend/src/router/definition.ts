@@ -107,10 +107,6 @@ const routes: RouteDef[] = [{
 		name: 'navbar',
 		component: page(() => import('@/pages/settings/navbar.vue')),
 	}, {
-		path: '/statusbar',
-		name: 'statusbar',
-		component: page(() => import('@/pages/settings/statusbar.vue')),
-	}, {
 		path: '/sounds',
 		name: 'sounds',
 		component: page(() => import('@/pages/settings/sounds.vue')),

@@ -8,11 +8,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<XSidebar v-if="!isMobile" :class="$style.sidebar"/>
 
 	<MkStickyContainer ref="contents" :class="$style.contents" style="container-type: inline-size;" @contextmenu.stop="onContextmenu">
-		<template #header>
-			<div>
-				<XStatusBars :class="$style.statusbars"/>
-			</div>
-		</template>
 		<RouterView/>
 		<div :class="$style.spacer"></div>
 	</MkStickyContainer>
@@ -113,7 +108,6 @@ import { mainRouter } from '@/router/main.js';
 
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/_common_/navbar.vue'));
-const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
 
 const isRoot = computed(() => mainRouter.currentRoute.value.name === 'index');
 
@@ -479,12 +473,6 @@ $widgets-hide-threshold: 1090px;
 	overflow: auto;
 	overscroll-behavior: contain;
 	background: var(--navBg);
-}
-
-.statusbars {
-	position: sticky;
-	top: 0;
-	left: 0;
 }
 
 .spacer {

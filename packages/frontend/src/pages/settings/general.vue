@@ -27,8 +27,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<FormSection>
 		<div class="_gaps_s">
-			<MkSwitch v-model="showFixedPostForm">{{ i18n.ts.showFixedPostForm }}</MkSwitch>
-			<MkSwitch v-model="showFixedPostFormInChannel">{{ i18n.ts.showFixedPostFormInChannel }}</MkSwitch>
 			<MkFolder>
 				<template #label>{{ i18n.ts.pinnedList }}</template>
 				<!-- 複数ピン止め管理できるようにしたいけどめんどいので一旦ひとつのみ -->
@@ -51,7 +49,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="showClipButtonInNoteFooter">{{ i18n.ts.showClipButtonInNoteFooter }}</MkSwitch>
 				<MkSwitch v-model="advancedMfm">{{ i18n.ts.enableAdvancedMfm }}</MkSwitch>
 				<MkSwitch v-if="advancedMfm" v-model="animatedMfm">{{ i18n.ts.enableAnimatedMfm }}</MkSwitch>
-				<MkSwitch v-if="advancedMfm" v-model="enableQuickAddMfmFunction">{{ i18n.ts.enableQuickAddMfmFunction }}</MkSwitch>
 				<MkSwitch v-model="showGapBetweenNotesInTimeline">{{ i18n.ts.showGapBetweenNotesInTimeline }}</MkSwitch>
 				<MkSwitch v-model="loadRawImages">{{ i18n.ts.loadRawImages }}</MkSwitch>
 				<MkRadios v-model="reactionsDisplaySize">
@@ -125,10 +122,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="squareAvatars">{{ i18n.ts.squareAvatars }}</MkSwitch>
 				<MkSwitch v-model="showAvatarDecorations">{{ i18n.ts.showAvatarDecorations }}</MkSwitch>
 				<MkSwitch v-model="useSystemFont">{{ i18n.ts.useSystemFont }}</MkSwitch>
-				<MkSwitch v-model="disableDrawer">{{ i18n.ts.disableDrawer }}</MkSwitch>
-				<MkSwitch v-model="forceShowAds">{{ i18n.ts.forceShowAds }}</MkSwitch>
 				<MkSwitch v-model="useNativeUIForVideoAudioPlayer">{{ i18n.ts.useNativeUIForVideoAudioPlayer }}</MkSwitch>
 			</div>
+
+			<MkSelect v-model="menuStyle">
+				<template #label>{{ i18n.ts.menuStyle }}</template>
+				<option value="auto">{{ i18n.ts.auto }}</option>
+				<option value="popup">{{ i18n.ts.popup }}</option>
+				<option value="drawer">{{ i18n.ts.drawer }}</option>
+			</MkSelect>
+
 			<div>
 				<MkRadios v-model="emojiStyle">
 					<template #label>{{ i18n.ts.emojiStyle }}</template>
@@ -153,10 +156,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div class="_gaps_m">
 			<div class="_gaps_s">
-				<MkSwitch v-model="imageNewTab">{{ i18n.ts.openImageInNewTab }}</MkSwitch>
 				<MkSwitch v-model="useReactionPickerForContextMenu">{{ i18n.ts.useReactionPickerForContextMenu }}</MkSwitch>
 				<MkSwitch v-model="enableInfiniteScroll">{{ i18n.ts.enableInfiniteScroll }}</MkSwitch>
-				<MkSwitch v-model="keepScreenOn">{{ i18n.ts.keepScreenOn }}</MkSwitch>
 				<MkSwitch v-model="disableStreamingTimeline">{{ i18n.ts.disableStreamingTimeline }}</MkSwitch>
 				<MkSwitch v-model="enableHorizontalSwipe">{{ i18n.ts.enableHorizontalSwipe }}</MkSwitch>
 				<MkSwitch v-model="alwaysConfirmFollow">{{ i18n.ts.alwaysConfirmFollow }}</MkSwitch>
@@ -273,18 +274,13 @@ const useBlurEffect = computed(defaultStore.makeGetterSetter('useBlurEffect'));
 const showGapBetweenNotesInTimeline = computed(defaultStore.makeGetterSetter('showGapBetweenNotesInTimeline'));
 const animatedMfm = computed(defaultStore.makeGetterSetter('animatedMfm'));
 const advancedMfm = computed(defaultStore.makeGetterSetter('advancedMfm'));
-const enableQuickAddMfmFunction = computed(defaultStore.makeGetterSetter('enableQuickAddMfmFunction'));
 const emojiStyle = computed(defaultStore.makeGetterSetter('emojiStyle'));
-const disableDrawer = computed(defaultStore.makeGetterSetter('disableDrawer'));
+const menuStyle = computed(defaultStore.makeGetterSetter('menuStyle'));
 const disableShowingAnimatedImages = computed(defaultStore.makeGetterSetter('disableShowingAnimatedImages'));
 const forceShowingAnimatedImagesOnPopup = computed(defaultStore.makeGetterSetter('forceShowingAnimatedImagesOnPopup'));
-const forceShowAds = computed(defaultStore.makeGetterSetter('forceShowAds'));
 const loadRawImages = computed(defaultStore.makeGetterSetter('loadRawImages'));
 const highlightSensitiveMedia = computed(defaultStore.makeGetterSetter('highlightSensitiveMedia'));
-const imageNewTab = computed(defaultStore.makeGetterSetter('imageNewTab'));
 const nsfw = computed(defaultStore.makeGetterSetter('nsfw'));
-const showFixedPostForm = computed(defaultStore.makeGetterSetter('showFixedPostForm'));
-const showFixedPostFormInChannel = computed(defaultStore.makeGetterSetter('showFixedPostFormInChannel'));
 const numberOfPageCache = computed(defaultStore.makeGetterSetter('numberOfPageCache'));
 const instanceTicker = computed(defaultStore.makeGetterSetter('instanceTicker'));
 const enableInfiniteScroll = computed(defaultStore.makeGetterSetter('enableInfiniteScroll'));
@@ -294,7 +290,6 @@ const showAvatarDecorations = computed(defaultStore.makeGetterSetter('showAvatar
 const mediaListWithOneImageAppearance = computed(defaultStore.makeGetterSetter('mediaListWithOneImageAppearance'));
 const notificationPosition = computed(defaultStore.makeGetterSetter('notificationPosition'));
 const notificationStackAxis = computed(defaultStore.makeGetterSetter('notificationStackAxis'));
-const keepScreenOn = computed(defaultStore.makeGetterSetter('keepScreenOn'));
 const disableStreamingTimeline = computed(defaultStore.makeGetterSetter('disableStreamingTimeline'));
 const useGroupedNotifications = computed(defaultStore.makeGetterSetter('useGroupedNotifications'));
 const enableHorizontalSwipe = computed(defaultStore.makeGetterSetter('enableHorizontalSwipe'));
@@ -339,7 +334,6 @@ watch([
 	reactionsDisplaySize,
 	limitWidthOfReaction,
 	highlightSensitiveMedia,
-	keepScreenOn,
 	disableStreamingTimeline,
 	alwaysConfirmFollow,
 	confirmWhenRevealingSensitiveMedia,
