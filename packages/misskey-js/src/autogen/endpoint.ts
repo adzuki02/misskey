@@ -2,8 +2,6 @@ import type {
 	EmptyRequest,
 	EmptyResponse,
 	AdminMetaResponse,
-	AdminAbuseUserReportsRequest,
-	AdminAbuseUserReportsResponse,
 	AdminAccountsCreateRequest,
 	AdminAccountsCreateResponse,
 	AdminAccountsDeleteRequest,
@@ -60,7 +58,6 @@ import type {
 	AdminRelaysRemoveRequest,
 	AdminResetPasswordRequest,
 	AdminResetPasswordResponse,
-	AdminResolveAbuseUserReportRequest,
 	AdminSendEmailRequest,
 	AdminServerInfoResponse,
 	AdminShowUserRequest,
@@ -432,7 +429,6 @@ import type {
 	UsersReactionsResponse,
 	UsersRelationRequest,
 	UsersRelationResponse,
-	UsersReportAbuseRequest,
 	UsersSearchByUsernameAndHostRequest,
 	UsersSearchByUsernameAndHostResponse,
 	UsersSearchRequest,
@@ -444,7 +440,6 @@ import type {
 
 export type Endpoints = {
 	'admin/meta': { req: EmptyRequest; res: AdminMetaResponse };
-	'admin/abuse-user-reports': { req: AdminAbuseUserReportsRequest; res: AdminAbuseUserReportsResponse };
 	'admin/accounts/create': { req: AdminAccountsCreateRequest; res: AdminAccountsCreateResponse };
 	'admin/accounts/delete': { req: AdminAccountsDeleteRequest; res: EmptyResponse };
 	'admin/accounts/find-by-email': { req: AdminAccountsFindByEmailRequest; res: AdminAccountsFindByEmailResponse };
@@ -490,7 +485,6 @@ export type Endpoints = {
 	'admin/relays/list': { req: EmptyRequest; res: AdminRelaysListResponse };
 	'admin/relays/remove': { req: AdminRelaysRemoveRequest; res: EmptyResponse };
 	'admin/reset-password': { req: AdminResetPasswordRequest; res: AdminResetPasswordResponse };
-	'admin/resolve-abuse-user-report': { req: AdminResolveAbuseUserReportRequest; res: EmptyResponse };
 	'admin/send-email': { req: AdminSendEmailRequest; res: EmptyResponse };
 	'admin/server-info': { req: EmptyRequest; res: AdminServerInfoResponse };
 	'admin/show-user': { req: AdminShowUserRequest; res: AdminShowUserResponse };
@@ -735,7 +729,6 @@ export type Endpoints = {
 	'users/flashs': { req: UsersFlashsRequest; res: UsersFlashsResponse };
 	'users/reactions': { req: UsersReactionsRequest; res: UsersReactionsResponse };
 	'users/relation': { req: UsersRelationRequest; res: UsersRelationResponse };
-	'users/report-abuse': { req: UsersReportAbuseRequest; res: EmptyResponse };
 	'users/search-by-username-and-host': { req: UsersSearchByUsernameAndHostRequest; res: UsersSearchByUsernameAndHostResponse };
 	'users/search': { req: UsersSearchRequest; res: UsersSearchResponse };
 	'users/show': { req: UsersShowRequest; res: UsersShowResponse };

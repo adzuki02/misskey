@@ -9,7 +9,6 @@ import { DataSource, Logger } from 'typeorm';
 import * as highlight from 'cli-highlight';
 import { entities as charts } from '@/core/chart/entities.js';
 
-import { MiAbuseUserReport } from '@/models/AbuseUserReport.js';
 import { MiAccessToken } from '@/models/AccessToken.js';
 import { MiAntenna } from '@/models/Antenna.js';
 import { MiApp } from '@/models/App.js';
@@ -162,7 +161,6 @@ export const entities = [
 	MiEmoji,
 	MiHashtag,
 	MiSwSubscription,
-	MiAbuseUserReport,
 	MiRegistrationTicket,
 	MiSignin,
 	MiClip,

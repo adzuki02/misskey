@@ -163,12 +163,7 @@ export type Channels = {
 	admin: {
 		params: null;
 		events: {
-			newAbuseUserReport: {
-				id: string;
-				targetUserId: string;
-				reporterId: string;
-				comment: string;
-			}
+			newAbuseUserReport: Record<string, never>
 		};
 		receives: null;
 	};

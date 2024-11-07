@@ -13,7 +13,6 @@ import type { MiAntenna } from '@/models/Antenna.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import type { MiDriveFolder } from '@/models/DriveFolder.js';
 import type { MiUserList } from '@/models/UserList.js';
-import type { MiAbuseUserReport } from '@/models/AbuseUserReport.js';
 import type { MiSignin } from '@/models/Signin.js';
 import type { MiWebhook } from '@/models/Webhook.js';
 import type { MiMeta } from '@/models/Meta.js';
@@ -25,6 +24,7 @@ import { bindThis } from '@/decorators.js';
 import { Serialized } from '@/types.js';
 import type Emitter from 'strict-event-emitter-types';
 import type { EventEmitter } from 'events';
+import { string } from '@tensorflow/tfjs-node';
 
 //#region Stream type-body definitions
 export interface BroadcastTypes {
@@ -138,12 +138,7 @@ export interface RoleTimelineEventTypes {
 }
 
 export interface AdminEventTypes {
-	newAbuseUserReport: {
-		id: MiAbuseUserReport['id'];
-		targetUserId: MiUser['id'],
-		reporterId: MiUser['id'],
-		comment: string;
-	};
+	newAbuseUserReport: Record<string, never>;
 }
 //#endregion
 

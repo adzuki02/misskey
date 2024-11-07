@@ -24,12 +24,6 @@ export { acct }
 // Warning: (ae-forgotten-export) The symbol "operations" needs to be exported by the entry point index.d.ts
 //
 // @public (undocumented)
-type AdminAbuseUserReportsRequest = operations['admin___abuse-user-reports']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAbuseUserReportsResponse = operations['admin___abuse-user-reports']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
 type AdminAccountsCreateRequest = operations['admin___accounts___create']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -196,9 +190,6 @@ type AdminResetPasswordRequest = operations['admin___reset-password']['requestBo
 
 // @public (undocumented)
 type AdminResetPasswordResponse = operations['admin___reset-password']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AdminResolveAbuseUserReportRequest = operations['admin___resolve-abuse-user-report']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type AdminRolesAssignRequest = operations['admin___roles___assign']['requestBody']['content']['application/json'];
@@ -584,12 +575,7 @@ export type Channels = {
     admin: {
         params: null;
         events: {
-            newAbuseUserReport: {
-                id: string;
-                targetUserId: string;
-                reporterId: string;
-                comment: string;
-            };
+            newAbuseUserReport: Record<string, never>;
         };
         receives: null;
     };
@@ -955,8 +941,6 @@ declare namespace entities {
         EmptyRequest,
         EmptyResponse,
         AdminMetaResponse,
-        AdminAbuseUserReportsRequest,
-        AdminAbuseUserReportsResponse,
         AdminAccountsCreateRequest,
         AdminAccountsCreateResponse,
         AdminAccountsDeleteRequest,
@@ -1013,7 +997,6 @@ declare namespace entities {
         AdminRelaysRemoveRequest,
         AdminResetPasswordRequest,
         AdminResetPasswordResponse,
-        AdminResolveAbuseUserReportRequest,
         AdminSendEmailRequest,
         AdminServerInfoResponse,
         AdminShowUserRequest,
@@ -1385,7 +1368,6 @@ declare namespace entities {
         UsersReactionsResponse,
         UsersRelationRequest,
         UsersRelationResponse,
-        UsersReportAbuseRequest,
         UsersSearchByUsernameAndHostRequest,
         UsersSearchByUsernameAndHostResponse,
         UsersSearchRequest,
@@ -2438,9 +2420,6 @@ type UsersRelationRequest = operations['users___relation']['requestBody']['conte
 
 // @public (undocumented)
 type UsersRelationResponse = operations['users___relation']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type UsersReportAbuseRequest = operations['users___report-abuse']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type UsersSearchByUsernameAndHostRequest = operations['users___search-by-username-and-host']['requestBody']['content']['application/json'];

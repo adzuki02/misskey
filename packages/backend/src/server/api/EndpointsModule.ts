@@ -6,7 +6,6 @@
 import { Module } from '@nestjs/common';
 
 import { CoreModule } from '@/core/CoreModule.js';
-import * as ep___admin_abuseUserReports from './endpoints/admin/abuse-user-reports.js';
 import * as ep___admin_meta from './endpoints/admin/meta.js';
 import * as ep___admin_accounts_create from './endpoints/admin/accounts/create.js';
 import * as ep___admin_accounts_delete from './endpoints/admin/accounts/delete.js';
@@ -53,7 +52,6 @@ import * as ep___admin_relays_add from './endpoints/admin/relays/add.js';
 import * as ep___admin_relays_list from './endpoints/admin/relays/list.js';
 import * as ep___admin_relays_remove from './endpoints/admin/relays/remove.js';
 import * as ep___admin_resetPassword from './endpoints/admin/reset-password.js';
-import * as ep___admin_resolveAbuseUserReport from './endpoints/admin/resolve-abuse-user-report.js';
 import * as ep___admin_sendEmail from './endpoints/admin/send-email.js';
 import * as ep___admin_serverInfo from './endpoints/admin/server-info.js';
 import * as ep___admin_showUser from './endpoints/admin/show-user.js';
@@ -298,7 +296,6 @@ import * as ep___users_notes from './endpoints/users/notes.js';
 import * as ep___users_flashs from './endpoints/users/flashs.js';
 import * as ep___users_reactions from './endpoints/users/reactions.js';
 import * as ep___users_relation from './endpoints/users/relation.js';
-import * as ep___users_reportAbuse from './endpoints/users/report-abuse.js';
 import * as ep___users_searchByUsernameAndHost from './endpoints/users/search-by-username-and-host.js';
 import * as ep___users_search from './endpoints/users/search.js';
 import * as ep___users_show from './endpoints/users/show.js';
@@ -308,7 +305,6 @@ import { ApiLoggerService } from './ApiLoggerService.js';
 import type { Provider } from '@nestjs/common';
 
 const $admin_meta: Provider = { provide: 'ep:admin/meta', useClass: ep___admin_meta.default };
-const $admin_abuseUserReports: Provider = { provide: 'ep:admin/abuse-user-reports', useClass: ep___admin_abuseUserReports.default };
 const $admin_accounts_create: Provider = { provide: 'ep:admin/accounts/create', useClass: ep___admin_accounts_create.default };
 const $admin_accounts_delete: Provider = { provide: 'ep:admin/accounts/delete', useClass: ep___admin_accounts_delete.default };
 const $admin_accounts_findByEmail: Provider = { provide: 'ep:admin/accounts/find-by-email', useClass: ep___admin_accounts_findByEmail.default };
@@ -354,7 +350,6 @@ const $admin_relays_add: Provider = { provide: 'ep:admin/relays/add', useClass: 
 const $admin_relays_list: Provider = { provide: 'ep:admin/relays/list', useClass: ep___admin_relays_list.default };
 const $admin_relays_remove: Provider = { provide: 'ep:admin/relays/remove', useClass: ep___admin_relays_remove.default };
 const $admin_resetPassword: Provider = { provide: 'ep:admin/reset-password', useClass: ep___admin_resetPassword.default };
-const $admin_resolveAbuseUserReport: Provider = { provide: 'ep:admin/resolve-abuse-user-report', useClass: ep___admin_resolveAbuseUserReport.default };
 const $admin_sendEmail: Provider = { provide: 'ep:admin/send-email', useClass: ep___admin_sendEmail.default };
 const $admin_serverInfo: Provider = { provide: 'ep:admin/server-info', useClass: ep___admin_serverInfo.default };
 const $admin_showUser: Provider = { provide: 'ep:admin/show-user', useClass: ep___admin_showUser.default };
@@ -599,7 +594,6 @@ const $users_notes: Provider = { provide: 'ep:users/notes', useClass: ep___users
 const $users_flashs: Provider = { provide: 'ep:users/flashs', useClass: ep___users_flashs.default };
 const $users_reactions: Provider = { provide: 'ep:users/reactions', useClass: ep___users_reactions.default };
 const $users_relation: Provider = { provide: 'ep:users/relation', useClass: ep___users_relation.default };
-const $users_reportAbuse: Provider = { provide: 'ep:users/report-abuse', useClass: ep___users_reportAbuse.default };
 const $users_searchByUsernameAndHost: Provider = { provide: 'ep:users/search-by-username-and-host', useClass: ep___users_searchByUsernameAndHost.default };
 const $users_search: Provider = { provide: 'ep:users/search', useClass: ep___users_search.default };
 const $users_show: Provider = { provide: 'ep:users/show', useClass: ep___users_show.default };
@@ -613,7 +607,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		GetterService,
 		ApiLoggerService,
 		$admin_meta,
-		$admin_abuseUserReports,
 		$admin_accounts_create,
 		$admin_accounts_delete,
 		$admin_accounts_findByEmail,
@@ -659,7 +652,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_relays_list,
 		$admin_relays_remove,
 		$admin_resetPassword,
-		$admin_resolveAbuseUserReport,
 		$admin_sendEmail,
 		$admin_serverInfo,
 		$admin_showUser,
@@ -904,7 +896,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$users_flashs,
 		$users_reactions,
 		$users_relation,
-		$users_reportAbuse,
 		$users_searchByUsernameAndHost,
 		$users_search,
 		$users_show,
@@ -912,7 +903,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 	],
 	exports: [
 		$admin_meta,
-		$admin_abuseUserReports,
 		$admin_accounts_create,
 		$admin_accounts_delete,
 		$admin_accounts_findByEmail,
@@ -958,7 +948,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_relays_list,
 		$admin_relays_remove,
 		$admin_resetPassword,
-		$admin_resolveAbuseUserReport,
 		$admin_sendEmail,
 		$admin_serverInfo,
 		$admin_showUser,
@@ -1201,7 +1190,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$users_flashs,
 		$users_reactions,
 		$users_relation,
-		$users_reportAbuse,
 		$users_searchByUsernameAndHost,
 		$users_search,
 		$users_show,

@@ -23,13 +23,12 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { QueueService } from '@/core/QueueService.js';
-import type { UsersRepository, NotesRepository, FollowingsRepository, AbuseUserReportsRepository, FollowRequestsRepository, MiMeta } from '@/models/_.js';
+import type { UsersRepository, NotesRepository, FollowingsRepository, FollowRequestsRepository, MiMeta } from '@/models/_.js';
 import { bindThis } from '@/decorators.js';
 import type { MiRemoteUser } from '@/models/User.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
-import { AbuseReportService } from '@/core/AbuseReportService.js';
 import { RoleService } from '@/core/RoleService.js';
-import { getApHrefNullable, getApId, getApIds, getApType, isAccept, isActor, isAdd, isAnnounce, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isFlag, isFollow, isLike, isMove, isPost, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
+import { getApHrefNullable, getApId, getApIds, getApType, isAccept, isActor, isAdd, isAnnounce, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isFollow, isLike, isMove, isPost, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
 import { ApNoteService } from './models/ApNoteService.js';
 import { ApLoggerService } from './ApLoggerService.js';
 import { ApDbResolverService } from './ApDbResolverService.js';
@@ -38,7 +37,7 @@ import { ApAudienceService } from './ApAudienceService.js';
 import { ApPersonService } from './models/ApPersonService.js';
 import { ApQuestionService } from './models/ApQuestionService.js';
 import type { Resolver } from './ApResolverService.js';
-import type { IAccept, IAdd, IAnnounce, IBlock, ICreate, IDelete, IFlag, IFollow, ILike, IObject, IReject, IRemove, IUndo, IUpdate, IMove, IPost } from './type.js';
+import type { IAccept, IAdd, IAnnounce, IBlock, ICreate, IDelete, IFollow, ILike, IObject, IReject, IRemove, IUndo, IUpdate, IMove, IPost } from './type.js';
 
 @Injectable()
 export class ApInboxService {
@@ -67,7 +66,6 @@ export class ApInboxService {
 		private noteEntityService: NoteEntityService,
 		private utilityService: UtilityService,
 		private idService: IdService,
-		private abuseReportService: AbuseReportService,
 		private userFollowingService: UserFollowingService,
 		private apAudienceService: ApAudienceService,
 		private reactionService: ReactionService,
@@ -156,8 +154,6 @@ export class ApInboxService {
 			return await this.undo(actor, activity);
 		} else if (isBlock(activity)) {
 			return await this.block(actor, activity);
-		} else if (isFlag(activity)) {
-			return await this.flag(actor, activity);
 		} else if (isMove(activity)) {
 			return await this.move(actor, activity);
 		} else {
@@ -535,32 +531,6 @@ export class ApInboxService {
 		} finally {
 			unlock();
 		}
-	}
-
-	@bindThis
-	private async flag(actor: MiRemoteUser, activity: IFlag): Promise<string> {
-		// objectは `(User|Note) | (User|Note)[]` だけど、全パターンDBスキーマと対応させられないので
-		// 対象ユーザーは一番最初のユーザー として あとはコメントとして格納する
-		const uris = getApIds(activity.object);
-
-		const userIds = uris
-			.filter(uri => uri.startsWith(this.config.url + '/users/'))
-			.map(uri => uri.split('/').at(-1))
-			.filter(x => x != null);
-		const users = await this.usersRepository.findBy({
-			id: In(userIds),
-		});
-		if (users.length < 1) return 'skip';
-
-		await this.abuseReportService.report([{
-			targetUserId: users[0].id,
-			targetUserHost: users[0].host,
-			reporterId: actor.id,
-			reporterHost: actor.host,
-			comment: `${activity.content}\n${JSON.stringify(uris, null, 2)}`,
-		}]);
-
-		return 'ok';
 	}
 
 	@bindThis
