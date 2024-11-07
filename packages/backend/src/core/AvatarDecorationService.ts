@@ -12,7 +12,6 @@ import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
 import { MemorySingleCache } from '@/misc/cache.js';
 import type { GlobalEvents } from '@/core/GlobalEventService.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 
 @Injectable()
 export class AvatarDecorationService implements OnApplicationShutdown {
@@ -26,7 +25,6 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 		private avatarDecorationsRepository: AvatarDecorationsRepository,
 
 		private idService: IdService,
-		private moderationLogService: ModerationLogService,
 		private globalEventService: GlobalEventService,
 	) {
 		this.cache = new MemorySingleCache<MiAvatarDecoration[]>(1000 * 60 * 30); // 30s
@@ -62,13 +60,6 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 
 		this.globalEventService.publishInternalEvent('avatarDecorationCreated', created);
 
-		if (moderator) {
-			this.moderationLogService.log(moderator, 'createAvatarDecoration', {
-				avatarDecorationId: created.id,
-				avatarDecoration: created,
-			});
-		}
-
 		return created;
 	}
 
@@ -84,14 +75,6 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 
 		const updated = await this.avatarDecorationsRepository.findOneByOrFail({ id: avatarDecoration.id });
 		this.globalEventService.publishInternalEvent('avatarDecorationUpdated', updated);
-
-		if (moderator) {
-			this.moderationLogService.log(moderator, 'updateAvatarDecoration', {
-				avatarDecorationId: avatarDecoration.id,
-				before: avatarDecoration,
-				after: updated,
-			});
-		}
 	}
 
 	@bindThis
@@ -100,13 +83,6 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 
 		await this.avatarDecorationsRepository.delete({ id: avatarDecoration.id });
 		this.globalEventService.publishInternalEvent('avatarDecorationDeleted', avatarDecoration);
-
-		if (moderator) {
-			this.moderationLogService.log(moderator, 'deleteAvatarDecoration', {
-				avatarDecorationId: avatarDecoration.id,
-				avatarDecoration: avatarDecoration,
-			});
-		}
 	}
 
 	@bindThis

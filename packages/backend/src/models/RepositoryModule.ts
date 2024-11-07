@@ -31,7 +31,6 @@ import {
 	MiHashtag,
 	MiInstance,
 	MiMeta,
-	MiModerationLog,
 	MiMuting,
 	MiNote,
 	MiNoteReaction,
@@ -296,12 +295,6 @@ const $signinsRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $moderationLogsRepository: Provider = {
-	provide: DI.moderationLogsRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiModerationLog).extend(miRepository as MiRepository<MiModerationLog>),
-	inject: [DI.db],
-};
-
 const $clipsRepository: Provider = {
 	provide: DI.clipsRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiClip).extend(miRepository as MiRepository<MiClip>),
@@ -445,7 +438,6 @@ const $userMemosRepository: Provider = {
 		$authSessionsRepository,
 		$accessTokensRepository,
 		$signinsRepository,
-		$moderationLogsRepository,
 		$clipsRepository,
 		$clipNotesRepository,
 		$clipFavoritesRepository,
@@ -503,7 +495,6 @@ const $userMemosRepository: Provider = {
 		$authSessionsRepository,
 		$accessTokensRepository,
 		$signinsRepository,
-		$moderationLogsRepository,
 		$clipsRepository,
 		$clipNotesRepository,
 		$clipFavoritesRepository,

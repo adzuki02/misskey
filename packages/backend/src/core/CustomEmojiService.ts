@@ -18,7 +18,6 @@ import { MemoryKVCache, RedisSingleCache } from '@/misc/cache.js';
 import { UtilityService } from '@/core/UtilityService.js';
 import { query } from '@/misc/prelude/url.js';
 import type { Serialized } from '@/types.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 
 const parseEmojiStrRegexp = /^([-\w]+)(?:@([\w.-]+))?$/;
 
@@ -37,7 +36,6 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		private utilityService: UtilityService,
 		private idService: IdService,
 		private emojiEntityService: EmojiEntityService,
-		private moderationLogService: ModerationLogService,
 		private globalEventService: GlobalEventService,
 	) {
 		this.emojisCache = new MemoryKVCache<MiEmoji | null>(1000 * 60 * 60 * 12); // 12h
@@ -90,13 +88,6 @@ export class CustomEmojiService implements OnApplicationShutdown {
 			this.globalEventService.publishBroadcastStream('emojiAdded', {
 				emoji: await this.emojiEntityService.packDetailed(emoji.id),
 			});
-
-			if (moderator) {
-				this.moderationLogService.log(moderator, 'addCustomEmoji', {
-					emojiId: emoji.id,
-					emoji: emoji,
-				});
-			}
 		}
 
 		return emoji;
@@ -146,15 +137,6 @@ export class CustomEmojiService implements OnApplicationShutdown {
 
 			this.globalEventService.publishBroadcastStream('emojiAdded', {
 				emoji: packed,
-			});
-		}
-
-		if (moderator) {
-			const updated = await this.emojisRepository.findOneByOrFail({ id: id });
-			this.moderationLogService.log(moderator, 'updateCustomEmoji', {
-				emojiId: emoji.id,
-				before: emoji,
-				after: updated,
 			});
 		}
 	}
@@ -258,13 +240,6 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		this.globalEventService.publishBroadcastStream('emojiDeleted', {
 			emojis: [await this.emojiEntityService.packDetailed(emoji)],
 		});
-
-		if (moderator) {
-			this.moderationLogService.log(moderator, 'deleteCustomEmoji', {
-				emojiId: emoji.id,
-				emoji: emoji,
-			});
-		}
 	}
 
 	@bindThis
@@ -275,13 +250,6 @@ export class CustomEmojiService implements OnApplicationShutdown {
 
 		for (const emoji of emojis) {
 			await this.emojisRepository.delete(emoji.id);
-
-			if (moderator) {
-				this.moderationLogService.log(moderator, 'deleteCustomEmoji', {
-					emojiId: emoji.id,
-					emoji: emoji,
-				});
-			}
 		}
 
 		this.localEmojisCache.refresh();

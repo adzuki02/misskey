@@ -12,7 +12,6 @@ import { GlobalEvents, GlobalEventService } from '@/core/GlobalEventService.js';
 import { MiSystemWebhook, type SystemWebhookEventType } from '@/models/SystemWebhook.js';
 import { IdService } from '@/core/IdService.js';
 import { QueueService } from '@/core/QueueService.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { LoggerService } from '@/core/LoggerService.js';
 import Logger from '@/logger.js';
 import type { OnApplicationShutdown } from '@nestjs/common';
@@ -30,7 +29,6 @@ export class SystemWebhookService implements OnApplicationShutdown {
 		private systemWebhooksRepository: SystemWebhooksRepository,
 		private idService: IdService,
 		private queueService: QueueService,
-		private moderationLogService: ModerationLogService,
 		private loggerService: LoggerService,
 		private globalEventService: GlobalEventService,
 	) {
@@ -97,12 +95,6 @@ export class SystemWebhookService implements OnApplicationShutdown {
 
 		const webhook = await this.systemWebhooksRepository.findOneByOrFail({ id });
 		this.globalEventService.publishInternalEvent('systemWebhookCreated', webhook);
-		this.moderationLogService
-			.log(updater, 'createSystemWebhook', {
-				systemWebhookId: webhook.id,
-				webhook: webhook,
-			})
-			.then();
 
 		return webhook;
 	}
@@ -134,13 +126,6 @@ export class SystemWebhookService implements OnApplicationShutdown {
 
 		const afterEntity = await this.systemWebhooksRepository.findOneByOrFail({ id: beforeEntity.id });
 		this.globalEventService.publishInternalEvent('systemWebhookUpdated', afterEntity);
-		this.moderationLogService
-			.log(updater, 'updateSystemWebhook', {
-				systemWebhookId: beforeEntity.id,
-				before: beforeEntity,
-				after: afterEntity,
-			})
-			.then();
 
 		return afterEntity;
 	}
@@ -154,12 +139,6 @@ export class SystemWebhookService implements OnApplicationShutdown {
 		await this.systemWebhooksRepository.delete(id);
 
 		this.globalEventService.publishInternalEvent('systemWebhookDeleted', webhook);
-		this.moderationLogService
-			.log(updater, 'deleteSystemWebhook', {
-				systemWebhookId: webhook.id,
-				webhook,
-			})
-			.then();
 	}
 
 	/**

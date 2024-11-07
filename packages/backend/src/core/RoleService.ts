@@ -25,7 +25,6 @@ import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import type { GlobalEvents } from '@/core/GlobalEventService.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { IdService } from '@/core/IdService.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 import type { Packed } from '@/misc/json-schema.js';
 import { FanoutTimelineService } from '@/core/FanoutTimelineService.js';
 import { NotificationService } from '@/core/NotificationService.js';
@@ -117,7 +116,6 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 		private userEntityService: UserEntityService,
 		private globalEventService: GlobalEventService,
 		private idService: IdService,
-		private moderationLogService: ModerationLogService,
 		private fanoutTimelineService: FanoutTimelineService,
 	) {
 		this.rolesCache = new MemorySingleCache<MiRole[]>(1000 * 60 * 60); // 1h
@@ -495,17 +493,6 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 				roleId: roleId,
 			});
 		}
-
-		if (moderator) {
-			this.moderationLogService.log(moderator, 'assignRole', {
-				roleId: roleId,
-				roleName: role.name,
-				userId: userId,
-				userUsername: user.username,
-				userHost: user.host,
-				expiresAt: expiresAt ? expiresAt.toISOString() : null,
-			});
-		}
 	}
 
 	@bindThis
@@ -530,20 +517,6 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 		});
 
 		this.globalEventService.publishInternalEvent('userRoleUnassigned', existing);
-
-		if (moderator) {
-			const [user, role] = await Promise.all([
-				this.usersRepository.findOneByOrFail({ id: userId }),
-				this.rolesRepository.findOneByOrFail({ id: roleId }),
-			]);
-			this.moderationLogService.log(moderator, 'unassignRole', {
-				roleId: roleId,
-				roleName: role.name,
-				userId: userId,
-				userUsername: user.username,
-				userHost: user.host,
-			});
-		}
 	}
 
 	@bindThis
@@ -585,13 +558,6 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 
 		this.globalEventService.publishInternalEvent('roleCreated', created);
 
-		if (moderator) {
-			this.moderationLogService.log(moderator, 'createRole', {
-				roleId: created.id,
-				role: created,
-			});
-		}
-
 		return created;
 	}
 
@@ -605,27 +571,12 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 
 		const updated = await this.rolesRepository.findOneByOrFail({ id: role.id });
 		this.globalEventService.publishInternalEvent('roleUpdated', updated);
-
-		if (moderator) {
-			this.moderationLogService.log(moderator, 'updateRole', {
-				roleId: role.id,
-				before: role,
-				after: updated,
-			});
-		}
 	}
 
 	@bindThis
 	public async delete(role: MiRole, moderator?: MiUser): Promise<void> {
 		await this.rolesRepository.delete({ id: role.id });
 		this.globalEventService.publishInternalEvent('roleDeleted', role);
-
-		if (moderator) {
-			this.moderationLogService.log(moderator, 'deleteRole', {
-				roleId: role.id,
-				role: role,
-			});
-		}
 	}
 
 	@bindThis

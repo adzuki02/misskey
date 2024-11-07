@@ -20,7 +20,6 @@ import type {
 import { EmailService } from '@/core/EmailService.js';
 import { RoleService } from '@/core/RoleService.js';
 import { RecipientMethod } from '@/models/AbuseReportNotificationRecipient.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { SystemWebhookService } from '@/core/SystemWebhookService.js';
 import { IdService } from './IdService.js';
 
@@ -40,7 +39,6 @@ export class AbuseReportNotificationService implements OnApplicationShutdown {
 		private roleService: RoleService,
 		private systemWebhookService: SystemWebhookService,
 		private emailService: EmailService,
-		private moderationLogService: ModerationLogService,
 		private globalEventService: GlobalEventService,
 	) {
 		this.redisForSub.on('message', this.onMessage);
@@ -259,13 +257,6 @@ export class AbuseReportNotificationService implements OnApplicationShutdown {
 
 		const created = await this.abuseReportNotificationRecipientRepository.findOneByOrFail({ id: id });
 
-		this.moderationLogService
-			.log(updater, 'createAbuseReportNotificationRecipient', {
-				recipientId: id,
-				recipient: created,
-			})
-			.then();
-
 		return created;
 	}
 
@@ -297,14 +288,6 @@ export class AbuseReportNotificationService implements OnApplicationShutdown {
 
 		const afterEntity = await this.abuseReportNotificationRecipientRepository.findOneByOrFail({ id: params.id });
 
-		this.moderationLogService
-			.log(updater, 'updateAbuseReportNotificationRecipient', {
-				recipientId: params.id,
-				before: beforeEntity,
-				after: afterEntity,
-			})
-			.then();
-
 		return afterEntity;
 	}
 
@@ -319,13 +302,6 @@ export class AbuseReportNotificationService implements OnApplicationShutdown {
 		const entity = await this.abuseReportNotificationRecipientRepository.findBy({ id });
 
 		await this.abuseReportNotificationRecipientRepository.delete(id);
-
-		this.moderationLogService
-			.log(updater, 'deleteAbuseReportNotificationRecipient', {
-				recipientId: id,
-				recipient: entity,
-			})
-			.then();
 	}
 
 	/**

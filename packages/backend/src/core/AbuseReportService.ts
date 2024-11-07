@@ -12,7 +12,6 @@ import { AbuseReportNotificationService } from '@/core/AbuseReportNotificationSe
 import { QueueService } from '@/core/QueueService.js';
 import { InstanceActorService } from '@/core/InstanceActorService.js';
 import { ApRendererService } from '@/core/activitypub/ApRendererService.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { IdService } from './IdService.js';
 
 @Injectable()
@@ -27,7 +26,6 @@ export class AbuseReportService {
 		private queueService: QueueService,
 		private instanceActorService: InstanceActorService,
 		private apRendererService: ApRendererService,
-		private moderationLogService: ModerationLogService,
 	) {
 	}
 
@@ -112,14 +110,6 @@ export class AbuseReportService {
 				const contextAssignedFlag = this.apRendererService.addContext(flag);
 				this.queueService.deliver(actor, contextAssignedFlag, targetUser.inbox, false);
 			}
-
-			this.moderationLogService
-				.log(operator, 'resolveAbuseReport', {
-					reportId: report.id,
-					report: report,
-					forwarded: ps.forward && report.targetUserHost !== null,
-				})
-				.then();
 		}
 
 		return this.abuseUserReportsRepository.findBy({ id: In(reports.map(it => it.id)) })

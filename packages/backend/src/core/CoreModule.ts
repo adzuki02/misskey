@@ -37,7 +37,6 @@ import { InstanceActorService } from './InstanceActorService.js';
 import { InternalStorageService } from './InternalStorageService.js';
 import { MetaService } from './MetaService.js';
 import { MfmService } from './MfmService.js';
-import { ModerationLogService } from './ModerationLogService.js';
 import { NoteCreateService } from './NoteCreateService.js';
 import { NoteDeleteService } from './NoteDeleteService.js';
 import { NotePiningService } from './NotePiningService.js';
@@ -97,7 +96,6 @@ import { FollowRequestEntityService } from './entities/FollowRequestEntityServic
 import { HashtagEntityService } from './entities/HashtagEntityService.js';
 import { InstanceEntityService } from './entities/InstanceEntityService.js';
 import { InviteCodeEntityService } from './entities/InviteCodeEntityService.js';
-import { ModerationLogEntityService } from './entities/ModerationLogEntityService.js';
 import { MutingEntityService } from './entities/MutingEntityService.js';
 import { RenoteMutingEntityService } from './entities/RenoteMutingEntityService.js';
 import { NoteEntityService } from './entities/NoteEntityService.js';
@@ -162,7 +160,6 @@ const $InstanceActorService: Provider = { provide: 'InstanceActorService', useEx
 const $InternalStorageService: Provider = { provide: 'InternalStorageService', useExisting: InternalStorageService };
 const $MetaService: Provider = { provide: 'MetaService', useExisting: MetaService };
 const $MfmService: Provider = { provide: 'MfmService', useExisting: MfmService };
-const $ModerationLogService: Provider = { provide: 'ModerationLogService', useExisting: ModerationLogService };
 const $NoteCreateService: Provider = { provide: 'NoteCreateService', useExisting: NoteCreateService };
 const $NoteDeleteService: Provider = { provide: 'NoteDeleteService', useExisting: NoteDeleteService };
 const $NotePiningService: Provider = { provide: 'NotePiningService', useExisting: NotePiningService };
@@ -226,7 +223,6 @@ const $FollowRequestEntityService: Provider = { provide: 'FollowRequestEntitySer
 const $HashtagEntityService: Provider = { provide: 'HashtagEntityService', useExisting: HashtagEntityService };
 const $InstanceEntityService: Provider = { provide: 'InstanceEntityService', useExisting: InstanceEntityService };
 const $InviteCodeEntityService: Provider = { provide: 'InviteCodeEntityService', useExisting: InviteCodeEntityService };
-const $ModerationLogEntityService: Provider = { provide: 'ModerationLogEntityService', useExisting: ModerationLogEntityService };
 const $MutingEntityService: Provider = { provide: 'MutingEntityService', useExisting: MutingEntityService };
 const $RenoteMutingEntityService: Provider = { provide: 'RenoteMutingEntityService', useExisting: RenoteMutingEntityService };
 const $NoteEntityService: Provider = { provide: 'NoteEntityService', useExisting: NoteEntityService };
@@ -293,7 +289,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		InternalStorageService,
 		MetaService,
 		MfmService,
-		ModerationLogService,
 		NoteCreateService,
 		NoteDeleteService,
 		NotePiningService,
@@ -357,7 +352,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		HashtagEntityService,
 		InstanceEntityService,
 		InviteCodeEntityService,
-		ModerationLogEntityService,
 		MutingEntityService,
 		RenoteMutingEntityService,
 		NoteEntityService,
@@ -420,7 +414,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$InternalStorageService,
 		$MetaService,
 		$MfmService,
-		$ModerationLogService,
 		$NoteCreateService,
 		$NoteDeleteService,
 		$NotePiningService,
@@ -484,7 +477,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$HashtagEntityService,
 		$InstanceEntityService,
 		$InviteCodeEntityService,
-		$ModerationLogEntityService,
 		$MutingEntityService,
 		$RenoteMutingEntityService,
 		$NoteEntityService,
@@ -548,7 +540,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		InternalStorageService,
 		MetaService,
 		MfmService,
-		ModerationLogService,
 		NoteCreateService,
 		NoteDeleteService,
 		NotePiningService,
@@ -611,7 +602,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		HashtagEntityService,
 		InstanceEntityService,
 		InviteCodeEntityService,
-		ModerationLogEntityService,
 		MutingEntityService,
 		RenoteMutingEntityService,
 		NoteEntityService,
@@ -674,7 +664,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$InternalStorageService,
 		$MetaService,
 		$MfmService,
-		$ModerationLogService,
 		$NoteCreateService,
 		$NoteDeleteService,
 		$NotePiningService,
@@ -737,7 +726,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$HashtagEntityService,
 		$InstanceEntityService,
 		$InviteCodeEntityService,
-		$ModerationLogEntityService,
 		$MutingEntityService,
 		$RenoteMutingEntityService,
 		$NoteEntityService,

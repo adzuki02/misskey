@@ -14,7 +14,6 @@ import { ApRendererService } from '@/core/activitypub/ApRendererService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { bindThis } from '@/decorators.js';
 import { RelationshipJobData } from '@/queue/types.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 
 @Injectable()
 export class UserSuspendService {
@@ -32,7 +31,6 @@ export class UserSuspendService {
 		private queueService: QueueService,
 		private globalEventService: GlobalEventService,
 		private apRendererService: ApRendererService,
-		private moderationLogService: ModerationLogService,
 	) {
 	}
 
@@ -40,12 +38,6 @@ export class UserSuspendService {
 	public async suspend(user: MiUser, moderator: MiUser): Promise<void> {
 		await this.usersRepository.update(user.id, {
 			isSuspended: true,
-		});
-
-		this.moderationLogService.log(moderator, 'suspend', {
-			userId: user.id,
-			userUsername: user.username,
-			userHost: user.host,
 		});
 
 		(async () => {
@@ -58,12 +50,6 @@ export class UserSuspendService {
 	public async unsuspend(user: MiUser, moderator: MiUser): Promise<void> {
 		await this.usersRepository.update(user.id, {
 			isSuspended: false,
-		});
-
-		this.moderationLogService.log(moderator, 'unsuspend', {
-			userId: user.id,
-			userUsername: user.username,
-			userHost: user.host,
 		});
 
 		(async () => {

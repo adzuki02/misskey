@@ -5,7 +5,6 @@
 
 import { Injectable } from '@nestjs/common';
 import type { MiMeta } from '@/models/Meta.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { MetaService } from '@/core/MetaService.js';
 
@@ -179,7 +178,6 @@ export const paramDef = {
 export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
 		private metaService: MetaService,
-		private moderationLogService: ModerationLogService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const set = {} as Partial<MiMeta>;
@@ -636,16 +634,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				set.federationHosts = ps.federationHosts.filter(Boolean).map(x => x.toLowerCase());
 			}
 
-			const before = await this.metaService.fetch(true);
-
 			await this.metaService.update(set);
-
-			const after = await this.metaService.fetch(true);
-
-			this.moderationLogService.log(me, 'updateServerSettings', {
-				before,
-				after,
-			});
 		});
 	}
 }
