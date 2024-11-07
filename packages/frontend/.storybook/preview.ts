@@ -23,9 +23,9 @@ let misskeyOS = null;
 
 function loadTheme(applyTheme: typeof import('../src/scripts/theme')['applyTheme']) {
 	unobserve();
-	const theme = themes[document.documentElement.dataset.misskeyTheme];
+	const theme = themes[document.documentElement.dataset.misskeyTheme ?? 'l-light'];
 	if (theme) {
-		applyTheme(themes[document.documentElement.dataset.misskeyTheme]);
+		applyTheme(themes[document.documentElement.dataset.misskeyTheme ?? 'l-light']);
 	} else {
 		applyTheme(themes['l-light']);
 	}
@@ -33,9 +33,9 @@ function loadTheme(applyTheme: typeof import('../src/scripts/theme')['applyTheme
 		for (const entry of entries) {
 			if (entry.attributeName === 'data-misskey-theme') {
 				const target = entry.target as HTMLElement;
-				const theme = themes[target.dataset.misskeyTheme];
+				const theme = themes[target.dataset.misskeyTheme!];
 				if (theme) {
-					applyTheme(themes[target.dataset.misskeyTheme]);
+					applyTheme(themes[target.dataset.misskeyTheme!]);
 				} else {
 					target.removeAttribute('style');
 				}
@@ -64,12 +64,12 @@ initialize({
 initLocalStorage();
 queueMicrotask(() => {
 	Promise.all([
-		import('../src/components'),
-		import('../src/directives'),
-		import('../src/widgets'),
-		import('../src/scripts/theme'),
-		import('../src/store'),
-		import('../src/os'),
+		import('../src/components/index.js'),
+		import('../src/directives/index.js'),
+		import('../src/widgets/index.js'),
+		import('../src/scripts/theme.js'),
+		import('../src/store.js'),
+		import('../src/os.js'),
 	]).then(([{ default: components }, { default: directives }, { default: widgets }, { applyTheme }, { defaultStore }, os]) => {
 		setup((app) => {
 			moduleInitialized = true;
