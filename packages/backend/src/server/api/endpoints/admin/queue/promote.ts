@@ -5,7 +5,6 @@
 
 import { Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { QueueService } from '@/core/QueueService.js';
 
 export const meta = {
@@ -27,7 +26,6 @@ export const paramDef = {
 @Injectable()
 export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
-		private moderationLogService: ModerationLogService,
 		private queueService: QueueService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
@@ -70,8 +68,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					}
 					break;
 			}
-
-			this.moderationLogService.log(me, 'promoteQueue');
 		});
 	}
 }

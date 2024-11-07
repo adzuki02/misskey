@@ -40,7 +40,6 @@ import { bindThis } from '@/decorators.js';
 import { RoleService } from '@/core/RoleService.js';
 import { correctFilename } from '@/misc/correct-filename.js';
 import { isMimeImage } from '@/misc/is-mime-image.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { UtilityService } from '@/core/UtilityService.js';
 
 type AddFileArgs = {
@@ -124,7 +123,6 @@ export class DriveService {
 		private globalEventService: GlobalEventService,
 		private queueService: QueueService,
 		private roleService: RoleService,
-		private moderationLogService: ModerationLogService,
 		private driveChart: DriveChart,
 		private instanceChart: InstanceChart,
 		private utilityService: UtilityService,
@@ -683,27 +681,6 @@ export class DriveService {
 			this.globalEventService.publishDriveStream(file.userId, 'fileUpdated', fileObj);
 		}
 
-		if (await this.roleService.isModerator(updater) && (file.userId !== updater.id)) {
-			if (values.isSensitive !== undefined && values.isSensitive !== file.isSensitive) {
-				const user = file.userId ? await this.usersRepository.findOneByOrFail({ id: file.userId }) : null;
-				if (values.isSensitive) {
-					this.moderationLogService.log(updater, 'markSensitiveDriveFile', {
-						fileId: file.id,
-						fileUserId: file.userId,
-						fileUserUsername: user?.username ?? null,
-						fileUserHost: user?.host ?? null,
-					});
-				} else {
-					this.moderationLogService.log(updater, 'unmarkSensitiveDriveFile', {
-						fileId: file.id,
-						fileUserId: file.userId,
-						fileUserUsername: user?.username ?? null,
-						fileUserHost: user?.host ?? null,
-					});
-				}
-			}
-		}
-
 		return fileObj;
 	}
 
@@ -793,16 +770,6 @@ export class DriveService {
 
 		if (file.userId) {
 			this.globalEventService.publishDriveStream(file.userId, 'fileDeleted', file.id);
-		}
-
-		if (deleter && await this.roleService.isModerator(deleter) && (file.userId !== deleter.id)) {
-			const user = file.userId ? await this.usersRepository.findOneByOrFail({ id: file.userId }) : null;
-			this.moderationLogService.log(deleter, 'deleteDriveFile', {
-				fileId: file.id,
-				fileUserId: file.userId,
-				fileUserUsername: user?.username ?? null,
-				fileUserHost: user?.host ?? null,
-			});
 		}
 	}
 

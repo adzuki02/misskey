@@ -28,7 +28,6 @@ import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
 import { IdService } from '@/core/IdService.js';
 import { UtilityService } from '@/core/UtilityService.js';
 import { EmojiEntityService } from '@/core/entities/EmojiEntityService.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { DriveFileEntityService } from '@/core/entities/DriveFileEntityService.js';
 import { MetaService } from '@/core/MetaService.js';
@@ -147,7 +146,6 @@ describe('UserEntityService', () => {
 				AvatarDecorationService,
 				UtilityService,
 				EmojiEntityService,
-				ModerationLogService,
 				GlobalEventService,
 				DriveFileEntityService,
 				MetaService,

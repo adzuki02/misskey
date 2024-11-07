@@ -72,8 +72,6 @@ import type {
 	AdminResolveAbuseUserReportRequest,
 	AdminSendEmailRequest,
 	AdminServerInfoResponse,
-	AdminShowModerationLogsRequest,
-	AdminShowModerationLogsResponse,
 	AdminShowUserRequest,
 	AdminShowUserResponse,
 	AdminShowUsersRequest,
@@ -518,7 +516,6 @@ export type Endpoints = {
 	'admin/resolve-abuse-user-report': { req: AdminResolveAbuseUserReportRequest; res: EmptyResponse };
 	'admin/send-email': { req: AdminSendEmailRequest; res: EmptyResponse };
 	'admin/server-info': { req: EmptyRequest; res: AdminServerInfoResponse };
-	'admin/show-moderation-logs': { req: AdminShowModerationLogsRequest; res: AdminShowModerationLogsResponse };
 	'admin/show-user': { req: AdminShowUserRequest; res: AdminShowUserResponse };
 	'admin/show-users': { req: AdminShowUsersRequest; res: AdminShowUsersResponse };
 	'admin/suspend-user': { req: AdminSuspendUserRequest; res: EmptyResponse };

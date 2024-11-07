@@ -11,7 +11,6 @@ import { MiSystemWebhook, SystemWebhookEventType } from '@/models/SystemWebhook.
 import { SystemWebhooksRepository, UsersRepository } from '@/models/_.js';
 import { IdService } from '@/core/IdService.js';
 import { GlobalModule } from '@/GlobalModule.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { DI } from '@/di-symbols.js';
 import { QueueService } from '@/core/QueueService.js';
@@ -73,9 +72,6 @@ describe('SystemWebhookService', () => {
 					GlobalEventService,
 					{
 						provide: QueueService, useFactory: () => ({ systemWebhookDeliver: jest.fn() }),
-					},
-					{
-						provide: ModerationLogService, useFactory: () => ({ log: () => Promise.resolve() }),
 					},
 				],
 			})

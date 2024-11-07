@@ -20,7 +20,6 @@ import { ApDeliverManagerService } from '@/core/activitypub/ApDeliverManagerServ
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { bindThis } from '@/decorators.js';
 import { SearchService } from '@/core/SearchService.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { isQuote, isRenote } from '@/misc/is-renote.js';
 
 @Injectable()
@@ -48,7 +47,6 @@ export class NoteDeleteService {
 		private apRendererService: ApRendererService,
 		private apDeliverManagerService: ApDeliverManagerService,
 		private searchService: SearchService,
-		private moderationLogService: ModerationLogService,
 		private notesChart: NotesChart,
 		private instanceChart: InstanceChart,
 	) {}
@@ -120,17 +118,6 @@ export class NoteDeleteService {
 			id: note.id,
 			userId: user.id,
 		});
-
-		if (deleter && (note.userId !== deleter.id)) {
-			const user = await this.usersRepository.findOneByOrFail({ id: note.userId });
-			this.moderationLogService.log(deleter, 'deleteNote', {
-				noteId: note.id,
-				noteUserId: note.userId,
-				noteUserUsername: user.username,
-				noteUserHost: user.host,
-				note: note,
-			});
-		}
 	}
 
 	@bindThis

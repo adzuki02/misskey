@@ -12,7 +12,6 @@ import { bindThis } from '@/decorators.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { ApRendererService } from '@/core/activitypub/ApRendererService.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 
 @Injectable()
 export class DeleteAccountService {
@@ -27,7 +26,6 @@ export class DeleteAccountService {
 		private apRendererService: ApRendererService,
 		private queueService: QueueService,
 		private globalEventService: GlobalEventService,
-		private moderationLogService: ModerationLogService,
 	) {
 	}
 
@@ -38,14 +36,6 @@ export class DeleteAccountService {
 	}, moderator?: MiUser): Promise<void> {
 		const _user = await this.usersRepository.findOneByOrFail({ id: user.id });
 		if (_user.isRoot) throw new Error('cannot delete a root account');
-
-		if (moderator != null) {
-			this.moderationLogService.log(moderator, 'deleteAccount', {
-				userId: user.id,
-				userUsername: _user.username,
-				userHost: user.host,
-			});
-		}
 
 		// 物理削除する前にDelete activityを送信する
 		if (this.userEntityService.isLocalUser(user)) {
