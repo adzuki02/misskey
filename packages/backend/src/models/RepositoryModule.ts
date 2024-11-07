@@ -7,7 +7,6 @@ import type { Provider } from '@nestjs/common';
 import { Module } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import {
-	MiAbuseReportNotificationRecipient,
 	MiAbuseUserReport,
 	MiAccessToken,
 	MiAntenna,
@@ -49,7 +48,6 @@ import {
 	MiRoleAssignment,
 	MiSignin,
 	MiSwSubscription,
-	MiSystemWebhook,
 	MiUsedUsername,
 	MiUser,
 	MiUserIp,
@@ -265,12 +263,6 @@ const $abuseUserReportsRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $abuseReportNotificationRecipientRepository: Provider = {
-	provide: DI.abuseReportNotificationRecipientRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiAbuseReportNotificationRecipient),
-	inject: [DI.db],
-};
-
 const $registrationTicketsRepository: Provider = {
 	provide: DI.registrationTicketsRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiRegistrationTicket).extend(miRepository as MiRepository<MiRegistrationTicket>),
@@ -355,12 +347,6 @@ const $webhooksRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $systemWebhooksRepository: Provider = {
-	provide: DI.systemWebhooksRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiSystemWebhook),
-	inject: [DI.db],
-};
-
 const $passwordResetRequestsRepository: Provider = {
 	provide: DI.passwordResetRequestsRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiPasswordResetRequest).extend(miRepository as MiRepository<MiPasswordResetRequest>),
@@ -433,7 +419,6 @@ const $userMemosRepository: Provider = {
 		$swSubscriptionsRepository,
 		$hashtagsRepository,
 		$abuseUserReportsRepository,
-		$abuseReportNotificationRecipientRepository,
 		$registrationTicketsRepository,
 		$authSessionsRepository,
 		$accessTokensRepository,
@@ -448,7 +433,6 @@ const $userMemosRepository: Provider = {
 		$channelFavoritesRepository,
 		$registryItemsRepository,
 		$webhooksRepository,
-		$systemWebhooksRepository,
 		$passwordResetRequestsRepository,
 		$rolesRepository,
 		$roleAssignmentsRepository,
@@ -490,7 +474,6 @@ const $userMemosRepository: Provider = {
 		$swSubscriptionsRepository,
 		$hashtagsRepository,
 		$abuseUserReportsRepository,
-		$abuseReportNotificationRecipientRepository,
 		$registrationTicketsRepository,
 		$authSessionsRepository,
 		$accessTokensRepository,
@@ -505,7 +488,6 @@ const $userMemosRepository: Provider = {
 		$channelFavoritesRepository,
 		$registryItemsRepository,
 		$webhooksRepository,
-		$systemWebhooksRepository,
 		$passwordResetRequestsRepository,
 		$rolesRepository,
 		$roleAssignmentsRepository,

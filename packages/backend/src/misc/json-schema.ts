@@ -51,8 +51,6 @@ import {
 	packedMetaDetailedSchema,
 	packedMetaLiteSchema,
 } from '@/models/json-schema/meta.js';
-import { packedSystemWebhookSchema } from '@/models/json-schema/system-webhook.js';
-import { packedAbuseReportNotificationRecipientSchema } from '@/models/json-schema/abuse-report-notification-recipient.js';
 
 export const refs = {
 	UserLite: packedUserLiteSchema,
@@ -99,8 +97,6 @@ export const refs = {
 	MetaLite: packedMetaLiteSchema,
 	MetaDetailedOnly: packedMetaDetailedOnlySchema,
 	MetaDetailed: packedMetaDetailedSchema,
-	SystemWebhook: packedSystemWebhookSchema,
-	AbuseReportNotificationRecipient: packedAbuseReportNotificationRecipientSchema,
 };
 
 export type Packed<x extends keyof typeof refs> = SchemaType<typeof refs[x]>;

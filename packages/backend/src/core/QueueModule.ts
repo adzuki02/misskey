@@ -15,7 +15,6 @@ import {
 	InboxJobData,
 	RelationshipJobData,
 	UserWebhookDeliverJobData,
-	SystemWebhookDeliverJobData,
 } from '../queue/types.js';
 import type { Provider } from '@nestjs/common';
 
@@ -27,7 +26,6 @@ export type DbQueue = Bull.Queue;
 export type RelationshipQueue = Bull.Queue<RelationshipJobData>;
 export type ObjectStorageQueue = Bull.Queue;
 export type UserWebhookDeliverQueue = Bull.Queue<UserWebhookDeliverJobData>;
-export type SystemWebhookDeliverQueue = Bull.Queue<SystemWebhookDeliverJobData>;
 
 const $system: Provider = {
 	provide: 'queue:system',
@@ -77,12 +75,6 @@ const $userWebhookDeliver: Provider = {
 	inject: [DI.config],
 };
 
-const $systemWebhookDeliver: Provider = {
-	provide: 'queue:systemWebhookDeliver',
-	useFactory: (config: Config) => new Bull.Queue(QUEUE.SYSTEM_WEBHOOK_DELIVER, baseQueueOptions(config, QUEUE.SYSTEM_WEBHOOK_DELIVER)),
-	inject: [DI.config],
-};
-
 @Module({
 	imports: [
 	],
@@ -95,7 +87,6 @@ const $systemWebhookDeliver: Provider = {
 		$relationship,
 		$objectStorage,
 		$userWebhookDeliver,
-		$systemWebhookDeliver,
 	],
 	exports: [
 		$system,
@@ -106,7 +97,6 @@ const $systemWebhookDeliver: Provider = {
 		$relationship,
 		$objectStorage,
 		$userWebhookDeliver,
-		$systemWebhookDeliver,
 	],
 })
 export class QueueModule implements OnApplicationShutdown {
@@ -119,7 +109,6 @@ export class QueueModule implements OnApplicationShutdown {
 		@Inject('queue:relationship') public relationshipQueue: RelationshipQueue,
 		@Inject('queue:objectStorage') public objectStorageQueue: ObjectStorageQueue,
 		@Inject('queue:userWebhookDeliver') public userWebhookDeliverQueue: UserWebhookDeliverQueue,
-		@Inject('queue:systemWebhookDeliver') public systemWebhookDeliverQueue: SystemWebhookDeliverQueue,
 	) {}
 
 	public async dispose(): Promise<void> {
@@ -135,7 +124,6 @@ export class QueueModule implements OnApplicationShutdown {
 			this.relationshipQueue.close(),
 			this.objectStorageQueue.close(),
 			this.userWebhookDeliverQueue.close(),
-			this.systemWebhookDeliverQueue.close(),
 		]);
 	}
 

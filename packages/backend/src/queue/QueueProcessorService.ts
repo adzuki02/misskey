@@ -11,7 +11,6 @@ import { DI } from '@/di-symbols.js';
 import type Logger from '@/logger.js';
 import { bindThis } from '@/decorators.js';
 import { UserWebhookDeliverProcessorService } from './processors/UserWebhookDeliverProcessorService.js';
-import { SystemWebhookDeliverProcessorService } from './processors/SystemWebhookDeliverProcessorService.js';
 import { EndedPollNotificationProcessorService } from './processors/EndedPollNotificationProcessorService.js';
 import { DeliverProcessorService } from './processors/DeliverProcessorService.js';
 import { InboxProcessorService } from './processors/InboxProcessorService.js';
@@ -76,7 +75,6 @@ export class QueueProcessorService implements OnApplicationShutdown {
 	private deliverQueueWorker: Bull.Worker;
 	private inboxQueueWorker: Bull.Worker;
 	private userWebhookDeliverQueueWorker: Bull.Worker;
-	private systemWebhookDeliverQueueWorker: Bull.Worker;
 	private relationshipQueueWorker: Bull.Worker;
 	private objectStorageQueueWorker: Bull.Worker;
 	private endedPollNotificationQueueWorker: Bull.Worker;
@@ -87,7 +85,6 @@ export class QueueProcessorService implements OnApplicationShutdown {
 
 		private queueLoggerService: QueueLoggerService,
 		private userWebhookDeliverProcessorService: UserWebhookDeliverProcessorService,
-		private systemWebhookDeliverProcessorService: SystemWebhookDeliverProcessorService,
 		private endedPollNotificationProcessorService: EndedPollNotificationProcessorService,
 		private deliverProcessorService: DeliverProcessorService,
 		private inboxProcessorService: InboxProcessorService,
@@ -353,46 +350,6 @@ export class QueueProcessorService implements OnApplicationShutdown {
 		}
 		//#endregion
 
-		//#region system-webhook deliver
-		{
-			this.systemWebhookDeliverQueueWorker = new Bull.Worker(QUEUE.SYSTEM_WEBHOOK_DELIVER, (job) => {
-				if (this.config.sentryForBackend) {
-					return Sentry.startSpan({ name: 'Queue: SystemWebhookDeliver' }, () => this.systemWebhookDeliverProcessorService.process(job));
-				} else {
-					return this.systemWebhookDeliverProcessorService.process(job);
-				}
-			}, {
-				...baseQueueOptions(this.config, QUEUE.SYSTEM_WEBHOOK_DELIVER),
-				autorun: false,
-				concurrency: 16,
-				limiter: {
-					max: 16,
-					duration: 1000,
-				},
-				settings: {
-					backoffStrategy: httpRelatedBackoff,
-				},
-			});
-
-			const logger = this.logger.createSubLogger('system-webhook');
-
-			this.systemWebhookDeliverQueueWorker
-				.on('active', (job) => logger.debug(`active ${getJobInfo(job, true)} to=${job.data.to}`))
-				.on('completed', (job, result) => logger.debug(`completed(${result}) ${getJobInfo(job, true)} to=${job.data.to}`))
-				.on('failed', (job, err) => {
-					logger.error(`failed(${err.stack}) ${getJobInfo(job)} to=${job ? job.data.to : '-'}`);
-					if (config.sentryForBackend) {
-						Sentry.captureMessage(`Queue: SystemWebhookDeliver: ${err.message}`, {
-							level: 'error',
-							extra: { job, err },
-						});
-					}
-				})
-				.on('error', (err: Error) => logger.error(`error ${err.stack}`, { e: renderError(err) }))
-				.on('stalled', (jobId) => logger.warn(`stalled id=${jobId}`));
-		}
-		//#endregion
-
 		//#region relationship
 		{
 			const processer = (job: Bull.Job) => {
@@ -505,7 +462,6 @@ export class QueueProcessorService implements OnApplicationShutdown {
 			this.deliverQueueWorker.run(),
 			this.inboxQueueWorker.run(),
 			this.userWebhookDeliverQueueWorker.run(),
-			this.systemWebhookDeliverQueueWorker.run(),
 			this.relationshipQueueWorker.run(),
 			this.objectStorageQueueWorker.run(),
 			this.endedPollNotificationQueueWorker.run(),
@@ -520,7 +476,6 @@ export class QueueProcessorService implements OnApplicationShutdown {
 			this.deliverQueueWorker.close(),
 			this.inboxQueueWorker.close(),
 			this.userWebhookDeliverQueueWorker.close(),
-			this.systemWebhookDeliverQueueWorker.close(),
 			this.relationshipQueueWorker.close(),
 			this.objectStorageQueueWorker.close(),
 			this.endedPollNotificationQueueWorker.close(),

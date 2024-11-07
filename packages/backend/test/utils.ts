@@ -28,15 +28,6 @@ export interface UserToken {
 	bearer?: boolean;
 }
 
-export type SystemWebhookPayload = {
-	server: string;
-	hookId: string;
-	eventId: string;
-	createdAt: string;
-	type: string;
-	body: any;
-}
-
 const config = loadConfig();
 export const port = config.port;
 export const origin = config.url;
@@ -627,38 +618,4 @@ export async function sendEnvResetRequest() {
 // FIXME(misskey-js): misskey-jsがエラー情報を公開するようになったらこの関数を廃止する
 export function castAsError(obj: Record<string, unknown>): { error: ApiError } {
 	return obj as { error: ApiError };
-}
-
-export async function captureWebhook<T = SystemWebhookPayload>(postAction: () => Promise<void>, port = WEBHOOK_PORT): Promise<T> {
-	const fastify = Fastify();
-
-	let timeoutHandle: NodeJS.Timeout | null = null;
-	const result = await new Promise<string>(async (resolve, reject) => {
-		fastify.all('/', async (req, res) => {
-			timeoutHandle && clearTimeout(timeoutHandle);
-
-			const body = JSON.stringify(req.body);
-			res.status(200).send('ok');
-			await fastify.close();
-			resolve(body);
-		});
-
-		await fastify.listen({ port });
-
-		timeoutHandle = setTimeout(async () => {
-			await fastify.close();
-			reject(new Error('timeout'));
-		}, 3000);
-
-		try {
-			await postAction();
-		} catch (e) {
-			await fastify.close();
-			reject(e);
-		}
-	});
-
-	await fastify.close();
-
-	return JSON.parse(result) as T;
 }

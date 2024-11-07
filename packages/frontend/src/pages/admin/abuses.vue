@@ -8,10 +8,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header><XHeader/></template>
 	<MkSpacer :contentMax="900">
 		<div :class="$style.root" class="_gaps">
-			<div :class="$style.subMenus" class="_gaps">
-				<MkButton link to="/admin/abuse-report-notification-recipient" primary>{{ i18n.ts.notificationSetting }}</MkButton>
-			</div>
-
 			<div :class="$style.inputs" class="_gaps">
 				<MkSelect v-model="state" style="margin: 0; flex: 1;">
 					<template #label>{{ i18n.ts.state }}</template>
@@ -95,13 +91,6 @@ definePageMetadata(() => ({
 	flex-direction: column;
 	justify-content: center;
 	align-items: stretch;
-}
-
-.subMenus {
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-end;
-	align-items: center;
 }
 
 .inputs {
