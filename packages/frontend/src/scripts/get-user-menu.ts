@@ -130,14 +130,6 @@ export function getUserMenu(user: UserDetailed, router: IRouter = mainRouter) {
 		});
 	}
 
-	function reportAbuse() {
-		const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkAbuseReportWindow.vue')), {
-			user: user,
-		}, {
-			closed: () => dispose(),
-		});
-	}
-
 	async function getConfirmed(text: string): Promise<boolean> {
 		const confirm = await os.confirm({
 			type: 'warning',
@@ -384,12 +376,6 @@ export function getUserMenu(user: UserDetailed, router: IRouter = mainRouter) {
 				action: invalidateFollow,
 			}]);
 		}
-
-		menu = menu.concat([{ type: 'divider' }, {
-			icon: 'ti ti-exclamation-circle',
-			text: i18n.ts.reportAbuse,
-			action: reportAbuse,
-		}]);
 	}
 
 	if (user.host !== null) {

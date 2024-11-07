@@ -121,25 +121,6 @@ export async function getNoteClipMenu(props: {
 	return menu;
 }
 
-export function getAbuseNoteMenu(note: Note, text: string): MenuItem {
-	return {
-		icon: 'ti ti-exclamation-circle',
-		text,
-		action: (): void => {
-			const localUrl = `${url}/notes/${note.id}`;
-			let noteInfo = '';
-			if (note.url ?? note.uri != null) noteInfo = `Note: ${note.url ?? note.uri}\n`;
-			noteInfo += `Local Note: ${localUrl}\n`;
-			const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkAbuseReportWindow.vue')), {
-				user: note.user,
-				initialComment: `${noteInfo}-----\n`,
-			}, {
-				closed: () => dispose(),
-			});
-		},
-	};
-}
-
 export function getCopyNoteLinkMenu(note: Note, text: string): MenuItem {
 	return {
 		icon: 'ti ti-link',
@@ -317,12 +298,6 @@ export function getNoteMenu(props: {
 					return menu;
 				},
 			},
-			...(appearNote.userId !== $i.id ? [
-				{ type: 'divider' } as MenuDivider,
-				appearNote.userId !== $i.id ? getAbuseNoteMenu(appearNote, i18n.ts.reportAbuse) : undefined,
-			]
-			: []
-			),
 			...(appearNote.channel && (appearNote.channel.userId === $i.id || $i.isModerator || $i.isAdmin) ? [
 				{ type: 'divider' } as MenuDivider,
 				{
