@@ -6,11 +6,6 @@
 
 import { EventEmitter } from 'eventemitter3';
 
-// Warning: (ae-forgotten-export) The symbol "components" needs to be exported by the entry point index.d.ts
-//
-// @public (undocumented)
-type AbuseReportNotificationRecipient = components['schemas']['AbuseReportNotificationRecipient'];
-
 // @public (undocumented)
 export type Acct = {
     username: string;
@@ -28,33 +23,6 @@ export { acct }
 
 // Warning: (ae-forgotten-export) The symbol "operations" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
-type AdminAbuseReportNotificationRecipientCreateRequest = operations['admin___abuse-report___notification-recipient___create']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAbuseReportNotificationRecipientCreateResponse = operations['admin___abuse-report___notification-recipient___create']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAbuseReportNotificationRecipientDeleteRequest = operations['admin___abuse-report___notification-recipient___delete']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAbuseReportNotificationRecipientListRequest = operations['admin___abuse-report___notification-recipient___list']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAbuseReportNotificationRecipientListResponse = operations['admin___abuse-report___notification-recipient___list']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAbuseReportNotificationRecipientShowRequest = operations['admin___abuse-report___notification-recipient___show']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAbuseReportNotificationRecipientShowResponse = operations['admin___abuse-report___notification-recipient___show']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAbuseReportNotificationRecipientUpdateRequest = operations['admin___abuse-report___notification-recipient___update']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAbuseReportNotificationRecipientUpdateResponse = operations['admin___abuse-report___notification-recipient___update']['responses']['200']['content']['application/json'];
-
 // @public (undocumented)
 type AdminAbuseUserReportsRequest = operations['admin___abuse-user-reports']['requestBody']['content']['application/json'];
 
@@ -290,33 +258,6 @@ type AdminShowUsersResponse = operations['admin___show-users']['responses']['200
 type AdminSuspendUserRequest = operations['admin___suspend-user']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
-type AdminSystemWebhookCreateRequest = operations['admin___system-webhook___create']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminSystemWebhookCreateResponse = operations['admin___system-webhook___create']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AdminSystemWebhookDeleteRequest = operations['admin___system-webhook___delete']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminSystemWebhookListRequest = operations['admin___system-webhook___list']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminSystemWebhookListResponse = operations['admin___system-webhook___list']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AdminSystemWebhookShowRequest = operations['admin___system-webhook___show']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminSystemWebhookShowResponse = operations['admin___system-webhook___show']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AdminSystemWebhookUpdateRequest = operations['admin___system-webhook___update']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminSystemWebhookUpdateResponse = operations['admin___system-webhook___update']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
 type AdminUnsetUserAvatarRequest = operations['admin___unset-user-avatar']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -331,6 +272,8 @@ type AdminUpdateMetaRequest = operations['admin___update-meta']['requestBody']['
 // @public (undocumented)
 type AdminUpdateUserNoteRequest = operations['admin___update-user-note']['requestBody']['content']['application/json'];
 
+// Warning: (ae-forgotten-export) The symbol "components" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
 type Antenna = components['schemas']['Antenna'];
 
@@ -1014,15 +957,6 @@ declare namespace entities {
         AdminMetaResponse,
         AdminAbuseUserReportsRequest,
         AdminAbuseUserReportsResponse,
-        AdminAbuseReportNotificationRecipientListRequest,
-        AdminAbuseReportNotificationRecipientListResponse,
-        AdminAbuseReportNotificationRecipientShowRequest,
-        AdminAbuseReportNotificationRecipientShowResponse,
-        AdminAbuseReportNotificationRecipientCreateRequest,
-        AdminAbuseReportNotificationRecipientCreateResponse,
-        AdminAbuseReportNotificationRecipientUpdateRequest,
-        AdminAbuseReportNotificationRecipientUpdateResponse,
-        AdminAbuseReportNotificationRecipientDeleteRequest,
         AdminAccountsCreateRequest,
         AdminAccountsCreateResponse,
         AdminAccountsDeleteRequest,
@@ -1103,15 +1037,6 @@ declare namespace entities {
         AdminRolesUpdateDefaultPoliciesRequest,
         AdminRolesUsersRequest,
         AdminRolesUsersResponse,
-        AdminSystemWebhookCreateRequest,
-        AdminSystemWebhookCreateResponse,
-        AdminSystemWebhookDeleteRequest,
-        AdminSystemWebhookListRequest,
-        AdminSystemWebhookListResponse,
-        AdminSystemWebhookShowRequest,
-        AdminSystemWebhookShowResponse,
-        AdminSystemWebhookUpdateRequest,
-        AdminSystemWebhookUpdateResponse,
         AntennasCreateRequest,
         AntennasCreateResponse,
         AntennasDeleteRequest,
@@ -1511,9 +1436,7 @@ declare namespace entities {
         RolePolicies,
         MetaLite,
         MetaDetailedOnly,
-        MetaDetailed,
-        SystemWebhook,
-        AbuseReportNotificationRecipient
+        MetaDetailed
     }
 }
 export { entities }
@@ -2380,9 +2303,6 @@ type SwUpdateRegistrationRequest = operations['sw___update-registration']['reque
 
 // @public (undocumented)
 type SwUpdateRegistrationResponse = operations['sw___update-registration']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type SystemWebhook = components['schemas']['SystemWebhook'];
 
 // @public (undocumented)
 type TestRequest = operations['test']['requestBody']['content']['application/json'];

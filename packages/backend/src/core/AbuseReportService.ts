@@ -8,7 +8,6 @@ import { In } from 'typeorm';
 import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
 import type { AbuseUserReportsRepository, MiAbuseUserReport, MiUser, UsersRepository } from '@/models/_.js';
-import { AbuseReportNotificationService } from '@/core/AbuseReportNotificationService.js';
 import { QueueService } from '@/core/QueueService.js';
 import { InstanceActorService } from '@/core/InstanceActorService.js';
 import { ApRendererService } from '@/core/activitypub/ApRendererService.js';
@@ -22,7 +21,6 @@ export class AbuseReportService {
 		@Inject(DI.usersRepository)
 		private usersRepository: UsersRepository,
 		private idService: IdService,
-		private abuseReportNotificationService: AbuseReportNotificationService,
 		private queueService: QueueService,
 		private instanceActorService: InstanceActorService,
 		private apRendererService: ApRendererService,
@@ -30,13 +28,9 @@ export class AbuseReportService {
 	}
 
 	/**
-	 * ユーザからの通報をDBに記録し、その内容を下記の手段で管理者各位に通知する.
-	 * - 管理者用Redisイベント
-	 * - EMail（モデレータ権限所有者ユーザ＋metaテーブルに設定されているメールアドレス）
-	 * - SystemWebhook
+	 * ユーザからの通報をDBに記録する.
 	 *
 	 * @param params 通報内容. もし複数件の通報に対応した時のために、あらかじめ複数件を処理できる前提で考える
-	 * @see AbuseReportNotificationService.notify
 	 */
 	@bindThis
 	public async report(params: {
@@ -45,7 +39,7 @@ export class AbuseReportService {
 		reporterId: MiAbuseUserReport['reporterId'],
 		reporterHost: MiAbuseUserReport['reporterHost'],
 		comment: string,
-	}[]) {
+	}[]): Promise<void> {
 		const entities = params.map(param => {
 			return {
 				id: this.idService.gen(),
@@ -57,26 +51,16 @@ export class AbuseReportService {
 			};
 		});
 
-		const reports = Array.of<MiAbuseUserReport>();
 		for (const entity of entities) {
-			const report = await this.abuseUserReportsRepository.insertOne(entity);
-			reports.push(report);
+			await this.abuseUserReportsRepository.insertOne(entity);
 		}
-
-		return Promise.all([
-			this.abuseReportNotificationService.notifyAdminStream(reports),
-			this.abuseReportNotificationService.notifySystemWebhook(reports, 'abuseReport'),
-			this.abuseReportNotificationService.notifyMail(reports),
-		]);
 	}
 
 	/**
-	 * 通報を解決し、その内容を下記の手段で管理者各位に通知する.
-	 * - SystemWebhook
+	 * 通報を解決する.
 	 *
 	 * @param params 通報内容. もし複数件の通報に対応した時のために、あらかじめ複数件を処理できる前提で考える
 	 * @param operator 通報を処理したユーザ
-	 * @see AbuseReportNotificationService.notify
 	 */
 	@bindThis
 	public async resolve(
@@ -85,7 +69,7 @@ export class AbuseReportService {
 			forward: boolean;
 		}[],
 		operator: MiUser,
-	) {
+	): Promise<void> {
 		const paramsMap = new Map(params.map(it => [it.reportId, it]));
 		const reports = await this.abuseUserReportsRepository.findBy({
 			id: In(params.map(it => it.reportId)),
@@ -111,8 +95,5 @@ export class AbuseReportService {
 				this.queueService.deliver(actor, contextAssignedFlag, targetUser.inbox, false);
 			}
 		}
-
-		return this.abuseUserReportsRepository.findBy({ id: In(reports.map(it => it.id)) })
-			.then(reports => this.abuseReportNotificationService.notifySystemWebhook(reports, 'abuseReportResolved'));
 	}
 }

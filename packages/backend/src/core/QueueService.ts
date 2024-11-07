@@ -8,7 +8,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { IActivity } from '@/core/activitypub/type.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import type { MiWebhook, webhookEventTypes } from '@/models/Webhook.js';
-import type { MiSystemWebhook, SystemWebhookEventType } from '@/models/SystemWebhook.js';
 import type { Config } from '@/config.js';
 import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
@@ -18,7 +17,6 @@ import type {
 	DbJobData,
 	DeliverJobData,
 	RelationshipJobData,
-	SystemWebhookDeliverJobData,
 	ThinUser,
 	UserWebhookDeliverJobData,
 } from '../queue/types.js';
@@ -31,7 +29,6 @@ import type {
 	RelationshipQueue,
 	SystemQueue,
 	UserWebhookDeliverQueue,
-	SystemWebhookDeliverQueue,
 } from './QueueModule.js';
 import type httpSignature from '@peertube/http-signature';
 import type * as Bull from 'bullmq';
@@ -50,7 +47,6 @@ export class QueueService {
 		@Inject('queue:relationship') public relationshipQueue: RelationshipQueue,
 		@Inject('queue:objectStorage') public objectStorageQueue: ObjectStorageQueue,
 		@Inject('queue:userWebhookDeliver') public userWebhookDeliverQueue: UserWebhookDeliverQueue,
-		@Inject('queue:systemWebhookDeliver') public systemWebhookDeliverQueue: SystemWebhookDeliverQueue,
 	) {
 		this.systemQueue.add('tickCharts', {
 		}, {
@@ -452,32 +448,6 @@ export class QueueService {
 		};
 
 		return this.userWebhookDeliverQueue.add(webhook.id, data, {
-			attempts: 4,
-			backoff: {
-				type: 'custom',
-			},
-			removeOnComplete: true,
-			removeOnFail: true,
-		});
-	}
-
-	/**
-	 * @see SystemWebhookDeliverJobData
-	 * @see WebhookDeliverProcessorService
-	 */
-	@bindThis
-	public systemWebhookDeliver(webhook: MiSystemWebhook, type: SystemWebhookEventType, content: unknown) {
-		const data: SystemWebhookDeliverJobData = {
-			type,
-			content,
-			webhookId: webhook.id,
-			to: webhook.url,
-			secret: webhook.secret,
-			createdAt: Date.now(),
-			eventId: randomUUID(),
-		};
-
-		return this.systemWebhookDeliverQueue.add(webhook.id, data, {
 			attempts: 4,
 			backoff: {
 				type: 'custom',

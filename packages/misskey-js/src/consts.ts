@@ -1,13 +1,11 @@
 import type { operations } from './autogen/types.js';
 import type {
-	AbuseReportNotificationRecipient,
 	EmojiDetailed,
 	Flash,
 	InviteCode,
 	MetaDetailed,
 	Note,
 	Role,
-	SystemWebhook,
 	UserLite,
 } from './autogen/models.js';
 
