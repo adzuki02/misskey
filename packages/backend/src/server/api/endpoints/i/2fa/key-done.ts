@@ -55,31 +55,24 @@ export const paramDef = {
 			properties: {
 				id: {
 					type: 'string',
-					nullable: false, optional: false,
 				},
 				rawId: {
 					type: 'string',
-					nullable: false, optional: false,
 				},
 				response: {
 					type: 'object',
-					nullable: false, optional: false,
 					properties: {
 						clientDataJSON: {
 							type: 'string',
-							nullable: false, optional: false,
 						},
 						attestationObject: {
 							type: 'string',
-							nullable: false, optional: false,
 						},
 						authenticationData: {
 							type: 'string',
-							nullable: false, optional: true,
 						},
 						transports: {
 							type: 'array',
-							nullable: false, optional: true,
 							items: {
 								type: 'string',
 								enum: [
@@ -95,17 +88,15 @@ export const paramDef = {
 						},
 						publicKeyAlgorithm: {
 							type: 'number',
-							nullable: false, optional: true,
 						},
 						publicKey: {
 							type: 'string',
-							nullable: false, optional: true,
 						},
 					},
+					required: ['clientDataJSON', 'attestationObject'],
 				},
 				authenticatorAttachment: {
 					type: 'string',
-					nullable: false, optional: true,
 					enum: [
 						'cross-platform',
 						'platform',
@@ -113,23 +104,18 @@ export const paramDef = {
 				},
 				clientExtensionResults: {
 					type: 'object',
-					nullable: false, optional: false,
 					properties: {
 						appId: {
 							type: 'boolean',
-							nullable: false, optional: true,
 						},
 						hmacCreateSecret: {
 							type: 'boolean',
-							nullable: false, optional: true,
 						},
 						credProps: {
 							type: 'object',
-							nullable: false, optional: true,
 							properties: {
 								rk: {
 									type: 'boolean',
-									nullable: false, optional: true,
 								},
 							},
 						},
@@ -137,10 +123,10 @@ export const paramDef = {
 				},
 				type: {
 					type: 'string',
-					nullable: false, optional: false,
 					enum: ['public-key'],
 				},
 			},
+			required: ['id', 'rawId', 'response', 'clientExtensionResults', 'type'],
 		},
 	},
 	required: ['password', 'name', 'credential'],

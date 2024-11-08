@@ -214,11 +214,16 @@ async function addSecurityKey() {
 	const auth2 = await os.authenticateDialog();
 	if (auth2.canceled) return;
 
+	const credentialJson = credential.toJSON();
+
 	await os.apiWithDialog('i/2fa/key-done', {
 		password: auth.result.password,
 		token: auth.result.token,
 		name: name.result,
-		credential: credential.toJSON() as I2faKeyDoneRequest['credential'],
+		credential: {
+			...credentialJson,
+			authenticatorAttachment: credentialJson.authenticatorAttachment ?? undefined,
+		},
 	});
 }
 

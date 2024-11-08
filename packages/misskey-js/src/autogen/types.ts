@@ -13091,11 +13091,11 @@ export type operations = {
           token?: string | null;
           name: string;
           credential: {
-            id?: string;
-            rawId?: string;
-            response?: {
-              clientDataJSON?: string;
-              attestationObject?: string;
+            id: string;
+            rawId: string;
+            response: {
+              clientDataJSON: string;
+              attestationObject: string;
               authenticationData?: string;
               transports?: ('ble' | 'cable' | 'hybrid' | 'internal' | 'nfc' | 'smart-card' | 'usb')[];
               publicKeyAlgorithm?: number;
@@ -13103,7 +13103,7 @@ export type operations = {
             };
             /** @enum {string} */
             authenticatorAttachment?: 'cross-platform' | 'platform';
-            clientExtensionResults?: {
+            clientExtensionResults: {
               appId?: boolean;
               hmacCreateSecret?: boolean;
               credProps?: {
@@ -13111,7 +13111,7 @@ export type operations = {
               };
             };
             /** @enum {string} */
-            type?: 'public-key';
+            type: 'public-key';
           };
         };
       };
