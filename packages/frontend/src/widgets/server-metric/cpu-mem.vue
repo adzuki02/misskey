@@ -122,7 +122,7 @@ function onStats(connStats: ServerStats) {
 	if (stats.value.length > 50) stats.value.shift();
 
 	let cpuPolylinePointsStats = stats.value.map((s, i) => [viewBoxX.value - ((stats.value.length - 1) - i), (1 - s.cpu) * viewBoxY.value]);
-	let memPolylinePointsStats = stats.value.map((s, i) => [viewBoxX.value - ((stats.value.length - 1) - i), (1 - (s.mem.active / props.meta.mem.total)) * viewBoxY.value]);
+	let memPolylinePointsStats = stats.value.map((s, i) => [viewBoxX.value - ((stats.value.length - 1) - i), (1 - (s.mem / props.meta.mem.total)) * viewBoxY.value]);
 	cpuPolylinePoints.value = cpuPolylinePointsStats.map(xy => `${xy[0]},${xy[1]}`).join(' ');
 	memPolylinePoints.value = memPolylinePointsStats.map(xy => `${xy[0]},${xy[1]}`).join(' ');
 
@@ -135,7 +135,7 @@ function onStats(connStats: ServerStats) {
 	memHeadY.value = memPolylinePointsStats.at(-1)![1];
 
 	cpuP.value = (connStats.cpu * 100).toFixed(0);
-	memP.value = (connStats.mem.active / props.meta.mem.total * 100).toFixed(0);
+	memP.value = (connStats.mem / props.meta.mem.total * 100).toFixed(0);
 }
 
 function onStatsLog(statsLog: ServerStatsLog) {

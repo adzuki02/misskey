@@ -7,12 +7,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkContainer :showHeader="widgetProps.showHeader" :naked="widgetProps.transparent">
 	<template #icon><i class="ti ti-server"></i></template>
 	<template #header>{{ i18n.ts._widgets.serverMetric }}</template>
-	<template #func="{ buttonStyleClass }"><button class="_button" :class="buttonStyleClass" @click="toggleView()"><i class="ti ti-selector"></i></button></template>
 
-	<div v-if="meta" data-cy-mkw-serverMetric class="mkw-serverMetric">
-		<XCpuMemory v-if="widgetProps.view === 0" :connection="connection" :meta="meta"/>
-		<XNet v-else-if="widgetProps.view === 1" :connection="connection" :meta="meta"/>
-		<XMemory v-else-if="widgetProps.view === 2" :connection="connection" :meta="meta"/>
+	<div v-if="meta">
+		<XCpuMemory :connection="connection" :meta="meta"/>
 	</div>
 </MkContainer>
 </template>
@@ -21,8 +18,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onUnmounted, ref } from 'vue';
 import { useWidgetPropsManager, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from '../widget.js';
 import XCpuMemory from './cpu-mem.vue';
-import XNet from './net.vue';
-import XMemory from './mem.vue';
 import type { ServerInfoResponse } from 'misskey-js/entities.js';
 import MkContainer from '@/components/MkContainer.vue';
 import { GetFormResultType } from '@/scripts/form.js';
@@ -40,11 +35,6 @@ const widgetPropsDef = {
 	transparent: {
 		type: 'boolean' as const,
 		default: false,
-	},
-	view: {
-		type: 'number' as const,
-		default: 0,
-		hidden: true,
 	},
 };
 
@@ -64,15 +54,6 @@ const meta = ref<ServerInfoResponse | null>(null);
 misskeyApiGet('server-info', {}).then(res => {
 	meta.value = res;
 });
-
-const toggleView = () => {
-	if (widgetProps.view === 2) {
-		widgetProps.view = 0;
-	} else {
-		widgetProps.view++;
-	}
-	save();
-};
 
 const connection = useStream().useChannel('serverStats');
 onUnmounted(() => {
