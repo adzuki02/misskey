@@ -342,17 +342,13 @@ watch([
 	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
-const emojiIndexLangs = ['en-US', 'ja-JP', 'ja-JP_hira'] as const;
+const emojiIndexLangs = ['en-US'] as const;
 
 function getEmojiIndexLangName(targetLang: typeof emojiIndexLangs[number]) {
 	if (langs.find(x => x[0] === targetLang)) {
 		return langs.find(x => x[0] === targetLang)![1];
 	} else {
-		// 絵文字辞書限定の言語定義
-		switch (targetLang) {
-			case 'ja-JP_hira': return 'ひらがな';
-			default: return targetLang;
-		}
+		return targetLang;
 	}
 }
 
@@ -363,8 +359,6 @@ function downloadEmojiIndex(lang: typeof emojiIndexLangs[number]) {
 		function download() {
 			switch (lang) {
 				case 'en-US': return import('../../unicode-emoji-indexes/en-US.json').then(x => x.default);
-				case 'ja-JP': return import('../../unicode-emoji-indexes/ja-JP.json').then(x => x.default);
-				case 'ja-JP_hira': return import('../../unicode-emoji-indexes/ja-JP_hira.json').then(x => x.default);
 				default: throw new Error('unrecognized lang: ' + lang);
 			}
 		}
