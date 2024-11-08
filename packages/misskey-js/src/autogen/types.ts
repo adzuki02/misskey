@@ -19399,17 +19399,8 @@ export type operations = {
       200: {
         content: {
           'application/json': {
-            machine: string;
-            cpu: {
-              model: string;
-              cores: number;
-            };
             mem: {
               total: number;
-            };
-            fs: {
-              total: number;
-              used: number;
             };
           };
         };

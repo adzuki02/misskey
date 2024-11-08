@@ -2153,18 +2153,7 @@ type ServerInfoResponse = operations['server-info']['responses']['200']['content
 // @public (undocumented)
 type ServerStats = {
     cpu: number;
-    mem: {
-        used: number;
-        active: number;
-    };
-    net: {
-        rx: number;
-        tx: number;
-    };
-    fs: {
-        r: number;
-        w: number;
-    };
+    mem: number;
 };
 
 // @public (undocumented)

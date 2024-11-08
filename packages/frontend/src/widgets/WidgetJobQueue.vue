@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div data-cy-mkw-jobQueue class="mkw-jobQueue _monospace" :class="{ _panel: !widgetProps.transparent }">
+<div class="mkw-jobQueue _monospace" :class="{ _panel: !widgetProps.transparent }">
 	<div class="inbox">
 		<div class="label">Inbox queue<i v-if="current.inbox.waiting > 0" class="ti ti-alert-triangle icon"></i></div>
 		<div class="values">
@@ -51,23 +51,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted, reactive, ref } from 'vue';
+import { onUnmounted, reactive } from 'vue';
 import { useWidgetPropsManager, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
+import type { QueueStats, QueueStatsLog } from 'misskey-js/entities.js';
 import { GetFormResultType } from '@/scripts/form.js';
 import { useStream } from '@/stream.js';
 import kmg from '@/filters/kmg.js';
-import * as sound from '@/scripts/sound.js';
 import { deepClone } from '@/scripts/clone.js';
-import { defaultStore } from '@/store.js';
 
 const name = 'jobQueue';
 
 const widgetPropsDef = {
 	transparent: {
-		type: 'boolean' as const,
-		default: false,
-	},
-	sound: {
 		type: 'boolean' as const,
 		default: false,
 	},
@@ -100,40 +95,22 @@ const current = reactive({
 	},
 });
 const prev = reactive({} as typeof current);
-const jammedAudioBuffer = ref<AudioBuffer | null>(null);
-const jammedSoundNodePlaying = ref<boolean>(false);
 
-if (defaultStore.state.sound_masterVolume) {
-	sound.loadAudio('/client-assets/sounds/syuilo/queue-jammed.mp3').then(buf => {
-		if (!buf) throw new Error('[WidgetJobQueue] Failed to initialize AudioBuffer');
-		jammedAudioBuffer.value = buf;
-	});
-}
-
-for (const domain of ['inbox', 'deliver']) {
+for (const domain of ['inbox', 'deliver'] as const) {
 	prev[domain] = deepClone(current[domain]);
 }
 
-const onStats = (stats) => {
-	for (const domain of ['inbox', 'deliver']) {
+const onStats = (stats: QueueStats) => {
+	for (const domain of ['inbox', 'deliver'] as const) {
 		prev[domain] = deepClone(current[domain]);
 		current[domain].activeSincePrevTick = stats[domain].activeSincePrevTick;
 		current[domain].active = stats[domain].active;
 		current[domain].waiting = stats[domain].waiting;
 		current[domain].delayed = stats[domain].delayed;
-
-		if (current[domain].waiting > 0 && widgetProps.sound && jammedAudioBuffer.value && !jammedSoundNodePlaying.value) {
-			const soundNode = sound.createSourceNode(jammedAudioBuffer.value, {}).soundSource;
-			if (soundNode) {
-				jammedSoundNodePlaying.value = true;
-				soundNode.onended = () => jammedSoundNodePlaying.value = false;
-				soundNode.start();
-			}
-		}
 	}
 };
 
-const onStatsLog = (statsLog) => {
+const onStatsLog = (statsLog: QueueStatsLog) => {
 	for (const stats of [...statsLog].reverse()) {
 		onStats(stats);
 	}
