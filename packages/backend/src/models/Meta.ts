@@ -507,22 +507,12 @@ export class MiMeta {
 	@Column('boolean', {
 		default: true,
 	})
-	public enableChartsForRemoteUser: boolean;
-
-	@Column('boolean', {
-		default: true,
-	})
 	public enableChartsForFederatedInstances: boolean;
 
 	@Column('boolean', {
 		default: false,
 	})
 	public enableServerMachineStats: boolean;
-
-	@Column('boolean', {
-		default: true,
-	})
-	public enableIdenticonGeneration: boolean;
 
 	@Column('jsonb', {
 		default: { },
