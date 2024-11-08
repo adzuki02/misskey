@@ -166,7 +166,7 @@ if (window.innerWidth > 1024) {
 defaultStore.loaded.then(() => {
 	if (defaultStore.state.widgets.length === 0) {
 		defaultStore.set('widgets', [{
-			name: 'notifications',
+			name: 'instanceInfo',
 			id: 'a',
 			data: {},
 		}]);
