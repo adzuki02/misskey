@@ -81,24 +81,24 @@ const showContent = ref(false);
 @container (min-width: 250px) {
 	.avatar {
 		margin: 0 10px 0 0;
-		width: 40px;
-		height: 40px;
+		width: 38px;
+		height: 38px;
 	}
 }
 
 @container (min-width: 350px) {
 	.avatar {
 		margin: 0 10px 0 0;
-		width: 44px;
-		height: 44px;
+		width: 38px;
+		height: 38px;
 	}
 }
 
 @container (min-width: 500px) {
 	.avatar {
 		margin: 0 12px 0 0;
-		width: 48px;
-		height: 48px;
+		width: 38px;
+		height: 38px;
 	}
 }
 </style>
