@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkContainer :showHeader="widgetProps.showHeader" :naked="widgetProps.transparent">
+<MkContainer :showHeader="false" :naked="widgetProps.transparent">
 	<template #icon><i class="ti ti-server"></i></template>
 	<template #header>{{ i18n.ts._widgets.serverMetric }}</template>
 
@@ -28,10 +28,6 @@ import { i18n } from '@/i18n.js';
 const name = 'serverMetric';
 
 const widgetPropsDef = {
-	showHeader: {
-		type: 'boolean' as const,
-		default: true,
-	},
 	transparent: {
 		type: 'boolean' as const,
 		default: false,
@@ -43,7 +39,7 @@ type WidgetProps = GetFormResultType<typeof widgetPropsDef>;
 const props = defineProps<WidgetComponentProps<WidgetProps>>();
 const emit = defineEmits<WidgetComponentEmits<WidgetProps>>();
 
-const { widgetProps, configure, save } = useWidgetPropsManager(name,
+const { widgetProps, configure } = useWidgetPropsManager(name,
 	widgetPropsDef,
 	props,
 	emit,
