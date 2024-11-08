@@ -164,7 +164,9 @@ export const meta = {
 			requestHeaders: {
 				type: 'object',
 				optional: false, nullable: true,
-				additionalProperties: true,
+				additionalProperties: {
+					type: 'string',
+				},
 			},
 		},
 	},

@@ -49,6 +49,9 @@ export const meta = {
 						type: 'string',
 						optional: true,
 					},
+					name: {
+						type: 'string',
+					},
 				},
 			},
 			user: {
@@ -75,6 +78,7 @@ export const meta = {
 					properties: {
 						type: {
 							type: 'string',
+							enum: ['public-key'],
 						},
 						alg: {
 							type: 'number',
@@ -84,11 +88,12 @@ export const meta = {
 			},
 			timeout: {
 				type: 'number',
-				nullable: true,
+				nullable: false, optional: true,
 			},
 			excludeCredentials: {
 				type: 'array',
-				nullable: true,
+				nullable: false,
+				optional: true,
 				items: {
 					type: 'object',
 					properties: {
@@ -97,6 +102,7 @@ export const meta = {
 						},
 						type: {
 							type: 'string',
+							enum: ['public-key'],
 						},
 						transports: {
 							type: 'array',
@@ -182,9 +188,8 @@ export const paramDef = {
 	required: ['password'],
 } as const;
 
-// eslint-disable-next-line import/no-default-export
 @Injectable()
-export default class extends Endpoint<typeof meta, typeof paramDef> {
+export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
 		@Inject(DI.userProfilesRepository)
 		private userProfilesRepository: UserProfilesRepository,

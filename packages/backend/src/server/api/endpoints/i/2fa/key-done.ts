@@ -50,7 +50,98 @@ export const paramDef = {
 		password: { type: 'string' },
 		token: { type: 'string', nullable: true },
 		name: { type: 'string', minLength: 1, maxLength: 30 },
-		credential: { type: 'object' },
+		credential: {
+			type: 'object',
+			properties: {
+				id: {
+					type: 'string',
+					nullable: false, optional: false,
+				},
+				rawId: {
+					type: 'string',
+					nullable: false, optional: false,
+				},
+				response: {
+					type: 'object',
+					nullable: false, optional: false,
+					properties: {
+						clientDataJSON: {
+							type: 'string',
+							nullable: false, optional: false,
+						},
+						attestationObject: {
+							type: 'string',
+							nullable: false, optional: false,
+						},
+						authenticationData: {
+							type: 'string',
+							nullable: false, optional: true,
+						},
+						transports: {
+							type: 'array',
+							nullable: false, optional: true,
+							items: {
+								type: 'string',
+								enum: [
+									'ble',
+									'cable',
+									'hybrid',
+									'internal',
+									'nfc',
+									'smart-card',
+									'usb',
+								],
+							},
+						},
+						publicKeyAlgorithm: {
+							type: 'number',
+							nullable: false, optional: true,
+						},
+						publicKey: {
+							type: 'string',
+							nullable: false, optional: true,
+						},
+					},
+				},
+				authenticatorAttachment: {
+					type: 'string',
+					nullable: false, optional: true,
+					enum: [
+						'cross-platform',
+						'platform',
+					],
+				},
+				clientExtensionResults: {
+					type: 'object',
+					nullable: false, optional: false,
+					properties: {
+						appId: {
+							type: 'boolean',
+							nullable: false, optional: true,
+						},
+						hmacCreateSecret: {
+							type: 'boolean',
+							nullable: false, optional: true,
+						},
+						credProps: {
+							type: 'object',
+							nullable: false, optional: true,
+							properties: {
+								rk: {
+									type: 'boolean',
+									nullable: false, optional: true,
+								},
+							},
+						},
+					},
+				},
+				type: {
+					type: 'string',
+					nullable: false, optional: false,
+					enum: ['public-key'],
+				},
+			},
+		},
 	},
 	required: ['password', 'name', 'credential'],
 } as const;

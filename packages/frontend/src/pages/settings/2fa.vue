@@ -76,7 +76,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, computed } from 'vue';
-import { supported as webAuthnSupported, create as webAuthnCreate, parseCreationOptionsFromJSON } from '@github/webauthn-json/browser-ponyfill';
+import { supported as webAuthnSupported, create as webAuthnCreate, parseCreationOptionsFromJSON, type CredentialCreationOptionsJSON } from '@github/webauthn-json/browser-ponyfill';
+import type { I2faKeyDoneRequest } from 'misskey-js/entities.js';
 import MkButton from '@/components/MkButton.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -190,7 +191,7 @@ async function addSecurityKey() {
 		publicKey: await os.apiWithDialog('i/2fa/register-key', {
 			password: auth.result.password,
 			token: auth.result.token,
-		}),
+		}) as CredentialCreationOptionsJSON['publicKey'],
 	});
 
 	const name = await os.inputText({
@@ -217,7 +218,7 @@ async function addSecurityKey() {
 		password: auth.result.password,
 		token: auth.result.token,
 		name: name.result,
-		credential: credential.toJSON(),
+		credential: credential.toJSON() as I2faKeyDoneRequest['credential'],
 	});
 }
 
