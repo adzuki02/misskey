@@ -170,6 +170,7 @@ export class StreamingApiServerService {
 			clearInterval(this.#cleanConnectionsIntervalId);
 			this.#cleanConnectionsIntervalId = null;
 		}
+		this.#wss.clients.forEach(ws => ws.terminate());
 		return new Promise((resolve) => {
 			this.#wss.close(() => resolve());
 		});

@@ -5,7 +5,7 @@
 
 import dns from 'node:dns/promises';
 import { fileURLToPath } from 'node:url';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
 import { JSDOM } from 'jsdom';
 import httpLinkHeader from 'http-link-header';
 import ipaddr from 'ipaddr.js';
@@ -223,45 +223,62 @@ class OAuth2Store {
 		this.#cache.delete(tid);
 		cb();
 	}
+
+	dispose(): void {
+		this.#cache.dispose();
+	}
 }
 
+type GrantCodeCacheType = {
+	clientId: string,
+	userId: string,
+	redirectUri: string,
+	codeChallenge: string,
+	scopes: string[],
+
+	// fields to prevent multiple code use
+	grantedToken?: string,
+	revoked?: boolean,
+	used?: boolean,
+};
+
 @Injectable()
-export class OAuth2ProviderService {
-	#server = oauth2orize.createServer({
-		store: new OAuth2Store(),
-	});
+export class OAuth2ProviderService implements OnApplicationShutdown {
+	#server: oauth2orize.OAuth2Server;
+	#oauth2Store: OAuth2Store;
 	#logger: Logger;
+	#grantCodeCache: MemoryKVCache<GrantCodeCacheType>;
 
 	constructor(
 		@Inject(DI.config)
 		private config: Config,
-		private httpRequestService: HttpRequestService,
-		@Inject(DI.accessTokensRepository)
-		accessTokensRepository: AccessTokensRepository,
-		idService: IdService,
+
 		@Inject(DI.usersRepository)
 		private usersRepository: UsersRepository,
+
+		@Inject(DI.accessTokensRepository)
+		private accessTokensRepository: AccessTokensRepository,
+
+		private httpRequestService: HttpRequestService,
+		private idService: IdService,
 		private cacheService: CacheService,
-		loggerService: LoggerService,
+		private loggerService: LoggerService,
 	) {
-		this.#logger = loggerService.getLogger('oauth');
+		this.#logger = this.loggerService.getLogger('oauth');
 
-		const grantCodeCache = new MemoryKVCache<{
-			clientId: string,
-			userId: string,
-			redirectUri: string,
-			codeChallenge: string,
-			scopes: string[],
+		this.#oauth2Store = new OAuth2Store();
 
-			// fields to prevent multiple code use
-			grantedToken?: string,
-			revoked?: boolean,
-			used?: boolean,
-		}>(1000 * 60 * 5); // expires after 5m
+		this.#server = oauth2orize.createServer({
+			store: this.#oauth2Store,
+		});
+
+		// expires after 5m
+		this.#grantCodeCache = new MemoryKVCache<GrantCodeCacheType>(1000 * 60 * 5);
 
 		// https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics
 		// "Authorization servers MUST support PKCE [RFC7636]."
 		this.#server.grant(oauth2Pkce.extensions());
+
 		this.#server.grant(oauth2orize.grant.code({
 			modes: getQueryMode(config.url),
 		}, (client, redirectUri, token, ares, areq, locals, done) => {
@@ -271,8 +288,12 @@ export class OAuth2ProviderService {
 				if (!token) {
 					throw new AuthorizationError('No user', 'invalid_request');
 				}
-				const user = await this.cacheService.localUserByNativeTokenCache.fetch(token,
-					() => this.usersRepository.findOneBy({ token }) as Promise<MiLocalUser | null>);
+
+				const user = await this.cacheService.localUserByNativeTokenCache.fetch(
+					token,
+					() => this.usersRepository.findOneBy({ token }) as Promise<MiLocalUser | null>,
+				);
+
 				if (!user) {
 					throw new AuthorizationError('No such user', 'invalid_request');
 				}
@@ -280,7 +301,7 @@ export class OAuth2ProviderService {
 				this.#logger.info(`Sending authorization code on behalf of user ${user.id} to ${client.id} through ${redirectUri}, with scope: [${areq.scope}]`);
 
 				const code = secureRndstr(128);
-				grantCodeCache.set(code, {
+				this.#grantCodeCache.set(code, {
 					clientId: client.id,
 					userId: user.id,
 					redirectUri,
@@ -290,10 +311,11 @@ export class OAuth2ProviderService {
 				return [code];
 			})().then(args => done(null, ...args), err => done(err));
 		}));
+
 		this.#server.exchange(oauth2orize.exchange.authorizationCode((client, code, redirectUri, body, authInfo, done) => {
 			(async (): Promise<OmitFirstElement<Parameters<typeof done>> | undefined> => {
 				this.#logger.info('Checking the received authorization code for the exchange');
-				const granted = grantCodeCache.get(code);
+				const granted = this.#grantCodeCache.get(code);
 				if (!granted) {
 					return;
 				}
@@ -304,10 +326,10 @@ export class OAuth2ProviderService {
 				// previously issued based on that authorization code."
 				if (granted.used) {
 					this.#logger.info(`Detected multiple code use from ${granted.clientId} for user ${granted.userId}. Revoking the code.`);
-					grantCodeCache.delete(code);
+					this.#grantCodeCache.delete(code);
 					granted.revoked = true;
 					if (granted.grantedToken) {
-						await accessTokensRepository.delete({ token: granted.grantedToken });
+						await this.accessTokensRepository.delete({ token: granted.grantedToken });
 					}
 					return;
 				}
@@ -325,8 +347,8 @@ export class OAuth2ProviderService {
 				const now = new Date();
 
 				// NOTE: we don't have a setup for automatic token expiration
-				await accessTokensRepository.insert({
-					id: idService.gen(now.getTime()),
+				await this.accessTokensRepository.insert({
+					id: this.idService.gen(now.getTime()),
 					lastUsedAt: now,
 					userId: granted.userId,
 					token: accessToken,
@@ -337,7 +359,7 @@ export class OAuth2ProviderService {
 
 				if (granted.revoked) {
 					this.#logger.info('Canceling the token as the authorization code was revoked in parallel during the process.');
-					await accessTokensRepository.delete({ token: accessToken });
+					await this.accessTokensRepository.delete({ token: accessToken });
 					return;
 				}
 
@@ -382,6 +404,7 @@ export class OAuth2ProviderService {
 				scope: oauth2.req.scope.join(' '),
 			});
 		});
+
 		fastify.post('/decision', async () => { });
 
 		fastify.register(fastifyView, {
@@ -394,6 +417,7 @@ export class OAuth2ProviderService {
 		});
 
 		await fastify.register(fastifyExpress);
+
 		fastify.use('/authorize', this.#server.authorize(((areq, done) => {
 			(async (): Promise<Parameters<typeof done>> => {
 				// This should return client/redirectURI AND the error, or
@@ -448,26 +472,29 @@ export class OAuth2ProviderService {
 				return [null, clientInfo, redirectURI];
 			})().then(args => done(...args), err => done(err));
 		}) as ValidateFunctionArity2));
+
 		fastify.use('/authorize', this.#server.errorHandler({
 			mode: 'indirect',
 			modes: getQueryMode(this.config.url),
 		}));
+
 		fastify.use('/authorize', this.#server.errorHandler());
 
 		fastify.use('/decision', bodyParser.urlencoded({ extended: false }));
+
 		fastify.use('/decision', this.#server.decision((req, done) => {
 			const { body } = req as OAuth2DecisionRequest;
 			this.#logger.info(`Received the decision. Cancel: ${!!body.cancel}`);
 			req.user = body.login_token;
 			done(null, undefined);
 		}));
+
 		fastify.use('/decision', this.#server.errorHandler());
 
 		// Return 404 for any unknown paths under /oauth so that clients can know
 		// whether a certain endpoint is supported or not.
 		fastify.all('/*', async (_request, reply) => {
-			reply.code(404);
-			reply.send({
+			reply.code(404).send({
 				error: {
 					message: 'Unknown OAuth endpoint.',
 					code: 'UNKNOWN_OAUTH_ENDPOINT',
@@ -481,13 +508,26 @@ export class OAuth2ProviderService {
 	@bindThis
 	public async createTokenServer(fastify: FastifyInstance): Promise<void> {
 		fastify.register(fastifyCors);
+
 		fastify.post('', async () => { });
 
 		await fastify.register(fastifyExpress);
+
 		// Clients may use JSON or urlencoded
 		fastify.use('', bodyParser.urlencoded({ extended: false }));
 		fastify.use('', bodyParser.json({ strict: true }));
 		fastify.use('', this.#server.token());
 		fastify.use('', this.#server.errorHandler());
+	}
+
+	@bindThis
+	public dispose(): void {
+		this.#oauth2Store.dispose();
+		this.#grantCodeCache.dispose();
+	}
+
+	@bindThis
+	public onApplicationShutdown(signal?: string | undefined): void {
+		this.dispose();
 	}
 }

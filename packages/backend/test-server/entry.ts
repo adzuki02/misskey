@@ -59,7 +59,6 @@ async function startControllerEndpoints(port = config.port + 1000) {
 
 		console.log('stopping application...');
 
-		await serverService.dispose();
 		await app.close();
 
 		console.log('restarting application...');
