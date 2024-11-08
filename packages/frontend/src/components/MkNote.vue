@@ -784,7 +784,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 .article {
 	position: relative;
 	display: flex;
-	padding: 16px 20px;
+	padding: 14px 16px;
 }
 
 .colorBar {
@@ -941,7 +941,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	}
 
 	.article {
-		padding: 24px 26px;
+		padding: 14px 16px;
 	}
 
 	.avatar {
@@ -960,7 +960,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	}
 
 	.article {
-		padding: 20px 22px;
+		padding: 14px 16px;
 	}
 
 	.footer {
