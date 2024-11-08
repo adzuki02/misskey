@@ -3899,10 +3899,8 @@ export type operations = {
             enableTruemailApi: boolean;
             truemailInstance: string | null;
             truemailAuthKey: string | null;
-            enableChartsForRemoteUser: boolean;
             enableChartsForFederatedInstances: boolean;
             enableServerMachineStats: boolean;
-            enableIdenticonGeneration: boolean;
             manifestJsonOverride: string;
             policies: Record<string, never>;
             enableFanoutTimeline: boolean;
@@ -7088,10 +7086,8 @@ export type operations = {
           enableTruemailApi?: boolean;
           truemailInstance?: string | null;
           truemailAuthKey?: string | null;
-          enableChartsForRemoteUser?: boolean;
           enableChartsForFederatedInstances?: boolean;
           enableServerMachineStats?: boolean;
-          enableIdenticonGeneration?: boolean;
           serverRules?: string[];
           bannedEmailDomains?: string[];
           preservedUsernames?: string[];

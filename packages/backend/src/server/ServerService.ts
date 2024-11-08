@@ -17,7 +17,6 @@ import type { EmojisRepository, MiMeta, UserProfilesRepository, UsersRepository 
 import { DI } from '@/di-symbols.js';
 import type Logger from '@/logger.js';
 import * as Acct from '@/misc/acct.js';
-import { genIdenticon } from '@/misc/gen-identicon.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { LoggerService } from '@/core/LoggerService.js';
 import { bindThis } from '@/decorators.js';
@@ -197,11 +196,7 @@ export class ServerService implements OnApplicationShutdown {
 			reply.header('Content-Type', 'image/png');
 			reply.header('Cache-Control', 'public, max-age=86400');
 
-			if (this.meta.enableIdenticonGeneration) {
-				return await genIdenticon(request.params.x);
-			} else {
-				return reply.redirect('/static-assets/avatar.png');
-			}
+			return reply.redirect('/static-assets/avatar.png');
 		});
 
 		fastify.get<{ Params: { code: string } }>('/verify-email/:code', async (request, reply) => {

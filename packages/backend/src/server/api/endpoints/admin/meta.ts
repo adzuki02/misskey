@@ -324,19 +324,11 @@ export const meta = {
 				type: 'string',
 				optional: false, nullable: true,
 			},
-			enableChartsForRemoteUser: {
-				type: 'boolean',
-				optional: false, nullable: false,
-			},
 			enableChartsForFederatedInstances: {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
 			enableServerMachineStats: {
-				type: 'boolean',
-				optional: false, nullable: false,
-			},
-			enableIdenticonGeneration: {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
@@ -611,10 +603,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				enableTruemailApi: instance.enableTruemailApi,
 				truemailInstance: instance.truemailInstance,
 				truemailAuthKey: instance.truemailAuthKey,
-				enableChartsForRemoteUser: instance.enableChartsForRemoteUser,
 				enableChartsForFederatedInstances: instance.enableChartsForFederatedInstances,
 				enableServerMachineStats: instance.enableServerMachineStats,
-				enableIdenticonGeneration: instance.enableIdenticonGeneration,
 				bannedEmailDomains: instance.bannedEmailDomains,
 				policies: { ...DEFAULT_POLICIES, ...instance.policies },
 				manifestJsonOverride: instance.manifestJsonOverride,

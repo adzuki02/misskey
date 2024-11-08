@@ -123,9 +123,6 @@ importers:
       '@misskey-dev/summaly':
         specifier: 5.1.0
         version: 5.1.0
-      '@napi-rs/canvas':
-        specifier: 0.1.56
-        version: 0.1.56
       '@nestjs/common':
         specifier: 10.4.3
         version: 10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -324,9 +321,6 @@ importers:
       qrcode:
         specifier: 1.5.4
         version: 1.5.4
-      random-seed:
-        specifier: 0.3.0
-        version: 0.3.0
       ratelimiter:
         specifier: 3.4.1
         version: 3.4.1
@@ -482,9 +476,6 @@ importers:
       '@types/qrcode':
         specifier: 1.5.5
         version: 1.5.5
-      '@types/random-seed':
-        specifier: 0.3.5
-        version: 0.3.5
       '@types/ratelimiter':
         specifier: 3.4.6
         version: 3.4.6
@@ -2396,64 +2387,6 @@ packages:
     resolution: {integrity: sha512-PFfqpHplKa7KMdoQdj5td03uG05VK2Ng1dG0sP4pT9h0dGSX2v9txYt/AnrzPb/vAmfyBBC0NQV7VaBEX+efgQ==}
     engines: {node: '>=18'}
 
-  '@napi-rs/canvas-android-arm64@0.1.56':
-    resolution: {integrity: sha512-xBGqW2RZMAupkzar9t3gpbok9r524f3Wlk4PG2qnQdxbsiEND06OB8VxVtTcql6R02uJpXJGnyIhN02Te+GMVQ==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [android]
-
-  '@napi-rs/canvas-darwin-arm64@0.1.56':
-    resolution: {integrity: sha512-Pvuz6Ib9YZTB5MlGL9WSu9a2asUC0DZ1zBHozDiBXr/6Zurs9l/ZH5NxFYTM829BpkdkO8kuI8b8Rz7ek30zzQ==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [darwin]
-
-  '@napi-rs/canvas-darwin-x64@0.1.56':
-    resolution: {integrity: sha512-O393jWt7G6rg0X1ralbsbBeskSG0iwlkD7mEHhMLJxqRqe+eQn0/xnwhs9l6dUNFC+5dM8LOvfFca4o9Vs2Vww==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [darwin]
-
-  '@napi-rs/canvas-linux-arm-gnueabihf@0.1.56':
-    resolution: {integrity: sha512-30NFb5lrF3YEwAO5XuATxpWDSXaBAgaFVswPJ+hYcAUyE3IkPPIFRY4ijQEh4frcSBvrzFGGYdNSoC18oLLWaQ==}
-    engines: {node: '>= 10'}
-    cpu: [arm]
-    os: [linux]
-
-  '@napi-rs/canvas-linux-arm64-gnu@0.1.56':
-    resolution: {integrity: sha512-ODbWH9TLvba+39UxFwPn2Hm1ImALmWOZ0pEv5do/pz0439326Oz49hlfGot4KmkSBeKK81knWxRj9EXMSPwXPg==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [linux]
-
-  '@napi-rs/canvas-linux-arm64-musl@0.1.56':
-    resolution: {integrity: sha512-zqE4nz8CWiJJ0q5By7q9CDPicNkc0oyErgavK3ZV279zJL7Aapd3cIqayT6ynECArg7GgBl2WYSvr5AaRFmYgg==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [linux]
-
-  '@napi-rs/canvas-linux-x64-gnu@0.1.56':
-    resolution: {integrity: sha512-JTnGAtJBQMhfSpN8/rbMnf5oxuO/juUNa0n4LA0LlW0JS9UBpmsS2BwFNCakFqOeAPaqIM6sFFsK3M4hve+Esw==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [linux]
-
-  '@napi-rs/canvas-linux-x64-musl@0.1.56':
-    resolution: {integrity: sha512-mpws7DhVDIj8ZKa/qcnUVLAm0fxD9RK5ojfNNSI9TOzn2E0f+GUXx8sGsCxDpMVMtN+mtyrMwRqH3F3rTUMWXw==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [linux]
-
-  '@napi-rs/canvas-win32-x64-msvc@0.1.56':
-    resolution: {integrity: sha512-VKAAkgXF+lbFvRFawPOtkfV/P7ogAgWTu5FMCIiBn0Gc3vnkKFG2cLo/IHIJ7FuriToKEidkJGT88iAh7W7GDA==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [win32]
-
-  '@napi-rs/canvas@0.1.56':
-    resolution: {integrity: sha512-SujSchzG6lLc/wT+Mwxam/w30Kk2sFTiU6bLFcidecKSmlhenAhGMQhZh2iGFfKoh2+8iit0jrt99n6TqReICQ==}
-    engines: {node: '>= 10'}
-
   '@nestjs/common@10.4.3':
     resolution: {integrity: sha512-4hbLd3XIJubHSylYd/1WSi4VQvG68KM/ECYpMDqA3k3J1/T17SAg40sDoq3ZoO5OZgU0xuNyjuISdOTjs11qVg==}
     peerDependencies:
@@ -3938,9 +3871,6 @@ packages:
 
   '@types/qs@6.9.7':
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
-
-  '@types/random-seed@0.3.5':
-    resolution: {integrity: sha512-CftxcDPAHgs0SLHU2dt+ZlDPJfGqLW3sZlC/ATr5vJDSe5tRLeOne7HMvCOJnFyF8e1U41wqzs3h6AMC613xtA==}
 
   '@types/range-parser@1.2.4':
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
@@ -8855,10 +8785,6 @@ packages:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
     engines: {node: '>=10'}
 
-  random-seed@0.3.0:
-    resolution: {integrity: sha512-y13xtn3kcTlLub3HKWXxJNeC2qK4mB59evwZ5EkeRlolx+Bp2ztF7LbcZmyCnOqlHQrLnfuNbi1sVmm9lPDlDA==}
-    engines: {node: '>= 0.6.0'}
-
   range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
@@ -12428,45 +12354,6 @@ snapshots:
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
 
-  '@napi-rs/canvas-android-arm64@0.1.56':
-    optional: true
-
-  '@napi-rs/canvas-darwin-arm64@0.1.56':
-    optional: true
-
-  '@napi-rs/canvas-darwin-x64@0.1.56':
-    optional: true
-
-  '@napi-rs/canvas-linux-arm-gnueabihf@0.1.56':
-    optional: true
-
-  '@napi-rs/canvas-linux-arm64-gnu@0.1.56':
-    optional: true
-
-  '@napi-rs/canvas-linux-arm64-musl@0.1.56':
-    optional: true
-
-  '@napi-rs/canvas-linux-x64-gnu@0.1.56':
-    optional: true
-
-  '@napi-rs/canvas-linux-x64-musl@0.1.56':
-    optional: true
-
-  '@napi-rs/canvas-win32-x64-msvc@0.1.56':
-    optional: true
-
-  '@napi-rs/canvas@0.1.56':
-    optionalDependencies:
-      '@napi-rs/canvas-android-arm64': 0.1.56
-      '@napi-rs/canvas-darwin-arm64': 0.1.56
-      '@napi-rs/canvas-darwin-x64': 0.1.56
-      '@napi-rs/canvas-linux-arm-gnueabihf': 0.1.56
-      '@napi-rs/canvas-linux-arm64-gnu': 0.1.56
-      '@napi-rs/canvas-linux-arm64-musl': 0.1.56
-      '@napi-rs/canvas-linux-x64-gnu': 0.1.56
-      '@napi-rs/canvas-linux-x64-musl': 0.1.56
-      '@napi-rs/canvas-win32-x64-msvc': 0.1.56
-
   '@nestjs/common@10.4.3(reflect-metadata@0.2.2)(rxjs@7.8.1)':
     dependencies:
       iterare: 1.2.1
@@ -14375,8 +14262,6 @@ snapshots:
   '@types/qs@6.9.16': {}
 
   '@types/qs@6.9.7': {}
-
-  '@types/random-seed@0.3.5': {}
 
   '@types/range-parser@1.2.4': {}
 
@@ -20475,10 +20360,6 @@ snapshots:
   quick-lru@4.0.1: {}
 
   quick-lru@5.1.1: {}
-
-  random-seed@0.3.0:
-    dependencies:
-      json-stringify-safe: 5.0.1
 
   range-parser@1.2.1: {}
 
