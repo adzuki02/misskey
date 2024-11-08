@@ -12,9 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="meta" data-cy-mkw-serverMetric class="mkw-serverMetric">
 		<XCpuMemory v-if="widgetProps.view === 0" :connection="connection" :meta="meta"/>
 		<XNet v-else-if="widgetProps.view === 1" :connection="connection" :meta="meta"/>
-		<XCpu v-else-if="widgetProps.view === 2" :connection="connection" :meta="meta"/>
-		<XMemory v-else-if="widgetProps.view === 3" :connection="connection" :meta="meta"/>
-		<XDisk v-else-if="widgetProps.view === 4" :connection="connection" :meta="meta"/>
+		<XMemory v-else-if="widgetProps.view === 2" :connection="connection" :meta="meta"/>
 	</div>
 </MkContainer>
 </template>
@@ -24,9 +22,7 @@ import { onUnmounted, ref } from 'vue';
 import { useWidgetPropsManager, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from '../widget.js';
 import XCpuMemory from './cpu-mem.vue';
 import XNet from './net.vue';
-import XCpu from './cpu.vue';
 import XMemory from './mem.vue';
-import XDisk from './disk.vue';
 import type { ServerInfoResponse } from 'misskey-js/entities.js';
 import MkContainer from '@/components/MkContainer.vue';
 import { GetFormResultType } from '@/scripts/form.js';
@@ -70,7 +66,7 @@ misskeyApiGet('server-info', {}).then(res => {
 });
 
 const toggleView = () => {
-	if (widgetProps.view === 4) {
+	if (widgetProps.view === 2) {
 		widgetProps.view = 0;
 	} else {
 		widgetProps.view++;
