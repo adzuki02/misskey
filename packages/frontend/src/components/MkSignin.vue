@@ -64,7 +64,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
 import { toUnicode } from 'punycode/';
-import { supported as webAuthnSupported, get as webAuthnRequest, parseRequestOptionsFromJSON } from '@github/webauthn-json/browser-ponyfill';
+import { supported as webAuthnSupported, get as webAuthnRequest, parseRequestOptionsFromJSON, type CredentialRequestOptionsJSON } from '@github/webauthn-json/browser-ponyfill';
 import type { UserDetailed, SigninResponse } from 'misskey-js/entities.js';
 import type { OpenOnRemoteOptions } from '@/scripts/please-login.js';
 import { showSuspendedDialog } from '@/scripts/show-suspended-dialog.js';
@@ -161,7 +161,7 @@ function onSubmit(): void {
 				totpLogin.value = true;
 				signing.value = false;
 				credentialRequest = parseRequestOptionsFromJSON({
-					publicKey: res,
+					publicKey: res as unknown as CredentialRequestOptionsJSON['publicKey'],
 				});
 			})
 				.then(() => queryKey())

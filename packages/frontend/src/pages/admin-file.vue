@@ -87,7 +87,7 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { iAmAdmin, iAmModerator } from '@/account.js';
 
-const tab = ref<'overview' | 'ip' | 'raw'>('overview');
+const tab = ref<'overview' | 'notes' | 'ip' | 'raw'>('overview');
 const file = ref<DriveFile>();
 const info = ref<AdminDriveShowFileResponse>();
 const isSensitive = ref<boolean>(false);

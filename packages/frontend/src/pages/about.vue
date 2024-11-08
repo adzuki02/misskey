@@ -31,6 +31,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 
 const XOverview = defineAsyncComponent(() => import('@/pages/about.overview.vue'));
+// @ts-expect-error VSCodeではエラーが起きないがvue-tscではなぜかエラーが出る (TS2306)
 const XEmojis = defineAsyncComponent(() => import('@/pages/about.emojis.vue'));
 const XFederation = defineAsyncComponent(() => import('@/pages/about.federation.vue'));
 const MkInstanceStats = defineAsyncComponent(() => import('@/components/MkInstanceStats.vue'));
