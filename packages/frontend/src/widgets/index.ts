@@ -10,7 +10,6 @@ export default function(app: App) {
 	app.component('WidgetInstanceInfo', defineAsyncComponent(() => import('./WidgetInstanceInfo.vue')));
 	app.component('WidgetServerMetric', defineAsyncComponent(() => import('./server-metric/index.vue')));
 	app.component('WidgetJobQueue', defineAsyncComponent(() => import('./WidgetJobQueue.vue')));
-	app.component('WidgetBirthdayFollowings', defineAsyncComponent(() => import('./WidgetBirthdayFollowings.vue')));
 }
 
 export const widgets = [
@@ -18,5 +17,4 @@ export const widgets = [
 	'instanceInfo',
 	'serverMetric',
 	'jobQueue',
-	'birthdayFollowings',
 ];
