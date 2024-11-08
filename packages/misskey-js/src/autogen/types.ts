@@ -20004,7 +20004,6 @@ export type operations = {
           username?: string;
           /** @description The local host is represented with `null`. */
           host?: string | null;
-          birthday?: string | null;
         };
       };
     };
