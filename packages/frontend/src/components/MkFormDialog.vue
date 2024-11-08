@@ -103,7 +103,7 @@ const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
 const values = reactive({});
 
 for (const item in props.form) {
-	values[item] = props.form[item].default ?? null;
+	values[item] = props.form[item].type !== 'button' && props.form[item].type !== 'drive-file' ? props.form[item].default ?? null : null;
 }
 
 function ok() {
