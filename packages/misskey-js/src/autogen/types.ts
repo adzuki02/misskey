@@ -21,15 +21,6 @@ export type paths = {
      */
     post: operations['admin___meta'];
   };
-  '/admin/abuse-user-reports': {
-    /**
-     * admin/abuse-user-reports
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:admin:abuse-user-reports*
-     */
-    post: operations['admin___abuse-user-reports'];
-  };
   '/admin/accounts/create': {
     /**
      * admin/accounts/create
@@ -435,15 +426,6 @@ export type paths = {
      * **Credential required**: *Yes* / **Permission**: *write:admin:reset-password*
      */
     post: operations['admin___reset-password'];
-  };
-  '/admin/resolve-abuse-user-report': {
-    /**
-     * admin/resolve-abuse-user-report
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:admin:resolve-abuse-user-report*
-     */
-    post: operations['admin___resolve-abuse-user-report'];
   };
   '/admin/send-email': {
     /**
@@ -2705,15 +2687,6 @@ export type paths = {
      */
     post: operations['users___relation'];
   };
-  '/users/report-abuse': {
-    /**
-     * users/report-abuse
-     * @description File a report.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:report-abuse*
-     */
-    post: operations['users___report-abuse'];
-  };
   '/users/search-by-username-and-host': {
     /**
      * users/search-by-username-and-host
@@ -3974,99 +3947,6 @@ export type operations = {
             federation: 'all' | 'none' | 'specified';
             federationHosts: string[];
           };
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/abuse-user-reports
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:admin:abuse-user-reports*
-   */
-  'admin___abuse-user-reports': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default 10 */
-          limit?: number;
-          /** Format: misskey:id */
-          sinceId?: string;
-          /** Format: misskey:id */
-          untilId?: string;
-          /** @default null */
-          state?: string | null;
-          /**
-           * @default combined
-           * @enum {string}
-           */
-          reporterOrigin?: 'combined' | 'local' | 'remote';
-          /**
-           * @default combined
-           * @enum {string}
-           */
-          targetUserOrigin?: 'combined' | 'local' | 'remote';
-          /** @default false */
-          forwarded?: boolean;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': ({
-              /**
-               * Format: id
-               * @example xxxxxxxxxx
-               */
-              id: string;
-              /** Format: date-time */
-              createdAt: string;
-              comment: string;
-              /** @example false */
-              resolved: boolean;
-              /** Format: id */
-              reporterId: string;
-              /** Format: id */
-              targetUserId: string;
-              /** Format: id */
-              assigneeId: string | null;
-              reporter: components['schemas']['UserDetailedNotMe'];
-              targetUser: components['schemas']['UserDetailedNotMe'];
-              assignee?: components['schemas']['UserDetailedNotMe'] | null;
-              forwarded: boolean;
-            })[];
         };
       };
       /** @description Client error */
@@ -6580,60 +6460,6 @@ export type operations = {
             password: string;
           };
         };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/resolve-abuse-user-report
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:admin:resolve-abuse-user-report*
-   */
-  'admin___resolve-abuse-user-report': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** Format: misskey:id */
-          reportId: string;
-          /** @default false */
-          forward?: boolean;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
       };
       /** @description Client error */
       400: {
@@ -21186,59 +21012,6 @@ export type operations = {
               isRenoteMuted: boolean;
             }[]]>;
         };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * users/report-abuse
-   * @description File a report.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:report-abuse*
-   */
-  'users___report-abuse': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** Format: misskey:id */
-          userId: string;
-          comment: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
       };
       /** @description Client error */
       400: {

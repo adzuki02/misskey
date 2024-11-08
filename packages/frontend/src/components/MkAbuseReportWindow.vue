@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkWindow ref="uiWindow" :initialWidth="400" :initialHeight="500" :canResize="true" @closed="emit('closed')">
+<MkWindow ref="uiWindow" :initialWidth="400" :initialHeight="500" :canResize="true">
 	<template #header>
 		<i class="ti ti-exclamation-circle" style="margin-right: 0.5em;"></i>
 		<I18n :src="i18n.ts.reportAbuseOf" tag="span">
@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkTextarea>
 			</div>
 			<div class="">
-				<MkButton primary full :disabled="comment.length === 0" @click="send">{{ i18n.ts.send }}</MkButton>
+				<MkButton primary full :disabled="comment.length === 0">{{ i18n.ts.send }}</MkButton>
 			</div>
 		</div>
 	</MkSpacer>
@@ -35,7 +35,6 @@ import type { UserLite } from 'misskey-js/entities.js';
 import MkWindow from '@/components/MkWindow.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkButton from '@/components/MkButton.vue';
-import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
@@ -43,26 +42,8 @@ const props = defineProps<{
 	initialComment?: string;
 }>();
 
-const emit = defineEmits<{
-	(ev: 'closed'): void;
-}>();
-
 const uiWindow = useTemplateRef('uiWindow');
 const comment = ref(props.initialComment ?? '');
-
-function send() {
-	os.apiWithDialog('users/report-abuse', {
-		userId: props.user.id,
-		comment: comment.value,
-	}, undefined).then(() => {
-		os.alert({
-			type: 'success',
-			text: i18n.ts.abuseReported,
-		});
-		uiWindow.value?.close();
-		emit('closed');
-	});
-}
 </script>
 
 <style lang="scss" module>

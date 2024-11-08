@@ -232,29 +232,11 @@ async function run() {
 	}
 }
 
-function reportAbuse() {
-	if (!flash.value) return;
-
-	const pageUrl = `${url}/play/${flash.value.id}`;
-
-	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkAbuseReportWindow.vue')), {
-		user: flash.value.user,
-		initialComment: `Play: ${pageUrl}\n-----\n`,
-	}, {
-		closed: () => dispose(),
-	});
-}
-
 function showMenu(ev: MouseEvent) {
 	if (!flash.value) return;
 
 	const menu: MenuItem[] = [
 		...($i && $i.id !== flash.value.userId ? [
-			{
-				icon: 'ti ti-exclamation-circle',
-				text: i18n.ts.reportAbuse,
-				action: reportAbuse,
-			},
 			...($i.isModerator || $i.isAdmin ? [
 				{
 					type: 'divider' as const,

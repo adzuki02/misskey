@@ -4,9 +4,7 @@
  */
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { action } from '@storybook/addon-actions';
 import { StoryObj } from '@storybook/vue3';
-import { HttpResponse, http } from 'msw';
 import { userDetailed } from '../../.storybook/fakes.js';
 import { commonHandlers } from '../../.storybook/mocks.js';
 import MkAbuseReportWindow from './MkAbuseReportWindow.vue';
@@ -27,13 +25,8 @@ export const Default = {
 						...this.args,
 					};
 				},
-				events() {
-					return {
-						'closed': action('closed'),
-					};
-				},
 			},
-			template: '<MkAbuseReportWindow v-bind="props" v-on="events" />',
+			template: '<MkAbuseReportWindow v-bind="props" />',
 		};
 	},
 	args: {
@@ -42,13 +35,10 @@ export const Default = {
 	parameters: {
 		layout: 'centered',
 		msw: {
-			handlers: [
-				...commonHandlers,
-				http.post('/api/users/report-abuse', async ({ request }) => {
-					action('POST /api/users/report-abuse')(await request.json());
-					return HttpResponse.json({});
-				}),
-			],
+			handlers: commonHandlers,
+		},
+		chromatic: {
+			disableSnapshot: true,
 		},
 	},
 } satisfies StoryObj<typeof MkAbuseReportWindow>;

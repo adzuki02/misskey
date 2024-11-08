@@ -20,8 +20,8 @@ export const meta = {
 			optional: false, nullable: false,
 		},
 		example: [
-			'admin/abuse-user-reports',
 			'admin/accounts/create',
+			'notes/global-timeline',
 			'...',
 		],
 	},

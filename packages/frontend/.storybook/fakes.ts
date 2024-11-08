@@ -6,23 +6,6 @@
 import { AISCRIPT_VERSION } from '@syuilo/aiscript';
 import type { entities } from 'misskey-js'
 
-export function abuseUserReport() {
-	return {
-		id: 'someabusereportid',
-		createdAt: '2016-12-28T22:49:51.000Z',
-		comment: 'This user is a spammer!',
-		resolved: false,
-		reporterId: 'reporterid',
-		targetUserId: 'targetuserid',
-		assigneeId: 'assigneeid',
-		reporter: userDetailed('reporterid', 'reporter', 'misskey-hub.net', 'Reporter'),
-		targetUser: userDetailed('targetuserid', 'target', 'misskey-hub.net', 'Target'),
-		assignee: userDetailed('assigneeid', 'assignee', 'misskey-hub.net', 'Assignee'),
-		me: null,
-		forwarded: false,
-	};
-}
-
 export function channel(id = 'somechannelid', name = 'Some Channel', bannerUrl: string | null = 'https://github.com/misskey-dev/misskey/blob/master/packages/frontend/assets/fedi.jpg?raw=true'): entities.Channel {
 	return {
 		id,

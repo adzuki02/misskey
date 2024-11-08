@@ -17,17 +17,6 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin:abuse-user-reports*
-     */
-    request<E extends 'admin/abuse-user-reports', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
      * **Credential required**: *No*
      */
     request<E extends 'admin/accounts/create', P extends Endpoints[E]['req']>(
@@ -516,17 +505,6 @@ declare module '../api.js' {
      * **Credential required**: *Yes* / **Permission**: *write:admin:reset-password*
      */
     request<E extends 'admin/reset-password', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin:resolve-abuse-user-report*
-     */
-    request<E extends 'admin/resolve-abuse-user-report', P extends Endpoints[E]['req']>(
       endpoint: E,
       params: P,
       credential?: string | null,
@@ -3247,17 +3225,6 @@ declare module '../api.js' {
      * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'users/relation', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * File a report.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *write:report-abuse*
-     */
-    request<E extends 'users/report-abuse', P extends Endpoints[E]['req']>(
       endpoint: E,
       params: P,
       credential?: string | null,

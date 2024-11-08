@@ -368,10 +368,6 @@ const routes: RouteDef[] = [{
 		name: 'database',
 		component: page(() => import('@/pages/admin/database.vue')),
 	}, {
-		path: '/abuses',
-		name: 'abuses',
-		component: page(() => import('@/pages/admin/abuses.vue')),
-	}, {
 		path: '/settings',
 		name: 'settings',
 		component: page(() => import('@/pages/admin/settings.vue')),

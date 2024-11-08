@@ -5,7 +5,6 @@
 
 import { Module } from '@nestjs/common';
 import { FanoutTimelineEndpointService } from '@/core/FanoutTimelineEndpointService.js';
-import { AbuseReportService } from '@/core/AbuseReportService.js';
 import { UserSearchService } from '@/core/UserSearchService.js';
 import { AccountMoveService } from './AccountMoveService.js';
 import { AccountUpdateService } from './AccountUpdateService.js';
@@ -75,7 +74,6 @@ import DriveChart from './chart/charts/drive.js';
 import ApRequestChart from './chart/charts/ap-request.js';
 import { ChartManagementService } from './chart/ChartManagementService.js';
 
-import { AbuseUserReportEntityService } from './entities/AbuseUserReportEntityService.js';
 import { AntennaEntityService } from './entities/AntennaEntityService.js';
 import { AppEntityService } from './entities/AppEntityService.js';
 import { AuthSessionEntityService } from './entities/AuthSessionEntityService.js';
@@ -128,7 +126,6 @@ import type { Provider } from '@nestjs/common';
 
 //#region 文字列ベースでのinjection用(循環参照対応のため)
 const $LoggerService: Provider = { provide: 'LoggerService', useExisting: LoggerService };
-const $AbuseReportService: Provider = { provide: 'AbuseReportService', useExisting: AbuseReportService };
 const $AccountMoveService: Provider = { provide: 'AccountMoveService', useExisting: AccountMoveService };
 const $AccountUpdateService: Provider = { provide: 'AccountUpdateService', useExisting: AccountUpdateService };
 const $AiService: Provider = { provide: 'AiService', useExisting: AiService };
@@ -199,7 +196,6 @@ const $DriveChart: Provider = { provide: 'DriveChart', useExisting: DriveChart }
 const $ApRequestChart: Provider = { provide: 'ApRequestChart', useExisting: ApRequestChart };
 const $ChartManagementService: Provider = { provide: 'ChartManagementService', useExisting: ChartManagementService };
 
-const $AbuseUserReportEntityService: Provider = { provide: 'AbuseUserReportEntityService', useExisting: AbuseUserReportEntityService };
 const $AntennaEntityService: Provider = { provide: 'AntennaEntityService', useExisting: AntennaEntityService };
 const $AppEntityService: Provider = { provide: 'AppEntityService', useExisting: AppEntityService };
 const $AuthSessionEntityService: Provider = { provide: 'AuthSessionEntityService', useExisting: AuthSessionEntityService };
@@ -253,7 +249,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 	],
 	providers: [
 		LoggerService,
-		AbuseReportService,
 		AccountMoveService,
 		AccountUpdateService,
 		AiService,
@@ -324,7 +319,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		ApRequestChart,
 		ChartManagementService,
 
-		AbuseUserReportEntityService,
 		AntennaEntityService,
 		AppEntityService,
 		AuthSessionEntityService,
@@ -374,7 +368,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 
 		//#region 文字列ベースでのinjection用(循環参照対応のため)
 		$LoggerService,
-		$AbuseReportService,
 		$AccountMoveService,
 		$AccountUpdateService,
 		$AiService,
@@ -445,7 +438,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$ApRequestChart,
 		$ChartManagementService,
 
-		$AbuseUserReportEntityService,
 		$AntennaEntityService,
 		$AppEntityService,
 		$AuthSessionEntityService,
@@ -496,7 +488,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 	exports: [
 		QueueModule,
 		LoggerService,
-		AbuseReportService,
 		AccountMoveService,
 		AccountUpdateService,
 		AiService,
@@ -566,7 +557,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		ApRequestChart,
 		ChartManagementService,
 
-		AbuseUserReportEntityService,
 		AntennaEntityService,
 		AppEntityService,
 		AuthSessionEntityService,
@@ -616,7 +606,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 
 		//#region 文字列ベースでのinjection用(循環参照対応のため)
 		$LoggerService,
-		$AbuseReportService,
 		$AccountMoveService,
 		$AccountUpdateService,
 		$AiService,
@@ -686,7 +675,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$ApRequestChart,
 		$ChartManagementService,
 
-		$AbuseUserReportEntityService,
 		$AntennaEntityService,
 		$AppEntityService,
 		$AuthSessionEntityService,

@@ -52,7 +52,6 @@ export const permissions = [
 	'write:flash',
 	'read:flash-likes',
 	'write:flash-likes',
-	'read:admin:abuse-user-reports',
 	'write:admin:delete-account',
 	'write:admin:delete-all-files-of-a-user',
 	'read:admin:index-stats',
@@ -60,7 +59,6 @@ export const permissions = [
 	'read:admin:user-ips',
 	'read:admin:meta',
 	'write:admin:reset-password',
-	'write:admin:resolve-abuse-user-report',
 	'write:admin:send-email',
 	'read:admin:server-info',
 	'read:admin:show-user',
@@ -95,5 +93,4 @@ export const permissions = [
 	'write:clip-favorite',
 	'read:clip-favorite',
 	'read:federation',
-	'write:report-abuse',
 ] as const;

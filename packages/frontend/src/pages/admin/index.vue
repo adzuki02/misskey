@@ -13,7 +13,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 
 				<div class="_gaps_s">
-					<MkInfo v-if="thereIsUnresolvedAbuseReport" warn>{{ i18n.ts.thereIsUnresolvedAbuseReportWarning }} <MkA to="/admin/abuses" class="_link">{{ i18n.ts.check }}</MkA></MkInfo>
 					<MkInfo v-if="noBotProtection" warn>{{ i18n.ts.noBotProtectionWarning }} <MkA to="/admin/security" class="_link">{{ i18n.ts.configure }}</MkA></MkInfo>
 				</div>
 
@@ -56,15 +55,7 @@ const childInfo = ref<PageMetadata>();
 const narrow = ref(false);
 const el = useTemplateRef('el');
 const noBotProtection = computed(() => !instance.disableRegistration && !instance.enableHcaptcha && !instance.enableRecaptcha && !instance.enableTurnstile && !instance.enableMcaptcha);
-const thereIsUnresolvedAbuseReport = ref(false);
 const currentPage = computed(() => router.currentRef.value.child);
-
-misskeyApi('admin/abuse-user-reports', {
-	state: 'unresolved',
-	limit: 1,
-}).then(reports => {
-	if (reports.length > 0) thereIsUnresolvedAbuseReport.value = true;
-});
 
 const NARROW_THRESHOLD = 600;
 const ro = new ResizeObserver((entries) => {
@@ -132,11 +123,6 @@ const menuDef = computed(() => [{
 		text: i18n.ts.files,
 		to: '/admin/files',
 		active: currentPage.value?.route.name === 'files',
-	}, {
-		icon: 'ti ti-exclamation-circle',
-		text: i18n.ts.abuseReports,
-		to: '/admin/abuses',
-		active: currentPage.value?.route.name === 'abuses',
 	}],
 }, {
 	title: i18n.ts.settings,

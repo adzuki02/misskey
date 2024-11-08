@@ -10,7 +10,6 @@ import { RelationIdLoader } from 'typeorm/query-builder/relation-id/RelationIdLo
 import { RawSqlResultsToEntityTransformer } from 'typeorm/query-builder/transformer/RawSqlResultsToEntityTransformer.js';
 import { ObjectUtils } from 'typeorm/util/ObjectUtils.js';
 import { OrmUtils } from 'typeorm/util/OrmUtils.js';
-import { MiAbuseUserReport } from '@/models/AbuseUserReport.js';
 import { MiAccessToken } from '@/models/AccessToken.js';
 import { MiAntenna } from '@/models/Antenna.js';
 import { MiApp } from '@/models/App.js';
@@ -109,7 +108,6 @@ export const miRepository = {
 } satisfies MiRepository<ObjectLiteral>;
 
 export {
-	MiAbuseUserReport,
 	MiAccessToken,
 	MiAntenna,
 	MiApp,
@@ -164,7 +162,6 @@ export {
 	MiUserMemo,
 };
 
-export type AbuseUserReportsRepository = Repository<MiAbuseUserReport> & MiRepository<MiAbuseUserReport>;
 export type AccessTokensRepository = Repository<MiAccessToken> & MiRepository<MiAccessToken>;
 export type AntennasRepository = Repository<MiAntenna> & MiRepository<MiAntenna>;
 export type AppsRepository = Repository<MiApp> & MiRepository<MiApp>;
