@@ -16,61 +16,37 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, ref } from 'vue';
 const editMode = ref(false);
 </script>
+
 <script lang="ts" setup>
 import XWidgets, { Widget } from '@/components/MkWidgets.vue';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
-
-const props = withDefaults(defineProps<{
-	// null = 全てのウィジェットを表示
-	// left = place: leftだけを表示
-	// right = rightとnullを表示
-	place?: 'left' | null | 'right';
-}>(), {
-	place: null,
-});
+import { widgets as widgetDefs } from '@/widgets/index.js';
 
 const widgets = computed(() => {
-	if (props.place === null) return defaultStore.reactiveState.widgets.value;
-	if (props.place === 'left') return defaultStore.reactiveState.widgets.value.filter(w => w.place === 'left');
-	return defaultStore.reactiveState.widgets.value.filter(w => w.place !== 'left');
+	return defaultStore.reactiveState.widgets.value;
 });
 
-function addWidget(widget) {
-	defaultStore.set('widgets', [{
-		...widget,
-		place: props.place,
-	}, ...defaultStore.state.widgets]);
+function addWidget(widget: Widget) {
+	defaultStore.set('widgets', [
+		widget,
+		...defaultStore.state.widgets,
+	].filter(w => widgetDefs.includes(w.name)));
 }
 
 function removeWidget(widget) {
-	defaultStore.set('widgets', defaultStore.state.widgets.filter(w => w.id !== widget.id));
+	defaultStore.set('widgets', defaultStore.state.widgets.filter(w => w.id !== widget.id).filter(w => widgetDefs.includes(w.name)));
 }
 
 function updateWidget(widget: Pick<Widget, 'id'> & Partial<Widget>) {
 	defaultStore.set('widgets', defaultStore.state.widgets.map(w => w.id === widget.id ? {
 		...w,
 		data: widget.data ?? {},
-		place: props.place,
-	} : w));
+	} : w).filter(w => widgetDefs.includes(w.name)));
 }
 
-function updateWidgets(thisWidgets) {
-	if (props.place === null) {
-		defaultStore.set('widgets', thisWidgets);
-		return;
-	}
-	if (props.place === 'left') {
-		defaultStore.set('widgets', [
-			...thisWidgets.map(w => ({ ...w, place: 'left' })),
-			...defaultStore.state.widgets.filter(w => w.place !== 'left' && !thisWidgets.some(t => w.id === t.id)),
-		]);
-		return;
-	}
-	defaultStore.set('widgets', [
-		...defaultStore.state.widgets.filter(w => w.place === 'left' && !thisWidgets.some(t => w.id === t.id)),
-		...thisWidgets.map(w => ({ ...w, place: 'right' })),
-	]);
+function updateWidgets(thisWidgets: Widget[]) {
+	defaultStore.set('widgets', thisWidgets.filter(w => widgetDefs.includes(w.name)));
 }
 </script>
 
