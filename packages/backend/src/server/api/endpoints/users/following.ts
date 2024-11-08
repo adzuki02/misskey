@@ -44,12 +44,6 @@ export const meta = {
 			code: 'FORBIDDEN',
 			id: 'f6cdb0df-c19f-ec5c-7dbb-0ba84a1f92ba',
 		},
-
-		birthdayInvalid: {
-			message: 'Birthday date format is invalid.',
-			code: 'BIRTHDAY_DATE_FORMAT_INVALID',
-			id: 'a2b007b9-4782-4eba-abd3-93b05ed4130d',
-		},
 	},
 } as const;
 
@@ -67,8 +61,6 @@ export const paramDef = {
 			nullable: true,
 			description: 'The local host is represented with `null`.',
 		},
-
-		birthday: { ...birthdaySchema, nullable: true },
 	},
 	anyOf: [
 		{ required: ['userId'] },
@@ -131,19 +123,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			const query = this.queryService.makePaginationQuery(this.followingsRepository.createQueryBuilder('following'), ps.sinceId, ps.untilId)
 				.andWhere('following.followerId = :userId', { userId: user.id })
 				.innerJoinAndSelect('following.followee', 'followee');
-
-			if (ps.birthday) {
-				try {
-					const birthday = ps.birthday.substring(5, 10);
-					const birthdayUserQuery = this.userProfilesRepository.createQueryBuilder('user_profile');
-					birthdayUserQuery.select('user_profile.userId')
-						.where(`SUBSTR(user_profile.birthday, 6, 5) = '${birthday}'`);
-
-					query.andWhere(`following.followeeId IN (${ birthdayUserQuery.getQuery() })`);
-				} catch (err) {
-					throw new ApiError(meta.errors.birthdayInvalid);
-				}
-			}
 
 			const followings = await query
 				.limit(ps.limit)
