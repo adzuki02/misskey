@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #suffix>{{ getSoundTypeName(sounds[type].type) }}</template>
 				<Suspense>
 					<template #default>
-						<XSound :type="sounds[type].type" :volume="sounds[type].volume" :fileId="sounds[type].fileId" :fileUrl="sounds[type].fileUrl" @update="(res) => updated(type, res)"/>
+						<XSound :type="sounds[type].type" :volume="sounds[type].volume" :fileId="sounds[type].type === '_driveFile_' ? sounds[type].fileId : undefined" :fileUrl="sounds[type].type === '_driveFile_' ? sounds[type].fileUrl : undefined" @update="(res) => updated(type, res)"/>
 					</template>
 					<template #fallback>
 						<MkLoading/>
@@ -56,7 +56,7 @@ const notUseSound = computed(defaultStore.makeGetterSetter('sound_notUseSound'))
 const useSoundOnlyWhenActive = computed(defaultStore.makeGetterSetter('sound_useSoundOnlyWhenActive'));
 const masterVolume = computed(defaultStore.makeGetterSetter('sound_masterVolume'));
 
-const sounds = ref<Record<OperationType, Ref<SoundStore>>>({
+const sounds: Ref<Record<OperationType, SoundStore>> = ref({
 	note: defaultStore.reactiveState.sound_note,
 	noteMy: defaultStore.reactiveState.sound_noteMy,
 	notification: defaultStore.reactiveState.sound_notification,

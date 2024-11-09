@@ -144,7 +144,7 @@ export class Storage<T extends StateDef> {
 	}
 
 	private load(): Promise<void> {
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			if ($i) {
 				// api関数と循環参照なので一応setTimeoutしておく
 				window.setTimeout(async () => {
@@ -241,11 +241,11 @@ export class Storage<T extends StateDef> {
 	 * 特定のキーの、簡易的なgetter/setterを作ります
 	 * 主にvue上で設定コントロールのmodelとして使う用
 	 */
-	public makeGetterSetter<K extends keyof T>(key: K, getter?: (v: T[K]) => unknown, setter?: (v: unknown) => T[K]): {
+	public makeGetterSetter<K extends keyof T>(key: K, getter?: (v: T[K]['default']) => T[K]['default'], setter?: (v: T[K]['default']) => T[K]['default']): {
 		get: () => T[K]['default'];
 		set: (value: T[K]['default']) => void;
 	} {
-		const valueRef = ref(this.state[key]);
+		const valueRef = ref<T[K]['default']>(this.state[key]);
 
 		const stop = watch(this.reactiveState[key], val => {
 			valueRef.value = val;
@@ -265,7 +265,7 @@ export class Storage<T extends StateDef> {
 					return valueRef.value;
 				}
 			},
-			set: (value: unknown) => {
+			set: (value: T[K]['default']) => {
 				const val = setter ? setter(value) : value;
 				this.set(key, val);
 				valueRef.value = val;
