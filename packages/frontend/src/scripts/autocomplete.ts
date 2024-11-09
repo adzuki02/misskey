@@ -18,7 +18,7 @@ export class Autocomplete {
 		close: () => void;
 	} | null;
 	private textarea: HTMLInputElement | HTMLTextAreaElement;
-	private currentType: string;
+	private currentType: SuggestionType | undefined;
 	private textRef: Ref<string | number | null>;
 	private opening: boolean;
 	private onlyType: SuggestionType[];
@@ -47,6 +47,7 @@ export class Autocomplete {
 
 		this.suggestion = null;
 		this.textarea = textarea;
+		this.currentType = undefined;
 		this.textRef = textRef;
 		this.opening = false;
 		this.onlyType = onlyType ?? ['user', 'hashtag', 'emoji', 'mfmTag', 'mfmParam'];
@@ -157,7 +158,7 @@ export class Autocomplete {
 	/**
 	 * サジェストを提示します。
 	 */
-	private async open(type: string, q: any) {
+	private async open(type: SuggestionType, q: any) {
 		if (type !== this.currentType) {
 			this.close();
 		}
@@ -224,7 +225,7 @@ export class Autocomplete {
 	/**
 	 * オートコンプリートする
 	 */
-	private complete({ type, value }) {
+	private complete({ type, value }: { type: SuggestionType, value: any }) {
 		this.close();
 
 		const caret = this.textarea.selectionStart ?? undefined;

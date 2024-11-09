@@ -81,13 +81,13 @@ export class Storage<T extends StateDef> {
 		this.loaded = this.ready.then(() => this.load());
 	}
 
-	private isPureObject(value: unknown): value is Record<string | number | symbol, unknown> {
+	private isPureObject(value: unknown): value is Record<PropertyKey, unknown> {
 		return typeof value === 'object' && value !== null && !Array.isArray(value);
 	}
 
 	private mergeState<X>(value: X, def: X): X {
 		if (this.isPureObject(value) && this.isPureObject(def)) {
-			const merged = deepMerge(value, def);
+			const merged = deepMerge(value, def as Record<PropertyKey, unknown>);
 
 			if (_DEV_) console.log('Merging state. Incoming: ', value, ' Default: ', def, ' Result: ', merged);
 
