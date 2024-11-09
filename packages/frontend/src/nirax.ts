@@ -59,7 +59,7 @@ export type RouterEvent = {
 
 export type Resolved = {
 	route: RouteDef;
-	props: Map<string, string | boolean>;
+	props: Map<string, string>;
 	child?: Resolved;
 	redirected?: boolean;
 
@@ -363,7 +363,7 @@ export class Router extends EventEmitter<RouterEvent> implements IRouter {
 
 		if (res.route.loginRequired && !this.isLoggedIn) {
 			res.route.component = this.notFoundPageComponent;
-			res.props.set('showLoginPopup', true);
+			res.props.set('showLoginPopup', 'true');
 		}
 
 		const isSamePath = beforePath === path;

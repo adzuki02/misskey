@@ -19,10 +19,10 @@ import { pleaseLogin } from '@/scripts/please-login.js';
 import { notFoundImageUrl } from '@/instance.js';
 
 const props = defineProps<{
-	showLoginPopup?: boolean;
+	showLoginPopup?: string;
 }>();
 
-if (props.showLoginPopup) {
+if (props.showLoginPopup === 'true') {
 	pleaseLogin('/');
 }
 
