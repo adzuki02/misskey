@@ -13,7 +13,6 @@ import fetch, { File, RequestInit, type Headers } from 'node-fetch';
 import { DataSource } from 'typeorm';
 import { JSDOM } from 'jsdom';
 import { type Response } from 'node-fetch';
-import Fastify from 'fastify';
 import { entities } from '../src/postgres.js';
 import { loadConfig } from '../src/config.js';
 import type * as misskey from 'misskey-js';
@@ -611,6 +610,25 @@ export async function sendEnvResetRequest() {
 
 	if (res.status !== 200) {
 		throw new Error('server env update failed.');
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	while (true) {
+		const res = await fetch(`http://localhost:${port}/api/test`, {
+			method: 'POST',
+			body: JSON.stringify({ required: false }),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}).catch(() => ({ ok: false }));
+
+		if (res.ok) {
+			break;
+		} else {
+			await new Promise<void>(resolve => {
+				setTimeout(() => resolve(), 100);
+			});
+		}
 	}
 }
 
