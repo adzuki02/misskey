@@ -125,13 +125,6 @@ async function describe(file) {
 	});
 }
 
-async function crop(file: DriveFile): Promise<void> {
-	if (mock) return;
-
-	const newFile = await os.cropImage(file, { aspectRatio: NaN });
-	emit('replaceFile', file, newFile);
-}
-
 function showFileMenu(file: DriveFile, ev: MouseEvent): void {
 	if (menuShowing) return;
 
@@ -148,11 +141,7 @@ function showFileMenu(file: DriveFile, ev: MouseEvent): void {
 		text: i18n.ts.describeFile,
 		icon: 'ti ti-text-caption',
 		action: () => { describe(file); },
-	}, ...isImage ? [{
-		text: i18n.ts.cropImage,
-		icon: 'ti ti-crop',
-		action: () : void => { crop(file); },
-	}] : [], {
+	}, {
 		type: 'divider',
 	}, {
 		text: i18n.ts.attachCancel,

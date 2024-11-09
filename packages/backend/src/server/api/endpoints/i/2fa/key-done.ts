@@ -50,7 +50,84 @@ export const paramDef = {
 		password: { type: 'string' },
 		token: { type: 'string', nullable: true },
 		name: { type: 'string', minLength: 1, maxLength: 30 },
-		credential: { type: 'object' },
+		credential: {
+			type: 'object',
+			properties: {
+				id: {
+					type: 'string',
+				},
+				rawId: {
+					type: 'string',
+				},
+				response: {
+					type: 'object',
+					properties: {
+						clientDataJSON: {
+							type: 'string',
+						},
+						attestationObject: {
+							type: 'string',
+						},
+						authenticationData: {
+							type: 'string',
+						},
+						transports: {
+							type: 'array',
+							items: {
+								type: 'string',
+								enum: [
+									'ble',
+									'cable',
+									'hybrid',
+									'internal',
+									'nfc',
+									'smart-card',
+									'usb',
+								],
+							},
+						},
+						publicKeyAlgorithm: {
+							type: 'number',
+						},
+						publicKey: {
+							type: 'string',
+						},
+					},
+					required: ['clientDataJSON', 'attestationObject'],
+				},
+				authenticatorAttachment: {
+					type: 'string',
+					enum: [
+						'cross-platform',
+						'platform',
+					],
+				},
+				clientExtensionResults: {
+					type: 'object',
+					properties: {
+						appId: {
+							type: 'boolean',
+						},
+						hmacCreateSecret: {
+							type: 'boolean',
+						},
+						credProps: {
+							type: 'object',
+							properties: {
+								rk: {
+									type: 'boolean',
+								},
+							},
+						},
+					},
+				},
+				type: {
+					type: 'string',
+					enum: ['public-key'],
+				},
+			},
+			required: ['id', 'rawId', 'response', 'clientExtensionResults', 'type'],
+		},
 	},
 	required: ['password', 'name', 'credential'],
 } as const;

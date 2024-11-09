@@ -171,7 +171,7 @@ const index_photos = /* @__PURE__ */ _export_sfc(_sfc_main, [["__cssModules", cs
 
 export { index_photos as default };
 `.slice(1), { ecmaVersion: 'latest', sourceType: 'module' });
-	unwindCssModuleClassName(ast);
+	unwindCssModuleClassName(ast as estree.Program);
 	expect(generate(ast)).toBe(`
 import {c as api, d as defaultStore, i as i18n, aD as notePage, bN as ImgWithBlurhash, bY as getStaticImageUrl, _ as _export_sfc} from './app-!~{001}~.js';
 import {M as MkContainer} from './MkContainer-!~{03M}~.js';
@@ -438,7 +438,7 @@ const MkDateSeparatedList = /* @__PURE__ */ _export_sfc(_sfc_main, [["__cssModul
 
 export { MkDateSeparatedList as M };
 `.slice(1), { ecmaVersion: 'latest', sourceType: 'module' });
-	unwindCssModuleClassName(ast);
+	unwindCssModuleClassName(ast as estree.Program);
 	expect(generate(ast)).toBe(`
 import {a7 as getCurrentInstance, b as defineComponent, G as useCssModule, a1 as h, H as TransitionGroup} from './!~{002}~.js';
 import {d as defaultStore, aK as toast, b5 as MkAd, i as i18n, _ as _export_sfc} from './app-!~{001}~.js';

@@ -3,15 +3,26 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-export function calcPopupPosition(el: HTMLElement, props: {
-	anchorElement?: HTMLElement | null;
+type BaseProps = {
 	innerMargin: number;
 	direction: 'top' | 'bottom' | 'left' | 'right';
 	align: 'top' | 'bottom' | 'left' | 'right' | 'center';
 	alignOffset?: number;
+};
+
+type AnchoredProps = BaseProps & {
+	anchorElement: HTMLElement;
 	x?: number;
 	y?: number;
-}): { top: number; left: number; transformOrigin: string; } {
+};
+
+type NonAnchoredProps = BaseProps & {
+	anchorElement: undefined;
+	x: number;
+	y: number;
+};
+
+export function calcPopupPosition(el: HTMLElement, props: AnchoredProps | NonAnchoredProps): { top: number; left: number; transformOrigin: string; } {
 	const contentWidth = el.offsetWidth;
 	const contentHeight = el.offsetHeight;
 
@@ -94,8 +105,6 @@ export function calcPopupPosition(el: HTMLElement, props: {
 			if (props.align === 'top') {
 				top = rect.top + window.scrollY;
 				if (props.alignOffset != null) top += props.alignOffset;
-			} else if (props.align === 'bottom') {
-				// TODO
 			} else { // center
 				top = rect.top + window.scrollY + (props.anchorElement.offsetHeight / 2);
 				top -= (el.offsetHeight / 2);

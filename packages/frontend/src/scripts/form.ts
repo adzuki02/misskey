@@ -5,7 +5,7 @@
 
 import type { DriveFile } from 'misskey-js/entities.js';
 
-type EnumItem = string | {
+type EnumItem = {
 	label: string;
 	value: string;
 };
@@ -45,12 +45,12 @@ export type FormItem = {
 } | {
 	label?: string;
 	type: 'radio';
-	default: unknown | null;
+	default: string | null;
 	required?: boolean;
 	hidden?: Hidden;
 	options: {
 		label: string;
-		value: unknown;
+		value: string;
 	}[];
 } | {
 	label?: string;
@@ -91,7 +91,7 @@ type GetItemType<Item extends FormItem> =
 	Item['type'] extends 'string' ? string :
 	Item['type'] extends 'number' ? number :
 	Item['type'] extends 'boolean' ? boolean :
-	Item['type'] extends 'radio' ? unknown :
+	Item['type'] extends 'radio' ? string :
 	Item['type'] extends 'range' ? number :
 	Item['type'] extends 'enum' ? string :
 	Item['type'] extends 'array' ? unknown[] :

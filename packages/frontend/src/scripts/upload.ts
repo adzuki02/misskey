@@ -36,6 +36,8 @@ export function uploadFile(
 	name?: string,
 	keepOriginal: boolean = defaultStore.state.keepOriginalUploading,
 ): Promise<DriveFile> {
+	if ($i == null) throw new Error('Not logged in');
+
 	if (folder && typeof folder === 'object') folder = folder.id;
 
 	if (file.size > instance.maxFileSize) {
@@ -87,7 +89,7 @@ export function uploadFile(
 			}
 
 			const formData = new FormData();
-			if ($i) formData.append('i', $i.token);
+			formData.append('i', $i!.token);
 			formData.append('force', 'true');
 			formData.append('file', resizedImage ?? file);
 			formData.append('name', ctx.name);

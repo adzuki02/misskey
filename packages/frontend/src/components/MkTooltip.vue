@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, onUnmounted, shallowRef } from 'vue';
+import { nextTick, onMounted, onUnmounted, useTemplateRef } from 'vue';
 import * as os from '@/os.js';
 import { calcPopupPosition } from '@/scripts/popup-position.js';
 import { defaultStore } from '@/store.js';
@@ -39,6 +39,10 @@ const props = withDefaults(defineProps<{
 	direction?: 'top' | 'bottom' | 'right' | 'left';
 	innerMargin?: number;
 }>(), {
+	targetElement: undefined,
+	x: undefined,
+	y: undefined,
+	text: undefined,
 	maxWidth: 250,
 	direction: 'top',
 	innerMargin: 0,
@@ -51,18 +55,22 @@ const emit = defineEmits<{
 // タイミングによっては最初から showing = false な場合があり、その場合に closed 扱いにしないと永久にDOMに残ることになる
 if (!props.showing) emit('closed');
 
-const el = shallowRef<HTMLElement>();
+const el = useTemplateRef('el');
 const zIndex = os.claimZIndex('high');
 
 function setPosition() {
 	if (el.value == null) return;
 	const data = calcPopupPosition(el.value, {
-		anchorElement: props.targetElement,
 		direction: props.direction,
 		align: 'center',
 		innerMargin: props.innerMargin,
-		x: props.x,
-		y: props.y,
+		...(props.targetElement ? {
+			anchorElement: props.targetElement,
+		} : {
+			anchorElement: undefined,
+			x: props.x ?? 0,
+			y: props.y ?? 0,
+		}),
 	});
 
 	el.value.style.transformOrigin = data.transformOrigin;

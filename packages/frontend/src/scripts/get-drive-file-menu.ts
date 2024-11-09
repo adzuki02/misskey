@@ -109,14 +109,7 @@ export function getDriveFileMenu(file: DriveFile, folder?: DriveFolder | null): 
 		text: i18n.ts.describeFile,
 		icon: 'ti ti-text-caption',
 		action: () => describe(file),
-	}, ...isImage ? [{
-		text: i18n.ts.cropImage,
-		icon: 'ti ti-crop',
-		action: () => os.cropImage(file, {
-			aspectRatio: NaN,
-			uploadFolder: folder ? folder.id : folder,
-		}),
-	}] : [], { type: 'divider' }, {
+	}, { type: 'divider' }, {
 		text: i18n.ts.createNoteFromTheFile,
 		icon: 'ti ti-pencil',
 		action: () => os.post({

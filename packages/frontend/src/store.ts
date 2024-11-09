@@ -495,7 +495,7 @@ export class ColdDeviceStorage {
 			get: () => {
 				return valueRef.value;
 			},
-			set: (value: unknown) => {
+			set: (value: typeof ColdDeviceStorage.default[K]) => {
 				const val = value;
 				ColdDeviceStorage.set(key, val);
 			},

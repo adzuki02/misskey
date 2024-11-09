@@ -4765,7 +4765,7 @@ export type operations = {
             isLink: boolean;
             requestIp: string | null;
             requestHeaders: {
-              [key: string]: unknown;
+              [key: string]: string;
             } | null;
           };
         };
@@ -13090,7 +13090,29 @@ export type operations = {
           password: string;
           token?: string | null;
           name: string;
-          credential: Record<string, never>;
+          credential: {
+            id: string;
+            rawId: string;
+            response: {
+              clientDataJSON: string;
+              attestationObject: string;
+              authenticationData?: string;
+              transports?: ('ble' | 'cable' | 'hybrid' | 'internal' | 'nfc' | 'smart-card' | 'usb')[];
+              publicKeyAlgorithm?: number;
+              publicKey?: string;
+            };
+            /** @enum {string} */
+            authenticatorAttachment?: 'cross-platform' | 'platform';
+            clientExtensionResults: {
+              appId?: boolean;
+              hmacCreateSecret?: boolean;
+              credProps?: {
+                rk?: boolean;
+              };
+            };
+            /** @enum {string} */
+            type: 'public-key';
+          };
         };
       };
     };
@@ -13211,6 +13233,7 @@ export type operations = {
           'application/json': {
             rp: {
               id?: string;
+              name: string;
             };
             user: {
               id: string;
@@ -13219,15 +13242,17 @@ export type operations = {
             };
             challenge: string;
             pubKeyCredParams: {
-                type: string;
+                /** @enum {string} */
+                type: 'public-key';
                 alg: number;
               }[];
-            timeout: number | null;
-            excludeCredentials: (({
+            timeout?: number;
+            excludeCredentials?: ({
                 id: string;
-                type: string;
+                /** @enum {string} */
+                type: 'public-key';
                 transports: ('ble' | 'cable' | 'hybrid' | 'internal' | 'nfc' | 'smart-card' | 'usb')[];
-              })[]) | null;
+              })[];
             authenticatorSelection: ({
               /** @enum {string} */
               authenticatorAttachment: 'cross-platform' | 'platform';

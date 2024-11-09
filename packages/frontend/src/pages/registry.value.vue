@@ -81,6 +81,7 @@ function fetchValue() {
 
 async function save() {
 	try {
+		if (valueForEditor.value === null) throw new Error();
 		JSON5.parse(valueForEditor.value);
 	} catch (err) {
 		os.alert({
@@ -97,7 +98,7 @@ async function save() {
 		os.apiWithDialog('i/registry/set', {
 			scope: scope.value,
 			key: key.value,
-			value: JSON5.parse(valueForEditor.value),
+			value: JSON5.parse(valueForEditor.value!),
 			domain: props.domain === '@' ? null : props.domain,
 		});
 	});

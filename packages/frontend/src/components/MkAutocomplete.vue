@@ -49,6 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts">
 import { markRaw, ref, shallowRef, computed, onUpdated, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
 import type { UserLite } from 'misskey-js/entities.js';
+import type { SuggestionType } from '@/scripts/autocomplete';
 import contains from '@/scripts/contains.js';
 import { char2twemojiFilePath } from '@/scripts/emoji-base.js';
 import { acct } from '@/filters/user.js';
@@ -124,9 +125,9 @@ export default {
 
 <script lang="ts" setup>
 const props = defineProps<{
-	type: string;
+	type: SuggestionType;
 	q: any;
-	textarea: HTMLTextAreaElement;
+	textarea: HTMLTextAreaElement | HTMLInputElement;
 	close: () => void;
 	x: number;
 	y: number;
@@ -354,7 +355,7 @@ onUpdated(() => {
 onMounted(() => {
 	setPosition();
 
-	props.textarea.addEventListener('keydown', onKeydown);
+	(props.textarea as HTMLElement).addEventListener('keydown', onKeydown);
 
 	document.body.addEventListener('mousedown', onMousedown);
 
@@ -370,7 +371,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-	props.textarea.removeEventListener('keydown', onKeydown);
+	(props.textarea as HTMLElement).removeEventListener('keydown', onKeydown);
 
 	document.body.removeEventListener('mousedown', onMousedown);
 });
