@@ -620,12 +620,11 @@ export async function sendEnvResetRequest() {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-		}).catch(() => ({ ok: false, status: 900, text: () => new Promise<string>(r => r('fetch failed.')) }));
+		}).catch(() => ({ ok: false }));
 
 		if (res.ok) {
 			break;
 		} else {
-			console.log(res.status, ':', await res.text());
 			await new Promise<void>(resolve => {
 				setTimeout(() => resolve(), 100);
 			});
