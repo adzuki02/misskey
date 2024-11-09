@@ -610,24 +610,6 @@ export async function pickEmoji(src: HTMLElement, opts: ComponentProps<typeof Mk
 	});
 }
 
-export async function cropImage(image: DriveFile, options: {
-	aspectRatio: number;
-	uploadFolder?: string | null;
-}): Promise<DriveFile> {
-	return new Promise(resolve => {
-		const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkCropperDialog.vue')), {
-			file: image,
-			aspectRatio: options.aspectRatio,
-			uploadFolder: options.uploadFolder,
-		}, {
-			ok: x => {
-				resolve(x);
-			},
-			closed: () => dispose(),
-		});
-	});
-}
-
 export function popupMenu(items: MenuItem[], src?: HTMLElement | EventTarget | null, options?: {
 	align?: string;
 	width?: number;
