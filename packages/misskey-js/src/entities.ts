@@ -5,7 +5,6 @@ import {
 	Role,
 	RolePolicies,
 	User,
-	UserDetailedNotMe,
 } from './autogen/models.js';
 
 export * from './autogen/entities.js';

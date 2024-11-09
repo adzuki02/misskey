@@ -1,14 +1,3 @@
-import type { operations } from './autogen/types.js';
-import type {
-	EmojiDetailed,
-	Flash,
-	InviteCode,
-	MetaDetailed,
-	Note,
-	Role,
-	UserLite,
-} from './autogen/models.js';
-
 export const notificationTypes = ['note', 'follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded', 'receiveFollowRequest', 'followRequestAccepted', 'app', 'roleAssigned'] as const;
 
 export const noteVisibilities = ['public', 'home', 'followers', 'specified'] as const;
