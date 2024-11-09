@@ -11,12 +11,12 @@ export function useChartTooltip(opts: { position: 'top' | 'middle' } = { positio
 	const tooltipShowing = ref(false);
 	const tooltipX = ref(0);
 	const tooltipY = ref(0);
-	const tooltipTitle = ref<string | null>(null);
+	const tooltipTitle = ref<string>();
 	const tooltipSeries = ref<{
 		backgroundColor: string;
 		borderColor: string;
 		text: string;
-	}[] | null>(null);
+	}[]>();
 	const { dispose: disposeTooltipComponent } = os.popup(MkChartTooltip, {
 		showing: tooltipShowing,
 		x: tooltipX,
