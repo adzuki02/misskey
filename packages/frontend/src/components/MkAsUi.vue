@@ -24,15 +24,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template v-if="c.label" #label>{{ c.label }}</template>
 		<template v-if="c.caption" #caption>{{ c.caption }}</template>
 	</MkTextarea>
-	<MkInput v-else-if="c.type === 'textInput'" :small="size === 'small'" :modelValue="c.default ?? null" @update:modelValue="c.onInput">
+	<MkInput v-else-if="c.type === 'textInput'" :small="size === 'small'" :modelValue="c.default ?? null" @update:modelValue="v => (c as AsUiTextInput).onInput!(v as string)">
 		<template v-if="c.label" #label>{{ c.label }}</template>
 		<template v-if="c.caption" #caption>{{ c.caption }}</template>
 	</MkInput>
-	<MkInput v-else-if="c.type === 'numberInput'" :small="size === 'small'" :modelValue="c.default ?? null" type="number" @update:modelValue="c.onInput">
+	<MkInput v-else-if="c.type === 'numberInput'" :small="size === 'small'" :modelValue="c.default ?? null" type="number" @update:modelValue="v => (c as AsUiNumberInput).onInput!(v as number)">
 		<template v-if="c.label" #label>{{ c.label }}</template>
 		<template v-if="c.caption" #caption>{{ c.caption }}</template>
 	</MkInput>
-	<MkSelect v-else-if="c.type === 'select'" :small="size === 'small'" :modelValue="c.default ?? null" @update:modelValue="c.onChange">
+	<MkSelect v-else-if="c.type === 'select'" :small="size === 'small'" :modelValue="c.default ?? null" @update:modelValue="v => v && (c as AsUiSelect).onChange!(v)">
 		<template v-if="c.label" #label>{{ c.label }}</template>
 		<template v-if="c.caption" #caption>{{ c.caption }}</template>
 		<option v-for="item in c.items" :key="item.value" :value="item.value">{{ item.text }}</option>
@@ -70,7 +70,7 @@ import MkInput from '@/components/MkInput.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkSelect from '@/components/MkSelect.vue';
-import { AsUiComponent, AsUiRoot, AsUiPostFormButton } from '@/scripts/aiscript/ui.js';
+import { AsUiComponent, AsUiRoot, AsUiPostFormButton, AsUiTextInput, AsUiNumberInput, AsUiSelect } from '@/scripts/aiscript/ui.js';
 import MkFolder from '@/components/MkFolder.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
 

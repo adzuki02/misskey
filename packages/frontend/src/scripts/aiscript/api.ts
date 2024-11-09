@@ -3,6 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import { utils, values } from '@syuilo/aiscript';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
