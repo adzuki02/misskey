@@ -6,7 +6,7 @@
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { StorybookConfig } from '@storybook/vue3-vite';
-import { type Plugin, mergeConfig } from 'vite';
+import { type Plugin, PluginOption, mergeConfig } from 'vite';
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -28,8 +28,9 @@ const config: StorybookConfig = {
 		disableTelemetry: true,
 	},
 	async viteFinal(config) {
-		const replacePluginForIsChromatic = config.plugins?.findIndex((plugin: Plugin) => plugin && plugin.name === 'replace') ?? -1;
-		if (~replacePluginForIsChromatic) {
+		const replacePluginForIsChromatic = config.plugins?.findIndex((plugin: PluginOption) => plugin && !Array.isArray(plugin) && !(plugin instanceof Promise) && plugin.name === 'replace') ?? -1;
+
+		if (replacePluginForIsChromatic !== -1) {
 			config.plugins?.splice(replacePluginForIsChromatic, 1);
 		}
 
