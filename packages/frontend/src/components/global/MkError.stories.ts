@@ -3,11 +3,14 @@
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/order */
 import { Meta } from '@storybook/vue3';
-import * as storiesMeta from './MkError.stories.meta';
 const meta = {
 	title: 'components/global/MkError',
 	component: MkError,
-	...storiesMeta,
+	argTypes: {
+		onRetry: {
+			action: 'retry',
+		},
+	},
 } satisfies Meta<typeof MkError>;
 export default meta;
 /*
