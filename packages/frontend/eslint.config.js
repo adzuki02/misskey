@@ -10,9 +10,6 @@ import sharedConfig from '../shared/eslint.config.js';
 export default [
 	...sharedConfig,
 	{
-		ignores: ['src/**/*.stories.ts'],
-	},
-	{
 		files: ['src/**/*.vue'],
 		...pluginMisskey.configs.typescript,
 	},
@@ -101,6 +98,18 @@ export default [
 		files: ['src/pages/**/*.vue', 'src/ui/**/*.vue', 'src/widgets/server-metric/*.vue'],
 		rules: {
 			'vue/multi-word-component-names': 'off',
+		},
+	},
+	{
+		files: ['src/**/*.stories.ts'],
+		rules: {
+			'@typescript-eslint/no-unused-vars': [
+				'warn',
+				{
+					'varsIgnorePattern': '^StoryObj$',
+				},
+			],
+			'import/no-default-export': 'off',
 		},
 	},
 ];

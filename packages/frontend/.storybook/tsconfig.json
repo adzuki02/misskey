@@ -18,12 +18,8 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"jsx": "react",
-		"jsxFactory": "h"
 	},
 	"files": [
-		"./changes.ts",
-		"./generate.tsx",
 		"./preload-locale.ts",
 		"./preload-theme.ts"
 	]

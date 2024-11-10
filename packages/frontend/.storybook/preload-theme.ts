@@ -28,7 +28,7 @@ const keys = [
 	'd-cherry',
 	'd-ice',
 	'd-u0',
-]
+];
 
 await Promise.all(keys.map((key) => readFile(new URL(`../src/themes/${key}.json5`, import.meta.url), 'utf8'))).then((sources) => {
 	writeFile(

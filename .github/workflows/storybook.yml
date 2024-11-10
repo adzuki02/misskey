@@ -69,15 +69,7 @@ jobs:
       if: github.event_name == 'push' && github.ref != 'refs/heads/master'
       id: chromatic_push
       run: |
-        DIFF="${{ github.event.before }} HEAD"
-        if [ "$DIFF" = "0000000000000000000000000000000000000000 HEAD" ]; then
-          DIFF="HEAD"
-        fi
-        CHROMATIC_PARAMETER="$(node packages/frontend/.storybook/changes.js $(git diff-tree --no-commit-id --name-only -r $(echo "$DIFF") | xargs))"
-        if [ "$CHROMATIC_PARAMETER" = " --skip" ]; then
-          echo "skip=true" >> $GITHUB_OUTPUT
-        fi
-        if pnpm --filter frontend run chromatic -d storybook-static $(echo "$CHROMATIC_PARAMETER"); then
+        if pnpm --filter frontend run chromatic -d storybook-static; then
           echo "success=true" >> $GITHUB_OUTPUT
         else
           echo "success=false" >> $GITHUB_OUTPUT
@@ -88,19 +80,11 @@ jobs:
       if: github.event_name == 'pull_request'
       id: chromatic_pull_request
       run: |
-        DIFF="${{ steps.rev.outputs.base }} HEAD"
-        if [ "$DIFF" = "0000000000000000000000000000000000000000 HEAD" ]; then
-          DIFF="HEAD"
-        fi
-        CHROMATIC_PARAMETER="$(node packages/frontend/.storybook/changes.js $(git diff-tree --no-commit-id --name-only -r $(echo "$DIFF") | xargs))"
-        if [ "$CHROMATIC_PARAMETER" = " --skip" ]; then
-          echo "skip=true" >> $GITHUB_OUTPUT
-        fi
         BRANCH="${{ github.event.pull_request.head.user.login }}:$HEAD_REF"
         if [ "$BRANCH" = "adzukimame:$HEAD_REF" ]; then
           BRANCH="$HEAD_REF"
         fi
-        pnpm --filter frontend run chromatic --exit-once-uploaded -d storybook-static --branch-name "$BRANCH" $(echo "$CHROMATIC_PARAMETER")
+        pnpm --filter frontend run chromatic --exit-once-uploaded -d storybook-static --branch-name "$BRANCH"
       env:
         HEAD_REF: ${{ github.event.pull_request.head.ref }}
         CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
