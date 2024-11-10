@@ -7,7 +7,6 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { StorybookConfig } from '@storybook/vue3-vite';
 import { type Plugin, mergeConfig } from 'vite';
-import turbosnap from 'vite-plugin-turbosnap';
 
 const _dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -33,16 +32,8 @@ const config: StorybookConfig = {
 		if (~replacePluginForIsChromatic) {
 			config.plugins?.splice(replacePluginForIsChromatic, 1);
 		}
+
 		return mergeConfig(config, {
-			plugins: [
-				{
-					// XXX: https://github.com/IanVS/vite-plugin-turbosnap/issues/8
-					...(turbosnap as any as typeof turbosnap['default'])({
-						rootDir: config.root ?? process.cwd(),
-					}),
-					name: 'fake-turbosnap',
-				},
-			],
 			build: {
 				target: [
 					'chrome108',

@@ -846,9 +846,6 @@ importers:
       vite:
         specifier: 5.4.8
         version: 5.4.8(@types/node@20.14.12)(sass@1.79.3)(terser@5.33.0)
-      vite-plugin-turbosnap:
-        specifier: 1.0.3
-        version: 1.0.3
       vitest:
         specifier: 1.6.0
         version: 1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.8)(utf-8-validate@6.0.4))(sass@1.79.3)(terser@5.33.0)
@@ -9953,9 +9950,6 @@ packages:
     resolution: {integrity: sha512-de6HJgzC+TFzOu0NTC4RAIsyf/DY/ibWDYQUcuEA84EMHhcefTUGkjFHKKEJhQN4A+6I0u++kr3l36ZF2d7XRw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
-
-  vite-plugin-turbosnap@1.0.3:
-    resolution: {integrity: sha512-p4D8CFVhZS412SyQX125qxyzOgIFouwOcvjZWk6bQbNPR1wtaEzFT6jZxAjf1dejlGqa6fqHcuCvQea6EWUkUA==}
 
   vite@5.4.8:
     resolution: {integrity: sha512-FqrItQ4DT1NC4zCUqMB4c4AZORMKIa0m8/URVCZ77OZ/QSNeJ54bU1vrFADbDsuwfIPcgknRkmqakQcgnL4GiQ==}
@@ -21194,8 +21188,6 @@ snapshots:
       - sugarss
       - supports-color
       - terser
-
-  vite-plugin-turbosnap@1.0.3: {}
 
   vite@5.4.8(@types/node@20.14.12)(sass@1.79.3)(terser@5.33.0):
     dependencies:
