@@ -13,7 +13,7 @@ import turbosnap from 'vite-plugin-turbosnap';
 const require = createRequire(import.meta.url);
 const _dirname = fileURLToPath(new URL('.', import.meta.url));
 
-const config = {
+const config: StorybookConfig = {
 	stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
 	staticDirs: [{ from: '../assets', to: '/client-assets' }],
 	addons: [
@@ -21,7 +21,6 @@ const config = {
 		getAbsolutePath('@storybook/addon-interactions'),
 		getAbsolutePath('@storybook/addon-links'),
 		getAbsolutePath('@storybook/addon-storysource'),
-		getAbsolutePath('@storybook/addon-mdx-gfm'),
 		resolve(_dirname, '../node_modules/storybook-addon-misskey-theme'),
 	],
 	framework: {
@@ -58,7 +57,8 @@ const config = {
 			},
 		});
 	},
-} satisfies StorybookConfig;
+};
+
 export default config;
 
 function getAbsolutePath(value: string): string {
