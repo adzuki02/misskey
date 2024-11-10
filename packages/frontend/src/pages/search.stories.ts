@@ -1,19 +1,17 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'pages/search',
-	component: search_,
-} satisfies Meta<typeof search_>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { StoryObj } from '@storybook/vue3';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'pages/search',
+	component: search_,
+} satisfies Meta<typeof search_>;
+
+export default meta;
+
 import { HttpResponse, http } from 'msw';
 import search_ from './search.vue';
 import { userDetailed } from '@/../.storybook/fakes.js';

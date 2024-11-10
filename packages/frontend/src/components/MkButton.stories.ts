@@ -1,23 +1,20 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/MkButton',
-	component: MkButton,
-} satisfies Meta<typeof MkButton>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/MkButton',
+	component: MkButton,
+} satisfies Meta<typeof MkButton>;
+
+export default meta;
+
 import { action } from '@storybook/addon-actions';
-import { StoryObj } from '@storybook/vue3';
 import MkButton from './MkButton.vue';
+
 export const Default = {
 	render(args) {
 		return {
@@ -49,6 +46,7 @@ export const Default = {
 		layout: 'centered',
 	},
 } satisfies StoryObj<typeof MkButton>;
+
 export const Primary = {
 	...Default,
 	args: {
@@ -56,6 +54,7 @@ export const Primary = {
 		primary: true,
 	},
 } satisfies StoryObj<typeof MkButton>;
+
 export const Gradate = {
 	...Default,
 	args: {
@@ -63,6 +62,7 @@ export const Gradate = {
 		gradate: true,
 	},
 } satisfies StoryObj<typeof MkButton>;
+
 export const Rounded = {
 	...Default,
 	args: {
@@ -70,6 +70,7 @@ export const Rounded = {
 		rounded: true,
 	},
 } satisfies StoryObj<typeof MkButton>;
+
 export const Danger = {
 	...Default,
 	args: {
@@ -77,6 +78,7 @@ export const Danger = {
 		danger: true,
 	},
 } satisfies StoryObj<typeof MkButton>;
+
 export const Small = {
 	...Default,
 	args: {
@@ -84,6 +86,7 @@ export const Small = {
 		small: true,
 	},
 } satisfies StoryObj<typeof MkButton>;
+
 export const Large = {
 	...Default,
 	args: {

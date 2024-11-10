@@ -1,24 +1,22 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'pages/user/home',
-	component: home_,
-} satisfies Meta<typeof home_>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { StoryObj } from '@storybook/vue3';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'pages/user/home',
+	component: home_,
+} satisfies Meta<typeof home_>;
+
+export default meta;
+
 import { HttpResponse, http } from 'msw';
-import { userDetailed } from '../../../.storybook/fakes.js';
-import { commonHandlers } from '../../../.storybook/mocks.js';
 import home_ from './home.vue';
+import { userDetailed } from '@/../.storybook/fakes.js';
+import { commonHandlers } from '@/../.storybook/mocks.js';
+
 export const Default = {
 	render(args) {
 		return {

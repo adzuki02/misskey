@@ -1,23 +1,22 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'pages/admin/overview/ap-requests',
-	component: overview_ap_requests,
-} satisfies Meta<typeof overview_ap_requests>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { StoryObj } from '@storybook/vue3';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'pages/admin/overview/ap-requests',
+	component: overview_ap_requests,
+} satisfies Meta<typeof overview_ap_requests>;
+
+export default meta;
+
 import { http, HttpResponse } from 'msw';
 import { action } from '@storybook/addon-actions';
-import { commonHandlers } from '../../../.storybook/mocks.js';
 import overview_ap_requests from './overview.ap-requests.vue';
+import { commonHandlers } from '@/../.storybook/mocks.js';
+
 export const Default = {
 	render(args) {
 		return {

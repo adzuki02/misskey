@@ -1,23 +1,20 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/MkColorInput',
-	component: MkColorInput,
-} satisfies Meta<typeof MkColorInput>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-import { StoryObj } from '@storybook/vue3';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/MkColorInput',
+	component: MkColorInput,
+} satisfies Meta<typeof MkColorInput>;
+
+export default meta;
+
 import { action } from '@storybook/addon-actions';
 import MkColorInput from './MkColorInput.vue';
+
 export const Default = {
 	render(args) {
 		return {

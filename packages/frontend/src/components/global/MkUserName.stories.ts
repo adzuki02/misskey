@@ -1,23 +1,21 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/global/MkUserName',
-	component: MkUserName,
-} satisfies Meta<typeof MkUserName>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/global/MkUserName',
+	component: MkUserName,
+} satisfies Meta<typeof MkUserName>;
+
+export default meta;
+
 import { expect } from '@storybook/test';
-import { StoryObj } from '@storybook/vue3';
-import { userDetailed } from '../../../.storybook/fakes.js';
 import MkUserName from './MkUserName.vue';
+import { userDetailed } from '@/../.storybook/fakes.js';
+
 export const Default = {
 	render(args) {
 		return {
@@ -51,6 +49,7 @@ export const Default = {
 		layout: 'centered',
 	},
 } satisfies StoryObj<typeof MkUserName>;
+
 export const Anonymous = {
 	...Default,
 	async play({ canvasElement }) {
@@ -64,6 +63,7 @@ export const Anonymous = {
 		},
 	},
 } satisfies StoryObj<typeof MkUserName>;
+
 export const Wrap = {
 	...Default,
 	args: {

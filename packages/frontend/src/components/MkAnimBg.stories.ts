@@ -1,13 +1,19 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta, StoryObj } from '@storybook/vue3';
-import MkAnimBg from './MkAnimBg.vue';
+/*
+ * SPDX-FileCopyrightText: syuilo and misskey-project
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+import { Meta, type StoryObj } from '@storybook/vue3';
+
 const meta = {
 	title: 'components/MkAnimBg',
 	component: MkAnimBg,
 } satisfies Meta<typeof MkAnimBg>;
+
+export default meta;
+
+import MkAnimBg from './MkAnimBg.vue';
+
 export const Default = {
 	render(args) {
 		return {
@@ -33,4 +39,3 @@ export const Default = {
 		layout: 'centered',
 	},
 } satisfies StoryObj<typeof MkAnimBg>;
-export default meta;

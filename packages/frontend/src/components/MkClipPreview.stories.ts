@@ -1,23 +1,20 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/MkClipPreview',
-	component: MkClipPreview,
-} satisfies Meta<typeof MkClipPreview>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-import { StoryObj } from '@storybook/vue3';
-import { clip } from '../../.storybook/fakes.js';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/MkClipPreview',
+	component: MkClipPreview,
+} satisfies Meta<typeof MkClipPreview>;
+
+export default meta;
+
 import MkClipPreview from './MkClipPreview.vue';
+import { clip } from '@/../.storybook/fakes.js';
+
 export const Default = {
 	render(args) {
 		return {

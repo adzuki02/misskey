@@ -1,25 +1,22 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/MkInstanceCardMini',
-	component: MkInstanceCardMini,
-} satisfies Meta<typeof MkInstanceCardMini>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { StoryObj } from '@storybook/vue3';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/MkInstanceCardMini',
+	component: MkInstanceCardMini,
+} satisfies Meta<typeof MkInstanceCardMini>;
+
+export default meta;
+
 import { HttpResponse, http } from 'msw';
-import { federationInstance } from '../../.storybook/fakes.js';
-import { commonHandlers } from '../../.storybook/mocks.js';
-import { getChartResolver } from '../../.storybook/charts.js';
 import MkInstanceCardMini from './MkInstanceCardMini.vue';
+import { federationInstance } from '@/../.storybook/fakes.js';
+import { commonHandlers } from '@/../.storybook/mocks.js';
+import { getChartResolver } from '@/../.storybook/charts.js';
 
 export const Default = {
 	render(args) {

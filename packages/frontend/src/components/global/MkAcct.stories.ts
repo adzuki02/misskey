@@ -1,22 +1,20 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/global/MkAcct',
-	component: MkAcct,
-} satisfies Meta<typeof MkAcct>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { StoryObj } from '@storybook/vue3';
-import { userDetailed } from '../../../.storybook/fakes.js';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/global/MkAcct',
+	component: MkAcct,
+} satisfies Meta<typeof MkAcct>;
+
+export default meta;
+
 import MkAcct from './MkAcct.vue';
+import { userDetailed } from '@/../.storybook/fakes.js';
+
 export const Default = {
 	render(args) {
 		return {
@@ -48,6 +46,7 @@ export const Default = {
 		layout: 'centered',
 	},
 } satisfies StoryObj<typeof MkAcct>;
+
 export const Detail = {
 	...Default,
 	args: {
@@ -56,6 +55,7 @@ export const Detail = {
 		detail: true,
 	},
 } satisfies StoryObj<typeof MkAcct>;
+
 export const Long = {
 	...Default,
 	args: {
@@ -72,6 +72,7 @@ export const Long = {
 		}),
 	],
 } satisfies StoryObj<typeof MkAcct>;
+
 export const VeryLong = {
 	...Default,
 	args: {

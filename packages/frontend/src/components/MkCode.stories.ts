@@ -1,28 +1,26 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/MkCode',
-	component: MkCode,
-} satisfies Meta<typeof MkCode>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-import { StoryObj } from '@storybook/vue3';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/MkCode',
+	component: MkCode,
+} satisfies Meta<typeof MkCode>;
+
+export default meta;
+
 import MkCode from './MkCode.vue';
+
 const code = `for (let i, 100) {
 	<: if (i % 15 == 0) "FizzBuzz"
 		elif (i % 3 == 0) "Fizz"
 		elif (i % 5 == 0) "Buzz"
 		else i
 }`;
+
 export const Default = {
 	render(args) {
 		return {

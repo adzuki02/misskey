@@ -100,4 +100,16 @@ export default [
 			'vue/multi-word-component-names': 'off',
 		},
 	},
+	{
+		files: ['src/**/*.stories.ts'],
+		rules: {
+			'@typescript-eslint/no-unused-vars': [
+				'warn',
+				{
+					'varsIgnorePattern': '^StoryObj$',
+				},
+			],
+			'import/no-default-export': 'off',
+		},
+	},
 ];

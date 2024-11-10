@@ -1,21 +1,19 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/global/MkCondensedLine',
-	component: MkCondensedLine,
-} satisfies Meta<typeof MkCondensedLine>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { StoryObj } from '@storybook/vue3';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/global/MkCondensedLine',
+	component: MkCondensedLine,
+} satisfies Meta<typeof MkCondensedLine>;
+
+export default meta;
+
 import MkCondensedLine from './MkCondensedLine.vue';
+
 export const Default = {
 	render(args) {
 		return {
@@ -45,6 +43,7 @@ export const Default = {
 		layout: 'centered',
 	},
 } satisfies StoryObj<typeof MkCondensedLine>;
+
 export const ContainerIs100px = {
 	...Default,
 	decorators: [

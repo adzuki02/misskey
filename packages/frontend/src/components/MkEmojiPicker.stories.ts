@@ -1,23 +1,22 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/MkEmojiPicker',
-	component: MkEmojiPicker,
-} satisfies Meta<typeof MkEmojiPicker>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/MkEmojiPicker',
+	component: MkEmojiPicker,
+} satisfies Meta<typeof MkEmojiPicker>;
+
+export default meta;
+
 import { action } from '@storybook/addon-actions';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
-import { StoryObj } from '@storybook/vue3';
-import { i18n } from '@/i18n.js';
 import MkEmojiPicker from './MkEmojiPicker.vue';
+import { i18n } from '@/i18n.js';
+
 export const Default = {
 	render(args) {
 		return {

@@ -1,22 +1,20 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/global/MkLoading',
-	component: MkLoading,
-} satisfies Meta<typeof MkLoading>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { StoryObj } from '@storybook/vue3';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/global/MkLoading',
+	component: MkLoading,
+} satisfies Meta<typeof MkLoading>;
+
+export default meta;
+
 import isChromatic from 'chromatic/isChromatic';
 import MkLoading from './MkLoading.vue';
+
 export const Default = {
 	render(args) {
 		return {
@@ -45,6 +43,7 @@ export const Default = {
 		layout: 'centered',
 	},
 } satisfies StoryObj<typeof MkLoading>;
+
 export const Inline = {
 	...Default,
 	args: {
@@ -52,6 +51,7 @@ export const Inline = {
 		inline: true,
 	},
 } satisfies StoryObj<typeof MkLoading>;
+
 export const Colored = {
 	...Default,
 	args: {
@@ -59,6 +59,7 @@ export const Colored = {
 		colored: true,
 	},
 } satisfies StoryObj<typeof MkLoading>;
+
 export const Mini = {
 	...Default,
 	args: {
@@ -66,6 +67,7 @@ export const Mini = {
 		mini: true,
 	},
 } satisfies StoryObj<typeof MkLoading>;
+
 export const Em = {
 	...Default,
 	args: {

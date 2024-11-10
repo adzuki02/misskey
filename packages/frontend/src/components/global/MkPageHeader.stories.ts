@@ -1,22 +1,20 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/global/MkPageHeader',
-	component: MkPageHeader,
-} satisfies Meta<typeof MkPageHeader>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/global/MkPageHeader',
+	component: MkPageHeader,
+} satisfies Meta<typeof MkPageHeader>;
+
+export default meta;
+
 import { waitFor } from '@storybook/test';
-import { StoryObj } from '@storybook/vue3';
 import MkPageHeader from './MkPageHeader.vue';
+
 export const Empty = {
 	render(args) {
 		return {
@@ -49,6 +47,7 @@ export const Empty = {
 		layout: 'centered',
 	},
 } satisfies StoryObj<typeof MkPageHeader>;
+
 export const OneTab = {
 	...Empty,
 	args: {
@@ -62,6 +61,7 @@ export const OneTab = {
 		],
 	},
 } satisfies StoryObj<typeof MkPageHeader>;
+
 export const Icon = {
 	...OneTab,
 	args: {
@@ -74,6 +74,7 @@ export const Icon = {
 		],
 	},
 } satisfies StoryObj<typeof MkPageHeader>;
+
 export const IconOnly = {
 	...Icon,
 	args: {
@@ -87,6 +88,7 @@ export const IconOnly = {
 		],
 	},
 } satisfies StoryObj<typeof MkPageHeader>;
+
 export const SomeTabs = {
 	...Empty,
 	args: {

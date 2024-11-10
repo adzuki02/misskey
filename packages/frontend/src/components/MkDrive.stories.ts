@@ -1,28 +1,24 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/MkDrive',
-	component: MkDrive,
-} satisfies Meta<typeof MkDrive>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/MkDrive',
+	component: MkDrive,
+} satisfies Meta<typeof MkDrive>;
+
+export default meta;
+
 import { action } from '@storybook/addon-actions';
-import { StoryObj } from '@storybook/vue3';
 import { http, HttpResponse } from 'msw';
-import { file, folder } from '../../.storybook/fakes.js';
-import { commonHandlers } from '../../.storybook/mocks.js';
 import MkDrive from './MkDrive.vue';
-import type {
-	DriveFoldersCreateRequest,
-	DriveFoldersUpdateRequest,
-} from 'misskey-js/entities.js';
+import type {	DriveFoldersCreateRequest, DriveFoldersUpdateRequest } from 'misskey-js/entities.js';
+import { file, folder } from '@/../.storybook/fakes.js';
+import { commonHandlers } from '@/../.storybook/mocks.js';
+
 export const Default = {
 	render(args) {
 		return {

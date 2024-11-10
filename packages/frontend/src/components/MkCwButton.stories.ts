@@ -1,25 +1,21 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/MkCwButton',
-	component: MkCwButton,
-} satisfies Meta<typeof MkCwButton>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-import { StoryObj } from '@storybook/vue3';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/MkCwButton',
+	component: MkCwButton,
+} satisfies Meta<typeof MkCwButton>;
+
+export default meta;
+
 import { action } from '@storybook/addon-actions';
 import { expect, userEvent, within } from '@storybook/test';
-import { file } from '../../.storybook/fakes.js';
 import MkCwButton from './MkCwButton.vue';
+import { file } from '@/../.storybook/fakes.js';
 import { i18n } from '@/i18n.js';
 
 export const Default = {
@@ -76,6 +72,7 @@ export const Default = {
 		layout: 'centered',
 	},
 } satisfies StoryObj<typeof MkCwButton>;
+
 export const IncludesTextAndDriveFile = {
 	...Default,
 	args: {

@@ -1,22 +1,21 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/MkDrive/file',
-	component: MkDrive_file,
-} satisfies Meta<typeof MkDrive_file>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/MkDrive/file',
+	component: MkDrive_file,
+} satisfies Meta<typeof MkDrive_file>;
+
+export default meta;
+
 import { action } from '@storybook/addon-actions';
-import { StoryObj } from '@storybook/vue3';
 import MkDrive_file from './MkDrive.file.vue';
-import { file } from '../../.storybook/fakes.js';
+import { file } from '@/../.storybook/fakes.js';
+
 export const Default = {
 	render(args) {
 		return {

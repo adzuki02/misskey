@@ -1,13 +1,19 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta, StoryObj } from '@storybook/vue3';
-import MkSpacer from './MkSpacer.vue';
+/*
+ * SPDX-FileCopyrightText: syuilo and misskey-project
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+import { Meta, type StoryObj } from '@storybook/vue3';
+
 const meta = {
 	title: 'components/global/MkSpacer',
 	component: MkSpacer,
 } satisfies Meta<typeof MkSpacer>;
+
+export default meta;
+
+import MkSpacer from './MkSpacer.vue';
+
 export const Default = {
 	render(args) {
 		return {
@@ -33,4 +39,3 @@ export const Default = {
 		layout: 'centered',
 	},
 } satisfies StoryObj<typeof MkSpacer>;
-export default meta;

@@ -1,23 +1,22 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/MkDialog',
-	component: MkDialog,
-} satisfies Meta<typeof MkDialog>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/MkDialog',
+	component: MkDialog,
+} satisfies Meta<typeof MkDialog>;
+
+export default meta;
+
 import { action } from '@storybook/addon-actions';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
-import { StoryObj } from '@storybook/vue3';
-import { i18n } from '@/i18n.js';
 import MkDialog from './MkDialog.vue';
+import { i18n } from '@/i18n.js';
+
 const Base = {
 	render(args) {
 		return {
@@ -52,6 +51,7 @@ const Base = {
 		layout: 'centered',
 	},
 } satisfies StoryObj<typeof MkDialog>;
+
 export const Success = {
 	...Base,
 	args: {
@@ -59,6 +59,7 @@ export const Success = {
 		type: 'success',
 	},
 } satisfies StoryObj<typeof MkDialog>;
+
 export const Error = {
 	...Base,
 	args: {
@@ -66,6 +67,7 @@ export const Error = {
 		type: 'error',
 	},
 } satisfies StoryObj<typeof MkDialog>;
+
 export const Warning = {
 	...Base,
 	args: {
@@ -73,6 +75,7 @@ export const Warning = {
 		type: 'warning',
 	},
 } satisfies StoryObj<typeof MkDialog>;
+
 export const Info = {
 	...Base,
 	args: {
@@ -80,6 +83,7 @@ export const Info = {
 		type: 'info',
 	},
 } satisfies StoryObj<typeof MkDialog>;
+
 export const Question = {
 	...Base,
 	args: {
@@ -87,6 +91,7 @@ export const Question = {
 		type: 'question',
 	},
 } satisfies StoryObj<typeof MkDialog>;
+
 export const Waiting = {
 	...Base,
 	args: {
@@ -94,6 +99,7 @@ export const Waiting = {
 		type: 'waiting',
 	},
 } satisfies StoryObj<typeof MkDialog>;
+
 export const DialogWithActions = {
 	...Question,
 	args: {
@@ -116,6 +122,7 @@ export const DialogWithActions = {
 		],
 	},
 } satisfies StoryObj<typeof MkDialog>;
+
 export const DialogWithDangerActions = {
 	...Warning,
 	args: {
@@ -139,6 +146,7 @@ export const DialogWithDangerActions = {
 		],
 	},
 } satisfies StoryObj<typeof MkDialog>;
+
 export const DialogWithInput = {
 	...Question,
 	args: {

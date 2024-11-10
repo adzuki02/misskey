@@ -1,21 +1,20 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/MkFlashPreview',
-	component: MkFlashPreview,
-} satisfies Meta<typeof MkFlashPreview>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { StoryObj } from '@storybook/vue3';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/MkFlashPreview',
+	component: MkFlashPreview,
+} satisfies Meta<typeof MkFlashPreview>;
+
+export default meta;
+
 import MkFlashPreview from './MkFlashPreview.vue';
-import { flash } from './../../.storybook/fakes.js';
+import { flash } from '@/../.storybook/fakes.js';
+
 export const Public = {
 	render(args) {
 		return {
@@ -53,6 +52,7 @@ export const Public = {
 		}),
 	],
 } satisfies StoryObj<typeof MkFlashPreview>;
+
 export const Private = {
 	...Public,
 	args: {

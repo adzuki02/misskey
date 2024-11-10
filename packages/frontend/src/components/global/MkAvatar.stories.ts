@@ -1,22 +1,20 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/global/MkAvatar',
-	component: MkAvatar,
-} satisfies Meta<typeof MkAvatar>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { StoryObj } from '@storybook/vue3';
-import { userDetailed } from '../../../.storybook/fakes.js';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/global/MkAvatar',
+	component: MkAvatar,
+} satisfies Meta<typeof MkAvatar>;
+
+export default meta;
+
 import MkAvatar from './MkAvatar.vue';
+import { userDetailed } from '@/../.storybook/fakes.js';
+
 const common = {
 	render(args) {
 		return {
@@ -51,6 +49,7 @@ const common = {
 		layout: 'centered',
 	},
 } satisfies StoryObj<typeof MkAvatar>;
+
 export const ProfilePage = {
 	...common,
 	args: {
@@ -60,6 +59,7 @@ export const ProfilePage = {
 		indicator: true,
 	},
 } satisfies StoryObj<typeof MkAvatar>;
+
 export const ProfilePageCat = {
 	...ProfilePage,
 	args: {

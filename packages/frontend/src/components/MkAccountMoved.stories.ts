@@ -1,25 +1,23 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/MkAccountMoved',
-	component: MkAccountMoved,
-} satisfies Meta<typeof MkAccountMoved>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/MkAccountMoved',
+	component: MkAccountMoved,
+} satisfies Meta<typeof MkAccountMoved>;
+
+export default meta;
+
 import { action } from '@storybook/addon-actions';
-import { StoryObj } from '@storybook/vue3';
 import { HttpResponse, http } from 'msw';
-import { commonHandlers } from '../../.storybook/mocks.js';
-import { userDetailed } from '../../.storybook/fakes.js';
 import MkAccountMoved from './MkAccountMoved.vue';
+import { commonHandlers } from '@/../.storybook/mocks.js';
+import { userDetailed } from '@/../.storybook/fakes.js';
+
 export const Default = {
 	render(args) {
 		return {

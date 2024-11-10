@@ -1,23 +1,20 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/global/MkA',
-	component: MkA,
-} satisfies Meta<typeof MkA>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/global/MkA',
+	component: MkA,
+} satisfies Meta<typeof MkA>;
+
+export default meta;
+
 import { expect, userEvent, within } from '@storybook/test';
-import { StoryObj } from '@storybook/vue3';
 import MkA from './MkA.vue';
-import { tick } from '@/scripts/test-utils.js';
+
 export const Default = {
 	render(args) {
 		return {

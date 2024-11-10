@@ -1,21 +1,19 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/global/MkCustomEmoji',
-	component: MkCustomEmoji,
-} satisfies Meta<typeof MkCustomEmoji>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { StoryObj } from '@storybook/vue3';
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/global/MkCustomEmoji',
+	component: MkCustomEmoji,
+} satisfies Meta<typeof MkCustomEmoji>;
+
+export default meta;
+
 import MkCustomEmoji from './MkCustomEmoji.vue';
+
 export const Default = {
 	render(args) {
 		return {
@@ -45,6 +43,7 @@ export const Default = {
 		layout: 'centered',
 	},
 } satisfies StoryObj<typeof MkCustomEmoji>;
+
 export const Normal = {
 	...Default,
 	args: {
@@ -52,12 +51,14 @@ export const Normal = {
 		normal: true,
 	},
 } satisfies StoryObj<typeof MkCustomEmoji>;
+
 export const Missing = {
 	...Default,
 	args: {
 		name: Default.args.name,
 	},
 } satisfies StoryObj<typeof MkCustomEmoji>;
+
 export const ErrorToText = {
 	...Default,
 	args: {
@@ -65,6 +66,7 @@ export const ErrorToText = {
 		name: Default.args.name,
 	},
 } satisfies StoryObj<typeof MkCustomEmoji>;
+
 export const ErrorToImage = {
 	...Default,
 	args: {

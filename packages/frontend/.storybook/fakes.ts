@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { AISCRIPT_VERSION } from '@syuilo/aiscript';
 import type { entities } from 'misskey-js'
 
 export function channel(id = 'somechannelid', name = 'Some Channel', bannerUrl: string | null = 'https://github.com/misskey-dev/misskey/blob/master/packages/frontend/assets/fedi.jpg?raw=true'): entities.Channel {
@@ -80,7 +79,7 @@ export function file(isSensitive = false) {
 	};
 }
 
-const script = `/// @ ${AISCRIPT_VERSION}
+const script = `/// @ 0.19.0
 
 var name = ""
 

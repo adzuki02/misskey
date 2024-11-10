@@ -1,28 +1,26 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/order */
-import { Meta } from '@storybook/vue3';
-const meta = {
-	title: 'components/MkAutocomplete',
-	component: MkAutocomplete,
-} satisfies Meta<typeof MkAutocomplete>;
-export default meta;
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { Meta, type StoryObj } from '@storybook/vue3';
+
+const meta = {
+	title: 'components/MkAutocomplete',
+	component: MkAutocomplete,
+} satisfies Meta<typeof MkAutocomplete>;
+
+export default meta;
+
 import { action } from '@storybook/addon-actions';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
-import { StoryObj } from '@storybook/vue3';
 import { HttpResponse, http } from 'msw';
-import { userDetailed } from '../../.storybook/fakes.js';
-import { commonHandlers } from '../../.storybook/mocks.js';
 import MkAutocomplete from './MkAutocomplete.vue';
 import MkInput from './MkInput.vue';
+import { userDetailed } from '@/../.storybook/fakes.js';
+import { commonHandlers } from '@/../.storybook/mocks.js';
 import { tick } from '@/scripts/test-utils.js';
+
 const common = {
 	render(args) {
 		return {
@@ -87,6 +85,7 @@ const common = {
 		},
 	},
 } satisfies StoryObj<typeof MkAutocomplete>;
+
 export const User = {
 	...common,
 	args: {
@@ -123,6 +122,7 @@ export const User = {
 		},
 	},
 };
+
 export const Hashtag = {
 	...common,
 	args: {
@@ -156,6 +156,7 @@ export const Hashtag = {
 		},
 	},
 };
+
 export const Emoji = {
 	...common,
 	args: {
@@ -178,6 +179,7 @@ export const Emoji = {
 		);
 	},
 } satisfies StoryObj<typeof MkAutocomplete>;
+
 export const MfmTag = {
 	...common,
 	args: {
