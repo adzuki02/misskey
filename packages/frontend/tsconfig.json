@@ -33,7 +33,7 @@
 		],
 		"types": [
 			"vite/client",
-			"vitest/importMeta",
+			"vitest/importMeta"
 		],
 		"lib": [
 			"esnext",
@@ -46,9 +46,5 @@
 	"include": [
 		"./**/*.ts",
 		"./**/*.vue"
-	],
-	"exclude": [
-		".storybook/**/*",
-		"src/**/*.stories.ts"
 	]
 }

@@ -10,9 +10,6 @@ import sharedConfig from '../shared/eslint.config.js';
 export default [
 	...sharedConfig,
 	{
-		ignores: ['src/**/*.stories.ts'],
-	},
-	{
 		files: ['src/**/*.vue'],
 		...pluginMisskey.configs.typescript,
 	},
