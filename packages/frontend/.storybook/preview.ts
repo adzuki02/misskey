@@ -19,7 +19,7 @@ const appInitialized = Symbol();
 let lastStory: string | null = null;
 let moduleInitialized = false;
 let unobserve = () => {};
-let misskeyOS = null;
+let misskeyOS: typeof import('../src/os.js') | null = null;
 
 function loadTheme(applyTheme: typeof import('../src/scripts/theme')['applyTheme']) {
 	unobserve();
@@ -33,11 +33,13 @@ function loadTheme(applyTheme: typeof import('../src/scripts/theme')['applyTheme
 		for (const entry of entries) {
 			if (entry.attributeName === 'data-misskey-theme') {
 				const target = entry.target as HTMLElement;
-				const theme = themes[target.dataset.misskeyTheme!];
-				if (theme) {
-					applyTheme(themes[target.dataset.misskeyTheme!]);
-				} else {
-					target.removeAttribute('style');
+				if (target.dataset.misskeyTheme !== undefined) {
+					const theme = themes[target.dataset.misskeyTheme];
+					if (theme) {
+						applyTheme(themes[target.dataset.misskeyTheme]);
+					} else {
+						target.removeAttribute('style');
+					}
 				}
 			}
 		}
@@ -58,10 +60,13 @@ function initLocalStorage() {
 	localStorage.setItem('locale', JSON.stringify(locale));
 }
 
+// msw
 initialize({
 	onUnhandledRequest,
 });
+
 initLocalStorage();
+
 queueMicrotask(() => {
 	Promise.all([
 		import('../src/components/index.js'),
@@ -89,7 +94,7 @@ queueMicrotask(() => {
 	});
 });
 
-const preview = {
+const preview: Preview = {
 	decorators: [
 		(Story, context) => {
 			if (lastStory === context.id) {
@@ -97,6 +102,7 @@ const preview = {
 			} else {
 				lastStory = context.id;
 				const channel = addons.getChannel();
+				// @ts-expect-error IndexedDBは無いかもしれない
 				const resetIndexedDBPromise = globalThis.indexedDB?.databases
 					? indexedDB.databases().then((r) => {
 							for (var i = 0; i < r.length; i++) {
@@ -105,7 +111,6 @@ const preview = {
 						}).catch(() => {})
 					: Promise.resolve();
 				const resetDefaultStorePromise = import('../src/store').then(({ defaultStore }) => {
-					// @ts-expect-error
 					defaultStore.init();
 				}).catch(() => {});
 				Promise.all([resetIndexedDBPromise, resetDefaultStorePromise]).then(() => {
@@ -127,7 +132,7 @@ const preview = {
 				setup() {
 					return {
 						context,
-						popups: misskeyOS.popups,
+						popups: misskeyOS!.popups,
 					};
 				},
 				template:
@@ -145,6 +150,6 @@ const preview = {
 			handlers: commonHandlers,
 		},
 	},
-} satisfies Preview;
+};
 
 export default preview;
