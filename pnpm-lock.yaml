@@ -744,9 +744,6 @@ importers:
       eventemitter3:
         specifier: 5.0.1
         version: 5.0.1
-      fast-glob:
-        specifier: 3.3.2
-        version: 3.3.2
       happy-dom:
         specifier: 10.0.3
         version: 10.0.3
@@ -783,9 +780,6 @@ importers:
       photoswipe:
         specifier: 5.4.4
         version: 5.4.4
-      prettier:
-        specifier: 3.3.3
-        version: 3.3.3
       punycode:
         specifier: 2.3.1
         version: 2.3.1
