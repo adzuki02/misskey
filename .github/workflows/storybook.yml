@@ -3,15 +3,10 @@ name: Storybook
 on:
   push:
     branches:
-      - master
-      - develop
       - develop-mame
   pull_request:
-    branches-ignore:
-      # Since pull requests targets master mostly is the "develop" branch.
-      # Storybook CI is checked on the "push" event of "develop" branch so it would cause a duplicate build.
-      # This is a waste of chromatic build quota, so we don't run storybook CI on pull requests targets master.
-      - master
+    branches:
+      - develop-mame
 
 permissions: {}
 
@@ -61,45 +56,13 @@ jobs:
     - name: Build Storybook
       run: pnpm --filter frontend run build-storybook
     - name: Publish to Chromatic
-      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-      run: pnpm --filter frontend run chromatic --exit-once-uploaded -d storybook-static
-      env:
-        CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-    - name: Publish to Chromatic
-      if: github.event_name == 'push' && github.ref != 'refs/heads/master'
-      id: chromatic_push
-      run: |
-        if pnpm --filter frontend run chromatic -d storybook-static; then
-          echo "success=true" >> $GITHUB_OUTPUT
-        else
-          echo "success=false" >> $GITHUB_OUTPUT
-        fi
-      env:
-        CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-    - name: Publish to Chromatic
-      if: github.event_name == 'pull_request'
-      id: chromatic_pull_request
-      run: |
-        BRANCH="${{ github.event.pull_request.head.user.login }}:$HEAD_REF"
-        if [ "$BRANCH" = "adzukimame:$HEAD_REF" ]; then
-          BRANCH="$HEAD_REF"
-        fi
-        pnpm --filter frontend run chromatic --exit-once-uploaded -d storybook-static --branch-name "$BRANCH"
-      env:
-        HEAD_REF: ${{ github.event.pull_request.head.ref }}
-        CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-    - name: Notify that Chromatic detects changes
-      uses: actions/github-script@v7.0.1
-      if: github.event_name == 'push' && steps.chromatic_push.outputs.success == 'false'
+      uses: chromaui/action@v11.10.4
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          github.rest.repos.createCommitComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            commit_sha: context.sha,
-            body: 'Chromatic detects changes. Please [review the changes on Chromatic](https://www.chromatic.com/builds?appId=6428f7d7b962f0b79f97d6e4).'
-          })
+        projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        onlyChanged: true
+        workingDir: packages/frontend
+        storybookBaseDir: packages/frontend
+        storybookBuildDir: storybook-static
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
