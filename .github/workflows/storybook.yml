@@ -60,6 +60,7 @@ jobs:
       with:
         projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
         onlyChanged: true
+        exitOnceUploaded: true
         workingDir: packages/frontend
         storybookBaseDir: packages/frontend
         storybookBuildDir: storybook-static
