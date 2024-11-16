@@ -1088,6 +1088,8 @@ enableChartsForFederatedInstances: "リモートサーバーのチャートを�
 showClipButtonInNoteFooter: "ノートのアクションにクリップを追加"
 reactionsDisplaySize: "リアクションの表示サイズ"
 limitWidthOfReaction: "リアクションの最大横幅を制限し、縮小して表示する"
+hideReactionsViewerOnTimeline: "タイムラインではリアクションを表示しない"
+hideReactionsCount: "リアクションの件数を表示しない"
 noteIdOrUrl: "ノートIDまたはURL"
 video: "動画"
 videos: "動画"

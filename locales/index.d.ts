@@ -4369,6 +4369,14 @@ export interface Locale extends ILocale {
      */
     "limitWidthOfReaction": string;
     /**
+     * タイムラインではリアクションを表示しない
+     */
+    "hideReactionsViewerOnTimeline": string;
+    /**
+     * リアクションの件数を表示しない
+     */
+    "hideReactionsCount": string;
+    /**
      * ノートIDまたはURL
      */
     "noteIdOrUrl": string;

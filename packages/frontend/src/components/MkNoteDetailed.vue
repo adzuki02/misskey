@@ -137,7 +137,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i v-else-if="appearNote.myReaction != null" class="ti ti-minus" style="color: var(--accent);"></i>
 				<i v-else-if="appearNote.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
 				<i v-else class="ti ti-plus"></i>
-				<p v-if="appearNote.reactionAcceptance === 'likeOnly' && appearNote.reactions['❤'] > 0" :class="$style.noteFooterButtonCount">{{ number(appearNote.reactions['❤']) }}</p>
+				<p v-if="appearNote.reactionAcceptance === 'likeOnly' && appearNote.reactions['❤'] > 0 && !defaultStore.state.hideReactionsCount" :class="$style.noteFooterButtonCount">{{ number(appearNote.reactions['❤']) }}</p>
 			</button>
 			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" class="_button" :class="$style.noteFooterButton" @mousedown.prevent="clip()">
 				<i class="ti ti-paperclip"></i>
@@ -174,7 +174,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.reactionTabs">
 				<button v-for="reaction in Object.keys(appearNote.reactions)" :key="reaction" :class="[$style.reactionTab, { [$style.reactionTabActive]: reactionTabType === reaction }]" class="_button" @click="reactionTabType = reaction">
 					<MkReactionIcon :reaction="reaction"/>
-					<span style="margin-left: 4px;">{{ appearNote.reactions[reaction] }}</span>
+					<span v-if="!defaultStore.state.hideReactionsCount" style="margin-left: 4px;">{{ appearNote.reactions[reaction] }}</span>
 				</button>
 			</div>
 			<MkPagination v-if="reactionTabType" :key="reactionTabType" :pagination="reactionsPagination" :disableAutoLoad="true">
@@ -467,7 +467,14 @@ function toggleReact() {
 	if (appearNote.value.myReaction == null) {
 		react();
 	} else {
-		undoReact(appearNote.value);
+		os.confirm({
+			type: 'warning',
+			text: i18n.ts.cancelReactionConfirm,
+		}).then(({ canceled }) => {
+			if (!canceled) {
+				undoReact(appearNote.value);
+			}
+		});
 	}
 }
 

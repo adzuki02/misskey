@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@contextmenu.prevent.stop="menu"
 >
 	<MkReactionIcon :class="defaultStore.state.limitWidthOfReaction ? $style.limitWidth : ''" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]"/>
-	<span :class="$style.count">{{ count }}</span>
+	<span v-if="!defaultStore.state.hideReactionsCount" :class="$style.count">{{ count }}</span>
 </button>
 </template>
 
