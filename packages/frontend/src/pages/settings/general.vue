@@ -59,6 +59,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkRadios>
 				<MkSwitch v-model="limitWidthOfReaction">{{ i18n.ts.limitWidthOfReaction }}</MkSwitch>
 				<MkSwitch v-model="hideReactionsViewerOnTimeline">{{ i18n.ts.hideReactionsViewerOnTimeline }}</MkSwitch>
+				<MkSwitch v-model="hideReactionsCount">{{ i18n.ts.hideReactionsCount }}</MkSwitch>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
@@ -269,6 +270,7 @@ const showClipButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showC
 const reactionsDisplaySize = computed(defaultStore.makeGetterSetter('reactionsDisplaySize'));
 const limitWidthOfReaction = computed(defaultStore.makeGetterSetter('limitWidthOfReaction'));
 const hideReactionsViewerOnTimeline = computed(defaultStore.makeGetterSetter('hideReactionsViewerOnTimeline'));
+const hideReactionsCount = computed(defaultStore.makeGetterSetter('hideReactionsCount'));
 const collapseRenotes = computed(defaultStore.makeGetterSetter('collapseRenotes'));
 const reduceAnimation = computed(defaultStore.makeGetterSetter('animation', v => !v, v => !v));
 const useBlurEffectForModal = computed(defaultStore.makeGetterSetter('useBlurEffectForModal'));

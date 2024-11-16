@@ -4373,6 +4373,10 @@ export interface Locale extends ILocale {
      */
     "hideReactionsViewerOnTimeline": string;
     /**
+     * リアクションの件数を表示しない
+     */
+    "hideReactionsCount": string;
+    /**
      * ノートIDまたはURL
      */
     "noteIdOrUrl": string;

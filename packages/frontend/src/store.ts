@@ -301,6 +301,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	hideReactionsCount: {
+		where: 'device',
+		default: true,
+	},
 	devMode: {
 		where: 'device',
 		default: false,
