@@ -297,6 +297,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	hideReactionsViewerOnTimeline: {
+		where: 'device',
+		default: true,
+	},
 	devMode: {
 		where: 'device',
 		default: false,
