@@ -467,7 +467,14 @@ function toggleReact() {
 	if (appearNote.value.myReaction == null) {
 		react();
 	} else {
-		undoReact(appearNote.value);
+		os.confirm({
+			type: 'warning',
+			text: i18n.ts.cancelReactionConfirm,
+		}).then(({ canceled }) => {
+			if (!canceled) {
+				undoReact(appearNote.value);
+			}
+		});
 	}
 }
 
