@@ -229,39 +229,53 @@ export function getNoteMenu(props: {
 		});
 
 		menu = [
-			...(
-				props.currentClip?.userId === $i.id ? [{
+			//#region クリップ解除
+			props.currentClip?.userId === $i.id
+				? {
 					icon: 'ti ti-backspace',
 					text: i18n.ts.unclip,
 					danger: true,
 					action: unclip,
-				}, { type: 'divider' } as MenuDivider] : []
-			), {
+				} :
+				undefined,
+			props.currentClip?.userId === $i.id
+				? { type: 'divider' } as MenuDivider
+				: undefined,
+			//#endregion
+			{
 				icon: 'ti ti-info-circle',
 				text: i18n.ts.details,
 				action: openDetail,
-			}, {
+			},
+			{
 				icon: 'ti ti-copy',
 				text: i18n.ts.copyContent,
 				action: copyContent,
-			}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
-			, (appearNote.url || appearNote.uri) ? {
-				icon: 'ti ti-external-link',
-				text: i18n.ts.showOnRemote,
-				action: () => {
-					window.open(appearNote.url ?? appearNote.uri, '_blank', 'noopener');
-				},
-			} : undefined,
-			...(isSupportShare() ? [{
-				icon: 'ti ti-share',
-				text: i18n.ts.share,
-				action: share,
-			}] : []),
-			$i && $i.policies.canUseTranslator && instance.translatorAvailable ? {
-				icon: 'ti ti-language-hiragana',
-				text: i18n.ts.translate,
-				action: translate,
-			} : undefined,
+			},
+			getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink),
+			appearNote.url !== undefined || appearNote.uri !== undefined
+				? {
+					icon: 'ti ti-external-link',
+					text: i18n.ts.showOnRemote,
+					action: () => {
+						window.open(appearNote.url ?? appearNote.uri, '_blank', 'noopener');
+					},
+				}
+				: undefined,
+			isSupportShare()
+				? {
+					icon: 'ti ti-share',
+					text: i18n.ts.share,
+					action: share,
+				}
+				: undefined,
+			$i.policies.canUseTranslator && instance.translatorAvailable
+				? {
+					icon: 'ti ti-language-hiragana',
+					text: i18n.ts.translate,
+					action: translate,
+				}
+				: undefined,
 			{ type: 'divider' } as MenuDivider,
 			{
 				type: 'parent' as const,
@@ -269,24 +283,32 @@ export function getNoteMenu(props: {
 				text: i18n.ts.clip,
 				children: () => getNoteClipMenu(props),
 			},
-			statePromise.then(state => state.isMutedThread ? {
-				icon: 'ti ti-message-off',
-				text: i18n.ts.unmuteThread,
-				action: () => toggleThreadMute(false),
-			} : {
-				icon: 'ti ti-message-off',
-				text: i18n.ts.muteThread,
-				action: () => toggleThreadMute(true),
-			}),
-			appearNote.userId === $i.id ? ($i.pinnedNoteIds ?? []).includes(appearNote.id) ? {
-				icon: 'ti ti-pinned-off',
-				text: i18n.ts.unpin,
-				action: () => togglePin(false),
-			} : {
-				icon: 'ti ti-pin',
-				text: i18n.ts.pin,
-				action: () => togglePin(true),
-			} : undefined,
+			statePromise.then(state =>
+				state.isMutedThread
+					? {
+						icon: 'ti ti-message-off',
+						text: i18n.ts.unmuteThread,
+						action: () => toggleThreadMute(false),
+					}
+					: {
+						icon: 'ti ti-message-off',
+						text: i18n.ts.muteThread,
+						action: () => toggleThreadMute(true),
+					}
+			),
+			appearNote.userId === $i.id
+				? ($i.pinnedNoteIds ?? []).includes(appearNote.id)
+					? {
+						icon: 'ti ti-pinned-off',
+						text: i18n.ts.unpin,
+						action: () => togglePin(false),
+					}
+					: {
+						icon: 'ti ti-pin',
+						text: i18n.ts.pin,
+						action: () => togglePin(true),
+					}
+				: undefined,
 			{
 				type: 'parent' as const,
 				icon: 'ti ti-user',
@@ -298,96 +320,113 @@ export function getNoteMenu(props: {
 					return menu;
 				},
 			},
-			...(appearNote.channel && (appearNote.channel.userId === $i.id || $i.isModerator || $i.isAdmin) ? [
-				{ type: 'divider' } as MenuDivider,
-				{
+			//#region チャンネル
+			appearNote.channel && (appearNote.channel.userId === $i.id || $i.isModerator === true || $i.isAdmin === true)
+				? { type: 'divider' } as MenuDivider
+				: undefined,
+			appearNote.channel && (appearNote.channel.userId === $i.id || $i.isModerator === true || $i.isAdmin === true)
+				? {
 					type: 'parent' as const,
 					icon: 'ti ti-device-tv',
 					text: i18n.ts.channel,
 					children: async () => {
-						const channelChildMenu = [] as MenuItem[];
-
 						const channel = await misskeyApi('channels/show', { channelId: appearNote.channel!.id });
 
-						if (channel.pinnedNoteIds.includes(appearNote.id)) {
-							channelChildMenu.push({
-								icon: 'ti ti-pinned-off',
-								text: i18n.ts.unpin,
-								action: () => os.apiWithDialog('channels/update', {
-									channelId: appearNote.channel!.id,
-									pinnedNoteIds: channel.pinnedNoteIds.filter(id => id !== appearNote.id),
-								}),
-							});
-						} else {
-							channelChildMenu.push({
-								icon: 'ti ti-pin',
-								text: i18n.ts.pin,
-								action: () => os.apiWithDialog('channels/update', {
-									channelId: appearNote.channel!.id,
-									pinnedNoteIds: [...channel.pinnedNoteIds, appearNote.id],
-								}),
-							});
-						}
-						return channelChildMenu;
+						return [
+							channel.pinnedNoteIds.includes(appearNote.id)
+								? {
+									icon: 'ti ti-pinned-off',
+									text: i18n.ts.unpin,
+									action: () => os.apiWithDialog('channels/update', {
+										channelId: appearNote.channel!.id,
+										pinnedNoteIds: channel.pinnedNoteIds.filter(id => id !== appearNote.id),
+									}),
+								}
+								: {
+									icon: 'ti ti-pin',
+									text: i18n.ts.pin,
+									action: () => os.apiWithDialog('channels/update', {
+										channelId: appearNote.channel!.id,
+										pinnedNoteIds: [...channel.pinnedNoteIds, appearNote.id],
+									}),
+								},
+						];
 					},
-				},
-			]
-			: []
-			),
-			...(appearNote.userId === $i.id || $i.isModerator || $i.isAdmin ? [
-				{ type: 'divider' } as MenuDivider,
-				appearNote.userId === $i.id ? {
+				}
+				: undefined,
+			//#endregion
+			//#region 削除して編集・削除
+			appearNote.userId === $i.id || $i.isModerator === true || $i.isAdmin === true
+				? { type: 'divider' } as MenuDivider
+				: undefined,
+			appearNote.userId === $i.id
+				? {
 					icon: 'ti ti-edit',
 					text: i18n.ts.deleteAndEdit,
 					action: delEdit,
-				} : undefined,
-				{
+				}
+				: undefined,
+			appearNote.userId === $i.id || $i.isModerator === true || $i.isAdmin === true
+				? {
 					icon: 'ti ti-trash',
 					text: i18n.ts.delete,
 					danger: true,
 					action: del,
-				}]
-			: []
-			)]
-			.filter(x => x !== undefined);
+				}
+				: undefined,
+			//#endregion
+		];
 	} else {
-		menu = [{
-			icon: 'ti ti-info-circle',
-			text: i18n.ts.details,
-			action: openDetail,
-		}, {
-			icon: 'ti ti-copy',
-			text: i18n.ts.copyContent,
-			action: copyContent,
-		}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
-		, (appearNote.url || appearNote.uri) ? {
-			icon: 'ti ti-external-link',
-			text: i18n.ts.showOnRemote,
-			action: () => {
-				window.open(appearNote.url ?? appearNote.uri, '_blank', 'noopener');
+		menu = [
+			{
+				icon: 'ti ti-info-circle',
+				text: i18n.ts.details,
+				action: openDetail,
 			},
-		} : undefined]
-			.filter(x => x !== undefined);
+			{
+				icon: 'ti ti-copy',
+				text: i18n.ts.copyContent,
+				action: copyContent,
+			},
+			getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink),
+			appearNote.url !== undefined || appearNote.uri !== undefined
+				? {
+					icon: 'ti ti-external-link',
+					text: i18n.ts.showOnRemote,
+					action: () => {
+						window.open(appearNote.url ?? appearNote.uri, '_blank', 'noopener');
+					},
+				}
+				: undefined,
+		];
 	}
 
 	if (noteActions.length > 0) {
-		menu = menu.concat([{ type: 'divider' }, ...noteActions.map(action => ({
-			icon: 'ti ti-plug',
-			text: action.title,
-			action: () => {
-				action.handler(appearNote);
-			},
-		}))]);
+		menu = menu.concat([
+			{ type: 'divider' },
+			...noteActions.map(action => (
+				{
+					icon: 'ti ti-plug',
+					text: action.title,
+					action: () => {
+						action.handler(appearNote);
+					},
+				}
+			)),
+		]);
 	}
 
 	if (defaultStore.state.devMode) {
-		menu = menu.concat([{ type: 'divider' }, {
-			icon: 'ti ti-id',
-			text: i18n.ts.copyNoteId,
-			action: () => {
-				copyToClipboard(appearNote.id);
+		menu = menu.concat([
+			{ type: 'divider' },
+			{
+				icon: 'ti ti-id',
+				text: i18n.ts.copyNoteId,
+				action: () => {
+					copyToClipboard(appearNote.id);
+				},
 			},
-		}]);
+		]);
 	}
 
 	const cleanup = () => {
@@ -420,133 +459,145 @@ export function getRenoteMenu(props: {
 }) {
 	const appearNote = getAppearNote(props.note);
 
-	const channelRenoteItems: MenuItem[] = [];
-	const normalRenoteItems: MenuItem[] = [];
-	const normalExternalChannelRenoteItems: MenuItem[] = [];
+	const normalRenoteItems: MenuItem[] = !appearNote.channel || appearNote.channel.allowRenoteToExternal
+		? [
+			{
+				text: i18n.ts.renote,
+				icon: 'ti ti-repeat',
+				action: () => {
+					const el = props.renoteButton.value;
+					if (el) {
+						const rect = el.getBoundingClientRect();
+						const x = rect.left + (el.offsetWidth / 2);
+						const y = rect.top + (el.offsetHeight / 2);
+						const { dispose } = os.popup(MkRippleEffect, { x, y }, {
+							end: () => dispose(),
+						});
+					}
 
-	if (appearNote.channel) {
-		channelRenoteItems.push(...[{
-			text: i18n.ts.inChannelRenote,
-			icon: 'ti ti-repeat',
-			action: () => {
-				const el = props.renoteButton.value;
-				if (el) {
-					const rect = el.getBoundingClientRect();
-					const x = rect.left + (el.offsetWidth / 2);
-					const y = rect.top + (el.offsetHeight / 2);
-					const { dispose } = os.popup(MkRippleEffect, { x, y }, {
-						end: () => dispose(),
-					});
-				}
+					const configuredVisibility = defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility;
+					const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
 
-				if (!props.mock) {
-					misskeyApi('notes/create', {
-						renoteId: appearNote.id,
-						channelId: appearNote.channelId,
-					}).then(() => {
-						os.toast(i18n.ts.renoted);
-					});
-				}
+					let visibility = appearNote.visibility;
+					visibility = smallerVisibility(visibility, configuredVisibility);
+					if (appearNote.channel?.isSensitive) {
+						visibility = smallerVisibility(visibility, 'home');
+					}
+
+					if (!props.mock) {
+						misskeyApi('notes/create', {
+							localOnly,
+							visibility,
+							renoteId: appearNote.id,
+						}).then(() => {
+							os.toast(i18n.ts.renoted);
+						});
+					}
+				},
 			},
-		}, {
-			text: i18n.ts.inChannelQuote,
-			icon: 'ti ti-quote',
-			action: () => {
-				if (!props.mock) {
-					os.post({
-						renote: appearNote,
-						channel: appearNote.channel,
-					});
-				}
-			},
-		}]);
-	}
-
-	if (!appearNote.channel || appearNote.channel.allowRenoteToExternal) {
-		normalRenoteItems.push(...[{
-			text: i18n.ts.renote,
-			icon: 'ti ti-repeat',
-			action: () => {
-				const el = props.renoteButton.value;
-				if (el) {
-					const rect = el.getBoundingClientRect();
-					const x = rect.left + (el.offsetWidth / 2);
-					const y = rect.top + (el.offsetHeight / 2);
-					const { dispose } = os.popup(MkRippleEffect, { x, y }, {
-						end: () => dispose(),
-					});
-				}
-
-				const configuredVisibility = defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility;
-				const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
-
-				let visibility = appearNote.visibility;
-				visibility = smallerVisibility(visibility, configuredVisibility);
-				if (appearNote.channel?.isSensitive) {
-					visibility = smallerVisibility(visibility, 'home');
-				}
-
-				if (!props.mock) {
-					misskeyApi('notes/create', {
-						localOnly,
-						visibility,
-						renoteId: appearNote.id,
-					}).then(() => {
-						os.toast(i18n.ts.renoted);
-					});
-				}
-			},
-		}, (props.mock) ? undefined : {
-			text: i18n.ts.quote,
-			icon: 'ti ti-quote',
-			action: () => {
-				os.post({
-					renote: appearNote,
-				});
-			},
-		}]);
-
-		normalExternalChannelRenoteItems.push({
-			type: 'parent',
-			icon: 'ti ti-repeat',
-			text: appearNote.channel ? i18n.ts.renoteToOtherChannel : i18n.ts.renoteToChannel,
-			children: async () => {
-				const channels = await favoritedChannelsCache.fetch();
-				return channels.filter((channel) => {
-					if (!appearNote.channelId) return true;
-					return channel.id !== appearNote.channelId;
-				}).map((channel) => ({
-					text: channel.name,
+			(props.mock)
+				? undefined
+				: {
+					text: i18n.ts.quote,
+					icon: 'ti ti-quote',
 					action: () => {
-						const el = props.renoteButton.value;
-						if (el) {
-							const rect = el.getBoundingClientRect();
-							const x = rect.left + (el.offsetWidth / 2);
-							const y = rect.top + (el.offsetHeight / 2);
-							const { dispose } = os.popup(MkRippleEffect, { x, y }, {
-								end: () => dispose(),
-							});
-						}
-
-						if (!props.mock) {
-							misskeyApi('notes/create', {
-								renoteId: appearNote.id,
-								channelId: channel.id,
-							}).then(() => {
-								os.toast(i18n.tsx.renotedToX({ name: channel.name }));
-							});
-						}
+						os.post({
+							renote: appearNote,
+						});
 					},
-				}));
-			},
-		});
-	}
+				},
+		]
+		: [];
 
-	const renoteItems = [
+	const channelRenoteItems: MenuItem[] = appearNote.channel
+		? [
+			{
+				text: i18n.ts.inChannelRenote,
+				icon: 'ti ti-repeat',
+				action: () => {
+					const el = props.renoteButton.value;
+					if (el) {
+						const rect = el.getBoundingClientRect();
+						const x = rect.left + (el.offsetWidth / 2);
+						const y = rect.top + (el.offsetHeight / 2);
+						const { dispose } = os.popup(MkRippleEffect, { x, y }, {
+							end: () => dispose(),
+						});
+					}
+
+					if (!props.mock) {
+						misskeyApi('notes/create', {
+							renoteId: appearNote.id,
+							channelId: appearNote.channelId,
+						}).then(() => {
+							os.toast(i18n.ts.renoted);
+						});
+					}
+				},
+			},
+			{
+				text: i18n.ts.inChannelQuote,
+				icon: 'ti ti-quote',
+				action: () => {
+					if (!props.mock) {
+						os.post({
+							renote: appearNote,
+							channel: appearNote.channel,
+						});
+					}
+				},
+			},
+		]
+		: [];
+
+	const normalExternalChannelRenoteItems: MenuItem[] = !appearNote.channel || appearNote.channel.allowRenoteToExternal
+		? [
+			{
+				type: 'parent',
+				icon: 'ti ti-repeat',
+				text: appearNote.channel ? i18n.ts.renoteToOtherChannel : i18n.ts.renoteToChannel,
+				children: async () => {
+					const channels = await favoritedChannelsCache.fetch();
+
+					return channels.filter(
+						channel => !appearNote.channelId || channel.id !== appearNote.channelId
+					).map((channel) => ({
+						text: channel.name,
+						action: () => {
+							const el = props.renoteButton.value;
+							if (el) {
+								const rect = el.getBoundingClientRect();
+								const x = rect.left + (el.offsetWidth / 2);
+								const y = rect.top + (el.offsetHeight / 2);
+								const { dispose } = os.popup(MkRippleEffect, { x, y }, {
+									end: () => dispose(),
+								});
+							}
+
+							if (!props.mock) {
+								misskeyApi('notes/create', {
+									renoteId: appearNote.id,
+									channelId: channel.id,
+								}).then(() => {
+									os.toast(i18n.tsx.renotedToX({ name: channel.name }));
+								});
+							}
+						},
+					}));
+				},
+			},
+		]
+		: [];
+
+	const renoteItems: MenuItem[] = [
 		...normalRenoteItems,
-		...(channelRenoteItems.length > 0 && normalRenoteItems.length > 0) ? [{ type: 'divider' }] as MenuItem[] : [],
+		channelRenoteItems.length > 0 && normalRenoteItems.length > 0
+			? { type: 'divider' } as MenuDivider
+			: undefined,
 		...channelRenoteItems,
-		...(normalExternalChannelRenoteItems.length > 0 && (normalRenoteItems.length > 0 || channelRenoteItems.length > 0)) ? [{ type: 'divider' }] as MenuItem[] : [],
+		normalExternalChannelRenoteItems.length > 0 && (normalRenoteItems.length > 0 || channelRenoteItems.length > 0)
+			? { type: 'divider' } as MenuDivider
+			: undefined,
 		...normalExternalChannelRenoteItems,
 	];
 
