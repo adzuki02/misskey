@@ -38,85 +38,89 @@ export async function getNoteClipMenu(props: {
 	const appearNote = getAppearNote(props.note);
 
 	const clips = await clipsCache.fetch();
-	const menu: MenuItem[] = [...clips.map(clip => ({
-		text: getClipName(clip),
-		action: () => {
-			os.promiseDialog(
-				misskeyApi('clips/add-note', { clipId: clip.id, noteId: appearNote.id }),
-				null,
-				async (err) => {
-					if (err.id === '734806c4-542c-463a-9311-15c512803965') {
-						const confirm = await os.confirm({
-							type: 'warning',
-							text: i18n.tsx.confirmToUnclipAlreadyClippedNote({ name: clip.name }),
-						});
-						if (!confirm.canceled) {
-							os.apiWithDialog('clips/remove-note', { clipId: clip.id, noteId: appearNote.id }).then(() => {
-								clipsCache.set(clips.map(c => {
-									if (c.id === clip.id) {
-										return {
-											...c,
-											notesCount: Math.max(0, ((c.notesCount ?? 0) - 1)),
-										};
-									} else {
-										return c;
-									}
-								}));
+	const menu: MenuItem[] = [
+		...clips.map(clip => ({
+			text: getClipName(clip),
+			action: () => {
+				os.promiseDialog(
+					misskeyApi('clips/add-note', { clipId: clip.id, noteId: appearNote.id }),
+					null,
+					async (err) => {
+						if (err.id === '734806c4-542c-463a-9311-15c512803965') {
+							const confirm = await os.confirm({
+								type: 'warning',
+								text: i18n.tsx.confirmToUnclipAlreadyClippedNote({ name: clip.name }),
 							});
-							if (props.currentClip?.id === clip.id) props.isDeleted.value = true;
+							if (!confirm.canceled) {
+								os.apiWithDialog('clips/remove-note', { clipId: clip.id, noteId: appearNote.id }).then(() => {
+									clipsCache.set(clips.map(c => {
+										if (c.id === clip.id) {
+											return {
+												...c,
+												notesCount: Math.max(0, ((c.notesCount ?? 0) - 1)),
+											};
+										} else {
+											return c;
+										}
+									}));
+								});
+								if (props.currentClip?.id === clip.id) props.isDeleted.value = true;
+							}
+						} else {
+							os.alert({
+								type: 'error',
+								text: err.message + '\n' + err.id,
+							});
 						}
-					} else {
-						os.alert({
-							type: 'error',
-							text: err.message + '\n' + err.id,
-						});
-					}
-				},
-			).then(() => {
-				clipsCache.set(clips.map(c => {
-					if (c.id === clip.id) {
-						return {
-							...c,
-							notesCount: (c.notesCount ?? 0) + 1,
-						};
-					} else {
-						return c;
-					}
-				}));
-			});
+					},
+				).then(() => {
+					clipsCache.set(clips.map(c => {
+						if (c.id === clip.id) {
+							return {
+								...c,
+								notesCount: (c.notesCount ?? 0) + 1,
+							};
+						} else {
+							return c;
+						}
+					}));
+				});
+			},
+		})),
+		{ type: 'divider' },
+		{
+			icon: 'ti ti-plus',
+			text: i18n.ts.createNew,
+			action: async () => {
+				const { canceled, result } = await os.form(i18n.ts.createNewClip, {
+					name: {
+						type: 'string',
+						label: i18n.ts.name,
+						default: '',
+					},
+					description: {
+						type: 'string',
+						required: false,
+						multiline: true,
+						label: i18n.ts.description,
+						default: null,
+					},
+					isPublic: {
+						type: 'boolean',
+						label: i18n.ts.public,
+						default: false,
+					},
+				});
+				if (canceled) return;
+
+				const clip = await os.apiWithDialog('clips/create', result);
+
+				clipsCache.delete();
+
+				os.apiWithDialog('clips/add-note', { clipId: clip.id, noteId: appearNote.id });
+			},
 		},
-	})), { type: 'divider' }, {
-		icon: 'ti ti-plus',
-		text: i18n.ts.createNew,
-		action: async () => {
-			const { canceled, result } = await os.form(i18n.ts.createNewClip, {
-				name: {
-					type: 'string',
-					label: i18n.ts.name,
-					default: '',
-				},
-				description: {
-					type: 'string',
-					required: false,
-					multiline: true,
-					label: i18n.ts.description,
-					default: null,
-				},
-				isPublic: {
-					type: 'boolean',
-					label: i18n.ts.public,
-					default: false,
-				},
-			});
-			if (canceled) return;
-
-			const clip = await os.apiWithDialog('clips/create', result);
-
-			clipsCache.delete();
-
-			os.apiWithDialog('clips/add-note', { clipId: clip.id, noteId: appearNote.id });
-		},
-	}];
+	];
 
 	return menu;
 }
