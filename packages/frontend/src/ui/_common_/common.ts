@@ -49,27 +49,27 @@ export function openInstanceMenu(ev: MouseEvent) {
 		text: i18n.ts.customEmojis,
 		icon: 'ti ti-icons',
 		to: '/about#emojis',
-	}, {
+	}, $i ? {
 		type: 'link',
 		text: i18n.ts.federation,
 		icon: 'ti ti-whirl',
 		to: '/about#federation',
-	}, {
+	} : undefined, $i ? {
 		type: 'link',
 		text: i18n.ts.charts,
 		icon: 'ti ti-chart-line',
 		to: '/about#charts',
-	}, { type: 'divider' }, ($i && ($i.isAdmin || $i.policies.canInvite) && instance.disableRegistration) ? {
+	} : undefined, { type: 'divider' }, ($i && ($i.isAdmin === true || $i.policies.canInvite) && instance.disableRegistration) ? {
 		type: 'link',
 		to: '/invite',
 		text: i18n.ts.invite,
 		icon: 'ti ti-user-plus',
-	} : undefined, {
+	} : undefined, $i ? {
 		type: 'parent',
 		text: i18n.ts.tools,
 		icon: 'ti ti-tool',
 		children: toolsMenuItems(),
-	}, { type: 'divider' }, {
+	} : undefined, $i ? { type: 'divider' } : undefined, {
 		type: 'link',
 		text: i18n.ts.inquiry,
 		icon: 'ti ti-help-circle',
