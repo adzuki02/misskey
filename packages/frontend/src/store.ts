@@ -109,10 +109,11 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'deviceAccount',
 		default: [
 			'notifications',
-			'clips',
-			'followRequests',
 			'-',
-			'search',
+			'clips',
+			'lists',
+			'-',
+			'profile',
 		],
 	},
 	visibility: {
@@ -171,7 +172,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	animation: {
 		where: 'device',
-		default: !window.matchMedia('(prefers-reduced-motion)').matches,
+		default: false,
 	},
 	animatedMfm: {
 		where: 'device',
@@ -179,7 +180,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	advancedMfm: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	loadRawImages: {
 		where: 'device',
@@ -187,15 +188,15 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	disableShowingAnimatedImages: {
 		where: 'device',
-		default: window.matchMedia('(prefers-reduced-motion)').matches,
+		default: true,
 	},
 	forceShowingAnimatedImagesOnPopup: {
 		where: 'device',
-		default: false,
+		default: !window.matchMedia('(prefers-reduced-motion)').matches,
 	},
 	emojiStyle: {
 		where: 'device',
-		default: 'twemoji', // twemoji / native
+		default: 'twemoji' as 'twemoji' | 'native', // twemoji / native
 	},
 	menuStyle: {
 		where: 'device',
@@ -203,11 +204,11 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	useBlurEffectForModal: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	useBlurEffect: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	enableInfiniteScroll: {
 		where: 'device',
@@ -231,11 +232,11 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	emojiPickerScale: {
 		where: 'device',
-		default: 1,
+		default: 3,
 	},
 	emojiPickerWidth: {
 		where: 'device',
-		default: 1,
+		default: 2,
 	},
 	emojiPickerHeight: {
 		where: 'device',
@@ -255,7 +256,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	menuDisplay: {
 		where: 'device',
-		default: 'sideFull' as 'sideFull' | 'sideIcon' | 'top',
+		default: 'sideIcon' as 'sideFull' | 'sideIcon',
 	},
 	squareAvatars: {
 		where: 'device',
