@@ -223,6 +223,7 @@ export function getNoteMenu(props: {
 	}
 
 	let menu: MenuItem[];
+
 	if ($i) {
 		const statePromise = misskeyApi('notes/state', {
 			noteId: appearNote.id,
@@ -402,7 +403,7 @@ export function getNoteMenu(props: {
 	}
 
 	if (noteActions.length > 0) {
-		menu = menu.concat([
+		menu.push(
 			{ type: 'divider' },
 			...noteActions.map(action => (
 				{
@@ -413,11 +414,11 @@ export function getNoteMenu(props: {
 					},
 				}
 			)),
-		]);
+		);
 	}
 
 	if (defaultStore.state.devMode) {
-		menu = menu.concat([
+		menu.push(
 			{ type: 'divider' },
 			{
 				icon: 'ti ti-id',
@@ -426,7 +427,7 @@ export function getNoteMenu(props: {
 					copyToClipboard(appearNote.id);
 				},
 			},
-		]);
+		);
 	}
 
 	const cleanup = () => {
