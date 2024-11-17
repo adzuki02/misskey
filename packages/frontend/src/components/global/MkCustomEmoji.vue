@@ -86,39 +86,45 @@ const errored = ref(url.value == null);
 
 function onClick(ev: MouseEvent) {
 	if (props.menu) {
-		os.popupMenu([{
-			type: 'label',
-			text: `:${props.name}:`,
-		}, {
-			text: i18n.ts.copy,
-			icon: 'ti ti-copy',
-			action: () => {
-				copyToClipboard(`:${props.name}:`);
-				os.success();
+		os.popupMenu([
+			{
+				type: 'label',
+				text: `:${props.name}:`,
 			},
-		}, ...(props.menuReaction && react ? [{
-			text: i18n.ts.doReaction,
-			icon: 'ti ti-plus',
-			action: () => {
-				react(props.host ? `:${props.name}@${props.host}:` : `:${props.name}:`);
-				sound.playMisskeySfx('reaction');
-			},
-		}] : []), {
-			text: i18n.ts.info,
-			icon: 'ti ti-info-circle',
-			action: async () => {
-				const { dispose } = os.popup(MkCustomEmojiDetailedDialog, {
-					emoji: isLocal.value ? await misskeyApiGet('emoji', {
-						name: customEmojiName.value,
-					}) : {
-						name: props.name,
-						host: props.host ?? '',
+			{
+				text: i18n.ts.copy,
+				icon: 'ti ti-copy',
+				action: () => {
+					copyToClipboard(`:${props.name}:`);
+					os.success();
+				},
+			}, props.menuReaction && react
+				? {
+					text: i18n.ts.doReaction,
+					icon: 'ti ti-plus',
+					action: () => {
+						react(props.host ? `:${props.name}@${props.host}:` : `:${props.name}:`);
+						sound.playMisskeySfx('reaction');
 					},
-				}, {
-					closed: () => dispose(),
-				});
+				}
+				: undefined,
+			{
+				text: i18n.ts.info,
+				icon: 'ti ti-info-circle',
+				action: async () => {
+					const { dispose } = os.popup(MkCustomEmojiDetailedDialog, {
+						emoji: isLocal.value ? await misskeyApiGet('emoji', {
+							name: customEmojiName.value,
+						}) : {
+							name: props.name,
+							host: props.host ?? '',
+						},
+					}, {
+						closed: () => dispose(),
+					});
+				},
 			},
-		}], ev.currentTarget ?? ev.target);
+		], ev.currentTarget ?? ev.target);
 	}
 }
 </script>
