@@ -41,6 +41,7 @@ const routes: RouteDef[] = [{
 }, {
 	path: '/instance-info/:host',
 	component: page(() => import('@/pages/instance-info.vue')),
+	loginRequired: true,
 }, {
 	name: 'settings',
 	path: '/settings',
@@ -245,6 +246,7 @@ const routes: RouteDef[] = [{
 }, {
 	path: '/scratchpad',
 	component: page(() => import('@/pages/scratchpad.vue')),
+	loginRequired: true,
 }, {
 	path: '/preview',
 	component: page(() => import('@/pages/preview.vue')),
@@ -280,6 +282,7 @@ const routes: RouteDef[] = [{
 }, {
 	path: '/play',
 	component: page(() => import('@/pages/flash/flash-index.vue')),
+	loginRequired: true,
 }, {
 	path: '/channels/:channelId/edit',
 	component: page(() => import('@/pages/channel-editor.vue')),
@@ -297,19 +300,24 @@ const routes: RouteDef[] = [{
 }, {
 	path: '/custom-emojis-manager',
 	component: page(() => import('@/pages/custom-emojis-manager.vue')),
+	loginRequired: true,
 }, {
 	path: '/avatar-decorations',
 	name: 'avatarDecorations',
 	component: page(() => import('@/pages/avatar-decorations.vue')),
+	loginRequired: true,
 }, {
 	path: '/registry/keys/:domain/:path(*)?',
 	component: page(() => import('@/pages/registry.keys.vue')),
+	loginRequired: true,
 }, {
 	path: '/registry/value/:domain/:path(*)?',
 	component: page(() => import('@/pages/registry.value.vue')),
+	loginRequired: true,
 }, {
 	path: '/registry',
 	component: page(() => import('@/pages/registry.vue')),
+	loginRequired: true,
 }, {
 	path: '/admin/user/:userId',
 	component: iAmModerator ? page(() => import('@/pages/admin-user.vue')) : page(() => import('@/pages/not-found.vue')),

@@ -161,6 +161,7 @@ export async function mainBoot() {
 			defaultStore.set('darkMode', !defaultStore.state.darkMode);
 		},
 		's': () => {
+			if ($i == null) return;
 			mainRouter.push('/search');
 		},
 	} as const satisfies Keymap;
