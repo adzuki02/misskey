@@ -67,6 +67,11 @@ export class SecurityHeaderService {
 
 		const baseScriptSrc = [
 			'\'self\'', '\'wasm-unsafe-eval\'',
+			'https://www.google.com/recaptcha/',
+			'https://www.gstatic.com/recaptcha/',
+			'https://hcaptcha.com',
+			'https://*.hcaptcha.com',
+			'https://challenges.cloudflare.com',
 			'https://static.cloudflareinsights.com/beacon.min.js',
 			`https://esm.sh/shiki@${meta.shikiVersion}/`,
 			`https://esm.sh/v135/shiki@${meta.shikiVersion}/es2022/`,
