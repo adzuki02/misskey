@@ -132,6 +132,7 @@ export class MetaEntityService {
 			requireSetup: !await this.instanceActorService.realLocalUsersPresent(),
 			proxyAccountName: proxyAccount ? proxyAccount.username : null,
 			features: {
+				localTimeline: instance.policies.ltlAvailable,
 				globalTimeline: instance.policies.gtlAvailable,
 				registration: !instance.disableRegistration,
 				emailRequiredForSignup: instance.emailRequiredForSignup,

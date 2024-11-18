@@ -477,6 +477,28 @@ export type Channels = {
         };
         receives: null;
     };
+    localTimeline: {
+        params: {
+            withRenotes?: boolean;
+            withReplies?: boolean;
+            withFiles?: boolean;
+        };
+        events: {
+            note: (payload: Note) => void;
+        };
+        receives: null;
+    };
+    hybridTimeline: {
+        params: {
+            withRenotes?: boolean;
+            withReplies?: boolean;
+            withFiles?: boolean;
+        };
+        events: {
+            note: (payload: Note) => void;
+        };
+        receives: null;
+    };
     globalTimeline: {
         params: {
             withRenotes?: boolean;
@@ -1269,6 +1291,10 @@ declare namespace entities {
         NotesDeleteRequest,
         NotesGlobalTimelineRequest,
         NotesGlobalTimelineResponse,
+        NotesHybridTimelineRequest,
+        NotesHybridTimelineResponse,
+        NotesLocalTimelineRequest,
+        NotesLocalTimelineResponse,
         NotesMentionsRequest,
         NotesMentionsResponse,
         NotesPollsVoteRequest,
@@ -1917,6 +1943,18 @@ type NotesGlobalTimelineRequest = operations['notes___global-timeline']['request
 
 // @public (undocumented)
 type NotesGlobalTimelineResponse = operations['notes___global-timeline']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type NotesHybridTimelineRequest = operations['notes___hybrid-timeline']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type NotesHybridTimelineResponse = operations['notes___hybrid-timeline']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type NotesLocalTimelineRequest = operations['notes___local-timeline']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type NotesLocalTimelineResponse = operations['notes___local-timeline']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type NotesMentionsRequest = operations['notes___mentions']['requestBody']['content']['application/json'];

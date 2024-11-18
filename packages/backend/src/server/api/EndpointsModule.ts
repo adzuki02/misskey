@@ -230,6 +230,8 @@ import * as ep___notes_conversation from './endpoints/notes/conversation.js';
 import * as ep___notes_create from './endpoints/notes/create.js';
 import * as ep___notes_delete from './endpoints/notes/delete.js';
 import * as ep___notes_globalTimeline from './endpoints/notes/global-timeline.js';
+import * as ep___notes_hybridTimeline from './endpoints/notes/hybrid-timeline.js';
+import * as ep___notes_localTimeline from './endpoints/notes/local-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
 import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
 import * as ep___notes_reactions from './endpoints/notes/reactions.js';
@@ -528,6 +530,8 @@ const $notes_conversation: Provider = { provide: 'ep:notes/conversation', useCla
 const $notes_create: Provider = { provide: 'ep:notes/create', useClass: ep___notes_create.default };
 const $notes_delete: Provider = { provide: 'ep:notes/delete', useClass: ep___notes_delete.default };
 const $notes_globalTimeline: Provider = { provide: 'ep:notes/global-timeline', useClass: ep___notes_globalTimeline.default };
+const $notes_hybridTimeline: Provider = { provide: 'ep:notes/hybrid-timeline', useClass: ep___notes_hybridTimeline.default };
+const $notes_localTimeline: Provider = { provide: 'ep:notes/local-timeline', useClass: ep___notes_localTimeline.default };
 const $notes_mentions: Provider = { provide: 'ep:notes/mentions', useClass: ep___notes_mentions.default };
 const $notes_polls_vote: Provider = { provide: 'ep:notes/polls/vote', useClass: ep___notes_polls_vote.default };
 const $notes_reactions: Provider = { provide: 'ep:notes/reactions', useClass: ep___notes_reactions.default };
@@ -830,6 +834,8 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$notes_create,
 		$notes_delete,
 		$notes_globalTimeline,
+		$notes_hybridTimeline,
+		$notes_localTimeline,
 		$notes_mentions,
 		$notes_polls_vote,
 		$notes_reactions,
@@ -1126,6 +1132,8 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$notes_create,
 		$notes_delete,
 		$notes_globalTimeline,
+		$notes_hybridTimeline,
+		$notes_localTimeline,
 		$notes_mentions,
 		$notes_polls_vote,
 		$notes_reactions,

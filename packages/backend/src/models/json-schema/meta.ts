@@ -233,6 +233,10 @@ export const packedMetaDetailedOnlySchema = {
 					type: 'boolean',
 					optional: false, nullable: false,
 				},
+				localTimeline: {
+					type: 'boolean',
+					optional: false, nullable: false,
+				},
 				globalTimeline: {
 					type: 'boolean',
 					optional: false, nullable: false,
