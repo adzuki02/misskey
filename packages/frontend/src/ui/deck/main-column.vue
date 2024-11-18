@@ -63,16 +63,19 @@ function onContextmenu(ev: MouseEvent) {
 	if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes((ev.target as HTMLElement).tagName) || (ev.target as HTMLElement).attributes['contenteditable']) return;
 	if (window.getSelection()?.toString() !== '') return;
 	const path = mainRouter.currentRoute.value.path;
-	os.contextMenu([{
-		type: 'label',
-		text: path,
-	}, {
-		icon: 'ti ti-window-maximize',
-		text: i18n.ts.openInWindow,
-		action: () => {
-			os.pageWindow(path);
+	os.contextMenu([
+		{
+			type: 'label',
+			text: path,
 		},
-	}], ev);
+		{
+			icon: 'ti ti-window-maximize',
+			text: i18n.ts.openInWindow,
+			action: () => {
+				os.pageWindow(path);
+			},
+		},
+	], ev);
 }
 
 useScrollPositionManager(() => getScrollContainer(contents.value ?? null), mainRouter);

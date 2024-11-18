@@ -51,34 +51,41 @@ const active = computed(() => {
 function onContextmenu(ev: MouseEvent) {
 	const selection = window.getSelection();
 	if (selection && selection.toString() !== '') return;
-	os.contextMenu([{
-		type: 'label',
-		text: props.to,
-	}, {
-		icon: 'ti ti-app-window',
-		text: i18n.ts.openInWindow,
-		action: () => {
-			os.pageWindow(props.to);
+	os.contextMenu([
+		{
+			type: 'label',
+			text: props.to,
 		},
-	}, {
-		icon: 'ti ti-player-eject',
-		text: i18n.ts.showInPage,
-		action: () => {
-			router.push(props.to, 'forcePage');
+		{
+			icon: 'ti ti-app-window',
+			text: i18n.ts.openInWindow,
+			action: () => {
+				os.pageWindow(props.to);
+			},
 		},
-	}, { type: 'divider' }, {
-		icon: 'ti ti-external-link',
-		text: i18n.ts.openInNewTab,
-		action: () => {
-			window.open(props.to, '_blank', 'noopener');
+		{
+			icon: 'ti ti-player-eject',
+			text: i18n.ts.showInPage,
+			action: () => {
+				router.push(props.to, 'forcePage');
+			},
 		},
-	}, {
-		icon: 'ti ti-link',
-		text: i18n.ts.copyLink,
-		action: () => {
-			copyToClipboard(`${url}${props.to}`);
+		{ type: 'divider' },
+		{
+			icon: 'ti ti-external-link',
+			text: i18n.ts.openInNewTab,
+			action: () => {
+				window.open(props.to, '_blank', 'noopener');
+			},
 		},
-	}], ev);
+		{
+			icon: 'ti ti-link',
+			text: i18n.ts.copyLink,
+			action: () => {
+				copyToClipboard(`${url}${props.to}`);
+			},
+		},
+	], ev);
 }
 
 function openWindow() {
