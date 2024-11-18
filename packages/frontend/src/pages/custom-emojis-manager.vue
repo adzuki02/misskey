@@ -312,23 +312,29 @@ const delBulk = async () => {
 	emojisPaginationComponent.value.reload();
 };
 
-const headerActions = computed(() => [{
-	asFullButton: true,
-	icon: 'ti ti-plus',
-	text: i18n.ts.addEmoji,
-	handler: add,
-}, {
-	icon: 'ti ti-dots',
-	handler: menu,
-}]);
+const headerActions = computed(() => [
+	{
+		asFullButton: true,
+		icon: 'ti ti-plus',
+		text: i18n.ts.addEmoji,
+		handler: add,
+	},
+	{
+		icon: 'ti ti-dots',
+		handler: menu,
+	},
+]);
 
-const headerTabs = computed(() => [{
-	key: 'local',
-	title: i18n.ts.local,
-}, {
-	key: 'remote',
-	title: i18n.ts.remote,
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'local',
+		title: i18n.ts.local,
+	},
+	{
+		key: 'remote',
+		title: i18n.ts.remote,
+	},
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts.customEmojis,

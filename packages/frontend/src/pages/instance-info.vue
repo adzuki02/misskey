@@ -275,23 +275,28 @@ const headerActions = computed(() => [{
 	},
 }]);
 
-const headerTabs = computed(() => [{
-	key: 'overview',
-	title: i18n.ts.overview,
-	icon: 'ti ti-info-circle',
-}, {
-	key: 'chart',
-	title: i18n.ts.charts,
-	icon: 'ti ti-chart-line',
-}, {
-	key: 'users',
-	title: i18n.ts.users,
-	icon: 'ti ti-users',
-}, {
-	key: 'raw',
-	title: 'Raw',
-	icon: 'ti ti-code',
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'overview',
+		title: i18n.ts.overview,
+		icon: 'ti ti-info-circle',
+	},
+	{
+		key: 'chart',
+		title: i18n.ts.charts,
+		icon: 'ti ti-chart-line',
+	},
+	{
+		key: 'users',
+		title: i18n.ts.users,
+		icon: 'ti ti-users',
+	},
+	{
+		key: 'raw',
+		title: 'Raw',
+		icon: 'ti ti-code',
+	},
+]);
 
 definePageMetadata(() => ({
 	title: props.host,

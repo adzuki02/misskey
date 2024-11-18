@@ -31,15 +31,20 @@ const props = withDefaults(defineProps<{
 
 const tab = ref(props.initialTab);
 
-const headerTabs = computed(() => [{
-	key: 'users',
-	icon: 'ti ti-users',
-	title: i18n.ts.users,
-}, ...($i ? [{
-	key: 'roles',
-	icon: 'ti ti-badges',
-	title: i18n.ts.roles,
-}] : [])]);
+const headerTabs = computed(() => [
+	{
+		key: 'users',
+		icon: 'ti ti-users',
+		title: i18n.ts.users,
+	},
+	$i
+		? {
+			key: 'roles',
+			icon: 'ti ti-badges',
+			title: i18n.ts.roles,
+		}
+		: undefined,
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts.explore,

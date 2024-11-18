@@ -178,69 +178,63 @@ async function search() {
 	searchKey.value = query;
 }
 
-const headerActions = computed(() => {
-	if (channel.value && channel.value.userId) {
-		const headerItems: PageHeaderItem[] = [];
-
-		headerItems.push({
-			icon: 'ti ti-link',
-			text: i18n.ts.copyUrl,
+const headerActions = computed(() => channel.value && channel.value.userId ? [
+	{
+		icon: 'ti ti-link',
+		text: i18n.ts.copyUrl,
+		handler: async (): Promise<void> => {
+			if (!channel.value) {
+				console.warn('failed to copy channel URL. channel.value is null.');
+				return;
+			}
+			copyToClipboard(`${url}/channels/${channel.value.id}`);
+			os.success();
+		},
+	},
+	isSupportShare()
+		? {
+			icon: 'ti ti-share',
+			text: i18n.ts.share,
 			handler: async (): Promise<void> => {
 				if (!channel.value) {
-					console.warn('failed to copy channel URL. channel.value is null.');
+					console.warn('failed to share channel. channel.value is null.');
 					return;
 				}
-				copyToClipboard(`${url}/channels/${channel.value.id}`);
-				os.success();
+
+				navigator.share({
+					title: channel.value.name,
+					text: channel.value.description ?? undefined,
+					url: `${url}/channels/${channel.value.id}`,
+				});
 			},
-		});
-
-		if (isSupportShare()) {
-			headerItems.push({
-				icon: 'ti ti-share',
-				text: i18n.ts.share,
-				handler: async (): Promise<void> => {
-					if (!channel.value) {
-						console.warn('failed to share channel. channel.value is null.');
-						return;
-					}
-
-					navigator.share({
-						title: channel.value.name,
-						text: channel.value.description ?? undefined,
-						url: `${url}/channels/${channel.value.id}`,
-					});
-				},
-			});
 		}
-
-		if (($i !== null && $i.id === channel.value.userId) || iAmModerator) {
-			headerItems.push({
-				icon: 'ti ti-settings',
-				text: i18n.ts.edit,
-				handler: edit,
-			});
+		: undefined,
+	($i !== null && $i.id === channel.value.userId) || iAmModerator
+		? {
+			icon: 'ti ti-settings',
+			text: i18n.ts.edit,
+			handler: edit,
 		}
+		: undefined,
+] : undefined);
 
-		return headerItems.length > 0 ? headerItems : undefined;
-	} else {
-		return undefined;
-	}
-});
-
-const headerTabs = computed(() => [{
-	key: 'overview',
-	title: i18n.ts.overview,
-	icon: 'ti ti-info-circle',
-}, {
-	key: 'timeline',
-	title: i18n.ts.timeline,
-	icon: 'ti ti-home',
-}, {
-	key: 'search',
-	title: i18n.ts.search,
-	icon: 'ti ti-search',
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'overview',
+		title: i18n.ts.overview,
+		icon: 'ti ti-info-circle',
+	},
+	{
+		key: 'timeline',
+		title: i18n.ts.timeline,
+		icon: 'ti ti-home',
+	},
+	{
+		key: 'search',
+		title: i18n.ts.search,
+		icon: 'ti ti-search',
+	},
+]);
 
 definePageMetadata(() => ({
 	title: channel.value ? channel.value.name : i18n.ts.channel,

@@ -28,8 +28,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 			<XTabs v-if="!narrow || hideTitle" :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 		</template>
-		<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
-			<template v-for="action in actions">
+		<div v-if="(!thin_ && narrow && !hideTitle) || (filteredActions.length > 0)" :class="$style.buttonsRight">
+			<template v-for="action in filteredActions">
 				<button v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 			</template>
 		</div>
@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, inject, useTemplateRef, computed } from 'vue';
+import { onMounted, onUnmounted, ref, inject, useTemplateRef, computed, watch } from 'vue';
 import tinycolor from 'tinycolor2';
 import XTabs, { Tab } from './MkPageHeader.tabs.vue';
 import { scrollToTop } from '@/scripts/scroll.js';
@@ -51,9 +51,9 @@ import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { PageHeaderItem } from '@/types/page-header.js';
 
 const props = withDefaults(defineProps<{
-	tabs?: Tab[];
+	tabs?: (Tab | undefined)[];
 	tab?: string;
-	actions?: PageHeaderItem[];
+	actions?: (PageHeaderItem | undefined)[];
 	thin?: boolean;
 	displayMyAvatar?: boolean;
 }>(), {
@@ -74,10 +74,18 @@ const thin_ = props.thin || inject('shouldHeaderThin', false);
 const el = useTemplateRef('el');
 const bg = ref<string>();
 const narrow = ref(false);
-const hasTabs = computed(() => props.tabs.length > 0);
-const hasActions = computed(() => props.actions.length > 0);
+const hasTabs = computed(() => props.tabs.filter(tab => tab !== undefined).length > 0);
+const hasActions = computed(() => props.actions.filter(action => action !== undefined).length > 0);
 const show = computed(() => {
 	return !hideTitle || hasTabs.value || hasActions.value;
+});
+
+const filteredActions = ref<PageHeaderItem[]>([]);
+
+watch(() => props.actions, () => {
+	filteredActions.value = [...props.actions].filter(action => action !== undefined);
+}, {
+	immediate: true,
 });
 
 const preventDrag = (ev: TouchEvent) => {

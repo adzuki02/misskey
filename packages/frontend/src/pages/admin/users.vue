@@ -122,21 +122,25 @@ function show(user) {
 	os.pageWindow(`/admin/user/${user.id}`);
 }
 
-const headerActions = computed(() => [{
-	icon: 'ti ti-search',
-	text: i18n.ts.search,
-	handler: searchUser,
-}, {
-	asFullButton: true,
-	icon: 'ti ti-plus',
-	text: i18n.ts.addUser,
-	handler: addUser,
-}, {
-	asFullButton: true,
-	icon: 'ti ti-search',
-	text: i18n.ts.lookup,
-	handler: lookupUser,
-}]);
+const headerActions = computed(() => [
+	{
+		icon: 'ti ti-search',
+		text: i18n.ts.search,
+		handler: searchUser,
+	},
+	{
+		asFullButton: true,
+		icon: 'ti ti-plus',
+		text: i18n.ts.addUser,
+		handler: addUser,
+	},
+	{
+		asFullButton: true,
+		icon: 'ti ti-search',
+		text: i18n.ts.lookup,
+		handler: lookupUser,
+	},
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts.users,

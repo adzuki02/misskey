@@ -75,32 +75,39 @@ function setFilter(ev) {
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
-const headerActions = computed(() => [tab.value === 'all' ? {
-	text: i18n.ts.filter,
-	icon: 'ti ti-filter',
-	highlighted: includeTypes.value !== undefined,
-	handler: setFilter,
-} : undefined, tab.value === 'all' ? {
-	text: i18n.ts.markAllAsRead,
-	icon: 'ti ti-check',
-	handler: () => {
-		os.apiWithDialog('notifications/mark-all-as-read', {});
+const headerActions = computed(() => tab.value === 'all' ? [
+	{
+		text: i18n.ts.filter,
+		icon: 'ti ti-filter',
+		highlighted: includeTypes.value !== undefined,
+		handler: setFilter,
 	},
-} : undefined].filter(x => x !== undefined));
+	{
+		text: i18n.ts.markAllAsRead,
+		icon: 'ti ti-check',
+		handler: () => {
+			os.apiWithDialog('notifications/mark-all-as-read', {});
+		},
+	},
+] : undefined);
 
-const headerTabs = computed(() => [{
-	key: 'all',
-	title: i18n.ts.all,
-	icon: 'ti ti-point',
-}, {
-	key: 'mentions',
-	title: i18n.ts.mentions,
-	icon: 'ti ti-at',
-}, {
-	key: 'directNotes',
-	title: i18n.ts.directNotes,
-	icon: 'ti ti-mail',
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'all',
+		title: i18n.ts.all,
+		icon: 'ti ti-point',
+	},
+	{
+		key: 'mentions',
+		title: i18n.ts.mentions,
+		icon: 'ti ti-at',
+	},
+	{
+		key: 'directNotes',
+		title: i18n.ts.directNotes,
+		icon: 'ti ti-mail',
+	},
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts.notifications,

@@ -80,15 +80,18 @@ async function create() {
 	pagingComponent.value?.reload();
 }
 
-const headerTabs = computed(() => [{
-	key: 'my',
-	title: i18n.ts.myClips,
-	icon: 'ti ti-paperclip',
-}, {
-	key: 'favorites',
-	title: i18n.ts.favorites,
-	icon: 'ti ti-heart',
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'my',
+		title: i18n.ts.myClips,
+		icon: 'ti ti-paperclip',
+	},
+	{
+		key: 'favorites',
+		title: i18n.ts.favorites,
+		icon: 'ti ti-heart',
+	},
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts.clip,

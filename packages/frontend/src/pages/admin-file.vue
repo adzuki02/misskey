@@ -133,23 +133,32 @@ const headerActions = computed(() => [{
 	},
 }]);
 
-const headerTabs = computed(() => [{
-	key: 'overview',
-	title: i18n.ts.overview,
-	icon: 'ti ti-info-circle',
-}, ...(iAmModerator ? [{
-	key: 'notes',
-	title: i18n.ts._fileViewer.attachedNotes,
-	icon: 'ti ti-pencil',
-}] : []), ...(iAmModerator ? [{
-	key: 'ip',
-	title: 'IP',
-	icon: 'ti ti-password',
-}] : []), {
-	key: 'raw',
-	title: 'Raw data',
-	icon: 'ti ti-code',
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'overview',
+		title: i18n.ts.overview,
+		icon: 'ti ti-info-circle',
+	},
+	iAmModerator
+		? {
+			key: 'notes',
+			title: i18n.ts._fileViewer.attachedNotes,
+			icon: 'ti ti-pencil',
+		}
+		: undefined,
+	iAmModerator
+		? {
+			key: 'ip',
+			title: 'IP',
+			icon: 'ti ti-password',
+		}
+		: undefined,
+	{
+		key: 'raw',
+		title: 'Raw data',
+		icon: 'ti ti-code',
+	},
+]);
 
 definePageMetadata(() => ({
 	title: file.value ? `${i18n.ts.file}: ${file.value.name}` : i18n.ts.file,

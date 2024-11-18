@@ -53,15 +53,18 @@ const XUser = defineAsyncComponent(() => import('./search.user.vue'));
 
 const tab = ref(toRef(props, 'type').value);
 
-const headerTabs = computed(() => [{
-	key: 'note',
-	title: i18n.ts.notes,
-	icon: 'ti ti-pencil',
-}, {
-	key: 'user',
-	title: i18n.ts.users,
-	icon: 'ti ti-users',
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'note',
+		title: i18n.ts.notes,
+		icon: 'ti ti-pencil',
+	},
+	{
+		key: 'user',
+		title: i18n.ts.users,
+		icon: 'ti ti-users',
+	},
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts.search,

@@ -118,23 +118,28 @@ const headerActions = computed(() => [{
 	handler: create,
 }]);
 
-const headerTabs = computed(() => [{
-	key: 'search',
-	title: i18n.ts.search,
-	icon: 'ti ti-search',
-}, {
-	key: 'favorites',
-	title: i18n.ts.favorites,
-	icon: 'ti ti-star',
-}, {
-	key: 'following',
-	title: i18n.ts._channel.following,
-	icon: 'ti ti-eye',
-}, {
-	key: 'owned',
-	title: i18n.ts._channel.owned,
-	icon: 'ti ti-edit',
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'search',
+		title: i18n.ts.search,
+		icon: 'ti ti-search',
+	},
+	{
+		key: 'favorites',
+		title: i18n.ts.favorites,
+		icon: 'ti ti-star',
+	},
+	{
+		key: 'following',
+		title: i18n.ts._channel.following,
+		icon: 'ti ti-eye',
+	},
+	{
+		key: 'owned',
+		title: i18n.ts._channel.owned,
+		icon: 'ti ti-edit',
+	},
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts.channel,
