@@ -170,56 +170,62 @@ const importEmoji = (emoji) => {
 };
 
 const remoteMenu = (emoji, ev: MouseEvent) => {
-	os.popupMenu([{
-		type: 'label',
-		text: ':' + emoji.name + ':',
-	}, {
-		text: i18n.ts.import,
-		icon: 'ti ti-plus',
-		action: () => { importEmoji(emoji); },
-	}], ev.currentTarget ?? ev.target);
+	os.popupMenu([
+		{
+			type: 'label',
+			text: ':' + emoji.name + ':',
+		},
+		{
+			text: i18n.ts.import,
+			icon: 'ti ti-plus',
+			action: () => { importEmoji(emoji); },
+		},
+	], ev.currentTarget ?? ev.target);
 };
 
 const menu = (ev: MouseEvent) => {
-	os.popupMenu([{
-		icon: 'ti ti-download',
-		text: i18n.ts.export,
-		action: async () => {
-			misskeyApi('export-custom-emojis', {
-			})
-				.then(() => {
-					os.alert({
-						type: 'info',
-						text: i18n.ts.exportRequested,
+	os.popupMenu([
+		{
+			icon: 'ti ti-download',
+			text: i18n.ts.export,
+			action: async () => {
+				misskeyApi('export-custom-emojis', {
+				})
+					.then(() => {
+						os.alert({
+							type: 'info',
+							text: i18n.ts.exportRequested,
+						});
+					}).catch((err) => {
+						os.alert({
+							type: 'error',
+							text: err.message,
+						});
 					});
-				}).catch((err) => {
-					os.alert({
-						type: 'error',
-						text: err.message,
-					});
-				});
+			},
 		},
-	}, {
-		icon: 'ti ti-upload',
-		text: i18n.ts.import,
-		action: async () => {
-			const file = await selectFile(ev.currentTarget ?? ev.target);
-			misskeyApi('admin/emoji/import-zip', {
-				fileId: file.id,
-			})
-				.then(() => {
-					os.alert({
-						type: 'info',
-						text: i18n.ts.importRequested,
+		{
+			icon: 'ti ti-upload',
+			text: i18n.ts.import,
+			action: async () => {
+				const file = await selectFile(ev.currentTarget ?? ev.target);
+				misskeyApi('admin/emoji/import-zip', {
+					fileId: file.id,
+				})
+					.then(() => {
+						os.alert({
+							type: 'info',
+							text: i18n.ts.importRequested,
+						});
+					}).catch((err) => {
+						os.alert({
+							type: 'error',
+							text: err.message,
+						});
 					});
-				}).catch((err) => {
-					os.alert({
-						type: 'error',
-						text: err.message,
-					});
-				});
+			},
 		},
-	}], ev.currentTarget ?? ev.target);
+	], ev.currentTarget ?? ev.target);
 };
 
 const setCategoryBulk = async () => {

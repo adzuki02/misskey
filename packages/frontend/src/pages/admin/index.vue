@@ -247,31 +247,36 @@ function invite() {
 }
 
 function adminLookup(ev: MouseEvent) {
-	os.popupMenu([{
-		text: i18n.ts.user,
-		icon: 'ti ti-user',
-		action: () => {
-			lookupUser();
+	os.popupMenu([
+		{
+			text: i18n.ts.user,
+			icon: 'ti ti-user',
+			action: () => {
+				lookupUser();
+			},
 		},
-	}, {
-		text: `${i18n.ts.user} (${i18n.ts.email})`,
-		icon: 'ti ti-user',
-		action: () => {
-			lookupUserByEmail();
+		{
+			text: `${i18n.ts.user} (${i18n.ts.email})`,
+			icon: 'ti ti-user',
+			action: () => {
+				lookupUserByEmail();
+			},
 		},
-	}, {
-		text: i18n.ts.file,
-		icon: 'ti ti-cloud',
-		action: () => {
-			lookupFile();
+		{
+			text: i18n.ts.file,
+			icon: 'ti ti-cloud',
+			action: () => {
+				lookupFile();
+			},
 		},
-	}, {
-		text: i18n.ts.lookup,
-		icon: 'ti ti-world-search',
-		action: () => {
-			lookup();
+		{
+			text: i18n.ts.lookup,
+			icon: 'ti ti-world-search',
+			action: () => {
+				lookup();
+			},
 		},
-	}], ev.currentTarget ?? ev.target);
+	], ev.currentTarget ?? ev.target);
 }
 
 definePageMetadata(() => INFO.value);

@@ -87,23 +87,29 @@ const selectUser = async () => {
 };
 
 const openMenu = async (ev: Event) => {
-	os.popupMenu([{
-		type: 'label',
-		text: 'Fruits',
-	}, {
-		text: 'Create some apples',
-		action: () => {},
-	}, {
-		text: 'Read some oranges',
-		action: () => {},
-	}, {
-		text: 'Update some melons',
-		action: () => {},
-	}, {
-		text: 'Delete some bananas',
-		danger: true,
-		action: () => {},
-	}], ev.currentTarget ?? ev.target);
+	os.popupMenu([
+		{
+			type: 'label',
+			text: 'Fruits',
+		},
+		{
+			text: 'Create some apples',
+			action: () => {},
+		},
+		{
+			text: 'Read some oranges',
+			action: () => {},
+		},
+		{
+			text: 'Update some melons',
+			action: () => {},
+		},
+		{
+			text: 'Delete some bananas',
+			danger: true,
+			action: () => {},
+		},
+	], ev.currentTarget ?? ev.target);
 };
 </script>
 

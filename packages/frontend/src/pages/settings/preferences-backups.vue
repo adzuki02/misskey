@@ -387,30 +387,38 @@ async function rename(id: string): Promise<void> {
 function menu(ev: MouseEvent, profileId: string) {
 	if (!profiles.value) return;
 
-	return os.popupMenu([{
-		text: i18n.ts._preferencesBackups.apply,
-		icon: 'ti ti-check',
-		action: () => applyProfile(profileId),
-	}, {
-		type: 'a',
-		text: i18n.ts.download,
-		icon: 'ti ti-download',
-		href: URL.createObjectURL(new Blob([JSON.stringify(profiles.value[profileId], null, 2)], { type: 'application/json' })),
-		download: `${profiles.value[profileId].name}.json`,
-	}, { type: 'divider' }, {
-		text: i18n.ts.rename,
-		icon: 'ti ti-forms',
-		action: () => rename(profileId),
-	}, {
-		text: i18n.ts._preferencesBackups.save,
-		icon: 'ti ti-device-floppy',
-		action: () => save(profileId),
-	}, { type: 'divider' }, {
-		text: i18n.ts.delete,
-		icon: 'ti ti-trash',
-		action: () => deleteProfile(profileId),
-		danger: true,
-	}], (ev.currentTarget ?? ev.target ?? undefined) as unknown as HTMLElement | undefined);
+	return os.popupMenu([
+		{
+			text: i18n.ts._preferencesBackups.apply,
+			icon: 'ti ti-check',
+			action: () => applyProfile(profileId),
+		},
+		{
+			type: 'a',
+			text: i18n.ts.download,
+			icon: 'ti ti-download',
+			href: URL.createObjectURL(new Blob([JSON.stringify(profiles.value[profileId], null, 2)], { type: 'application/json' })),
+			download: `${profiles.value[profileId].name}.json`,
+		},
+		{ type: 'divider' },
+		{
+			text: i18n.ts.rename,
+			icon: 'ti ti-forms',
+			action: () => rename(profileId),
+		},
+		{
+			text: i18n.ts._preferencesBackups.save,
+			icon: 'ti ti-device-floppy',
+			action: () => save(profileId),
+		},
+		{ type: 'divider' },
+		{
+			text: i18n.ts.delete,
+			icon: 'ti ti-trash',
+			action: () => deleteProfile(profileId),
+			danger: true,
+		},
+	], (ev.currentTarget ?? ev.target ?? undefined) as unknown as HTMLElement | undefined);
 }
 
 onMounted(() => {

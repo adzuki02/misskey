@@ -609,37 +609,52 @@ function fetchMoreFiles() {
 }
 
 function getMenu() {
-	const menu: MenuItem[] = [{
-		type: 'switch',
-		text: i18n.ts.keepOriginalUploading,
-		ref: keepOriginal,
-	}, { type: 'divider' }, {
-		text: i18n.ts.addFile,
-		type: 'label',
-	}, {
-		text: i18n.ts.upload,
-		icon: 'ti ti-upload',
-		action: () => { selectLocalFile(); },
-	}, {
-		text: i18n.ts.fromUrl,
-		icon: 'ti ti-link',
-		action: () => { urlUpload(); },
-	}, { type: 'divider' }, {
-		text: folder.value ? folder.value.name : i18n.ts.drive,
-		type: 'label',
-	}, folder.value ? {
-		text: i18n.ts.renameFolder,
-		icon: 'ti ti-forms',
-		action: () => { if (folder.value) renameFolder(folder.value); },
-	} : undefined, folder.value ? {
-		text: i18n.ts.deleteFolder,
-		icon: 'ti ti-trash',
-		action: () => { deleteFolder(folder.value as DriveFolder); },
-	} : undefined, {
-		text: i18n.ts.createFolder,
-		icon: 'ti ti-folder-plus',
-		action: () => { createFolder(); },
-	}];
+	const menu: MenuItem[] = [
+		{
+			type: 'switch',
+			text: i18n.ts.keepOriginalUploading,
+			ref: keepOriginal,
+		},
+		{ type: 'divider' },
+		{
+			text: i18n.ts.addFile,
+			type: 'label',
+		},
+		{
+			text: i18n.ts.upload,
+			icon: 'ti ti-upload',
+			action: () => { selectLocalFile(); },
+		},
+		{
+			text: i18n.ts.fromUrl,
+			icon: 'ti ti-link',
+			action: () => { urlUpload(); },
+		},
+		{ type: 'divider' },
+		{
+			text: folder.value ? folder.value.name : i18n.ts.drive,
+			type: 'label',
+		},
+		folder.value
+			? {
+				text: i18n.ts.renameFolder,
+				icon: 'ti ti-forms',
+				action: () => { if (folder.value) renameFolder(folder.value); },
+			}
+			: undefined,
+		folder.value
+			? {
+				text: i18n.ts.deleteFolder,
+				icon: 'ti ti-trash',
+				action: () => { deleteFolder(folder.value as DriveFolder); },
+			}
+			: undefined,
+		{
+			text: i18n.ts.createFolder,
+			icon: 'ti ti-folder-plus',
+			action: () => { createFolder(); },
+		},
+	];
 
 	return menu;
 }

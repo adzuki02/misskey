@@ -213,27 +213,32 @@ function changeProfile(ev: MouseEvent) {
 		active: true,
 		action: () => {},
 	}];
-	getProfiles().then(profiles => {
-		items.push(...(profiles.filter(k => k !== deckStore.state.profile).map(k => ({
-			text: k,
-			action: () => {
-				deckStore.set('profile', k);
-				unisonReload();
-			},
-		}))), { type: 'divider' as const }, {
-			text: i18n.ts._deck.newProfile,
-			icon: 'ti ti-plus',
-			action: async () => {
-				const { canceled, result: name } = await os.inputText({
-					title: i18n.ts._deck.profile,
-					minLength: 1,
-				});
-				if (canceled) return;
 
-				deckStore.set('profile', name);
-				unisonReload();
+	getProfiles().then(profiles => {
+		items.push(
+			...(profiles.filter(k => k !== deckStore.state.profile).map(k => ({
+				text: k,
+				action: () => {
+					deckStore.set('profile', k);
+					unisonReload();
+				},
+			}))),
+			{ type: 'divider' as const },
+			{
+				text: i18n.ts._deck.newProfile,
+				icon: 'ti ti-plus',
+				action: async () => {
+					const { canceled, result: name } = await os.inputText({
+						title: i18n.ts._deck.profile,
+						minLength: 1,
+					});
+					if (canceled) return;
+
+					deckStore.set('profile', name);
+					unisonReload();
+				},
 			},
-		});
+		);
 	}).then(() => {
 		os.popupMenu(items, ev.currentTarget ?? ev.target);
 	});

@@ -86,61 +86,75 @@ async function deleteFile(file: DriveFile) {
 }
 
 export function getDriveFileMenu(file: DriveFile, folder?: DriveFolder | null): MenuItem[] {
-	const isImage = file.type.startsWith('image/');
-	let menu;
-	menu = [{
-		type: 'link',
-		to: `/my/drive/file/${file.id}`,
-		text: i18n.ts._fileViewer.title,
-		icon: 'ti ti-info-circle',
-	}, { type: 'divider' }, {
-		text: i18n.ts.rename,
-		icon: 'ti ti-forms',
-		action: () => rename(file),
-	}, {
-		text: i18n.ts.move,
-		icon: 'ti ti-folder-symlink',
-		action: () => move(file),
-	}, {
-		text: file.isSensitive ? i18n.ts.unmarkAsSensitive : i18n.ts.markAsSensitive,
-		icon: file.isSensitive ? 'ti ti-eye' : 'ti ti-eye-exclamation',
-		action: () => toggleSensitive(file),
-	}, {
-		text: i18n.ts.describeFile,
-		icon: 'ti ti-text-caption',
-		action: () => describe(file),
-	}, { type: 'divider' }, {
-		text: i18n.ts.createNoteFromTheFile,
-		icon: 'ti ti-pencil',
-		action: () => os.post({
-			initialFiles: [file],
-		}),
-	}, {
-		text: i18n.ts.copyUrl,
-		icon: 'ti ti-link',
-		action: () => copyUrl(file),
-	}, {
-		type: 'a',
-		href: file.url,
-		target: '_blank',
-		text: i18n.ts.download,
-		icon: 'ti ti-download',
-		download: file.name,
-	}, { type: 'divider' }, {
-		text: i18n.ts.delete,
-		icon: 'ti ti-trash',
-		danger: true,
-		action: () => deleteFile(file),
-	}];
+	const menu: MenuItem[] = [
+		{
+			type: 'link',
+			to: `/my/drive/file/${file.id}`,
+			text: i18n.ts._fileViewer.title,
+			icon: 'ti ti-info-circle',
+		},
+		{ type: 'divider' },
+		{
+			text: i18n.ts.rename,
+			icon: 'ti ti-forms',
+			action: () => rename(file),
+		},
+		{
+			text: i18n.ts.move,
+			icon: 'ti ti-folder-symlink',
+			action: () => move(file),
+		},
+		{
+			text: file.isSensitive ? i18n.ts.unmarkAsSensitive : i18n.ts.markAsSensitive,
+			icon: file.isSensitive ? 'ti ti-eye' : 'ti ti-eye-exclamation',
+			action: () => toggleSensitive(file),
+		},
+		{
+			text: i18n.ts.describeFile,
+			icon: 'ti ti-text-caption',
+			action: () => describe(file),
+		},
+		{ type: 'divider' },
+		{
+			text: i18n.ts.createNoteFromTheFile,
+			icon: 'ti ti-pencil',
+			action: () => os.post({
+				initialFiles: [file],
+			}),
+		},
+		{
+			text: i18n.ts.copyUrl,
+			icon: 'ti ti-link',
+			action: () => copyUrl(file),
+		},
+		{
+			type: 'a',
+			href: file.url,
+			target: '_blank',
+			text: i18n.ts.download,
+			icon: 'ti ti-download',
+			download: file.name,
+		},
+		{ type: 'divider' },
+		{
+			text: i18n.ts.delete,
+			icon: 'ti ti-trash',
+			danger: true,
+			action: () => deleteFile(file),
+		},
+	];
 
 	if (defaultStore.state.devMode) {
-		menu = menu.concat([{ type: 'divider' }, {
-			icon: 'ti ti-id',
-			text: i18n.ts.copyFileId,
-			action: () => {
-				copyToClipboard(file.id);
+		menu.push(
+			{ type: 'divider' },
+			{
+				icon: 'ti ti-id',
+				text: i18n.ts.copyFileId,
+				action: () => {
+					copyToClipboard(file.id);
+				},
 			},
-		}]);
+		);
 	}
 
 	return menu;

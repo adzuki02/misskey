@@ -24,6 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
+import type { MenuItem } from '@/types/menu';
 import XNotifications from '@/components/MkNotifications.vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
@@ -57,13 +58,23 @@ function setFilter(ev) {
 			includeTypes.value = [t];
 		},
 	}));
-	const items = includeTypes.value !== undefined ? [{
-		icon: 'ti ti-x',
-		text: i18n.ts.clear,
-		action: () => {
-			includeTypes.value = undefined;
-		},
-	}, { type: 'divider' as const }, ...typeItems] : typeItems;
+
+	const items: MenuItem[] = [
+		includeTypes.value !== undefined
+			? {
+				icon: 'ti ti-x',
+				text: i18n.ts.clear,
+				action: () => {
+					includeTypes.value = undefined;
+				},
+			}
+			: undefined,
+		includeTypes.value !== undefined
+			? { type: 'divider' }
+			: undefined,
+		...typeItems,
+	];
+
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 

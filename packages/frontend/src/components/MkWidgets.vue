@@ -109,16 +109,19 @@ function onContextmenu(widget: Widget, ev: MouseEvent) {
 	if (element && (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes(element.tagName) || element.attributes['contenteditable'])) return;
 	if (window.getSelection()?.toString() !== '') return;
 
-	os.contextMenu([{
-		type: 'label',
-		text: i18n.ts._widgets[widget.name],
-	}, {
-		icon: 'ti ti-settings',
-		text: i18n.ts.settings,
-		action: () => {
-			configWidget(widget.id);
+	os.contextMenu([
+		{
+			type: 'label',
+			text: i18n.ts._widgets[widget.name],
 		},
-	}], ev);
+		{
+			icon: 'ti ti-settings',
+			text: i18n.ts.settings,
+			action: () => {
+				configWidget(widget.id);
+			},
+		},
+	], ev);
 }
 </script>
 

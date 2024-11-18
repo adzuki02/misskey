@@ -108,28 +108,33 @@ provide('shouldOmitHeaderTitle', true);
 provide('shouldHeaderThin', true);
 provide('forceSpacerMin', true);
 
-const contextmenu = computed(() => ([{
-	icon: 'ti ti-player-eject',
-	text: i18n.ts.showInPage,
-	action: expand,
-}, {
-	icon: 'ti ti-window-maximize',
-	text: i18n.ts.popout,
-	action: popout,
-}, {
-	icon: 'ti ti-external-link',
-	text: i18n.ts.openInNewTab,
-	action: () => {
-		window.open(url + windowRouter.getCurrentPath(), '_blank', 'noopener');
-		windowEl.value?.close();
+const contextmenu = computed(() => ([
+	{
+		icon: 'ti ti-player-eject',
+		text: i18n.ts.showInPage,
+		action: expand,
 	},
-}, {
-	icon: 'ti ti-link',
-	text: i18n.ts.copyLink,
-	action: () => {
-		copyToClipboard(url + windowRouter.getCurrentPath());
+	{
+		icon: 'ti ti-window-maximize',
+		text: i18n.ts.popout,
+		action: popout,
 	},
-}]));
+	{
+		icon: 'ti ti-external-link',
+		text: i18n.ts.openInNewTab,
+		action: () => {
+			window.open(url + windowRouter.getCurrentPath(), '_blank', 'noopener');
+			windowEl.value?.close();
+		},
+	},
+	{
+		icon: 'ti ti-link',
+		text: i18n.ts.copyLink,
+		action: () => {
+			copyToClipboard(url + windowRouter.getCurrentPath());
+		},
+	},
+]));
 
 function back() {
 	history.value.pop();

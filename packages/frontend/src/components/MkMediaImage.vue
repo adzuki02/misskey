@@ -111,27 +111,38 @@ watch(() => props.image, () => {
 });
 
 function showMenu(ev: MouseEvent) {
-	os.popupMenu([{
-		text: i18n.ts.hide,
-		icon: 'ti ti-eye-off',
-		action: () => {
-			hide.value = true;
+	os.popupMenu([
+		{
+			text: i18n.ts.hide,
+			icon: 'ti ti-eye-off',
+			action: () => {
+				hide.value = true;
+			},
 		},
-	}, ...(iAmModerator ? [{
-		text: i18n.ts.markAsSensitive,
-		icon: 'ti ti-eye-exclamation',
-		danger: true,
-		action: () => {
-			os.apiWithDialog('drive/files/update', { fileId: props.image.id, isSensitive: true });
-		},
-	}] : []), ...($i?.id === props.image.userId ? [{
-		type: 'divider' as const,
-	}, {
-		type: 'link' as const,
-		text: i18n.ts._fileViewer.title,
-		icon: 'ti ti-info-circle',
-		to: `/my/drive/file/${props.image.id}`,
-	}] : [])], ev.currentTarget ?? ev.target);
+		iAmModerator
+			? {
+				text: i18n.ts.markAsSensitive,
+				icon: 'ti ti-eye-exclamation',
+				danger: true,
+				action: () => {
+					os.apiWithDialog('drive/files/update', { fileId: props.image.id, isSensitive: true });
+				},
+			}
+			: undefined,
+		//#region ファイルの詳細
+		$i?.id === props.image.userId
+			? { type: 'divider' }
+			: undefined,
+		$i?.id === props.image.userId
+			? {
+				type: 'link',
+				text: i18n.ts._fileViewer.title,
+				icon: 'ti ti-info-circle',
+				to: `/my/drive/file/${props.image.id}`,
+			}
+			: undefined,
+		//#endregion
+	], ev.currentTarget ?? ev.target);
 }
 
 </script>

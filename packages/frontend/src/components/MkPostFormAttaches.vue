@@ -128,31 +128,35 @@ async function describe(file) {
 function showFileMenu(file: DriveFile, ev: MouseEvent): void {
 	if (menuShowing) return;
 
-	const isImage = file.type.startsWith('image/');
-	os.popupMenu([{
-		text: i18n.ts.renameFile,
-		icon: 'ti ti-forms',
-		action: () => { rename(file); },
-	}, {
-		text: file.isSensitive ? i18n.ts.unmarkAsSensitive : i18n.ts.markAsSensitive,
-		icon: file.isSensitive ? 'ti ti-eye-exclamation' : 'ti ti-eye',
-		action: () => { toggleSensitive(file); },
-	}, {
-		text: i18n.ts.describeFile,
-		icon: 'ti ti-text-caption',
-		action: () => { describe(file); },
-	}, {
-		type: 'divider',
-	}, {
-		text: i18n.ts.attachCancel,
-		icon: 'ti ti-circle-x',
-		action: () => { detachMedia(file.id); },
-	}, {
-		text: i18n.ts.deleteFile,
-		icon: 'ti ti-trash',
-		danger: true,
-		action: () => { detachAndDeleteMedia(file); },
-	}], ev.currentTarget ?? ev.target).then(() => menuShowing = false);
+	os.popupMenu([
+		{
+			text: i18n.ts.renameFile,
+			icon: 'ti ti-forms',
+			action: () => { rename(file); },
+		},
+		{
+			text: file.isSensitive ? i18n.ts.unmarkAsSensitive : i18n.ts.markAsSensitive,
+			icon: file.isSensitive ? 'ti ti-eye-exclamation' : 'ti ti-eye',
+			action: () => { toggleSensitive(file); },
+		},
+		{
+			text: i18n.ts.describeFile,
+			icon: 'ti ti-text-caption',
+			action: () => { describe(file); },
+		},
+		{ type: 'divider' },
+		{
+			text: i18n.ts.attachCancel,
+			icon: 'ti ti-circle-x',
+			action: () => { detachMedia(file.id); },
+		},
+		{
+			text: i18n.ts.deleteFile,
+			icon: 'ti ti-trash',
+			danger: true,
+			action: () => { detachAndDeleteMedia(file); },
+		},
+	], ev.currentTarget ?? ev.target).then(() => menuShowing = false);
 	menuShowing = true;
 }
 </script>

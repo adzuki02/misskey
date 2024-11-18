@@ -104,80 +104,98 @@ function toggleActive() {
 }
 
 function getMenu() {
-	let items: MenuItem[] = [{
-		icon: 'ti ti-settings',
-		text: i18n.ts._deck.configureColumn,
-		action: async () => {
-			const { canceled, result } = await os.form(props.column.name ?? '', {
-				name: {
-					type: 'string',
-					label: i18n.ts.name,
-					default: props.column.name,
+	let items: MenuItem[] = [
+		{
+			icon: 'ti ti-settings',
+			text: i18n.ts._deck.configureColumn,
+			action: async () => {
+				const { canceled, result } = await os.form(props.column.name ?? '', {
+					name: {
+						type: 'string',
+						label: i18n.ts.name,
+						default: props.column.name,
+					},
+					width: {
+						type: 'number',
+						label: i18n.ts.width,
+						description: i18n.ts._deck.usedAsMinWidthWhenFlexible,
+						default: props.column.width,
+					},
+					flexible: {
+						type: 'boolean',
+						label: i18n.ts._deck.flexible,
+						default: props.column.flexible ?? null,
+					},
+				});
+				if (canceled) return;
+				updateColumn(props.column.id, result);
+			},
+		},
+		{
+			type: 'parent',
+			text: i18n.ts.move + '...',
+			icon: 'ti ti-arrows-move',
+			children: [
+				{
+					icon: 'ti ti-arrow-left',
+					text: i18n.ts._deck.swapLeft,
+					action: () => {
+						swapLeftColumn(props.column.id);
+					},
 				},
-				width: {
-					type: 'number',
-					label: i18n.ts.width,
-					description: i18n.ts._deck.usedAsMinWidthWhenFlexible,
-					default: props.column.width,
+				{
+					icon: 'ti ti-arrow-right',
+					text: i18n.ts._deck.swapRight,
+					action: () => {
+						swapRightColumn(props.column.id);
+					},
 				},
-				flexible: {
-					type: 'boolean',
-					label: i18n.ts._deck.flexible,
-					default: props.column.flexible ?? null,
+				props.isStacked
+					? {
+						icon: 'ti ti-arrow-up',
+						text: i18n.ts._deck.swapUp,
+						action: () => {
+							swapUpColumn(props.column.id);
+						},
+					}
+					: undefined,
+				props.isStacked
+					? {
+						icon: 'ti ti-arrow-down',
+						text: i18n.ts._deck.swapDown,
+						action: () => {
+							swapDownColumn(props.column.id);
+						},
+					}
+					: undefined,
+			],
+		},
+		{
+			icon: 'ti ti-stack-2',
+			text: i18n.ts._deck.stackLeft,
+			action: () => {
+				stackLeftColumn(props.column.id);
+			},
+		},
+		props.isStacked
+			? {
+				icon: 'ti ti-window-maximize',
+				text: i18n.ts._deck.popRight,
+				action: () => {
+					popRightColumn(props.column.id);
 				},
-			});
-			if (canceled) return;
-			updateColumn(props.column.id, result);
-		},
-	}, {
-		type: 'parent',
-		text: i18n.ts.move + '...',
-		icon: 'ti ti-arrows-move',
-		children: [{
-			icon: 'ti ti-arrow-left',
-			text: i18n.ts._deck.swapLeft,
+			}
+			: undefined,
+		{ type: 'divider' },
+		{
+			icon: 'ti ti-trash',
+			text: i18n.ts.remove,
+			danger: true,
 			action: () => {
-				swapLeftColumn(props.column.id);
+				removeColumn(props.column.id);
 			},
-		}, {
-			icon: 'ti ti-arrow-right',
-			text: i18n.ts._deck.swapRight,
-			action: () => {
-				swapRightColumn(props.column.id);
-			},
-		}, props.isStacked ? {
-			icon: 'ti ti-arrow-up',
-			text: i18n.ts._deck.swapUp,
-			action: () => {
-				swapUpColumn(props.column.id);
-			},
-		} : undefined, props.isStacked ? {
-			icon: 'ti ti-arrow-down',
-			text: i18n.ts._deck.swapDown,
-			action: () => {
-				swapDownColumn(props.column.id);
-			},
-		} : undefined],
-	}, {
-		icon: 'ti ti-stack-2',
-		text: i18n.ts._deck.stackLeft,
-		action: () => {
-			stackLeftColumn(props.column.id);
 		},
-	}, props.isStacked ? {
-		icon: 'ti ti-window-maximize',
-		text: i18n.ts._deck.popRight,
-		action: () => {
-			popRightColumn(props.column.id);
-		},
-	} : undefined, { type: 'divider' }, {
-		icon: 'ti ti-trash',
-		text: i18n.ts.remove,
-		danger: true,
-		action: () => {
-			removeColumn(props.column.id);
-		},
-	}];
+	];
 
 	if (props.menu) {
 		items.unshift({ type: 'divider' });

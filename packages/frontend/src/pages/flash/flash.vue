@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<MkButton v-else v-tooltip="i18n.ts.like" asLike class="button" rounded @click="like()"><i class="ti ti-heart"></i><span v-if="flash?.likedCount && flash.likedCount > 0" style="margin-left: 6px;">{{ flash.likedCount }}</span></MkButton>
 								<MkButton v-tooltip="i18n.ts.copyLink" class="button" rounded @click="copyLink"><i class="ti ti-link ti-fw"></i></MkButton>
 								<MkButton v-tooltip="i18n.ts.share" class="button" rounded @click="share"><i class="ti ti-share ti-fw"></i></MkButton>
-								<MkButton v-if="$i && $i.id !== flash.user.id" class="button" rounded @mousedown="showMenu"><i class="ti ti-dots ti-fw"></i></MkButton>
+								<MkButton v-if="$i && $i.id !== flash.user.id && ($i.isModerator === true || $i.isAdmin === true)" class="button" rounded @mousedown="showMenu"><i class="ti ti-dots ti-fw"></i></MkButton>
 							</div>
 						</div>
 					</div>
@@ -109,11 +109,13 @@ function share(ev: MouseEvent) {
 			icon: 'ti ti-pencil',
 			action: shareWithNote,
 		},
-		...(isSupportShare() ? [{
-			text: i18n.ts.share,
-			icon: 'ti ti-share',
-			action: shareWithNavigator,
-		}] : []),
+		isSupportShare()
+			? {
+				text: i18n.ts.share,
+				icon: 'ti ti-share',
+				action: shareWithNavigator,
+			}
+			: undefined,
 	], ev.currentTarget ?? ev.target);
 }
 
@@ -236,26 +238,21 @@ function showMenu(ev: MouseEvent) {
 	if (!flash.value) return;
 
 	const menu: MenuItem[] = [
-		...($i && $i.id !== flash.value.userId ? [
-			...($i.isModerator || $i.isAdmin ? [
-				{
-					type: 'divider' as const,
-				},
-				{
-					icon: 'ti ti-trash',
-					text: i18n.ts.delete,
-					danger: true,
-					action: () => os.confirm({
-						type: 'warning',
-						text: i18n.ts.deleteConfirm,
-					}).then(({ canceled }) => {
-						if (canceled || !flash.value) return;
+		$i && $i.id !== flash.value.userId && ($i.isModerator === true || $i.isAdmin === true)
+			? {
+				icon: 'ti ti-trash',
+				text: i18n.ts.delete,
+				danger: true,
+				action: () => os.confirm({
+					type: 'warning',
+					text: i18n.ts.deleteConfirm,
+				}).then(({ canceled }) => {
+					if (canceled || !flash.value) return;
 
-						os.apiWithDialog('flash/delete', { flashId: flash.value.id });
-					}),
-				},
-			] : []),
-		] : []),
+					os.apiWithDialog('flash/delete', { flashId: flash.value.id });
+				}),
+			}
+			: undefined,
 	];
 
 	os.popupMenu(menu, ev.currentTarget ?? ev.target);

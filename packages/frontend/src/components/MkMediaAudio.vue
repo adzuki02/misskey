@@ -172,9 +172,7 @@ async function show() {
 const menuShowing = ref(false);
 
 function showMenu(ev: MouseEvent) {
-	let menu: MenuItem[] = [];
-
-	menu = [
+	const menu: MenuItem[] = [
 		// TODO: 再生キューに追加
 		{
 			type: 'switch',
@@ -197,9 +195,7 @@ function showMenu(ev: MouseEvent) {
 				'2.0x': 2,
 			},
 		},
-		{
-			type: 'divider',
-		},
+		{ type: 'divider' },
 		{
 			text: i18n.ts.hide,
 			icon: 'ti ti-eye-off',
@@ -219,14 +215,15 @@ function showMenu(ev: MouseEvent) {
 	}
 
 	if ($i?.id === props.audio.userId) {
-		menu.push({
-			type: 'divider',
-		}, {
-			type: 'link' as const,
-			text: i18n.ts._fileViewer.title,
-			icon: 'ti ti-info-circle',
-			to: `/my/drive/file/${props.audio.id}`,
-		});
+		menu.push(
+			{ type: 'divider' },
+			{
+				type: 'link' as const,
+				text: i18n.ts._fileViewer.title,
+				icon: 'ti ti-info-circle',
+				to: `/my/drive/file/${props.audio.id}`,
+			},
+		);
 	}
 
 	menuShowing.value = true;

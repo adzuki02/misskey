@@ -582,7 +582,7 @@ function showRenoteMenu(): void {
 		os.popupMenu([
 			getCopyNoteLinkMenu(note.value, i18n.ts.copyLinkRenote),
 			{ type: 'divider' },
-			($i?.isModerator || $i?.isAdmin) ? getUnrenote() : undefined,
+			($i?.isModerator === true || $i?.isAdmin === true) ? getUnrenote() : undefined,
 		], renoteTime.value);
 	}
 }

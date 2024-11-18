@@ -260,40 +260,51 @@ function deleteFolder() {
 }
 
 function onContextmenu(ev: MouseEvent) {
-	let menu: MenuItem[];
-	menu = [{
-		text: i18n.ts.openInWindow,
-		icon: 'ti ti-app-window',
-		action: () => {
-			const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkDriveWindow.vue')), {
-				initialFolder: props.folder,
-			}, {
-				closed: () => dispose(),
-			});
-		},
-	}, { type: 'divider' }, {
-		text: i18n.ts.rename,
-		icon: 'ti ti-forms',
-		action: rename,
-	}, {
-		text: i18n.ts.move,
-		icon: 'ti ti ti-folder-symlink',
-		action: move,
-	}, { type: 'divider' }, {
-		text: i18n.ts.delete,
-		icon: 'ti ti-trash',
-		danger: true,
-		action: deleteFolder,
-	}];
-	if (defaultStore.state.devMode) {
-		menu = menu.concat([{ type: 'divider' }, {
-			icon: 'ti ti-id',
-			text: i18n.ts.copyFolderId,
+	const menu: MenuItem[] = [
+		{
+			text: i18n.ts.openInWindow,
+			icon: 'ti ti-app-window',
 			action: () => {
-				copyToClipboard(props.folder.id);
+				const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkDriveWindow.vue')), {
+					initialFolder: props.folder,
+				}, {
+					closed: () => dispose(),
+				});
 			},
-		}]);
+		},
+		{ type: 'divider' },
+		{
+			text: i18n.ts.rename,
+			icon: 'ti ti-forms',
+			action: rename,
+		},
+		{
+			text: i18n.ts.move,
+			icon: 'ti ti ti-folder-symlink',
+			action: move,
+		},
+		{ type: 'divider' },
+		{
+			text: i18n.ts.delete,
+			icon: 'ti ti-trash',
+			danger: true,
+			action: deleteFolder,
+		},
+	];
+
+	if (defaultStore.state.devMode) {
+		menu.push(
+			{ type: 'divider' },
+			{
+				icon: 'ti ti-id',
+				text: i18n.ts.copyFolderId,
+				action: () => {
+					copyToClipboard(props.folder.id);
+				},
+			},
+		);
 	}
+
 	os.contextMenu(menu, ev);
 }
 </script>

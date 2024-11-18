@@ -26,29 +26,33 @@ const props = defineProps<{
 }>();
 
 function menu(ev) {
-	os.popupMenu([{
-		type: 'label',
-		text: ':' + props.emoji.name + ':',
-	}, {
-		text: i18n.ts.copy,
-		icon: 'ti ti-copy',
-		action: () => {
-			copyToClipboard(`:${props.emoji.name}:`);
-			os.success();
+	os.popupMenu([
+		{
+			type: 'label',
+			text: ':' + props.emoji.name + ':',
 		},
-	}, {
-		text: i18n.ts.info,
-		icon: 'ti ti-info-circle',
-		action: async () => {
-			const { dispose } = os.popup(MkCustomEmojiDetailedDialog, {
-				emoji: await misskeyApiGet('emoji', {
-					name: props.emoji.name,
-				}),
-			}, {
-				closed: () => dispose(),
-			});
+		{
+			text: i18n.ts.copy,
+			icon: 'ti ti-copy',
+			action: () => {
+				copyToClipboard(`:${props.emoji.name}:`);
+				os.success();
+			},
 		},
-	}], ev.currentTarget ?? ev.target);
+		{
+			text: i18n.ts.info,
+			icon: 'ti ti-info-circle',
+			action: async () => {
+				const { dispose } = os.popup(MkCustomEmojiDetailedDialog, {
+					emoji: await misskeyApiGet('emoji', {
+						name: props.emoji.name,
+					}),
+				}, {
+					closed: () => dispose(),
+				});
+			},
+		},
+	], ev.currentTarget ?? ev.target);
 }
 </script>
 

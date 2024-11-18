@@ -129,13 +129,14 @@ function top(): void {
 
 async function chooseList(ev: MouseEvent): Promise<void> {
 	const lists = await userListsCache.fetch();
+
 	const items: MenuItem[] = [
 		...lists.map(list => ({
 			type: 'link' as const,
 			text: list.name,
 			to: `/timeline/list/${list.id}`,
 		})),
-		(lists.length === 0 ? undefined : { type: 'divider' }),
+		lists.length === 0 ? undefined : { type: 'divider' },
 		{
 			type: 'link' as const,
 			icon: 'ti ti-plus',
@@ -143,11 +144,13 @@ async function chooseList(ev: MouseEvent): Promise<void> {
 			to: '/my/lists',
 		},
 	];
+
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
 async function chooseAntenna(ev: MouseEvent): Promise<void> {
 	const antennas = await antennasCache.fetch();
+
 	const items: MenuItem[] = [
 		...antennas.map(antenna => ({
 			type: 'link' as const,
@@ -155,7 +158,7 @@ async function chooseAntenna(ev: MouseEvent): Promise<void> {
 			indicate: antenna.hasUnreadNote,
 			to: `/timeline/antenna/${antenna.id}`,
 		})),
-		(antennas.length === 0 ? undefined : { type: 'divider' }),
+		antennas.length === 0 ? undefined : { type: 'divider' },
 		{
 			type: 'link' as const,
 			icon: 'ti ti-plus',
@@ -163,11 +166,13 @@ async function chooseAntenna(ev: MouseEvent): Promise<void> {
 			to: '/my/antennas',
 		},
 	];
+
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
 async function chooseChannel(ev: MouseEvent): Promise<void> {
 	const channels = await favoritedChannelsCache.fetch();
+
 	const items: MenuItem[] = [
 		...channels.map(channel => {
 			const lastReadedAt = miLocalStorage.getItemAsJson(`channelLastReadedAt:${channel.id}`) ?? null;
@@ -180,7 +185,7 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 				to: `/channels/${channel.id}`,
 			};
 		}),
-		(channels.length === 0 ? undefined : { type: 'divider' }),
+		channels.length === 0 ? undefined : { type: 'divider' },
 		{
 			type: 'link' as const,
 			icon: 'ti ti-plus',
@@ -188,6 +193,7 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 			to: '/channels',
 		},
 	];
+
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
@@ -243,25 +249,32 @@ const headerActions = computed(() => [
 		icon: 'ti ti-dots',
 		text: i18n.ts.options,
 		handler: (ev) => {
-			os.popupMenu([{
-				type: 'switch',
-				text: i18n.ts.showRenotes,
-				ref: withRenotes,
-			}, isBasicTimeline(src.value) && hasWithReplies(src.value) ? {
-				type: 'switch',
-				text: i18n.ts.showRepliesToOthersInTimeline,
-				ref: withReplies,
-				disabled: onlyFiles,
-			} : undefined, {
-				type: 'switch',
-				text: i18n.ts.withSensitive,
-				ref: withSensitive,
-			}, {
-				type: 'switch',
-				text: i18n.ts.fileAttachedOnly,
-				ref: onlyFiles,
-				disabled: isBasicTimeline(src.value) && hasWithReplies(src.value) ? withReplies : false,
-			}], ev.currentTarget ?? ev.target);
+			os.popupMenu([
+				{
+					type: 'switch',
+					text: i18n.ts.showRenotes,
+					ref: withRenotes,
+				},
+				isBasicTimeline(src.value) && hasWithReplies(src.value)
+					? {
+						type: 'switch',
+						text: i18n.ts.showRepliesToOthersInTimeline,
+						ref: withReplies,
+						disabled: onlyFiles,
+					}
+					: undefined,
+				{
+					type: 'switch',
+					text: i18n.ts.withSensitive,
+					ref: withSensitive,
+				},
+				{
+					type: 'switch',
+					text: i18n.ts.fileAttachedOnly,
+					ref: onlyFiles,
+					disabled: isBasicTimeline(src.value) && hasWithReplies(src.value) ? withReplies : false,
+				},
+			], ev.currentTarget ?? ev.target);
 		},
 	},
 ]);

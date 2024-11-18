@@ -37,24 +37,30 @@ function computeTitle(event: PointerEvent): void {
 
 function onClick(ev: MouseEvent) {
 	if (props.menu) {
-		os.popupMenu([{
-			type: 'label',
-			text: props.emoji,
-		}, {
-			text: i18n.ts.copy,
-			icon: 'ti ti-copy',
-			action: () => {
-				copyToClipboard(props.emoji);
-				os.success();
+		os.popupMenu([
+			{
+				type: 'label',
+				text: props.emoji,
 			},
-		}, ...(props.menuReaction && react ? [{
-			text: i18n.ts.doReaction,
-			icon: 'ti ti-plus',
-			action: () => {
-				react(props.emoji);
-				sound.playMisskeySfx('reaction');
+			{
+				text: i18n.ts.copy,
+				icon: 'ti ti-copy',
+				action: () => {
+					copyToClipboard(props.emoji);
+					os.success();
+				},
 			},
-		}] : [])], ev.currentTarget ?? ev.target);
+			props.menuReaction && react
+				? {
+					text: i18n.ts.doReaction,
+					icon: 'ti ti-plus',
+					action: () => {
+						react(props.emoji);
+						sound.playMisskeySfx('reaction');
+					},
+				}
+				: undefined,
+		], ev.currentTarget ?? ev.target);
 	}
 }
 </script>

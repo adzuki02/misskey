@@ -84,26 +84,34 @@ function select(src: any, label: string | null, multiple: boolean): Promise<Driv
 	return new Promise((res, rej) => {
 		const keepOriginal = ref(defaultStore.state.keepOriginalUploading);
 
-		os.popupMenu([label ? {
-			text: label,
-			type: 'label',
-		} : undefined, {
-			type: 'switch',
-			text: i18n.ts.keepOriginalUploading,
-			ref: keepOriginal,
-		}, {
-			text: i18n.ts.upload,
-			icon: 'ti ti-upload',
-			action: () => chooseFileFromPc(multiple, keepOriginal.value).then(files => res(files)),
-		}, {
-			text: i18n.ts.fromDrive,
-			icon: 'ti ti-cloud',
-			action: () => chooseFileFromDrive(multiple).then(files => res(files)),
-		}, {
-			text: i18n.ts.fromUrl,
-			icon: 'ti ti-link',
-			action: () => chooseFileFromUrl().then(file => res([file])),
-		}], src);
+		os.popupMenu([
+			label
+				? {
+					text: label,
+					type: 'label',
+				}
+				: undefined,
+			{
+				type: 'switch',
+				text: i18n.ts.keepOriginalUploading,
+				ref: keepOriginal,
+			},
+			{
+				text: i18n.ts.upload,
+				icon: 'ti ti-upload',
+				action: () => chooseFileFromPc(multiple, keepOriginal.value).then(files => res(files)),
+			},
+			{
+				text: i18n.ts.fromDrive,
+				icon: 'ti ti-cloud',
+				action: () => chooseFileFromDrive(multiple).then(files => res(files)),
+			},
+			{
+				text: i18n.ts.fromUrl,
+				icon: 'ti ti-link',
+				action: () => chooseFileFromUrl().then(file => res([file])),
+			},
+		], src);
 	});
 }
 
