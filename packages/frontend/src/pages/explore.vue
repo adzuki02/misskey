@@ -6,14 +6,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkStickyContainer>
 	<template #header><MkPageHeader v-model:tab="tab" :tabs="headerTabs"/></template>
-	<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
-		<div v-if="tab === 'users'" key="users">
-			<XUsers/>
-		</div>
-		<div v-else-if="tab === 'roles' && $i" key="roles">
-			<XRoles/>
-		</div>
-	</MkHorizontalSwipe>
+	<div v-if="tab === 'users'" key="users">
+		<XUsers/>
+	</div>
+	<div v-else-if="tab === 'roles' && $i" key="roles">
+		<XRoles/>
+	</div>
 </MkStickyContainer>
 </template>
 
@@ -21,7 +19,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, ref } from 'vue';
 import XUsers from './explore.users.vue';
 import XRoles from './explore.roles.vue';
-import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';

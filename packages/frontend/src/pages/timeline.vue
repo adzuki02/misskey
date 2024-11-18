@@ -7,24 +7,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkStickyContainer>
 	<template #header><MkPageHeader v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/></template>
 	<MkSpacer :contentMax="800">
-		<MkHorizontalSwipe v-model:tab="src" :tabs="$i ? headerTabs : headerTabsWhenNotLogin">
-			<div :key="src" ref="rootEl">
-				<div v-if="queue > 0" :class="$style.new"><button class="_buttonPrimary" :class="$style.newButton" @click="top()">{{ i18n.ts.newNoteRecived }}</button></div>
-				<div :class="$style.tl">
-					<MkTimeline
-						ref="tlComponent"
-						:key="src + withRenotes + withReplies + onlyFiles"
-						:src="tlComponentSrc"
-						:list="src.split(':')[1]"
-						:withRenotes="withRenotes"
-						:withReplies="withReplies"
-						:onlyFiles="onlyFiles"
-						:sound="true"
-						@queue="queueUpdated"
-					/>
-				</div>
+		<div :key="src" ref="rootEl">
+			<div v-if="queue > 0" :class="$style.new"><button class="_buttonPrimary" :class="$style.newButton" @click="top()">{{ i18n.ts.newNoteRecived }}</button></div>
+			<div :class="$style.tl">
+				<MkTimeline
+					ref="tlComponent"
+					:key="src + withRenotes + withReplies + onlyFiles"
+					:src="tlComponentSrc"
+					:list="src.split(':')[1]"
+					:withRenotes="withRenotes"
+					:withReplies="withReplies"
+					:onlyFiles="onlyFiles"
+					:sound="true"
+					@queue="queueUpdated"
+				/>
 			</div>
-		</MkHorizontalSwipe>
+		</div>
 	</MkSpacer>
 </MkStickyContainer>
 </template>
@@ -35,7 +33,6 @@ import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import type { BasicTimelineType } from '@/timelines.js';
 import MkTimeline from '@/components/MkTimeline.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
-import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import { scroll } from '@/scripts/scroll.js';
 import * as os from '@/os.js';
 import { defaultStore } from '@/store.js';

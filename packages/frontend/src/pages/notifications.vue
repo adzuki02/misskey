@@ -7,17 +7,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkStickyContainer>
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="800">
-		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
-			<div v-if="tab === 'all'" key="all">
-				<XNotifications :class="$style.notifications" :excludeTypes="excludeTypes"/>
-			</div>
-			<div v-else-if="tab === 'mentions'" key="mention">
-				<MkNotes :pagination="mentionsPagination"/>
-			</div>
-			<div v-else-if="tab === 'directNotes'" key="directNotes">
-				<MkNotes :pagination="directNotesPagination"/>
-			</div>
-		</MkHorizontalSwipe>
+		<div v-if="tab === 'all'" key="all">
+			<XNotifications :class="$style.notifications" :excludeTypes="excludeTypes"/>
+		</div>
+		<div v-else-if="tab === 'mentions'" key="mention">
+			<MkNotes :pagination="mentionsPagination"/>
+		</div>
+		<div v-else-if="tab === 'directNotes'" key="directNotes">
+			<MkNotes :pagination="directNotesPagination"/>
+		</div>
 	</MkSpacer>
 </MkStickyContainer>
 </template>
@@ -27,7 +25,6 @@ import { computed, ref } from 'vue';
 import type { MenuItem } from '@/types/menu';
 import XNotifications from '@/components/MkNotifications.vue';
 import MkNotes from '@/components/MkNotes.vue';
-import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
