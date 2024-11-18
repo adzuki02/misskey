@@ -6,20 +6,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkStickyContainer>
 	<template #header><MkPageHeader v-model:tab="tab" :tabs="headerTabs"/></template>
-	<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
-		<MkSpacer v-if="tab === 'overview'" :contentMax="600" :marginMin="20">
-			<XOverview/>
-		</MkSpacer>
-		<MkSpacer v-else-if="tab === 'emojis'" :contentMax="1000" :marginMin="20">
-			<XEmojis/>
-		</MkSpacer>
-		<MkSpacer v-else-if="tab === 'federation' && $i" :contentMax="1000" :marginMin="20">
-			<XFederation/>
-		</MkSpacer>
-		<MkSpacer v-else-if="tab === 'charts' && $i" :contentMax="1000" :marginMin="20">
-			<MkInstanceStats/>
-		</MkSpacer>
-	</MkHorizontalSwipe>
+	<MkSpacer v-if="tab === 'overview'" :contentMax="600" :marginMin="20">
+		<XOverview/>
+	</MkSpacer>
+	<MkSpacer v-else-if="tab === 'emojis'" :contentMax="1000" :marginMin="20">
+		<XEmojis/>
+	</MkSpacer>
+	<MkSpacer v-else-if="tab === 'federation' && $i" :contentMax="1000" :marginMin="20">
+		<XFederation/>
+	</MkSpacer>
+	<MkSpacer v-else-if="tab === 'charts' && $i" :contentMax="1000" :marginMin="20">
+		<MkInstanceStats/>
+	</MkSpacer>
 </MkStickyContainer>
 </template>
 
@@ -28,7 +26,6 @@ import { computed, defineAsyncComponent, ref } from 'vue';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 
 const XOverview = defineAsyncComponent(() => import('@/pages/about.overview.vue'));
 // @ts-expect-error VSCodeではエラーが起きないがvue-tscではなぜかエラーが出る (TS2306)

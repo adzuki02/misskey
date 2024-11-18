@@ -8,17 +8,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header><MkPageHeader v-model:tab="tab" :tabs="headerTabs"/></template>
 	<div>
 		<div v-if="user">
-			<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
-				<XHome v-if="tab === 'home'" key="home" :user="user"/>
-				<MkSpacer v-else-if="tab === 'notes'" key="notes" :contentMax="800" style="padding-top: 0">
-					<XTimeline :user="user"/>
-				</MkSpacer>
-				<XReactions v-else-if="tab === 'reactions' && (iAmModerator || $i?.id === user.id || user.publicReactions)" key="reactions" :user="user"/>
-				<XClips v-else-if="tab === 'clips' && user.host === null" key="clips" :user="user"/>
-				<XLists v-else-if="tab === 'lists' && user.host === null" key="lists" :user="user"/>
-				<XFlashs v-else-if="tab === 'flashs' && user.host === null" key="flashs" :user="user"/>
-				<XRaw v-else-if="tab === 'raw'" key="raw" :user="user"/>
-			</MkHorizontalSwipe>
+			<XHome v-if="tab === 'home'" key="home" :user="user"/>
+			<MkSpacer v-else-if="tab === 'notes'" key="notes" :contentMax="800" style="padding-top: 0">
+				<XTimeline :user="user"/>
+			</MkSpacer>
+			<XReactions v-else-if="tab === 'reactions' && (iAmModerator || $i?.id === user.id || user.publicReactions)" key="reactions" :user="user"/>
+			<XClips v-else-if="tab === 'clips' && user.host === null" key="clips" :user="user"/>
+			<XLists v-else-if="tab === 'lists' && user.host === null" key="lists" :user="user"/>
+			<XFlashs v-else-if="tab === 'flashs' && user.host === null" key="flashs" :user="user"/>
+			<XRaw v-else-if="tab === 'raw'" key="raw" :user="user"/>
 		</div>
 		<MkError v-else-if="error" @retry="fetchUser()"/>
 		<MkLoading v-else/>
@@ -35,7 +33,6 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
 import { $i, iAmModerator } from '@/account.js';
-import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));
 const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
