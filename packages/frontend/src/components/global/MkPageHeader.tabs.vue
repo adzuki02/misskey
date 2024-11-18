@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div ref="el" :class="$style.tabs" @wheel="onTabWheel">
 	<div :class="$style.tabsInner">
 		<button
-			v-for="t in tabs" :ref="(el) => tabRefs[t.key] = (el as HTMLElement)" v-tooltip.noDelay="t.title"
+			v-for="t in filteredTabs" :ref="(el) => tabRefs[t.key] = (el as HTMLElement)" v-tooltip.noDelay="t.title"
 			class="_button" :class="[$style.tab, { [$style.active]: t.key != null && t.key === props.tab, [$style.animate]: defaultStore.reactiveState.animation.value }]"
 			@mousedown="(ev) => onTabMousedown(t, ev)" @click="(ev) => onTabClick(t, ev)"
 		>
@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts">
-export type Tab = {
+export type Tab = ({
 	key: string;
 	onClick?: (ev: MouseEvent) => void;
 } & (
@@ -50,15 +50,15 @@ export type Tab = {
 			title?: undefined;
 			icon: string;
 		}
-);
+));
 </script>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, watch, nextTick, useTemplateRef } from 'vue';
+import { onMounted, onUnmounted, ref, watch, nextTick, useTemplateRef, computed } from 'vue';
 import { defaultStore } from '@/store.js';
 
 const props = withDefaults(defineProps<{
-	tabs?: Tab[];
+	tabs?: (Tab | undefined)[];
 	tab?: string;
 	rootEl: HTMLElement | null;
 }>(), {
@@ -74,6 +74,14 @@ const emit = defineEmits<{
 const el = useTemplateRef('el');
 const tabRefs: Record<string, HTMLElement | null> = {};
 const tabHighlightEl = useTemplateRef('tabHighlightEl');
+
+const filteredTabs = ref<Tab[]>([]);
+
+watch(() => props.tabs, () => {
+	filteredTabs.value = [...props.tabs].filter(tab => tab !== undefined);
+}, {
+	immediate: true,
+});
 
 function onTabMousedown(tab: Tab, ev: MouseEvent): void {
 	// ユーザビリティの観点からmousedown時にはonClickは呼ばない

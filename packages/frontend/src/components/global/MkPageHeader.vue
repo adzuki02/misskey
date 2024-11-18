@@ -51,7 +51,7 @@ import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { PageHeaderItem } from '@/types/page-header.js';
 
 const props = withDefaults(defineProps<{
-	tabs?: Tab[];
+	tabs?: (Tab | undefined)[];
 	tab?: string;
 	actions?: PageHeaderItem[];
 	thin?: boolean;
