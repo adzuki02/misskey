@@ -60,13 +60,16 @@ const headerActions = computed(() => [{
 	},
 }]);
 
-const headerTabs = computed(() => [{
-	key: 'deliver',
-	title: 'Deliver',
-}, {
-	key: 'inbox',
-	title: 'Inbox',
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'deliver',
+		title: 'Deliver',
+	},
+	{
+		key: 'inbox',
+		title: 'Inbox',
+	},
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts.jobQueue,
