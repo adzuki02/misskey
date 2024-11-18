@@ -48,26 +48,32 @@ const init = async () => {
 };
 
 function menu(account, ev) {
-	os.popupMenu([{
-		text: i18n.ts.switch,
-		icon: 'ti ti-switch-horizontal',
-		action: () => switchAccount(account),
-	}, {
-		text: i18n.ts.logout,
-		icon: 'ti ti-trash',
-		danger: true,
-		action: () => removeAccount(account),
-	}], ev.currentTarget ?? ev.target);
+	os.popupMenu([
+		{
+			text: i18n.ts.switch,
+			icon: 'ti ti-switch-horizontal',
+			action: () => switchAccount(account),
+		},
+		{
+			text: i18n.ts.logout,
+			icon: 'ti ti-trash',
+			danger: true,
+			action: () => removeAccount(account),
+		},
+	], ev.currentTarget ?? ev.target);
 }
 
 function addAccount(ev) {
-	os.popupMenu([{
-		text: i18n.ts.existingAccount,
-		action: () => { addExistingAccount(); },
-	}, {
-		text: i18n.ts.createAccount,
-		action: () => { createAccount(); },
-	}], ev.currentTarget ?? ev.target);
+	os.popupMenu([
+		{
+			text: i18n.ts.existingAccount,
+			action: () => { addExistingAccount(); },
+		},
+		{
+			text: i18n.ts.createAccount,
+			action: () => { createAccount(); },
+		},
+	], ev.currentTarget ?? ev.target);
 }
 
 async function removeAccount(account) {
