@@ -88,7 +88,7 @@ describe('Mute', () => {
 			const bobNote = await post(bob, { text: 'hi' });
 			const carolNote = await post(carol, { text: 'hi' });
 
-			const res = await api('notes/global-timeline', {}, alice);
+			const res = await api('notes/local-timeline', {}, alice);
 
 			assert.strictEqual(res.status, 200);
 			assert.strictEqual(Array.isArray(res.body), true);
@@ -104,7 +104,7 @@ describe('Mute', () => {
 				renoteId: carolNote.id,
 			});
 
-			const res = await api('notes/global-timeline', {}, alice);
+			const res = await api('notes/local-timeline', {}, alice);
 
 			assert.strictEqual(res.status, 200);
 			assert.strictEqual(Array.isArray(res.body), true);

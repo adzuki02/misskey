@@ -96,6 +96,18 @@ function connectChannel() {
 			withFiles: props.onlyFiles ? true : undefined,
 		});
 		(connection2 as ChannelConnection<Channels['main']>) = stream.useChannel('main');
+	} else if (props.src === 'local') {
+		(connection as ChannelConnection<Channels['localTimeline']>) = stream.useChannel('localTimeline', {
+			withRenotes: props.withRenotes,
+			withReplies: props.withReplies,
+			withFiles: props.onlyFiles ? true : undefined,
+		});
+	} else if (props.src === 'social') {
+		(connection as ChannelConnection<Channels['hybridTimeline']>) = stream.useChannel('hybridTimeline', {
+			withRenotes: props.withRenotes,
+			withReplies: props.withReplies,
+			withFiles: props.onlyFiles ? true : undefined,
+		});
 	} else if (props.src === 'global') {
 		(connection as ChannelConnection<Channels['globalTimeline']>) = stream.useChannel('globalTimeline', {
 			withRenotes: props.withRenotes,
@@ -151,6 +163,20 @@ function updatePaginationQuery() {
 		endpoint = 'notes/timeline';
 		query = {
 			withRenotes: props.withRenotes,
+			withFiles: props.onlyFiles ? true : undefined,
+		};
+	} else if (props.src === 'local') {
+		endpoint = 'notes/local-timeline';
+		query = {
+			withRenotes: props.withRenotes,
+			withReplies: props.withReplies,
+			withFiles: props.onlyFiles ? true : undefined,
+		};
+	} else if (props.src === 'social') {
+		endpoint = 'notes/hybrid-timeline';
+		query = {
+			withRenotes: props.withRenotes,
+			withReplies: props.withReplies,
 			withFiles: props.onlyFiles ? true : undefined,
 		};
 	} else if (props.src === 'global') {

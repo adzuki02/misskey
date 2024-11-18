@@ -332,7 +332,7 @@ describe('Streaming', () => {
 		describe('Local Timeline', () => {
 			test('自分の投稿が流れる', async () => {
 				const fired = await waitFire(
-					ayano, 'globalTimeline',	// ayano:Local
+					ayano, 'localTimeline',	// ayano:Local
 					() => api('notes/create', { text: 'foo' }, ayano),	// ayano posts
 					msg => msg.type === 'note' && msg.body.text === 'foo',
 				);
@@ -342,7 +342,7 @@ describe('Streaming', () => {
 
 			test('フォローしていないローカルユーザーの投稿が流れる', async () => {
 				const fired = await waitFire(
-					ayano, 'globalTimeline',	// ayano:Local
+					ayano, 'localTimeline',	// ayano:Local
 					() => api('notes/create', { text: 'foo' }, chitose),	// chitose posts
 					msg => msg.type === 'note' && msg.body.userId === chitose.id,	// wait chitose
 				);
@@ -350,9 +350,31 @@ describe('Streaming', () => {
 				assert.strictEqual(fired, true);
 			});
 
+			/* TODO
+			test('リモートユーザーの投稿は流れない', async () => {
+				const fired = await waitFire(
+					ayano, 'localTimeline',	// ayano:Local
+					() => api('notes/create', { text: 'foo' }, chinatsu),	// chinatsu posts
+					msg => msg.type === 'note' && msg.body.userId === chinatsu.id,	// wait chinatsu
+				);
+
+				assert.strictEqual(fired, false);
+			});
+
+			test('フォローしてたとしてもリモートユーザーの投稿は流れない', async () => {
+				const fired = await waitFire(
+					ayano, 'localTimeline',	// ayano:Local
+					() => api('notes/create', { text: 'foo' }, akari),	// akari posts
+					msg => msg.type === 'note' && msg.body.userId === akari.id,	// wait akari
+				);
+
+				assert.strictEqual(fired, false);
+			});
+			*/
+
 			test('ホーム指定の投稿は流れない', async () => {
 				const fired = await waitFire(
-					ayano, 'globalTimeline',	// ayano:Local
+					ayano, 'localTimeline',	// ayano:Local
 					() => api('notes/create', { text: 'foo', visibility: 'home' }, kyoko),	// kyoko home posts
 					msg => msg.type === 'note' && msg.body.userId === kyoko.id,	// wait kyoko
 				);
@@ -362,7 +384,7 @@ describe('Streaming', () => {
 
 			test('フォローしているローカルユーザーのダイレクト投稿は流れない', async () => {
 				const fired = await waitFire(
-					ayano, 'globalTimeline',	// ayano:Local
+					ayano, 'localTimeline',	// ayano:Local
 					() => api('notes/create', { text: 'foo', visibility: 'specified', visibleUserIds: [ayano.id] }, kyoko),	// kyoko DM => ayano
 					msg => msg.type === 'note' && msg.body.userId === kyoko.id,	// wait kyoko
 				);
@@ -372,9 +394,145 @@ describe('Streaming', () => {
 
 			test('フォローしていないローカルユーザーのフォロワー宛て投稿は流れない', async () => {
 				const fired = await waitFire(
-					ayano, 'globalTimeline',	// ayano:Local
+					ayano, 'localTimeline',	// ayano:Local
 					() => api('notes/create', { text: 'foo', visibility: 'followers' }, chitose),
 					msg => msg.type === 'note' && msg.body.userId === chitose.id,	// wait chitose
+				);
+
+				assert.strictEqual(fired, false);
+			});
+		});
+
+		describe('Hybrid Timeline', () => {
+			test('自分の投稿が流れる', async () => {
+				const fired = await waitFire(
+					ayano, 'hybridTimeline',	// ayano:Hybrid
+					() => api('notes/create', { text: 'foo' }, ayano),	// ayano posts
+					msg => msg.type === 'note' && msg.body.text === 'foo',
+				);
+
+				assert.strictEqual(fired, true);
+			});
+
+			test('自分の visibility: followers な投稿が流れる', async () => {
+				const fired = await waitFire(
+					ayano, 'hybridTimeline',
+					() => api('notes/create', { text: 'foo', visibility: 'followers' }, ayano),	// ayano posts
+					msg => msg.type === 'note' && msg.body.text === 'foo',
+				);
+
+				assert.strictEqual(fired, true);
+			});
+
+			test('フォローしていないローカルユーザーの投稿が流れる', async () => {
+				const fired = await waitFire(
+					ayano, 'hybridTimeline',	// ayano:Hybrid
+					() => api('notes/create', { text: 'foo' }, chitose),	// chitose posts
+					msg => msg.type === 'note' && msg.body.userId === chitose.id,	// wait chitose
+				);
+
+				assert.strictEqual(fired, true);
+			});
+
+			/* TODO
+			test('フォローしているリモートユーザーの投稿が流れる', async () => {
+				const fired = await waitFire(
+					ayano, 'hybridTimeline',	// ayano:Hybrid
+					() => api('notes/create', { text: 'foo' }, akari),	// akari posts
+					msg => msg.type === 'note' && msg.body.userId === akari.id,	// wait akari
+				);
+
+				assert.strictEqual(fired, true);
+			});
+
+			test('フォローしていないリモートユーザーの投稿は流れない', async () => {
+				const fired = await waitFire(
+					ayano, 'hybridTimeline',	// ayano:Hybrid
+					() => api('notes/create', { text: 'foo' }, chinatsu),	// chinatsu posts
+					msg => msg.type === 'note' && msg.body.userId === chinatsu.id,	// wait chinatsu
+				);
+
+				assert.strictEqual(fired, false);
+			});
+			*/
+
+			test('フォローしているユーザーのダイレクト投稿が流れる', async () => {
+				const fired = await waitFire(
+					ayano, 'hybridTimeline',	// ayano:Hybrid
+					() => api('notes/create', { text: 'foo', visibility: 'specified', visibleUserIds: [ayano.id] }, kyoko),
+					msg => msg.type === 'note' && msg.body.userId === kyoko.id,	// wait kyoko
+				);
+
+				assert.strictEqual(fired, true);
+			});
+
+			test('フォローしているユーザーのホーム投稿が流れる', async () => {
+				const fired = await waitFire(
+					ayano, 'hybridTimeline',	// ayano:Hybrid
+					() => api('notes/create', { text: 'foo', visibility: 'home' }, kyoko),
+					msg => msg.type === 'note' && msg.body.userId === kyoko.id,	// wait kyoko
+				);
+
+				assert.strictEqual(fired, true);
+			});
+
+			test('フォローしているユーザーの visibility: followers な投稿が流れる', async () => {
+				const fired = await waitFire(
+					ayano, 'hybridTimeline',	// ayano:Hybrid
+					() => api('notes/create', { text: 'foo', visibility: 'followers' }, kyoko),
+					msg => msg.type === 'note' && msg.body.userId === kyoko.id,	// wait kyoko
+				);
+
+				assert.strictEqual(fired, true);
+			});
+
+			test('フォローしていないローカルユーザーのホーム投稿は流れない', async () => {
+				const fired = await waitFire(
+					ayano, 'hybridTimeline',	// ayano:Hybrid
+					() => api('notes/create', { text: 'foo', visibility: 'home' }, chitose),
+					msg => msg.type === 'note' && msg.body.userId === chitose.id,
+				);
+
+				assert.strictEqual(fired, false);
+			});
+
+			test('フォローしていないローカルユーザーのフォロワー宛て投稿は流れない', async () => {
+				const fired = await waitFire(
+					ayano, 'hybridTimeline',	// ayano:Hybrid
+					() => api('notes/create', { text: 'foo', visibility: 'followers' }, chitose),
+					msg => msg.type === 'note' && msg.body.userId === chitose.id,
+				);
+
+				assert.strictEqual(fired, false);
+			});
+
+			test('withReplies: true のとき自分のfollowers投稿に対するリプライが流れる', async () => {
+				const erinNote = await post(erin, { text: 'hi', visibility: 'followers' });
+				const fired = await waitFire(
+					erin, 'homeTimeline',	// erin:home
+					() => api('notes/create', { text: 'hello', replyId: erinNote.id }, ayano),	// ayano reply to erin's followers post
+					msg => msg.type === 'note' && msg.body.userId === ayano.id,	// wait ayano
+				);
+
+				assert.strictEqual(fired, true);
+			});
+
+			test('withReplies: false でも自分の投稿に対するリプライが流れる', async () => {
+				const ayanoNote = await post(ayano, { text: 'hi', visibility: 'followers' });
+				const fired = await waitFire(
+					ayano, 'homeTimeline',	// ayano:home
+					() => api('notes/create', { text: 'hello', replyId: ayanoNote.id }, erin),	// erin reply to ayano's followers post
+					msg => msg.type === 'note' && msg.body.userId === erin.id,	// wait erin
+				);
+
+				assert.strictEqual(fired, true);
+			});
+
+			test('withReplies: true のフォローしていない人のfollowersノートに対するリプライが流れない', async () => {
+				const fired = await waitFire(
+					erin, 'homeTimeline',	// erin:home
+					() => api('notes/create', { text: 'hello', replyId: chitose.id }, ayano),	// ayano reply to chitose's post
+					msg => msg.type === 'note' && msg.body.userId === ayano.id,	// wait ayano
 				);
 
 				assert.strictEqual(fired, false);
@@ -577,7 +735,7 @@ describe('Streaming', () => {
 			assert.strictEqual(established, false);
 
 			const fired = await waitFire(
-				{ token: application2 }, 'globalTimeline',
+				{ token: application2 }, 'hybridTimeline',
 				() => api('notes/create', { text: 'Hello, world!' }, ayano),
 				msg => msg.type === 'note' && msg.body.userId === ayano.id,
 			);

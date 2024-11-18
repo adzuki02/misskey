@@ -38,7 +38,7 @@ describe('Renote Mute', () => {
 		// redisに追加されるのを待つ
 		await setTimeout(100);
 
-		const res = await api('notes/global-timeline', {}, alice);
+		const res = await api('notes/local-timeline', {}, alice);
 
 		assert.strictEqual(res.status, 200);
 		assert.strictEqual(Array.isArray(res.body), true);
@@ -55,7 +55,7 @@ describe('Renote Mute', () => {
 		// redisに追加されるのを待つ
 		await setTimeout(100);
 
-		const res = await api('notes/global-timeline', {}, alice);
+		const res = await api('notes/local-timeline', {}, alice);
 
 		assert.strictEqual(res.status, 200);
 		assert.strictEqual(Array.isArray(res.body), true);
@@ -72,7 +72,7 @@ describe('Renote Mute', () => {
 		// redisに追加されるのを待つ
 		await setTimeout(100);
 
-		const res = await api('notes/global-timeline', {}, alice);
+		const res = await api('notes/local-timeline', {}, alice);
 
 		assert.strictEqual(res.status, 200);
 		assert.strictEqual(Array.isArray(res.body), true);
@@ -84,7 +84,7 @@ describe('Renote Mute', () => {
 		const bobNote = await post(bob, { text: 'hi' });
 
 		const fired = await waitFire(
-			alice, 'globalTimeline',
+			alice, 'localTimeline',
 			() => api('notes/create', { renoteId: bobNote.id }, carol),
 			msg => msg.type === 'note' && msg.body.userId === carol.id,
 		);
@@ -96,7 +96,7 @@ describe('Renote Mute', () => {
 		const bobNote = await post(bob, { text: 'hi' });
 
 		const fired = await waitFire(
-			alice, 'globalTimeline',
+			alice, 'localTimeline',
 			() => api('notes/create', { renoteId: bobNote.id, text: 'kore' }, carol),
 			msg => msg.type === 'note' && msg.body.userId === carol.id,
 		);
@@ -109,7 +109,7 @@ describe('Renote Mute', () => {
 		const carolbNote = await post(carol, { text: 'hi' });
 
 		const fired = await waitFire(
-			alice, 'globalTimeline',
+			alice, 'localTimeline',
 			() => api('notes/create', { renoteId: carolbNote.id }, bob),
 			msg => msg.type === 'note' && msg.body.userId === bob.id,
 		);

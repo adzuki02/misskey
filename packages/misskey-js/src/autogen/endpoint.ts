@@ -330,6 +330,10 @@ import type {
 	NotesDeleteRequest,
 	NotesGlobalTimelineRequest,
 	NotesGlobalTimelineResponse,
+	NotesHybridTimelineRequest,
+	NotesHybridTimelineResponse,
+	NotesLocalTimelineRequest,
+	NotesLocalTimelineResponse,
 	NotesMentionsRequest,
 	NotesMentionsResponse,
 	NotesPollsVoteRequest,
@@ -663,6 +667,8 @@ export type Endpoints = {
 	'notes/create': { req: NotesCreateRequest; res: NotesCreateResponse };
 	'notes/delete': { req: NotesDeleteRequest; res: EmptyResponse };
 	'notes/global-timeline': { req: NotesGlobalTimelineRequest; res: NotesGlobalTimelineResponse };
+	'notes/hybrid-timeline': { req: NotesHybridTimelineRequest; res: NotesHybridTimelineResponse };
+	'notes/local-timeline': { req: NotesLocalTimelineRequest; res: NotesLocalTimelineResponse };
 	'notes/mentions': { req: NotesMentionsRequest; res: NotesMentionsResponse };
 	'notes/polls/vote': { req: NotesPollsVoteRequest; res: EmptyResponse };
 	'notes/reactions': { req: NotesReactionsRequest; res: NotesReactionsResponse };
