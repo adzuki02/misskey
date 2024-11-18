@@ -312,15 +312,18 @@ const delBulk = async () => {
 	emojisPaginationComponent.value.reload();
 };
 
-const headerActions = computed(() => [{
-	asFullButton: true,
-	icon: 'ti ti-plus',
-	text: i18n.ts.addEmoji,
-	handler: add,
-}, {
-	icon: 'ti ti-dots',
-	handler: menu,
-}]);
+const headerActions = computed(() => [
+	{
+		asFullButton: true,
+		icon: 'ti ti-plus',
+		text: i18n.ts.addEmoji,
+		handler: add,
+	},
+	{
+		icon: 'ti ti-dots',
+		handler: menu,
+	},
+]);
 
 const headerTabs = computed(() => [
 	{

@@ -235,13 +235,15 @@ onActivated(() => {
 });
 
 const headerActions = computed(() => [
-	...(deviceKind === 'desktop' ? [{
-		icon: 'ti ti-refresh',
-		text: i18n.ts.reload,
-		handler: () => {
-			tlComponent.value?.reloadTimeline();
-		},
-	}] : []),
+	deviceKind === 'desktop'
+		? {
+			icon: 'ti ti-refresh',
+			text: i18n.ts.reload,
+			handler: () => {
+				tlComponent.value?.reloadTimeline();
+			},
+		}
+		: undefined,
 	{
 		icon: 'ti ti-dots',
 		text: i18n.ts.options,

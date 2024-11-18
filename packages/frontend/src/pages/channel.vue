@@ -178,55 +178,45 @@ async function search() {
 	searchKey.value = query;
 }
 
-const headerActions = computed(() => {
-	if (channel.value && channel.value.userId) {
-		const headerItems: PageHeaderItem[] = [];
-
-		headerItems.push({
-			icon: 'ti ti-link',
-			text: i18n.ts.copyUrl,
+const headerActions = computed(() => channel.value && channel.value.userId ? [
+	{
+		icon: 'ti ti-link',
+		text: i18n.ts.copyUrl,
+		handler: async (): Promise<void> => {
+			if (!channel.value) {
+				console.warn('failed to copy channel URL. channel.value is null.');
+				return;
+			}
+			copyToClipboard(`${url}/channels/${channel.value.id}`);
+			os.success();
+		},
+	},
+	isSupportShare()
+		? {
+			icon: 'ti ti-share',
+			text: i18n.ts.share,
 			handler: async (): Promise<void> => {
 				if (!channel.value) {
-					console.warn('failed to copy channel URL. channel.value is null.');
+					console.warn('failed to share channel. channel.value is null.');
 					return;
 				}
-				copyToClipboard(`${url}/channels/${channel.value.id}`);
-				os.success();
+
+				navigator.share({
+					title: channel.value.name,
+					text: channel.value.description ?? undefined,
+					url: `${url}/channels/${channel.value.id}`,
+				});
 			},
-		});
-
-		if (isSupportShare()) {
-			headerItems.push({
-				icon: 'ti ti-share',
-				text: i18n.ts.share,
-				handler: async (): Promise<void> => {
-					if (!channel.value) {
-						console.warn('failed to share channel. channel.value is null.');
-						return;
-					}
-
-					navigator.share({
-						title: channel.value.name,
-						text: channel.value.description ?? undefined,
-						url: `${url}/channels/${channel.value.id}`,
-					});
-				},
-			});
 		}
-
-		if (($i !== null && $i.id === channel.value.userId) || iAmModerator) {
-			headerItems.push({
-				icon: 'ti ti-settings',
-				text: i18n.ts.edit,
-				handler: edit,
-			});
+		: undefined,
+	($i !== null && $i.id === channel.value.userId) || iAmModerator
+		? {
+			icon: 'ti ti-settings',
+			text: i18n.ts.edit,
+			handler: edit,
 		}
-
-		return headerItems.length > 0 ? headerItems : undefined;
-	} else {
-		return undefined;
-	}
-});
+		: undefined,
+] : undefined);
 
 const headerTabs = computed(() => [
 	{

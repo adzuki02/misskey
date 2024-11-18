@@ -93,80 +93,89 @@ async function unfavorite() {
 	});
 }
 
-const headerActions = computed(() => clip.value && isOwned.value ? [{
-	icon: 'ti ti-pencil',
-	text: i18n.ts.edit,
-	handler: async (): Promise<void> => {
-		if (!clip.value) return;
+const headerActions = computed(() => clip.value && isOwned.value ? [
+	{
+		icon: 'ti ti-pencil',
+		text: i18n.ts.edit,
+		handler: async (): Promise<void> => {
+			if (!clip.value) return;
 
-		const { canceled, result } = await os.form(clip.value.name, {
-			name: {
-				type: 'string',
-				label: i18n.ts.name,
-				default: clip.value.name,
+			const { canceled, result } = await os.form(clip.value.name, {
+				name: {
+					type: 'string',
+					label: i18n.ts.name,
+					default: clip.value.name,
+				},
+				description: {
+					type: 'string',
+					required: false,
+					multiline: true,
+					treatAsMfm: true,
+					label: i18n.ts.description,
+					default: clip.value.description,
+				},
+				isPublic: {
+					type: 'boolean',
+					label: i18n.ts.public,
+					default: clip.value.isPublic,
+				},
+			});
+			if (canceled) return;
+
+			os.apiWithDialog('clips/update', {
+				clipId: clip.value.id,
+				...result,
+			});
+
+			clipsCache.delete();
+		},
+	},
+	clip.value.isPublic
+		? {
+			icon: 'ti ti-link',
+			text: i18n.ts.copyUrl,
+			handler: async (): Promise<void> => {
+				if (!clip.value) return;
+				copyToClipboard(`${url}/clips/${clip.value.id}`);
+				os.success();
 			},
-			description: {
-				type: 'string',
-				required: false,
-				multiline: true,
-				treatAsMfm: true,
-				label: i18n.ts.description,
-				default: clip.value.description,
+		}
+		: undefined,
+	clip.value.isPublic && isSupportShare()
+		? {
+			icon: 'ti ti-share',
+			text: i18n.ts.share,
+			handler: async (): Promise<void> => {
+				if (!clip.value) return;
+				navigator.share({
+					title: clip.value.name,
+					text: clip.value.description ?? '',
+					url: `${url}/clips/${clip.value.id}`,
+				});
 			},
-			isPublic: {
-				type: 'boolean',
-				label: i18n.ts.public,
-				default: clip.value.isPublic,
-			},
-		});
-		if (canceled) return;
+		}
+		: undefined,
+	{
+		icon: 'ti ti-trash',
+		text: i18n.ts.delete,
+		danger: true,
+		handler: async (): Promise<void> => {
+			if (!clip.value) return;
 
-		os.apiWithDialog('clips/update', {
-			clipId: clip.value.id,
-			...result,
-		});
+			const { canceled } = await os.confirm({
+				type: 'warning',
+				text: i18n.tsx.deleteAreYouSure({ x: clip.value.name }),
+			});
+			if (canceled) return;
 
-		clipsCache.delete();
+			await os.apiWithDialog('clips/delete', {
+				clipId: clip.value.id,
+			});
+
+			clipsCache.delete();
+		},
 	},
-}, ...(clip.value.isPublic ? [{
-	icon: 'ti ti-link',
-	text: i18n.ts.copyUrl,
-	handler: async (): Promise<void> => {
-		if (!clip.value) return;
-		copyToClipboard(`${url}/clips/${clip.value.id}`);
-		os.success();
-	},
-}] : []), ...(clip.value.isPublic && isSupportShare() ? [{
-	icon: 'ti ti-share',
-	text: i18n.ts.share,
-	handler: async (): Promise<void> => {
-		if (!clip.value) return;
-		navigator.share({
-			title: clip.value.name,
-			text: clip.value.description ?? '',
-			url: `${url}/clips/${clip.value.id}`,
-		});
-	},
-}] : []), {
-	icon: 'ti ti-trash',
-	text: i18n.ts.delete,
-	danger: true,
-	handler: async (): Promise<void> => {
-		if (!clip.value) return;
-
-		const { canceled } = await os.confirm({
-			type: 'warning',
-			text: i18n.tsx.deleteAreYouSure({ x: clip.value.name }),
-		});
-		if (canceled) return;
-
-		await os.apiWithDialog('clips/delete', {
-			clipId: clip.value.id,
-		});
-
-		clipsCache.delete();
-	},
-}] : undefined);
+] : undefined);
 
 definePageMetadata(() => ({
 	title: clip.value ? clip.value.name : i18n.ts.clip,

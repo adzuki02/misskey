@@ -75,18 +75,21 @@ function setFilter(ev) {
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
-const headerActions = computed(() => [tab.value === 'all' ? {
-	text: i18n.ts.filter,
-	icon: 'ti ti-filter',
-	highlighted: includeTypes.value !== undefined,
-	handler: setFilter,
-} : undefined, tab.value === 'all' ? {
-	text: i18n.ts.markAllAsRead,
-	icon: 'ti ti-check',
-	handler: () => {
-		os.apiWithDialog('notifications/mark-all-as-read', {});
+const headerActions = computed(() => tab.value === 'all' ? [
+	{
+		text: i18n.ts.filter,
+		icon: 'ti ti-filter',
+		highlighted: includeTypes.value !== undefined,
+		handler: setFilter,
 	},
-} : undefined].filter(x => x !== undefined));
+	{
+		text: i18n.ts.markAllAsRead,
+		icon: 'ti ti-check',
+		handler: () => {
+			os.apiWithDialog('notifications/mark-all-as-read', {});
+		},
+	},
+] : undefined);
 
 const headerTabs = computed(() => [
 	{
