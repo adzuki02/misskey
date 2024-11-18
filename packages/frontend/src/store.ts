@@ -300,7 +300,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	hideReactionsViewerOnTimeline: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	hideReactionsCount: {
 		where: 'device',
