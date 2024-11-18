@@ -72,15 +72,18 @@ function clear() {
 	});
 }
 
-const headerActions = computed(() => [{
-	text: i18n.ts.lookup,
-	icon: 'ti ti-search',
-	handler: lookupFile,
-}, {
-	text: i18n.ts.clearCachedFiles,
-	icon: 'ti ti-trash',
-	handler: clear,
-}]);
+const headerActions = computed(() => [
+	{
+		text: i18n.ts.lookup,
+		icon: 'ti ti-search',
+		handler: lookupFile,
+	},
+	{
+		text: i18n.ts.clearCachedFiles,
+		icon: 'ti ti-trash',
+		handler: clear,
+	},
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts.files,
