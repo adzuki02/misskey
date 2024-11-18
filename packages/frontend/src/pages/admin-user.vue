@@ -398,23 +398,28 @@ watch(user, () => {
 	});
 });
 
-const headerTabs = computed(() => [{
-	key: 'overview',
-	title: i18n.ts.overview,
-	icon: 'ti ti-info-circle',
-}, {
-	key: 'roles',
-	title: i18n.ts.roles,
-	icon: 'ti ti-badges',
-}, {
-	key: 'drive',
-	title: i18n.ts.drive,
-	icon: 'ti ti-cloud',
-}, {
-	key: 'raw',
-	title: 'Raw',
-	icon: 'ti ti-code',
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'overview',
+		title: i18n.ts.overview,
+		icon: 'ti ti-info-circle',
+	},
+	{
+		key: 'roles',
+		title: i18n.ts.roles,
+		icon: 'ti ti-badges',
+	},
+	{
+		key: 'drive',
+		title: i18n.ts.drive,
+		icon: 'ti ti-cloud',
+	},
+	{
+		key: 'raw',
+		title: 'Raw',
+		icon: 'ti ti-code',
+	},
+]);
 
 definePageMetadata(() => ({
 	title: user.value ? acct(user.value) : i18n.ts.userInfo,

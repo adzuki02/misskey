@@ -67,35 +67,52 @@ watch(() => props.acct, fetchUser, {
 	immediate: true,
 });
 
-const headerTabs = computed(() => user.value ? [{
-	key: 'home',
-	title: i18n.ts.overview,
-	icon: 'ti ti-home',
-}, {
-	key: 'notes',
-	title: i18n.ts.notes,
-	icon: 'ti ti-pencil',
-}, ...($i && ($i.id === user.value.id || $i.isAdmin || $i.isModerator)) || user.value.publicReactions ? [{
-	key: 'reactions',
-	title: i18n.ts.reaction,
-	icon: 'ti ti-mood-happy',
-}] : [], ...(user.value.host == null ? [{
-	key: 'clips',
-	title: i18n.ts.clips,
-	icon: 'ti ti-paperclip',
-}] : []), ...(user.value.host == null ? [{
-	key: 'lists',
-	title: i18n.ts.lists,
-	icon: 'ti ti-list',
-}] : []), ...(user.value.host == null ? [{
-	key: 'flashs',
-	title: 'Play',
-	icon: 'ti ti-player-play',
-}] : []), {
-	key: 'raw',
-	title: 'Raw',
-	icon: 'ti ti-code',
-}] : []);
+const headerTabs = computed(() => user.value ? [
+	{
+		key: 'home',
+		title: i18n.ts.overview,
+		icon: 'ti ti-home',
+	},
+	{
+		key: 'notes',
+		title: i18n.ts.notes,
+		icon: 'ti ti-pencil',
+	},
+	($i !== null && ($i.id === user.value.id || $i.isAdmin === true || $i.isModerator === true)) || user.value.publicReactions
+		? {
+			key: 'reactions',
+			title: i18n.ts.reaction,
+			icon: 'ti ti-mood-happy',
+		}
+		: undefined,
+	user.value.host == null
+		? {
+			key: 'clips',
+			title: i18n.ts.clips,
+			icon: 'ti ti-paperclip',
+		}
+		: undefined,
+	user.value.host == null
+		? {
+			key: 'lists',
+			title: i18n.ts.lists,
+			icon: 'ti ti-list',
+		}
+		: undefined,
+	user.value.host == null
+		? {
+			key: 'flashs',
+			title: 'Play',
+			icon: 'ti ti-player-play',
+		}
+		: undefined,
+	{
+		key: 'raw',
+		title: 'Raw',
+		icon: 'ti ti-code',
+	},
+] : [],
+);
 
 definePageMetadata(() => ({
 	title: i18n.ts.user,

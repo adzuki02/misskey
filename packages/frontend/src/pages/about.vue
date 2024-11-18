@@ -41,22 +41,31 @@ const props = withDefaults(defineProps<{
 
 const tab = ref(props.initialTab);
 
-const headerTabs = computed(() => [{
-	key: 'overview',
-	title: i18n.ts.overview,
-}, {
-	key: 'emojis',
-	title: i18n.ts.customEmojis,
-	icon: 'ti ti-icons',
-}, ...$i ? [{
-	key: 'federation',
-	title: i18n.ts.federation,
-	icon: 'ti ti-whirl',
-}] : [], ...$i ? [{
-	key: 'charts',
-	title: i18n.ts.charts,
-	icon: 'ti ti-chart-line',
-}] : []]);
+const headerTabs = computed(() => [
+	{
+		key: 'overview',
+		title: i18n.ts.overview,
+	},
+	{
+		key: 'emojis',
+		title: i18n.ts.customEmojis,
+		icon: 'ti ti-icons',
+	},
+	$i
+		? {
+			key: 'federation',
+			title: i18n.ts.federation,
+			icon: 'ti ti-whirl',
+		}
+		: undefined,
+	$i
+		? {
+			key: 'charts',
+			title: i18n.ts.charts,
+			icon: 'ti ti-chart-line',
+		}
+		: undefined,
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts.instanceInfo,

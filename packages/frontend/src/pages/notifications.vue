@@ -88,19 +88,23 @@ const headerActions = computed(() => [tab.value === 'all' ? {
 	},
 } : undefined].filter(x => x !== undefined));
 
-const headerTabs = computed(() => [{
-	key: 'all',
-	title: i18n.ts.all,
-	icon: 'ti ti-point',
-}, {
-	key: 'mentions',
-	title: i18n.ts.mentions,
-	icon: 'ti ti-at',
-}, {
-	key: 'directNotes',
-	title: i18n.ts.directNotes,
-	icon: 'ti ti-mail',
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'all',
+		title: i18n.ts.all,
+		icon: 'ti ti-point',
+	},
+	{
+		key: 'mentions',
+		title: i18n.ts.mentions,
+		icon: 'ti ti-at',
+	},
+	{
+		key: 'directNotes',
+		title: i18n.ts.directNotes,
+		icon: 'ti ti-mail',
+	},
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts.notifications,

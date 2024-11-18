@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div ref="el" :class="$style.tabs" @wheel="onTabWheel">
 	<div :class="$style.tabsInner">
 		<button
-			v-for="t in filteredTabs" :ref="(el) => tabRefs[t.key] = (el as HTMLElement)" v-tooltip.noDelay="t.title"
+			v-for="t in filteredTabs" :ref="(el) => t.key ? tabRefs[t.key] = (el as HTMLElement) : undefined" v-tooltip.noDelay="t.title"
 			class="_button" :class="[$style.tab, { [$style.active]: t.key != null && t.key === props.tab, [$style.animate]: defaultStore.reactiveState.animation.value }]"
 			@mousedown="(ev) => onTabMousedown(t, ev)" @click="(ev) => onTabClick(t, ev)"
 		>
@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts">
 export type Tab = ({
-	key: string;
+	key?: string;
 	onClick?: (ev: MouseEvent) => void;
 } & (
 	| {
@@ -47,7 +47,7 @@ export type Tab = ({
 		}
 	| {
 			iconOnly: true;
-			title?: undefined;
+			title?: string;
 			icon: string;
 		}
 ));
@@ -91,7 +91,9 @@ function onTabMousedown(tab: Tab, ev: MouseEvent): void {
 }
 
 function onTabClick(t: Tab, ev: MouseEvent): void {
-	emit('tabClick', t.key);
+	if (t.key) {
+		emit('tabClick', t.key);
+	}
 
 	if (t.onClick) {
 		ev.preventDefault();

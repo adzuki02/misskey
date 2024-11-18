@@ -83,15 +83,18 @@ const users = computed(() => ({
 	},
 }));
 
-const headerTabs = computed(() => [{
-	key: 'users',
-	icon: 'ti ti-users',
-	title: i18n.ts.users,
-}, {
-	key: 'timeline',
-	icon: 'ti ti-pencil',
-	title: i18n.ts.timeline,
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'users',
+		icon: 'ti ti-users',
+		title: i18n.ts.users,
+	},
+	{
+		key: 'timeline',
+		icon: 'ti ti-pencil',
+		title: i18n.ts.timeline,
+	},
+]);
 
 definePageMetadata(() => ({
 	title: role.value ? role.value.name : i18n.ts.role,

@@ -276,39 +276,47 @@ const headerActions = computed(() => [
 	},
 ]);
 
-const headerTabs = computed(() => [...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
-	key: 'list:' + l.id,
-	title: l.name,
-	icon: 'ti ti-star',
-	iconOnly: true,
-}))), ...availableBasicTimelines().map(tl => ({
-	key: tl,
-	title: i18n.ts._timelines[tl],
-	icon: basicTimelineIconClass(tl),
-	iconOnly: true,
-})), {
-	icon: 'ti ti-list',
-	title: i18n.ts.lists,
-	iconOnly: true,
-	onClick: chooseList,
-}, {
-	icon: 'ti ti-antenna',
-	title: i18n.ts.antennas,
-	iconOnly: true,
-	onClick: chooseAntenna,
-}, {
-	icon: 'ti ti-device-tv',
-	title: i18n.ts.channel,
-	iconOnly: true,
-	onClick: chooseChannel,
-}] as Tab[]);
+const headerTabs = computed<Tab[]>(() => [
+	...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
+		key: 'list:' + l.id,
+		title: l.name,
+		icon: 'ti ti-star',
+		iconOnly: true,
+	}))),
+	...availableBasicTimelines().map(tl => ({
+		key: tl,
+		title: i18n.ts._timelines[tl],
+		icon: basicTimelineIconClass(tl),
+		iconOnly: true,
+	})),
+	{
+		icon: 'ti ti-list',
+		title: i18n.ts.lists,
+		iconOnly: true,
+		onClick: chooseList,
+	},
+	{
+		icon: 'ti ti-antenna',
+		title: i18n.ts.antennas,
+		iconOnly: true,
+		onClick: chooseAntenna,
+	},
+	{
+		icon: 'ti ti-device-tv',
+		title: i18n.ts.channel,
+		iconOnly: true,
+		onClick: chooseChannel,
+	},
+]);
 
-const headerTabsWhenNotLogin = computed(() => [...availableBasicTimelines().map(tl => ({
-	key: tl,
-	title: i18n.ts._timelines[tl],
-	icon: basicTimelineIconClass(tl),
-	iconOnly: true,
-}))] as Tab[]);
+const headerTabsWhenNotLogin = computed<Tab[]>(() => [
+	...availableBasicTimelines().map(tl => ({
+		key: tl,
+		title: i18n.ts._timelines[tl],
+		icon: basicTimelineIconClass(tl),
+		iconOnly: true,
+	})),
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts.timeline,

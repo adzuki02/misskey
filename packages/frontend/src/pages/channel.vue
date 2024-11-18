@@ -228,19 +228,23 @@ const headerActions = computed(() => {
 	}
 });
 
-const headerTabs = computed(() => [{
-	key: 'overview',
-	title: i18n.ts.overview,
-	icon: 'ti ti-info-circle',
-}, {
-	key: 'timeline',
-	title: i18n.ts.timeline,
-	icon: 'ti ti-home',
-}, {
-	key: 'search',
-	title: i18n.ts.search,
-	icon: 'ti ti-search',
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'overview',
+		title: i18n.ts.overview,
+		icon: 'ti ti-info-circle',
+	},
+	{
+		key: 'timeline',
+		title: i18n.ts.timeline,
+		icon: 'ti ti-home',
+	},
+	{
+		key: 'search',
+		title: i18n.ts.search,
+		icon: 'ti ti-search',
+	},
+]);
 
 definePageMetadata(() => ({
 	title: channel.value ? channel.value.name : i18n.ts.channel,

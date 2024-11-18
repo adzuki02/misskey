@@ -33,15 +33,18 @@ const XNotes = defineAsyncComponent(() => import('./drive.file.notes.vue'));
 
 const tab = ref('info');
 
-const headerTabs = computed(() => [{
-	key: 'info',
-	title: i18n.ts.info,
-	icon: 'ti ti-info-circle',
-}, {
-	key: 'notes',
-	title: i18n.ts._fileViewer.attachedNotes,
-	icon: 'ti ti-pencil',
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'info',
+		title: i18n.ts.info,
+		icon: 'ti ti-info-circle',
+	},
+	{
+		key: 'notes',
+		title: i18n.ts._fileViewer.attachedNotes,
+		icon: 'ti ti-pencil',
+	},
+]);
 
 definePageMetadata(() => ({
 	title: i18n.ts._fileViewer.title,
