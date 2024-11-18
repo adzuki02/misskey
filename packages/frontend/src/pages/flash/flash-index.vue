@@ -61,15 +61,18 @@ const headerActions = computed(() => [{
 	handler: create,
 }]);
 
-const headerTabs = computed(() => [{
-	key: 'liked',
-	title: i18n.ts._play.liked,
-	icon: 'ti ti-heart',
-}, {
-	key: 'my',
-	title: i18n.ts._play.my,
-	icon: 'ti ti-edit',
-}]);
+const headerTabs = computed(() => [
+	{
+		key: 'liked',
+		title: i18n.ts._play.liked,
+		icon: 'ti ti-heart',
+	},
+	{
+		key: 'my',
+		title: i18n.ts._play.my,
+		icon: 'ti ti-edit',
+	},
+]);
 
 definePageMetadata(() => ({
 	title: 'Play',
