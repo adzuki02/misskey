@@ -114,7 +114,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 		</div>
-		<div v-else-if="tab === 'users'" key="users" class="_gaps_m">
+		<div v-else-if="tab === 'users' && $i && ($i.isAdmin || $i.isModerator)" key="users" class="_gaps_m">
 			<MkPagination v-slot="{items}" :pagination="usersPagination" style="display: grid; grid-template-columns: repeat(auto-fill,minmax(270px,1fr)); grid-gap: 12px;">
 				<MkA v-for="user in items" :key="user.id" v-tooltip.mfm="`Last posted: ${dateString(user.updatedAt ?? '1970-01-01')}`" class="user" :to="`/admin/user/${user.id}`">
 					<MkUserCardMini :user="user"/>
@@ -151,6 +151,7 @@ import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import MkPagination, { type Paging } from '@/components/MkPagination.vue';
 import { getProxiedImageUrlNullable } from '@/scripts/media-proxy.js';
 import { dateString } from '@/filters/date.js';
+import { $i } from '@/account.js';
 import MkTextarea from '@/components/MkTextarea.vue';
 
 const props = defineProps<{
@@ -286,11 +287,13 @@ const headerTabs = computed(() => [
 		title: i18n.ts.charts,
 		icon: 'ti ti-chart-line',
 	},
-	{
-		key: 'users',
-		title: i18n.ts.users,
-		icon: 'ti ti-users',
-	},
+	$i && ($i.isAdmin || $i.isModerator)
+		? {
+			key: 'users',
+			title: i18n.ts.users,
+			icon: 'ti ti-users',
+		}
+		: undefined,
 	{
 		key: 'raw',
 		title: 'Raw',
