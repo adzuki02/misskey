@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<span>{{ instanceName }}</span>
 			</h1>
 			<div :class="$style.mainAbout">
-				<div v-text="instance.description || i18n.ts.headlineMisskey"></div>
+				<Mfm :text="instance.description || i18n.ts.headlineMisskey"/>
 			</div>
 			<div v-if="instance.disableRegistration" :class="$style.mainWarn">
 				<MkInfo warn>{{ i18n.ts.invitationRequiredToRegister }}</MkInfo>
