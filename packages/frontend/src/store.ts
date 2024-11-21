@@ -352,7 +352,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: false,
 	},
 	keepOriginalFilename: {
-		where: 'device',
+		where: 'account',
 		default: false,
 	},
 	alwaysConfirmFollow: {
