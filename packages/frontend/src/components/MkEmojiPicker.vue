@@ -48,7 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</section>
 
-		<div v-if="tab === 'index'" class="group index">
+		<div class="group index">
 			<section v-if="showPinned && (pinned && pinned.length > 0)">
 				<div class="body">
 					<button
@@ -104,12 +104,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<header class="_acrylic">{{ i18n.ts.emoji }}</header>
 			<XSection v-for="category in categories" :key="category" :emojis="emojiCharByCategory.get(category) ?? []" :hasChildSection="false" @chosen="chosen">{{ category }}</XSection>
 		</div>
-	</div>
-	<div class="tabs">
-		<button class="_button tab" :class="{ active: tab === 'index' }" @click="tab = 'index'"><i class="ti ti-asterisk ti-fw"></i></button>
-		<button class="_button tab" :class="{ active: tab === 'custom' }" @click="tab = 'custom'"><i class="ti ti-mood-happy ti-fw"></i></button>
-		<button class="_button tab" :class="{ active: tab === 'unicode' }" @click="tab = 'unicode'"><i class="ti ti-leaf ti-fw"></i></button>
-		<button class="_button tab" :class="{ active: tab === 'tags' }" @click="tab = 'tags'"><i class="ti ti-hash ti-fw"></i></button>
 	</div>
 </div>
 </template>
@@ -179,7 +173,6 @@ const height = computed(() => emojiPickerHeight.value);
 const q = ref<string>('');
 const searchResultCustom = ref<EmojiSimple[]>([]);
 const searchResultUnicode = ref<UnicodeEmojiDef[]>([]);
-const tab = ref<'index' | 'custom' | 'unicode' | 'tags'>('index');
 
 const customEmojiFolderRoot: CustomEmojiFolderTree = { value: '', category: '', children: [] };
 
@@ -686,22 +679,6 @@ defineExpose({
 			order: 1;
 			z-index: 2;
 			box-shadow: 0px -1px 0 0px var(--divider);
-		}
-	}
-
-	> .tabs {
-		display: flex;
-		display: none;
-
-		> .tab {
-			flex: 1;
-			height: 38px;
-			border-top: solid 0.5px var(--divider);
-
-			&.active {
-				border-top: solid 1px var(--accent);
-				color: var(--accent);
-			}
 		}
 	}
 
