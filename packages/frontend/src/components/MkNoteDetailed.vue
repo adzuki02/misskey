@@ -46,7 +46,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<article :class="$style.note" @contextmenu.stop="onContextmenu">
 		<header :class="$style.noteHeader">
-			<MkAvatar :class="$style.noteHeaderAvatar" :user="appearNote.user" link preview/>
+			<MkAvatar :class="$style.noteHeaderAvatar" :user="appearNote.user" link preview :instanceIcon="showInstanceIcon"/>
 			<div :class="$style.noteHeaderBody">
 				<div>
 					<MkA v-user-preview="appearNote.user.id" :class="$style.noteHeaderName" :to="userPage(appearNote.user)">
@@ -292,6 +292,7 @@ const translating = ref(false);
 const parsed = appearNote.value.text ? mfm.parse(appearNote.value.text) : null;
 const urls = parsed ? extractUrlFromMfm(parsed).filter((url) => appearNote.value.renote?.url !== url && appearNote.value.renote?.uri !== url) : null;
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.value.user.instance);
+const showInstanceIcon = (defaultStore.state.instanceTicker === 'alwaysIcon') || (defaultStore.state.instanceTicker === 'remoteIcon' && appearNote.value.user.instance !== undefined);
 const conversation = ref<Note[]>([]);
 const replies = ref<Note[]>([]);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.value.visibility) || appearNote.value.userId === $i?.id);

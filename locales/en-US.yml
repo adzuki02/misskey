@@ -1862,6 +1862,8 @@ _instanceTicker:
   none: "Never show"
   remote: "Show for remote users"
   always: "Always show"
+  remoteIcon: "Show only icons for remote users"
+  alwaysIcon: "Always show only icons"
 _serverDisconnectedBehavior:
   reload: "Automatically reload"
   dialog: "Show warning dialog"
