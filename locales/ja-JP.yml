@@ -1895,6 +1895,8 @@ _instanceTicker:
   none: "表示しない"
   remote: "リモートユーザーに表示"
   always: "常に表示"
+  remoteIcon: "リモートユーザーにサーバーのアイコンのみ表示"
+  alwaysIcon: "常にサーバーのアイコンのみ表示"
 
 _serverDisconnectedBehavior:
   reload: "自動でリロード"
