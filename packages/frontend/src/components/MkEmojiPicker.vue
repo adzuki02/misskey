@@ -20,6 +20,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 	<!-- FirefoxのTabフォーカスが想定外の挙動となるためtabindex="-1"を追加 https://github.com/misskey-dev/misskey/issues/10744 -->
 	<div ref="emojisEl" class="emojis" tabindex="-1">
+		<div class="tags">
+			<button v-for="tag in customEmojiFolderRoot.children.map(tree => tree.value).filter(s => s)" :key="tag" class="tag" :class="{ selected: selectedTags.has(tag) }" @click="() => selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag)">{{ tag }}</button>
+		</div>
+
 		<section class="result">
 			<div v-if="searchResultCustom.length > 0" class="body">
 				<button
@@ -109,7 +113,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef, computed, watch, onMounted } from 'vue';
+import { ref, shallowRef, reactive, computed, watch, onMounted } from 'vue';
 import * as romajiConv from '@koozaki/romaji-conv';
 import type { Note, EmojiSimple } from 'misskey-js/entities.js';
 import XSection from '@/components/MkEmojiPicker.section.vue';
@@ -171,6 +175,7 @@ const size = computed(() => emojiPickerScale.value);
 const width = computed(() => emojiPickerWidth.value);
 const height = computed(() => emojiPickerHeight.value);
 const q = ref<string>('');
+const selectedTags = reactive(new Set<string>());
 const searchResultCustom = ref<EmojiSimple[]>([]);
 const searchResultUnicode = ref<UnicodeEmojiDef[]>([]);
 
@@ -416,6 +421,7 @@ function focus() {
 function reset() {
 	if (emojisEl.value) emojisEl.value.scrollTop = 0;
 	q.value = '';
+	selectedTags.clear();
 }
 
 function getKey(emoji: string | EmojiSimple | UnicodeEmojiDef): string {
@@ -691,6 +697,33 @@ defineExpose({
 
 		&::-webkit-scrollbar {
 			display: none;
+		}
+
+		> .tags {
+			width: 100%;
+			padding: 12px;
+			box-sizing: border-box;
+
+			> .tag {
+				display: inline-block;
+				color: var(--fg);
+				background: var(--buttonBg);
+				border: 1px solid var(--buttonBg);
+				border-radius: 5px;
+				padding-block: 2px;
+				padding-inline: 0.5em;
+				padding-block: 0.2rem;
+				margin-inline: 4px;
+				margin-block: 4px;
+
+				&:hover {
+					cursor: pointer;
+				}
+
+				&.selected {
+					border-color: var(--accent);
+				}
+			}
 		}
 
 		> .group {
