@@ -90,6 +90,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				name: emoji.name,
 				category: emoji.category,
 				aliases: emoji.aliases,
+				tags: emoji.tags,
 				host: null,
 				license: emoji.license,
 				isSensitive: emoji.isSensitive,

@@ -50,6 +50,9 @@ export const paramDef = {
 		aliases: { type: 'array', items: {
 			type: 'string',
 		} },
+		tags: { type: 'array', items: {
+			type: 'string',
+		} },
 		license: { type: 'string', nullable: true },
 		isSensitive: { type: 'boolean' },
 		localOnly: { type: 'boolean' },
@@ -99,6 +102,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				name: ps.name,
 				category: ps.category,
 				aliases: ps.aliases,
+				tags: ps.tags,
 				license: ps.license,
 				isSensitive: ps.isSensitive,
 				localOnly: ps.localOnly,

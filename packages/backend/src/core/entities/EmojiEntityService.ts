@@ -27,6 +27,7 @@ export class EmojiEntityService {
 
 		return {
 			aliases: emoji.aliases,
+			tags: emoji.tags,
 			name: emoji.name,
 			category: emoji.category,
 			// || emoji.originalUrl してるのは後方互換性のため（publicUrlはstringなので??はだめ）
@@ -53,6 +54,7 @@ export class EmojiEntityService {
 		return {
 			id: emoji.id,
 			aliases: emoji.aliases,
+			tags: emoji.tags,
 			name: emoji.name,
 			category: emoji.category,
 			host: emoji.host,

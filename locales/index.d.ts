@@ -2121,6 +2121,10 @@ export interface Locale extends ILocale {
      */
     "tags": string;
     /**
+     * 別名
+     */
+    "aliases": string;
+    /**
      * このドキュメントのソース
      */
     "docSource": string;
@@ -2824,6 +2828,10 @@ export interface Locale extends ILocale {
      * カスタム絵文字を検索する時のキーワードになります。
      */
     "theKeywordWhenSearchingForCustomEmoji": string;
+    /**
+     * カスタム絵文字の追加の分類です。
+     */
+    "theAdditionalClassificationForCustomEmoji": string;
     /**
      * スペースで区切って複数設定できます。
      */

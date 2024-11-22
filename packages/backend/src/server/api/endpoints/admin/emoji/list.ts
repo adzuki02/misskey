@@ -39,6 +39,14 @@ export const meta = {
 						optional: false, nullable: false,
 					},
 				},
+				tags: {
+					type: 'array',
+					optional: false, nullable: false,
+					items: {
+						type: 'string',
+						optional: false, nullable: false,
+					},
+				},
 				name: {
 					type: 'string',
 					optional: false, nullable: false,

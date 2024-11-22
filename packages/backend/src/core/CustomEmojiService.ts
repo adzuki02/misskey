@@ -60,6 +60,7 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		name: string;
 		category: string | null;
 		aliases: string[];
+		tags: string[];
 		host: string | null;
 		license: string | null;
 		isSensitive: boolean;
@@ -73,6 +74,7 @@ export class CustomEmojiService implements OnApplicationShutdown {
 			category: data.category,
 			host: data.host,
 			aliases: data.aliases,
+			tags: data.tags,
 			originalUrl: data.driveFile.url,
 			publicUrl: data.driveFile.webpublicUrl ?? data.driveFile.url,
 			type: data.driveFile.webpublicType ?? data.driveFile.type,
@@ -99,6 +101,7 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		name?: string;
 		category?: string | null;
 		aliases?: string[];
+		tags?: string[];
 		license?: string | null;
 		isSensitive?: boolean;
 		localOnly?: boolean;
@@ -113,6 +116,7 @@ export class CustomEmojiService implements OnApplicationShutdown {
 			name: data.name,
 			category: data.category,
 			aliases: data.aliases,
+			tags: data.tags,
 			license: data.license,
 			isSensitive: data.isSensitive,
 			localOnly: data.localOnly,
@@ -187,6 +191,62 @@ export class CustomEmojiService implements OnApplicationShutdown {
 			await this.emojisRepository.update(emoji.id, {
 				updatedAt: new Date(),
 				aliases: emoji.aliases.filter(x => !aliases.includes(x)),
+			});
+		}
+
+		this.localEmojisCache.refresh();
+
+		this.globalEventService.publishBroadcastStream('emojiUpdated', {
+			emojis: await this.emojiEntityService.packDetailedMany(ids),
+		});
+	}
+
+	@bindThis
+	public async addTagsBulk(ids: MiEmoji['id'][], tags: string[]) {
+		const emojis = await this.emojisRepository.findBy({
+			id: In(ids),
+		});
+
+		for (const emoji of emojis) {
+			await this.emojisRepository.update(emoji.id, {
+				updatedAt: new Date(),
+				tags: [...new Set(emoji.tags.concat(tags))],
+			});
+		}
+
+		this.localEmojisCache.refresh();
+
+		this.globalEventService.publishBroadcastStream('emojiUpdated', {
+			emojis: await this.emojiEntityService.packDetailedMany(ids),
+		});
+	}
+
+	@bindThis
+	public async setTagsBulk(ids: MiEmoji['id'][], tags: string[]) {
+		await this.emojisRepository.update({
+			id: In(ids),
+		}, {
+			updatedAt: new Date(),
+			tags: tags,
+		});
+
+		this.localEmojisCache.refresh();
+
+		this.globalEventService.publishBroadcastStream('emojiUpdated', {
+			emojis: await this.emojiEntityService.packDetailedMany(ids),
+		});
+	}
+
+	@bindThis
+	public async removeTagsBulk(ids: MiEmoji['id'][], tags: string[]) {
+		const emojis = await this.emojisRepository.findBy({
+			id: In(ids),
+		});
+
+		for (const emoji of emojis) {
+			await this.emojisRepository.update(emoji.id, {
+				updatedAt: new Date(),
+				tags: emoji.aliases.filter(x => !tags.includes(x)),
 			});
 		}
 

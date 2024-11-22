@@ -15,6 +15,15 @@ export const packedEmojiSimpleSchema = {
 				format: 'id',
 			},
 		},
+		tags: {
+			type: 'array',
+			optional: false, nullable: false,
+			items: {
+				type: 'string',
+				optional: false, nullable: false,
+				format: 'id',
+			},
+		},
 		name: {
 			type: 'string',
 			optional: false, nullable: false,
@@ -56,6 +65,15 @@ export const packedEmojiDetailedSchema = {
 			format: 'id',
 		},
 		aliases: {
+			type: 'array',
+			optional: false, nullable: false,
+			items: {
+				type: 'string',
+				optional: false, nullable: false,
+				format: 'id',
+			},
+		},
+		tags: {
 			type: 'array',
 			optional: false, nullable: false,
 			items: {

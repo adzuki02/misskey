@@ -22,6 +22,7 @@ import * as ep___admin_drive_cleanup from './endpoints/admin/drive/cleanup.js';
 import * as ep___admin_drive_files from './endpoints/admin/drive/files.js';
 import * as ep___admin_drive_showFile from './endpoints/admin/drive/show-file.js';
 import * as ep___admin_emoji_addAliasesBulk from './endpoints/admin/emoji/add-aliases-bulk.js';
+import * as ep___admin_emoji_addTagsBulk from './endpoints/admin/emoji/add-tags-bulk.js';
 import * as ep___admin_emoji_add from './endpoints/admin/emoji/add.js';
 import * as ep___admin_emoji_copy from './endpoints/admin/emoji/copy.js';
 import * as ep___admin_emoji_deleteBulk from './endpoints/admin/emoji/delete-bulk.js';
@@ -30,7 +31,9 @@ import * as ep___admin_emoji_importZip from './endpoints/admin/emoji/import-zip.
 import * as ep___admin_emoji_listRemote from './endpoints/admin/emoji/list-remote.js';
 import * as ep___admin_emoji_list from './endpoints/admin/emoji/list.js';
 import * as ep___admin_emoji_removeAliasesBulk from './endpoints/admin/emoji/remove-aliases-bulk.js';
+import * as ep___admin_emoji_removeTagsBulk from './endpoints/admin/emoji/remove-tags-bulk.js';
 import * as ep___admin_emoji_setAliasesBulk from './endpoints/admin/emoji/set-aliases-bulk.js';
+import * as ep___admin_emoji_setTagsBulk from './endpoints/admin/emoji/set-tags-bulk.js';
 import * as ep___admin_emoji_setCategoryBulk from './endpoints/admin/emoji/set-category-bulk.js';
 import * as ep___admin_emoji_setLicenseBulk from './endpoints/admin/emoji/set-license-bulk.js';
 import * as ep___admin_emoji_update from './endpoints/admin/emoji/update.js';
@@ -321,6 +324,7 @@ const eps = [
 	['admin/drive/files', ep___admin_drive_files],
 	['admin/drive/show-file', ep___admin_drive_showFile],
 	['admin/emoji/add-aliases-bulk', ep___admin_emoji_addAliasesBulk],
+	['admin/emoji/add-tags-bulk', ep___admin_emoji_addTagsBulk],
 	['admin/emoji/add', ep___admin_emoji_add],
 	['admin/emoji/copy', ep___admin_emoji_copy],
 	['admin/emoji/delete-bulk', ep___admin_emoji_deleteBulk],
@@ -329,7 +333,9 @@ const eps = [
 	['admin/emoji/list-remote', ep___admin_emoji_listRemote],
 	['admin/emoji/list', ep___admin_emoji_list],
 	['admin/emoji/remove-aliases-bulk', ep___admin_emoji_removeAliasesBulk],
+	['admin/emoji/remove-tags-bulk', ep___admin_emoji_removeTagsBulk],
 	['admin/emoji/set-aliases-bulk', ep___admin_emoji_setAliasesBulk],
+	['admin/emoji/set-tags-bulk', ep___admin_emoji_setTagsBulk],
 	['admin/emoji/set-category-bulk', ep___admin_emoji_setCategoryBulk],
 	['admin/emoji/set-license-bulk', ep___admin_emoji_setLicenseBulk],
 	['admin/emoji/update', ep___admin_emoji_update],
