@@ -44,6 +44,7 @@ export function emojiDetailed(id = 'someemojiid', name = 'some_emoji'): entities
 	return {
 		id,
 		aliases: ['alias1', 'alias2'],
+		tags: [],
 		name,
 		category: 'emojiCategory',
 		host: null,
