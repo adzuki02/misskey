@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 	<!-- FirefoxのTabフォーカスが想定外の挙動となるためtabindex="-1"を追加 https://github.com/misskey-dev/misskey/issues/10744 -->
 	<div ref="emojisEl" class="emojis" tabindex="-1">
-		<div class="tags">
+		<div v-if="customEmojiTags.length > 0" class="tags">
 			<button v-for="tag in customEmojiTags" :key="tag" class="tag" :class="{ selected: selectedTags.has(tag) }" @click="() => selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag)">{{ tag }}</button>
 		</div>
 
