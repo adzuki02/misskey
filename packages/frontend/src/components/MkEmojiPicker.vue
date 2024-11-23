@@ -704,6 +704,7 @@ defineExpose({
 			width: 100%;
 			padding: 12px;
 			box-sizing: border-box;
+			border-bottom: solid 0.5px var(--divider);
 
 			> .tag {
 				display: inline-block;
