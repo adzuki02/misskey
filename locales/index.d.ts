@@ -533,6 +533,18 @@ export interface Locale extends ILocale {
      */
     "emojiPickerDisplay": string;
     /**
+     * 絵文字ピッカーにタグ欄を表示する
+     */
+    "emojiPickerTagSection": string;
+    /**
+     * 絵文字ピッカーのタグ欄を1行に制限する
+     */
+    "emojiPickerTagOneline": string;
+    /**
+     * 絵文字ピッカーのタグ欄に表示するタグ
+     */
+    "emojiPickerTags": string;
+    /**
      * リアクション設定から上書きする
      */
     "overwriteFromPinnedEmojisForReaction": string;

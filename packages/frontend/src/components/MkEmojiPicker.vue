@@ -20,8 +20,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 	<!-- FirefoxのTabフォーカスが想定外の挙動となるためtabindex="-1"を追加 https://github.com/misskey-dev/misskey/issues/10744 -->
 	<div ref="emojisEl" class="emojis" tabindex="-1">
-		<div v-if="customEmojiTags.length > 0" class="tags">
-			<button v-for="tag in customEmojiTags" :key="tag" class="tag" :class="{ selected: selectedTags.has(tag) }" @click="() => selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag)">{{ tag }}</button>
+		<div v-if="defaultStore.reactiveState.emojiPickerTagSection.value && pinnedTags.length > 0" :class="{ oneline: defaultStore.reactiveState.emojiPickerTagOneline.value }" class="tags">
+			<button v-for="tag in pinnedTags" :key="tag" class="tag" :class="{ selected: selectedTags.has(tag) }" @click="() => selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag)">{{ tag }}</button>
 		</div>
 
 		<section class="result">
@@ -168,6 +168,13 @@ const recentlyUsedEmojisDef = computed(() => {
 });
 const pinnedEmojisDef = computed(() => {
 	return pinned.value?.map(getDef);
+});
+const pinnedTags = computed<string[]>(() => {
+	if (defaultStore.reactiveState.emojiPickerTags.value.length === 0) {
+		return customEmojiTags.value;
+	} else {
+		return defaultStore.reactiveState.emojiPickerTags.value.filter(tag => customEmojiTags.value.includes(tag));
+	}
 });
 
 const pinned = computed(() => props.pinnedEmojis);
@@ -705,9 +712,15 @@ defineExpose({
 			padding: 12px;
 			box-sizing: border-box;
 			border-bottom: solid 0.5px var(--divider);
+			display: flex;
+			flex-wrap: wrap;
+
+			&.oneline {
+				flex-wrap: nowrap;
+				overflow-x: scroll;
+			}
 
 			> .tag {
-				display: inline-block;
 				color: var(--fg);
 				background: var(--buttonBg);
 				border: 1px solid var(--buttonBg);
