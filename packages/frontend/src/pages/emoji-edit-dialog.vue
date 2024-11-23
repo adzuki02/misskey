@@ -157,6 +157,7 @@ async function done() {
 		name: name.value,
 		category: category.value === '' ? null : category.value,
 		aliases: aliases.value.split(' ').filter(x => x !== ''),
+		tags: tags.value.split(' ').filter(x => x !== ''),
 		license: license.value === '' ? null : license.value,
 		isSensitive: isSensitive.value,
 		localOnly: localOnly.value,
