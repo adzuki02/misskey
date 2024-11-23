@@ -77,7 +77,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, shallowRef } from 'vue';
+import { computed, defineAsyncComponent, ref, shallowRef, watch } from 'vue';
 import { ComponentExposed } from 'vue-component-type-helpers';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
@@ -98,6 +98,10 @@ const queryRemote = ref<string | null>(null);
 const host = ref<string | null>(null);
 const selectMode = ref(false);
 const selectedEmojis = ref<string[]>([]);
+
+watch(selectMode, () => {
+	selectedEmojis.value = [];
+});
 
 const pagination = {
 	endpoint: 'admin/emoji/list' as const,
