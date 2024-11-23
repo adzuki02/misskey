@@ -20,6 +20,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div v-if="selectMode" class="_buttons">
 						<MkButton inline @click="selectAll">Select all</MkButton>
 						<MkButton inline @click="setCategoryBulk">Set category</MkButton>
+						<MkButton inline @click="setAliasBulk">Set alias</MkButton>
+						<MkButton inline @click="addAliasBulk">Add alias</MkButton>
+						<MkButton inline @click="removeAliasBulk">Remove alias</MkButton>
 						<MkButton inline @click="setTagBulk">Set tag</MkButton>
 						<MkButton inline @click="addTagBulk">Add tag</MkButton>
 						<MkButton inline @click="removeTagBulk">Remove tag</MkButton>
@@ -74,7 +77,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, shallowRef } from 'vue';
+import { computed, defineAsyncComponent, ref, shallowRef, watch } from 'vue';
 import { ComponentExposed } from 'vue-component-type-helpers';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
@@ -95,6 +98,10 @@ const queryRemote = ref<string | null>(null);
 const host = ref<string | null>(null);
 const selectMode = ref(false);
 const selectedEmojis = ref<string[]>([]);
+
+watch(selectMode, () => {
+	selectedEmojis.value = [];
+});
 
 const pagination = {
 	endpoint: 'admin/emoji/list' as const,
@@ -256,6 +263,48 @@ const setLicenseBulk = async () => {
 	emojisPaginationComponent.value.reload();
 };
 
+const addAliasBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
+	const { canceled, result } = await os.inputText({
+		title: 'Alias',
+	});
+	if (canceled) return;
+	await os.apiWithDialog('admin/emoji/add-aliases-bulk', {
+		ids: selectedEmojis.value,
+		aliases: result.split(' '),
+	});
+	emojisPaginationComponent.value.reload();
+};
+
+const removeAliasBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
+	const { canceled, result } = await os.inputText({
+		title: 'Alias',
+	});
+	if (canceled) return;
+	await os.apiWithDialog('admin/emoji/remove-aliases-bulk', {
+		ids: selectedEmojis.value,
+		aliases: result.split(' '),
+	});
+	emojisPaginationComponent.value.reload();
+};
+
+const setAliasBulk = async () => {
+	if (!emojisPaginationComponent.value) return;
+
+	const { canceled, result } = await os.inputText({
+		title: 'Alias',
+	});
+	if (canceled) return;
+	await os.apiWithDialog('admin/emoji/set-aliases-bulk', {
+		ids: selectedEmojis.value,
+		aliases: result.split(' '),
+	});
+	emojisPaginationComponent.value.reload();
+};
+
 const addTagBulk = async () => {
 	if (!emojisPaginationComponent.value) return;
 
@@ -263,9 +312,9 @@ const addTagBulk = async () => {
 		title: 'Tag',
 	});
 	if (canceled) return;
-	await os.apiWithDialog('admin/emoji/add-aliases-bulk', {
+	await os.apiWithDialog('admin/emoji/add-tags-bulk', {
 		ids: selectedEmojis.value,
-		aliases: result.split(' '),
+		tags: result.split(' '),
 	});
 	emojisPaginationComponent.value.reload();
 };
@@ -277,9 +326,9 @@ const removeTagBulk = async () => {
 		title: 'Tag',
 	});
 	if (canceled) return;
-	await os.apiWithDialog('admin/emoji/remove-aliases-bulk', {
+	await os.apiWithDialog('admin/emoji/remove-tags-bulk', {
 		ids: selectedEmojis.value,
-		aliases: result.split(' '),
+		tags: result.split(' '),
 	});
 	emojisPaginationComponent.value.reload();
 };
@@ -291,9 +340,9 @@ const setTagBulk = async () => {
 		title: 'Tag',
 	});
 	if (canceled) return;
-	await os.apiWithDialog('admin/emoji/set-aliases-bulk', {
+	await os.apiWithDialog('admin/emoji/set-tags-bulk', {
 		ids: selectedEmojis.value,
-		aliases: result.split(' '),
+		tags: result.split(' '),
 	});
 	emojisPaginationComponent.value.reload();
 };

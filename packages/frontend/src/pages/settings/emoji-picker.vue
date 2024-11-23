@@ -120,6 +120,46 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="popup">{{ i18n.ts.popup }}</option>
 				<option value="drawer">{{ i18n.ts.drawer }}</option>
 			</MkSelect>
+
+			<MkSwitch v-model="emojiPickerTagSection">
+				{{ i18n.ts.emojiPickerTagSection }}
+			</MkSwitch>
+
+			<MkSwitch v-model="emojiPickerTagOneline">
+				{{ i18n.ts.emojiPickerTagOneline }}
+			</MkSwitch>
+
+			<MkFolder>
+				<template #icon><i class="ti ti-pin"></i></template>
+				<template #label>{{ i18n.ts.emojiPickerTags }}</template>
+
+				<div class="_gaps">
+					<div>
+						<div v-panel style="border-radius: 6px;">
+							<Sortable
+								v-model="pinnedTags"
+								:class="$style.tags"
+								:itemKey="item => item"
+								:animation="150"
+								:delay="100"
+								:delayOnTouchOnly="true"
+							>
+								<template #item="{element}">
+									<button class="_button" :class="$style.tagItem" @click="removeTag(element, $event)">
+										{{ element }}
+									</button>
+								</template>
+								<template #footer>
+									<button class="_button" :class="$style.tagsAdd" @click="chooseTag">
+										<i class="ti ti-plus"></i>
+									</button>
+								</template>
+							</Sortable>
+						</div>
+						<div :class="$style.editorCaption">{{ i18n.ts.reactionSettingDescription2 }}</div>
+					</div>
+				</div>
+			</MkFolder>
 		</div>
 	</FormSection>
 </div>
@@ -130,6 +170,7 @@ import { computed, ref, type Ref, watch } from 'vue';
 import Sortable from 'vuedraggable';
 import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
+import MkSwitch from '@/components/MkSwitch.vue';
 import FormSection from '@/components/form/section.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import * as os from '@/os.js';
@@ -145,11 +186,14 @@ import MkFolder from '@/components/MkFolder.vue';
 
 const pinnedEmojisForReaction: Ref<string[]> = ref(deepClone(defaultStore.state.reactions));
 const pinnedEmojis: Ref<string[]> = ref(deepClone(defaultStore.state.pinnedEmojis));
+const pinnedTags: Ref<string[]> = ref(deepClone(defaultStore.state.emojiPickerTags));
 
 const emojiPickerScale = computed(defaultStore.makeGetterSetter('emojiPickerScale'));
 const emojiPickerWidth = computed(defaultStore.makeGetterSetter('emojiPickerWidth'));
 const emojiPickerHeight = computed(defaultStore.makeGetterSetter('emojiPickerHeight'));
 const emojiPickerStyle = computed(defaultStore.makeGetterSetter('emojiPickerStyle'));
+const emojiPickerTagSection = computed(defaultStore.makeGetterSetter('emojiPickerTagSection'));
+const emojiPickerTagOneline = computed(defaultStore.makeGetterSetter('emojiPickerTagOneline'));
 
 const removeReaction = (reaction: string, ev: MouseEvent) => remove(pinnedEmojisForReaction, reaction, ev);
 const chooseReaction = (ev: MouseEvent) => pickEmoji(pinnedEmojisForReaction, ev);
@@ -158,6 +202,18 @@ const setDefaultReaction = () => setDefault(pinnedEmojisForReaction);
 const removeEmoji = (reaction: string, ev: MouseEvent) => remove(pinnedEmojis, reaction, ev);
 const chooseEmoji = (ev: MouseEvent) => pickEmoji(pinnedEmojis, ev);
 const setDefaultEmoji = () => setDefault(pinnedEmojis);
+
+const removeTag = (tag: string, ev: MouseEvent) => remove(pinnedTags, tag, ev);
+const chooseTag = () => {
+	os.inputText({
+		type: 'text',
+		title: i18n.ts.tags,
+	}).then(({ canceled, result }) => {
+		if (!canceled && !pinnedTags.value.includes(result)) {
+			pinnedTags.value.push(result);
+		}
+	});
+};
 
 function previewReaction(ev: MouseEvent) {
 	reactionPicker.show(getHTMLElement(ev), undefined);
@@ -240,6 +296,12 @@ watch(pinnedEmojis, () => {
 	deep: true,
 });
 
+watch(pinnedTags, () => {
+	defaultStore.set('emojiPickerTags', pinnedTags.value);
+}, {
+	deep: true,
+});
+
 definePageMetadata(() => ({
 	title: i18n.ts.emojiPicker,
 	icon: 'ti ti-mood-happy',
@@ -265,6 +327,28 @@ definePageMetadata(() => ({
 }
 
 .emojisAdd {
+  display: inline-block;
+  padding: 8px;
+}
+
+.tags {
+	padding: 12px;
+  font-size: 1.1em;
+}
+
+.tagItem {
+	color: var(--fg);
+	background: var(--buttonBg);
+	border: 1px solid var(--buttonBg);
+	border-radius: 5px;
+	padding-block: 2px;
+	padding-inline: 0.5em;
+	padding-block: 0.2rem;
+	margin-inline: 4px;
+	margin-block: 4px;
+}
+
+.tagsAdd {
   display: inline-block;
   padding: 8px;
 }

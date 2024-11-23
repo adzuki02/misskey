@@ -99,6 +99,7 @@ export class ImportCustomEmojisProcessorService {
 						category: emojiInfo.category,
 						host: null,
 						aliases: emojiInfo.aliases,
+						tags: emojiInfo.tags ?? [],
 						driveFile,
 						license: emojiInfo.license,
 						isSensitive: emojiInfo.isSensitive,

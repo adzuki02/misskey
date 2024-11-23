@@ -156,6 +156,15 @@ export type paths = {
      */
     post: operations['admin___emoji___add-aliases-bulk'];
   };
+  '/admin/emoji/add-tags-bulk': {
+    /**
+     * admin/emoji/add-tags-bulk
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
+     */
+    post: operations['admin___emoji___add-tags-bulk'];
+  };
   '/admin/emoji/add': {
     /**
      * admin/emoji/add
@@ -229,6 +238,15 @@ export type paths = {
      */
     post: operations['admin___emoji___remove-aliases-bulk'];
   };
+  '/admin/emoji/remove-tags-bulk': {
+    /**
+     * admin/emoji/remove-tags-bulk
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
+     */
+    post: operations['admin___emoji___remove-tags-bulk'];
+  };
   '/admin/emoji/set-aliases-bulk': {
     /**
      * admin/emoji/set-aliases-bulk
@@ -237,6 +255,15 @@ export type paths = {
      * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
      */
     post: operations['admin___emoji___set-aliases-bulk'];
+  };
+  '/admin/emoji/set-tags-bulk': {
+    /**
+     * admin/emoji/set-tags-bulk
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
+     */
+    post: operations['admin___emoji___set-tags-bulk'];
   };
   '/admin/emoji/set-category-bulk': {
     /**
@@ -3575,6 +3602,7 @@ export type components = {
     };
     EmojiSimple: {
       aliases: string[];
+      tags: string[];
       name: string;
       category: string | null;
       url: string;
@@ -3586,6 +3614,7 @@ export type components = {
       /** Format: id */
       id: string;
       aliases: string[];
+      tags: string[];
       name: string;
       category: string | null;
       /** @description The local host is represented with `null`. */
@@ -4875,6 +4904,58 @@ export type operations = {
     };
   };
   /**
+   * admin/emoji/add-tags-bulk
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
+   */
+  'admin___emoji___add-tags-bulk': {
+    requestBody: {
+      content: {
+        'application/json': {
+          ids: string[];
+          tags: string[];
+        };
+      };
+    };
+    responses: {
+      /** @description OK (without any results) */
+      204: {
+        content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
    * admin/emoji/add
    * @description No description provided.
    *
@@ -4890,6 +4971,7 @@ export type operations = {
           /** @description Use `null` to reset the category. */
           category?: string | null;
           aliases?: string[];
+          tags?: string[];
           license?: string | null;
           isSensitive?: boolean;
           localOnly?: boolean;
@@ -5252,6 +5334,7 @@ export type operations = {
               /** Format: id */
               id: string;
               aliases: string[];
+              tags: string[];
               name: string;
               category: string | null;
               /** @description The local host is represented with `null`. The field exists for compatibility with other API endpoints that return files. */
@@ -5345,6 +5428,58 @@ export type operations = {
     };
   };
   /**
+   * admin/emoji/remove-tags-bulk
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
+   */
+  'admin___emoji___remove-tags-bulk': {
+    requestBody: {
+      content: {
+        'application/json': {
+          ids: string[];
+          tags: string[];
+        };
+      };
+    };
+    responses: {
+      /** @description OK (without any results) */
+      204: {
+        content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
    * admin/emoji/set-aliases-bulk
    * @description No description provided.
    *
@@ -5356,6 +5491,58 @@ export type operations = {
         'application/json': {
           ids: string[];
           aliases: string[];
+        };
+      };
+    };
+    responses: {
+      /** @description OK (without any results) */
+      204: {
+        content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/emoji/set-tags-bulk
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
+   */
+  'admin___emoji___set-tags-bulk': {
+    requestBody: {
+      content: {
+        'application/json': {
+          ids: string[];
+          tags: string[];
         };
       };
     };
@@ -5520,6 +5707,7 @@ export type operations = {
           /** @description Use `null` to reset the category. */
           category?: string | null;
           aliases?: string[];
+          tags?: string[];
           license?: string | null;
           isSensitive?: boolean;
           localOnly?: boolean;

@@ -533,6 +533,18 @@ export interface Locale extends ILocale {
      */
     "emojiPickerDisplay": string;
     /**
+     * 絵文字ピッカーにタグ欄を表示する
+     */
+    "emojiPickerTagSection": string;
+    /**
+     * 絵文字ピッカーのタグ欄を1行に制限する
+     */
+    "emojiPickerTagOneline": string;
+    /**
+     * 絵文字ピッカーのタグ欄に表示するタグ
+     */
+    "emojiPickerTags": string;
+    /**
      * リアクション設定から上書きする
      */
     "overwriteFromPinnedEmojisForReaction": string;
@@ -2121,6 +2133,10 @@ export interface Locale extends ILocale {
      */
     "tags": string;
     /**
+     * 別名
+     */
+    "aliases": string;
+    /**
      * このドキュメントのソース
      */
     "docSource": string;
@@ -2825,7 +2841,11 @@ export interface Locale extends ILocale {
      */
     "theKeywordWhenSearchingForCustomEmoji": string;
     /**
-     * スペースで区切って複数設定できます。
+     * カスタム絵文字の追加の分類です。
+     */
+    "theAdditionalClassificationForCustomEmoji": string;
+    /**
+     * 半角スペースで区切って複数設定できます。
      */
     "setMultipleBySeparatingWithSpace": string;
     /**

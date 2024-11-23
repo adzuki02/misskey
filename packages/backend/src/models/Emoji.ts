@@ -62,6 +62,11 @@ export class MiEmoji {
 	public aliases: string[];
 
 	@Column('varchar', {
+		array: true, length: 128, default: '{}',
+	})
+	public tags: string[];
+
+	@Column('varchar', {
 		length: 1024, nullable: true,
 	})
 	public license: string | null;

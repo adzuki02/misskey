@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #value>{{ emoji.name }}</template>
 				</MkKeyValue>
 				<MkKeyValue v-if="!emoji.host">
-					<template #key>{{ i18n.ts.tags }}</template>
+					<template #key>{{ i18n.ts.aliases }}</template>
 					<template #value>
 						<div v-if="emoji.aliases!.length === 0">{{ i18n.ts.none }}</div>
 						<div v-else :class="$style.aliases">
@@ -30,6 +30,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkKeyValue v-if="!emoji.host">
 					<template #key>{{ i18n.ts.category }}</template>
 					<template #value>{{ emoji.category ?? i18n.ts.none }}</template>
+				</MkKeyValue>
+				<MkKeyValue v-if="!emoji.host">
+					<template #key>{{ i18n.ts.tags }}</template>
+					<template #value>
+						<div v-if="emoji.tags!.length === 0">{{ i18n.ts.none }}</div>
+						<div v-else :class="$style.aliases">
+							<span v-for="tag in emoji.tags" :key="tag" :class="$style.alias">
+								{{ tag }}
+							</span>
+						</div>
+					</template>
 				</MkKeyValue>
 				<MkKeyValue v-if="!emoji.host">
 					<template #key>{{ i18n.ts.sensitive }}</template>

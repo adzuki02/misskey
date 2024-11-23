@@ -40,9 +40,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts.category }}</template>
 				</MkInput>
 				<MkInput v-model="aliases" autocapitalize="off">
-					<template #label>{{ i18n.ts.tags }}</template>
+					<template #label>{{ i18n.ts.aliases }}</template>
 					<template #caption>
 						{{ i18n.ts.theKeywordWhenSearchingForCustomEmoji }}<br/>
+						{{ i18n.ts.setMultipleBySeparatingWithSpace }}
+					</template>
+				</MkInput>
+				<MkInput v-model="tags" autocapitalize="off">
+					<template #label>{{ i18n.ts.tags }}</template>
+					<template #caption>
+						{{ i18n.ts.theAdditionalClassificationForCustomEmoji }}<br/>
 						{{ i18n.ts.setMultipleBySeparatingWithSpace }}
 					</template>
 				</MkInput>
@@ -102,6 +109,7 @@ const windowEl = ref<InstanceType<typeof MkWindow> | null>(null);
 const name = ref<string>(props.emoji ? props.emoji.name : '');
 const category = ref<string>(props.emoji ? props.emoji.category : '');
 const aliases = ref<string>(props.emoji ? props.emoji.aliases.join(' ') : '');
+const tags = ref<string>(props.emoji ? props.emoji.tags.join(' ') : '');
 const license = ref<string>(props.emoji ? (props.emoji.license ?? '') : '');
 const isSensitive = ref(props.emoji ? props.emoji.isSensitive : false);
 const localOnly = ref(props.emoji ? props.emoji.localOnly : false);
@@ -149,6 +157,7 @@ async function done() {
 		name: name.value,
 		category: category.value === '' ? null : category.value,
 		aliases: aliases.value.split(' ').filter(x => x !== ''),
+		tags: tags.value.split(' ').filter(x => x !== ''),
 		license: license.value === '' ? null : license.value,
 		isSensitive: isSensitive.value,
 		localOnly: localOnly.value,

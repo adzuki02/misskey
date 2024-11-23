@@ -22,6 +22,7 @@ import * as ep___admin_drive_cleanup from './endpoints/admin/drive/cleanup.js';
 import * as ep___admin_drive_files from './endpoints/admin/drive/files.js';
 import * as ep___admin_drive_showFile from './endpoints/admin/drive/show-file.js';
 import * as ep___admin_emoji_addAliasesBulk from './endpoints/admin/emoji/add-aliases-bulk.js';
+import * as ep___admin_emoji_addTagsBulk from './endpoints/admin/emoji/add-tags-bulk.js';
 import * as ep___admin_emoji_add from './endpoints/admin/emoji/add.js';
 import * as ep___admin_emoji_copy from './endpoints/admin/emoji/copy.js';
 import * as ep___admin_emoji_deleteBulk from './endpoints/admin/emoji/delete-bulk.js';
@@ -30,7 +31,9 @@ import * as ep___admin_emoji_importZip from './endpoints/admin/emoji/import-zip.
 import * as ep___admin_emoji_listRemote from './endpoints/admin/emoji/list-remote.js';
 import * as ep___admin_emoji_list from './endpoints/admin/emoji/list.js';
 import * as ep___admin_emoji_removeAliasesBulk from './endpoints/admin/emoji/remove-aliases-bulk.js';
+import * as ep___admin_emoji_removeTagsBulk from './endpoints/admin/emoji/remove-tags-bulk.js';
 import * as ep___admin_emoji_setAliasesBulk from './endpoints/admin/emoji/set-aliases-bulk.js';
+import * as ep___admin_emoji_setTagsBulk from './endpoints/admin/emoji/set-tags-bulk.js';
 import * as ep___admin_emoji_setCategoryBulk from './endpoints/admin/emoji/set-category-bulk.js';
 import * as ep___admin_emoji_setLicenseBulk from './endpoints/admin/emoji/set-license-bulk.js';
 import * as ep___admin_emoji_update from './endpoints/admin/emoji/update.js';
@@ -322,6 +325,7 @@ const $admin_drive_cleanup: Provider = { provide: 'ep:admin/drive/cleanup', useC
 const $admin_drive_files: Provider = { provide: 'ep:admin/drive/files', useClass: ep___admin_drive_files.default };
 const $admin_drive_showFile: Provider = { provide: 'ep:admin/drive/show-file', useClass: ep___admin_drive_showFile.default };
 const $admin_emoji_addAliasesBulk: Provider = { provide: 'ep:admin/emoji/add-aliases-bulk', useClass: ep___admin_emoji_addAliasesBulk.default };
+const $admin_emoji_addTagsBulk: Provider = { provide: 'ep:admin/emoji/add-tags-bulk', useClass: ep___admin_emoji_addTagsBulk.default };
 const $admin_emoji_add: Provider = { provide: 'ep:admin/emoji/add', useClass: ep___admin_emoji_add.default };
 const $admin_emoji_copy: Provider = { provide: 'ep:admin/emoji/copy', useClass: ep___admin_emoji_copy.default };
 const $admin_emoji_deleteBulk: Provider = { provide: 'ep:admin/emoji/delete-bulk', useClass: ep___admin_emoji_deleteBulk.default };
@@ -330,7 +334,9 @@ const $admin_emoji_importZip: Provider = { provide: 'ep:admin/emoji/import-zip',
 const $admin_emoji_listRemote: Provider = { provide: 'ep:admin/emoji/list-remote', useClass: ep___admin_emoji_listRemote.default };
 const $admin_emoji_list: Provider = { provide: 'ep:admin/emoji/list', useClass: ep___admin_emoji_list.default };
 const $admin_emoji_removeAliasesBulk: Provider = { provide: 'ep:admin/emoji/remove-aliases-bulk', useClass: ep___admin_emoji_removeAliasesBulk.default };
+const $admin_emoji_removeTagsBulk: Provider = { provide: 'ep:admin/emoji/remove-tags-bulk', useClass: ep___admin_emoji_removeTagsBulk.default };
 const $admin_emoji_setAliasesBulk: Provider = { provide: 'ep:admin/emoji/set-aliases-bulk', useClass: ep___admin_emoji_setAliasesBulk.default };
+const $admin_emoji_setTagsBulk: Provider = { provide: 'ep:admin/emoji/set-tags-bulk', useClass: ep___admin_emoji_setTagsBulk.default };
 const $admin_emoji_setCategoryBulk: Provider = { provide: 'ep:admin/emoji/set-category-bulk', useClass: ep___admin_emoji_setCategoryBulk.default };
 const $admin_emoji_setLicenseBulk: Provider = { provide: 'ep:admin/emoji/set-license-bulk', useClass: ep___admin_emoji_setLicenseBulk.default };
 const $admin_emoji_update: Provider = { provide: 'ep:admin/emoji/update', useClass: ep___admin_emoji_update.default };
@@ -626,6 +632,7 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_drive_files,
 		$admin_drive_showFile,
 		$admin_emoji_addAliasesBulk,
+		$admin_emoji_addTagsBulk,
 		$admin_emoji_add,
 		$admin_emoji_copy,
 		$admin_emoji_deleteBulk,
@@ -634,7 +641,9 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_emoji_listRemote,
 		$admin_emoji_list,
 		$admin_emoji_removeAliasesBulk,
+		$admin_emoji_removeTagsBulk,
 		$admin_emoji_setAliasesBulk,
+		$admin_emoji_setTagsBulk,
 		$admin_emoji_setCategoryBulk,
 		$admin_emoji_setLicenseBulk,
 		$admin_emoji_update,
@@ -924,6 +933,7 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_drive_files,
 		$admin_drive_showFile,
 		$admin_emoji_addAliasesBulk,
+		$admin_emoji_addTagsBulk,
 		$admin_emoji_add,
 		$admin_emoji_copy,
 		$admin_emoji_deleteBulk,
@@ -932,7 +942,9 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_emoji_listRemote,
 		$admin_emoji_list,
 		$admin_emoji_removeAliasesBulk,
+		$admin_emoji_removeTagsBulk,
 		$admin_emoji_setAliasesBulk,
+		$admin_emoji_setTagsBulk,
 		$admin_emoji_setCategoryBulk,
 		$admin_emoji_setLicenseBulk,
 		$admin_emoji_update,

@@ -20,6 +20,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 	<!-- FirefoxのTabフォーカスが想定外の挙動となるためtabindex="-1"を追加 https://github.com/misskey-dev/misskey/issues/10744 -->
 	<div ref="emojisEl" class="emojis" tabindex="-1">
+		<div v-if="defaultStore.reactiveState.emojiPickerTagSection.value && pinnedTags.length > 0" :class="{ oneline: defaultStore.reactiveState.emojiPickerTagOneline.value }" class="tags">
+			<button v-for="tag in pinnedTags" :key="tag" class="tag" :class="{ selected: selectedTags.has(tag) }" @click="() => selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag)">{{ tag }}</button>
+		</div>
+
 		<section class="result">
 			<div v-if="searchResultCustom.length > 0" class="body">
 				<button
@@ -48,7 +52,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</section>
 
-		<div v-if="tab === 'index'" class="group index">
+		<div class="group index">
 			<section v-if="showPinned && (pinned && pinned.length > 0)">
 				<div class="body">
 					<button
@@ -105,17 +109,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<XSection v-for="category in categories" :key="category" :emojis="emojiCharByCategory.get(category) ?? []" :hasChildSection="false" @chosen="chosen">{{ category }}</XSection>
 		</div>
 	</div>
-	<div class="tabs">
-		<button class="_button tab" :class="{ active: tab === 'index' }" @click="tab = 'index'"><i class="ti ti-asterisk ti-fw"></i></button>
-		<button class="_button tab" :class="{ active: tab === 'custom' }" @click="tab = 'custom'"><i class="ti ti-mood-happy ti-fw"></i></button>
-		<button class="_button tab" :class="{ active: tab === 'unicode' }" @click="tab = 'unicode'"><i class="ti ti-leaf ti-fw"></i></button>
-		<button class="_button tab" :class="{ active: tab === 'tags' }" @click="tab = 'tags'"><i class="ti ti-hash ti-fw"></i></button>
-	</div>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef, computed, watch, onMounted } from 'vue';
+import { ref, shallowRef, reactive, computed, watch, onMounted } from 'vue';
 import * as romajiConv from '@koozaki/romaji-conv';
 import type { Note, EmojiSimple } from 'misskey-js/entities.js';
 import XSection from '@/components/MkEmojiPicker.section.vue';
@@ -134,7 +132,7 @@ import { isTouchUsing } from '@/scripts/touch.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
-import { customEmojiCategories, customEmojis, customEmojisMap } from '@/custom-emojis.js';
+import { customEmojiCategories, customEmojiTags, customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import { $i } from '@/account.js';
 import { checkReactionPermissions } from '@/scripts/check-reaction-permissions.js';
 
@@ -171,15 +169,22 @@ const recentlyUsedEmojisDef = computed(() => {
 const pinnedEmojisDef = computed(() => {
 	return pinned.value?.map(getDef);
 });
+const pinnedTags = computed<string[]>(() => {
+	if (defaultStore.reactiveState.emojiPickerTags.value.length === 0) {
+		return customEmojiTags.value;
+	} else {
+		return defaultStore.reactiveState.emojiPickerTags.value.filter(tag => customEmojiTags.value.includes(tag));
+	}
+});
 
 const pinned = computed(() => props.pinnedEmojis);
 const size = computed(() => emojiPickerScale.value);
 const width = computed(() => emojiPickerWidth.value);
 const height = computed(() => emojiPickerHeight.value);
 const q = ref<string>('');
+const selectedTags = reactive(new Set<string>());
 const searchResultCustom = ref<EmojiSimple[]>([]);
 const searchResultUnicode = ref<UnicodeEmojiDef[]>([]);
-const tab = ref<'index' | 'custom' | 'unicode' | 'tags'>('index');
 
 const customEmojiFolderRoot: CustomEmojiFolderTree = { value: '', category: '', children: [] };
 
@@ -210,10 +215,10 @@ customEmojiCategories.value.forEach(ec => {
 
 parseAndMergeCategories('', customEmojiFolderRoot);
 
-watch(q, () => {
+watch([q, selectedTags], () => {
 	if (emojisEl.value) emojisEl.value.scrollTop = 0;
 
-	if (q.value === '') {
+	if (q.value === '' && selectedTags.size === 0) {
 		searchResultCustom.value = [];
 		searchResultUnicode.value = [];
 		return;
@@ -221,7 +226,7 @@ watch(q, () => {
 
 	const newQ = q.value.replace(/:/g, '').toLowerCase().trim();
 
-	if (newQ === '') {
+	if (newQ === '' && selectedTags.size === 0) {
 		searchResultCustom.value = [];
 		searchResultUnicode.value = [];
 		return;
@@ -229,7 +234,8 @@ watch(q, () => {
 
 	const searchCustom = () => {
 		const max = 100;
-		const emojis = customEmojis.value;
+		const selectedTagsArray = Array.from(selectedTags);
+		const emojis = customEmojis.value.filter(emoji => selectedTagsArray.length === 0 || selectedTagsArray.every(selectedTag => emoji.tags.includes(selectedTag)));
 		const matches = new Set<EmojiSimple>();
 
 		const exactMatch = emojis.find(emoji => emoji.name === newQ);
@@ -401,7 +407,7 @@ watch(q, () => {
 	};
 
 	searchResultCustom.value = Array.from(searchCustom());
-	searchResultUnicode.value = Array.from(searchUnicode());
+	searchResultUnicode.value = selectedTags.size > 0 ? [] : Array.from(searchUnicode());
 });
 
 function canReact(emoji: EmojiSimple | UnicodeEmojiDef | string): boolean {
@@ -423,6 +429,7 @@ function focus() {
 function reset() {
 	if (emojisEl.value) emojisEl.value.scrollTop = 0;
 	q.value = '';
+	selectedTags.clear();
 }
 
 function getKey(emoji: string | EmojiSimple | UnicodeEmojiDef): string {
@@ -689,22 +696,6 @@ defineExpose({
 		}
 	}
 
-	> .tabs {
-		display: flex;
-		display: none;
-
-		> .tab {
-			flex: 1;
-			height: 38px;
-			border-top: solid 0.5px var(--divider);
-
-			&.active {
-				border-top: solid 1px var(--accent);
-				color: var(--accent);
-			}
-		}
-	}
-
 	> .emojis {
 		height: 100%;
 		overflow-y: auto;
@@ -714,6 +705,40 @@ defineExpose({
 
 		&::-webkit-scrollbar {
 			display: none;
+		}
+
+		> .tags {
+			width: 100%;
+			padding: 12px;
+			box-sizing: border-box;
+			border-bottom: solid 0.5px var(--divider);
+			display: flex;
+			flex-wrap: wrap;
+
+			&.oneline {
+				flex-wrap: nowrap;
+				overflow-x: scroll;
+			}
+
+			> .tag {
+				color: var(--fg);
+				background: var(--buttonBg);
+				border: 1px solid var(--buttonBg);
+				border-radius: 5px;
+				padding-block: 2px;
+				padding-inline: 0.5em;
+				padding-block: 0.2rem;
+				margin-inline: 4px;
+				margin-block: 4px;
+
+				&:hover {
+					cursor: pointer;
+				}
+
+				&.selected {
+					border-color: var(--accent);
+				}
+			}
 		}
 
 		> .group {

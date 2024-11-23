@@ -20,6 +20,7 @@ import type {
 	AdminDriveShowFileRequest,
 	AdminDriveShowFileResponse,
 	AdminEmojiAddAliasesBulkRequest,
+	AdminEmojiAddTagsBulkRequest,
 	AdminEmojiAddRequest,
 	AdminEmojiAddResponse,
 	AdminEmojiCopyRequest,
@@ -32,7 +33,9 @@ import type {
 	AdminEmojiListRequest,
 	AdminEmojiListResponse,
 	AdminEmojiRemoveAliasesBulkRequest,
+	AdminEmojiRemoveTagsBulkRequest,
 	AdminEmojiSetAliasesBulkRequest,
+	AdminEmojiSetTagsBulkRequest,
 	AdminEmojiSetCategoryBulkRequest,
 	AdminEmojiSetLicenseBulkRequest,
 	AdminEmojiUpdateRequest,
@@ -459,6 +462,7 @@ export type Endpoints = {
 	'admin/drive/files': { req: AdminDriveFilesRequest; res: AdminDriveFilesResponse };
 	'admin/drive/show-file': { req: AdminDriveShowFileRequest; res: AdminDriveShowFileResponse };
 	'admin/emoji/add-aliases-bulk': { req: AdminEmojiAddAliasesBulkRequest; res: EmptyResponse };
+	'admin/emoji/add-tags-bulk': { req: AdminEmojiAddTagsBulkRequest; res: EmptyResponse };
 	'admin/emoji/add': { req: AdminEmojiAddRequest; res: AdminEmojiAddResponse };
 	'admin/emoji/copy': { req: AdminEmojiCopyRequest; res: AdminEmojiCopyResponse };
 	'admin/emoji/delete-bulk': { req: AdminEmojiDeleteBulkRequest; res: EmptyResponse };
@@ -467,7 +471,9 @@ export type Endpoints = {
 	'admin/emoji/list-remote': { req: AdminEmojiListRemoteRequest; res: AdminEmojiListRemoteResponse };
 	'admin/emoji/list': { req: AdminEmojiListRequest; res: AdminEmojiListResponse };
 	'admin/emoji/remove-aliases-bulk': { req: AdminEmojiRemoveAliasesBulkRequest; res: EmptyResponse };
+	'admin/emoji/remove-tags-bulk': { req: AdminEmojiRemoveTagsBulkRequest; res: EmptyResponse };
 	'admin/emoji/set-aliases-bulk': { req: AdminEmojiSetAliasesBulkRequest; res: EmptyResponse };
+	'admin/emoji/set-tags-bulk': { req: AdminEmojiSetTagsBulkRequest; res: EmptyResponse };
 	'admin/emoji/set-category-bulk': { req: AdminEmojiSetCategoryBulkRequest; res: EmptyResponse };
 	'admin/emoji/set-license-bulk': { req: AdminEmojiSetLicenseBulkRequest; res: EmptyResponse };
 	'admin/emoji/update': { req: AdminEmojiUpdateRequest; res: EmptyResponse };

@@ -81,6 +81,9 @@ type AdminEmojiAddRequest = operations['admin___emoji___add']['requestBody']['co
 type AdminEmojiAddResponse = operations['admin___emoji___add']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
+type AdminEmojiAddTagsBulkRequest = operations['admin___emoji___add-tags-bulk']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
 type AdminEmojiCopyRequest = operations['admin___emoji___copy']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -111,6 +114,9 @@ type AdminEmojiListResponse = operations['admin___emoji___list']['responses']['2
 type AdminEmojiRemoveAliasesBulkRequest = operations['admin___emoji___remove-aliases-bulk']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
+type AdminEmojiRemoveTagsBulkRequest = operations['admin___emoji___remove-tags-bulk']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
 type AdminEmojiSetAliasesBulkRequest = operations['admin___emoji___set-aliases-bulk']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -118,6 +124,9 @@ type AdminEmojiSetCategoryBulkRequest = operations['admin___emoji___set-category
 
 // @public (undocumented)
 type AdminEmojiSetLicenseBulkRequest = operations['admin___emoji___set-license-bulk']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type AdminEmojiSetTagsBulkRequest = operations['admin___emoji___set-tags-bulk']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type AdminEmojiUpdateRequest = operations['admin___emoji___update']['requestBody']['content']['application/json'];
@@ -981,6 +990,7 @@ declare namespace entities {
         AdminDriveShowFileRequest,
         AdminDriveShowFileResponse,
         AdminEmojiAddAliasesBulkRequest,
+        AdminEmojiAddTagsBulkRequest,
         AdminEmojiAddRequest,
         AdminEmojiAddResponse,
         AdminEmojiCopyRequest,
@@ -993,7 +1003,9 @@ declare namespace entities {
         AdminEmojiListRequest,
         AdminEmojiListResponse,
         AdminEmojiRemoveAliasesBulkRequest,
+        AdminEmojiRemoveTagsBulkRequest,
         AdminEmojiSetAliasesBulkRequest,
+        AdminEmojiSetTagsBulkRequest,
         AdminEmojiSetCategoryBulkRequest,
         AdminEmojiSetLicenseBulkRequest,
         AdminEmojiUpdateRequest,
