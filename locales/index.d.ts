@@ -2833,7 +2833,7 @@ export interface Locale extends ILocale {
      */
     "theAdditionalClassificationForCustomEmoji": string;
     /**
-     * スペースで区切って複数設定できます。
+     * 半角スペースで区切って複数設定できます。
      */
     "setMultipleBySeparatingWithSpace": string;
     /**
