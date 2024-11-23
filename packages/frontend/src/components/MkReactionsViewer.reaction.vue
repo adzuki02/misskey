@@ -56,7 +56,7 @@ const emoji = computed(() => customEmojisMap.get(emojiName.value) ?? getUnicodeE
 const canToggle = computed(() => {
 	return $i && emoji.value && checkReactionPermissions($i, props.note, emoji.value);
 });
-const canGetInfo = computed(() => !props.reaction.match(/@\w/) && props.reaction.includes(':'));
+const canGetInfo = computed(() => props.reaction.includes(':'));
 
 async function toggleReaction() {
 	if (!canToggle.value) return;
