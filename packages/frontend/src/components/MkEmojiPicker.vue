@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<!-- FirefoxのTabフォーカスが想定外の挙動となるためtabindex="-1"を追加 https://github.com/misskey-dev/misskey/issues/10744 -->
 	<div ref="emojisEl" class="emojis" tabindex="-1">
 		<div class="tags">
-			<button v-for="tag in customEmojiFolderRoot.children.map(tree => tree.value).filter(s => s)" :key="tag" class="tag" :class="{ selected: selectedTags.has(tag) }" @click="() => selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag)">{{ tag }}</button>
+			<button v-for="tag in customEmojiTags" :key="tag" class="tag" :class="{ selected: selectedTags.has(tag) }" @click="() => selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag)">{{ tag }}</button>
 		</div>
 
 		<section class="result">
@@ -132,7 +132,7 @@ import { isTouchUsing } from '@/scripts/touch.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
-import { customEmojiCategories, customEmojis, customEmojisMap } from '@/custom-emojis.js';
+import { customEmojiCategories, customEmojiTags, customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import { $i } from '@/account.js';
 import { checkReactionPermissions } from '@/scripts/check-reaction-permissions.js';
 
@@ -208,10 +208,10 @@ customEmojiCategories.value.forEach(ec => {
 
 parseAndMergeCategories('', customEmojiFolderRoot);
 
-watch(q, () => {
+watch([q, selectedTags], () => {
 	if (emojisEl.value) emojisEl.value.scrollTop = 0;
 
-	if (q.value === '') {
+	if (q.value === '' && selectedTags.size === 0) {
 		searchResultCustom.value = [];
 		searchResultUnicode.value = [];
 		return;
@@ -219,7 +219,7 @@ watch(q, () => {
 
 	const newQ = q.value.replace(/:/g, '').toLowerCase().trim();
 
-	if (newQ === '') {
+	if (newQ === '' && selectedTags.size === 0) {
 		searchResultCustom.value = [];
 		searchResultUnicode.value = [];
 		return;
@@ -227,7 +227,8 @@ watch(q, () => {
 
 	const searchCustom = () => {
 		const max = 100;
-		const emojis = customEmojis.value;
+		const selectedTagsArray = Array.from(selectedTags);
+		const emojis = customEmojis.value.filter(emoji => selectedTagsArray.length === 0 || selectedTagsArray.every(selectedTag => emoji.tags.includes(selectedTag)));
 		const matches = new Set<EmojiSimple>();
 
 		const exactMatch = emojis.find(emoji => emoji.name === newQ);
@@ -399,7 +400,7 @@ watch(q, () => {
 	};
 
 	searchResultCustom.value = Array.from(searchCustom());
-	searchResultUnicode.value = Array.from(searchUnicode());
+	searchResultUnicode.value = selectedTags.size > 0 ? [] : Array.from(searchUnicode());
 });
 
 function canReact(emoji: EmojiSimple | UnicodeEmojiDef | string): boolean {
