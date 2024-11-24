@@ -24,11 +24,11 @@ export const customEmojiCategories = computed<string[]>(() => {
 export const customEmojiTags = computed<string[]>(() => {
 	const tags = new Set<string>();
 	for (const emoji of customEmojis.value) {
-		emoji.tags.forEach(tag => {
+		for (const tag of emoji.tags) {
 			if (tag !== '') {
 				tags.add(tag);
 			}
-		});
+		};
 	}
 	return markRaw(Array.from(tags).sort());
 });
