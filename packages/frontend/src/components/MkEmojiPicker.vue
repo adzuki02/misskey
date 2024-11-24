@@ -243,7 +243,7 @@ watch([q, selectedTags], () => {
 		const matches = new Set<EmojiSimple>();
 
 		if (newQ === '') {
-			return new Set(emojis.slice(0, MAX));
+			return new Set(emojis);
 		}
 
 		// 名前に完全一致
