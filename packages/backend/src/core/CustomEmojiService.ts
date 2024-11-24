@@ -246,7 +246,7 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		for (const emoji of emojis) {
 			await this.emojisRepository.update(emoji.id, {
 				updatedAt: new Date(),
-				tags: emoji.aliases.filter(x => !tags.includes(x)),
+				tags: emoji.tags.filter(x => !tags.includes(x)),
 			});
 		}
 
