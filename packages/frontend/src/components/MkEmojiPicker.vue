@@ -218,14 +218,18 @@ parseAndMergeCategories('', customEmojiFolderRoot);
 watch([q, selectedTags], () => {
 	if (emojisEl.value) emojisEl.value.scrollTop = 0;
 
+	// 検索クエリなし かつ タグ選択なし なら 検索結果は空
 	if (q.value === '' && selectedTags.size === 0) {
 		searchResultCustom.value = [];
 		searchResultUnicode.value = [];
 		return;
 	}
 
+	// コロンをすべて除去し すべて小文字に変換し 前後の空白を除去
+	// 以降はこのnewQをクエリとして使用する
 	const newQ = q.value.replace(/:/g, '').toLowerCase().trim();
 
+	// 検索クエリなし かつ タグ選択なし なら 検索結果は空
 	if (newQ === '' && selectedTags.size === 0) {
 		searchResultCustom.value = [];
 		searchResultUnicode.value = [];
@@ -233,82 +237,84 @@ watch([q, selectedTags], () => {
 	}
 
 	const searchCustom = () => {
-		const max = 100;
+		const MAX = 100;
 		const selectedTagsArray = Array.from(selectedTags);
 		const emojis = customEmojis.value.filter(emoji => selectedTagsArray.length === 0 || selectedTagsArray.every(selectedTag => emoji.tags.includes(selectedTag)));
 		const matches = new Set<EmojiSimple>();
 
-		const exactMatch = emojis.find(emoji => emoji.name === newQ);
+		// 名前に完全一致
+		const exactMatch = customEmojisMap.get(newQ);
 		if (exactMatch) matches.add(exactMatch);
 
 		if (newQ.includes(' ')) { // AND検索
 			const keywords = newQ.split(' ').filter(s => s !== '');
 
-			// 名前にキーワードが含まれている
+			// 名前にキーワードがすべて含まれている
 			for (const emoji of emojis) {
 				if (keywords.every(keyword => emoji.name.includes(keyword))) {
 					matches.add(emoji);
-					if (matches.size >= max) break;
+					if (matches.size >= MAX) break;
 				}
 			}
-			if (matches.size >= max) return matches;
+			if (matches.size >= MAX) return matches;
 
-			// 名前またはエイリアスにキーワードが含まれている
+			// 名前またはタグまたはエイリアスにキーワードがすべて含まれている
 			for (const emoji of emojis) {
-				if (keywords.every(keyword => emoji.name.includes(keyword) || emoji.aliases.some(alias => alias.includes(keyword)))) {
+				if (keywords.every(keyword => emoji.name.includes(keyword) || emoji.tags.some(tag => tag.includes(keyword)) || emoji.aliases.some(alias => alias.includes(keyword)))) {
 					matches.add(emoji);
-					if (matches.size >= max) break;
+					if (matches.size >= MAX) break;
 				}
 			}
-		} else {
-			if (customEmojisMap.has(newQ)) {
-				matches.add(customEmojisMap.get(newQ)!);
-			}
-			if (matches.size >= max) return matches;
-
+		} else { // 非AND検索
+			// タグまたはエイリアスに完全一致
 			for (const emoji of emojis) {
-				if (emoji.aliases.some(alias => alias === newQ)) {
+				if (emoji.tags.some(tag => tag === newQ) || emoji.aliases.some(alias => alias === newQ)) {
 					matches.add(emoji);
-					if (matches.size >= max) break;
+					if (matches.size >= MAX) break;
 				}
 			}
-			if (matches.size >= max) return matches;
+			if (matches.size >= MAX) return matches;
 
+			// 名前に前方一致
 			for (const emoji of emojis) {
 				if (emoji.name.startsWith(newQ)) {
 					matches.add(emoji);
-					if (matches.size >= max) break;
+					if (matches.size >= MAX) break;
 				}
 			}
-			if (matches.size >= max) return matches;
+			if (matches.size >= MAX) return matches;
 
+			// タグまたはエイリアスに前方一致
 			for (const emoji of emojis) {
-				if (emoji.aliases.some(alias => alias.startsWith(newQ))) {
+				if (emoji.tags.some(tag => tag.startsWith(newQ)) || emoji.aliases.some(alias => alias.startsWith(newQ))) {
 					matches.add(emoji);
-					if (matches.size >= max) break;
+					if (matches.size >= MAX) break;
 				}
 			}
-			if (matches.size >= max) return matches;
+			if (matches.size >= MAX) return matches;
 
+			// 名前に部分一致
 			for (const emoji of emojis) {
 				if (emoji.name.includes(newQ)) {
 					matches.add(emoji);
-					if (matches.size >= max) break;
+					if (matches.size >= MAX) break;
 				}
 			}
-			if (matches.size >= max) return matches;
+			if (matches.size >= MAX) return matches;
 
+			// タグまたはエイリアスに部分一致
 			for (const emoji of emojis) {
-				if (emoji.aliases.some(alias => alias.includes(newQ))) {
+				if (emoji.tags.some(tag => tag.includes(newQ)) || emoji.aliases.some(alias => alias.includes(newQ))) {
 					matches.add(emoji);
-					if (matches.size >= max) break;
+					if (matches.size >= MAX) break;
 				}
 			}
-			if (matches.size >= max) return matches;
+			if (matches.size >= MAX) return matches;
 
-			// 日本語のための対応
+			// クエリをローマ字表記された日本語として変換してから、
+			// エイリアスに対する一致を調べる
 
-			// 約物
+			// 約物を個別に変換
 			// 「？」「！」「…」以外は無視
 			const newQ1 = newQ
 				.replace(/__q/g, '？') // 「__q」を「？」に
@@ -329,10 +335,11 @@ watch([q, selectedTags], () => {
 			const newQ3 = newQ2.replace(/(?<!n)nny(a|u|o)/g, 'nnny$1');
 			const newQ3j = romajiConv.toHiragana(newQ3);
 
+			// エイリアスに部分一致
 			for (const emoji of emojis) {
 				if (emoji.aliases.some(alias => alias.includes(newQ1j) || alias.includes(newQ2j) || alias.includes(newQ3j))) {
 					matches.add(emoji);
-					if (matches.size >= max) break;
+					if (matches.size >= MAX) break;
 				}
 			}
 		}
@@ -341,63 +348,71 @@ watch([q, selectedTags], () => {
 	};
 
 	const searchUnicode = () => {
-		const max = 100;
+		const MAX = 100;
 		const emojis = emojilist;
 		const matches = new Set<UnicodeEmojiDef>();
 
+		// 名前に完全一致
 		const exactMatch = emojis.find(emoji => emoji.name === newQ);
 		if (exactMatch) matches.add(exactMatch);
 
 		if (newQ.includes(' ')) { // AND検索
 			const keywords = newQ.split(' ');
 
+			// 名前にキーワードがすべて含まれている
 			for (const emoji of emojis) {
 				if (keywords.every(keyword => emoji.name.includes(keyword))) {
 					matches.add(emoji);
-					if (matches.size >= max) break;
+					if (matches.size >= MAX) break;
 				}
 			}
-			if (matches.size >= max) return matches;
+			if (matches.size >= MAX) return matches;
 
+			// 追加の絵文字辞書
 			for (const index of Object.values(defaultStore.state.additionalUnicodeEmojiIndexes)) {
+				// 追加の辞書の名前にキーワードがすべて含まれている
 				for (const emoji of emojis) {
 					if (keywords.every(keyword => index[emoji.char].some(k => k.includes(keyword)))) {
 						matches.add(emoji);
-						if (matches.size >= max) break;
+						if (matches.size >= MAX) break;
 					}
 				}
 			}
-		} else {
+		} else { // 非AND検索
+			// 名前に前方一致
 			for (const emoji of emojis) {
 				if (emoji.name.startsWith(newQ)) {
 					matches.add(emoji);
-					if (matches.size >= max) break;
+					if (matches.size >= MAX) break;
 				}
 			}
-			if (matches.size >= max) return matches;
+			if (matches.size >= MAX) return matches;
 
+			// 追加の辞書の名前に前方一致
 			for (const index of Object.values(defaultStore.state.additionalUnicodeEmojiIndexes)) {
 				for (const emoji of emojis) {
 					if (index[emoji.char].some(k => k.startsWith(newQ))) {
 						matches.add(emoji);
-						if (matches.size >= max) break;
+						if (matches.size >= MAX) break;
 					}
 				}
 			}
 
+			// 名前に部分一致
 			for (const emoji of emojis) {
 				if (emoji.name.includes(newQ)) {
 					matches.add(emoji);
-					if (matches.size >= max) break;
+					if (matches.size >= MAX) break;
 				}
 			}
-			if (matches.size >= max) return matches;
+			if (matches.size >= MAX) return matches;
 
+			// 追加の辞書の名前に部分一致
 			for (const index of Object.values(defaultStore.state.additionalUnicodeEmojiIndexes)) {
 				for (const emoji of emojis) {
 					if (index[emoji.char].some(k => k.includes(newQ))) {
 						matches.add(emoji);
-						if (matches.size >= max) break;
+						if (matches.size >= MAX) break;
 					}
 				}
 			}
