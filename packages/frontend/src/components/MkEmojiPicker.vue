@@ -242,6 +242,10 @@ watch([q, selectedTags], () => {
 		const emojis = customEmojis.value.filter(emoji => selectedTagsArray.length === 0 || selectedTagsArray.every(selectedTag => emoji.tags.includes(selectedTag)));
 		const matches = new Set<EmojiSimple>();
 
+		if (newQ === '') {
+			return new Set(emojis.slice(0, MAX));
+		}
+
 		// 名前に完全一致
 		const exactMatch = customEmojisMap.get(newQ);
 		if (exactMatch) matches.add(exactMatch);
