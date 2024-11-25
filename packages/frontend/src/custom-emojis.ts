@@ -32,6 +32,25 @@ export const customEmojiTags = computed<string[]>(() => {
 	}
 	return markRaw(Array.from(tags).sort());
 });
+export const customEmojiTagCombinations = computed<Map<string, Set<string>>>(() => {
+	const combinations = new Map<string, Set<string>>();
+	for (const emoji of customEmojis.value) {
+		if (emoji.tags.length < 2) continue;
+
+		for (const tag of emoji.tags) {
+			if (tag === '') continue;
+
+			if (combinations.has(tag)) {
+				for (const pairedTag of emoji.tags) {
+					combinations.get(tag)!.add(pairedTag);
+				}
+			} else {
+				combinations.set(tag, new Set(emoji.tags));
+			}
+		}
+	}
+	return markRaw(combinations);
+});
 
 export const customEmojisMap = new Map<string, EmojiSimple>();
 watch(customEmojis, emojis => {

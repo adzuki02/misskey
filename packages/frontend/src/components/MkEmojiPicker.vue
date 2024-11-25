@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<!-- FirefoxのTabフォーカスが想定外の挙動となるためtabindex="-1"を追加 https://github.com/misskey-dev/misskey/issues/10744 -->
 	<div ref="emojisEl" class="emojis" tabindex="-1">
 		<div v-if="defaultStore.reactiveState.emojiPickerTagSection.value && pinnedTags.length > 0" :class="{ oneline: defaultStore.reactiveState.emojiPickerTagOneline.value }" class="tags">
-			<button v-for="tag in pinnedTags" :key="tag" class="tag" :class="{ selected: selectedTags.has(tag) }" @click="() => selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag)">{{ tag }}</button>
+			<button v-for="tag in pinnedTags" :key="tag" class="tag" :class="{ selected: selectedTags.has(tag) }" :disabled="!availableTags.has(tag)" @click="() => selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag)">{{ tag }}</button>
 		</div>
 
 		<section class="result">
@@ -132,7 +132,7 @@ import { isTouchUsing } from '@/scripts/touch.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
-import { customEmojiCategories, customEmojiTags, customEmojis, customEmojisMap } from '@/custom-emojis.js';
+import { customEmojiCategories, customEmojiTags, customEmojiTagCombinations, customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import { $i } from '@/account.js';
 import { checkReactionPermissions } from '@/scripts/check-reaction-permissions.js';
 
@@ -185,6 +185,21 @@ const q = ref<string>('');
 const selectedTags = reactive(new Set<string>());
 const searchResultCustom = ref<EmojiSimple[]>([]);
 const searchResultUnicode = ref<UnicodeEmojiDef[]>([]);
+
+const availableTags = computed<Set<string>>(() => {
+	if (selectedTags.size === 0) return new Set(pinnedTags.value);
+	console.log(customEmojiTagCombinations.value);
+	let tags = new Set<string>(pinnedTags.value);
+	for (const selectedTag of selectedTags) {
+		if (customEmojiTagCombinations.value.has(selectedTag)) {
+			tags = tags.intersection(customEmojiTagCombinations.value.get(selectedTag)!);
+		} else {
+			tags = selectedTags;
+			break;
+		}
+	}
+	return tags;
+});
 
 const customEmojiFolderRoot: CustomEmojiFolderTree = { value: '', category: '', children: [] };
 
@@ -757,6 +772,14 @@ defineExpose({
 
 				&.selected {
 					border-color: var(--accent);
+				}
+
+				&:disabled {
+					cursor: default;
+					background: linear-gradient(-45deg, transparent 0% 48%, var(--X6) 48% 52%, transparent 52% 100%);
+					filter: grayscale(1);
+					mix-blend-mode: exclusion;
+					opacity: 0.8;
 				}
 			}
 		}
