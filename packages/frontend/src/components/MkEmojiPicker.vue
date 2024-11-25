@@ -749,6 +749,7 @@ defineExpose({
 				padding-block: 0.2rem;
 				margin-inline: 4px;
 				margin-block: 4px;
+				white-space: nowrap;
 
 				&:hover {
 					cursor: pointer;
