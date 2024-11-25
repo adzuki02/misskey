@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<!-- FirefoxのTabフォーカスが想定外の挙動となるためtabindex="-1"を追加 https://github.com/misskey-dev/misskey/issues/10744 -->
 	<div ref="emojisEl" class="emojis" tabindex="-1">
 		<div v-if="defaultStore.reactiveState.emojiPickerTagSection.value && pinnedTags.length > 0" :class="{ oneline: defaultStore.reactiveState.emojiPickerTagOneline.value }" class="tags">
-			<button v-for="tag in pinnedTags" :key="tag" class="tag" :class="{ selected: selectedTags.has(tag) }" :disabled="!availableTags.has(tag)" @click="() => selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag)">{{ tag }}</button>
+			<button v-for="tag in pinnedTags" :key="tag" class="_button tag" :class="{ selected: selectedTags.has(tag) }" :disabled="!availableTags.has(tag)" @click="() => selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag)">{{ tag }}</button>
 		</div>
 
 		<section class="result">
@@ -759,7 +759,6 @@ defineExpose({
 				background: var(--buttonBg);
 				border: 1px solid var(--buttonBg);
 				border-radius: 5px;
-				padding-block: 2px;
 				padding-inline: 0.5em;
 				padding-block: 0.2rem;
 				margin-inline: 4px;
