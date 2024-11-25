@@ -111,7 +111,10 @@ async function menu(ev) {
 		icon: 'ti ti-info-circle',
 		action: async () => {
 			const { dispose } = os.popup(MkCustomEmojiDetailedDialog, {
-				emoji: await misskeyApiGet('emoji', {
+				emoji: props.reaction.includes('@') && !props.reaction.endsWith('@.:') ? {
+					host: props.reaction.split('@')[1].replace(':', ''),
+					name: props.reaction.split('@')[0].replace(':', ''),
+				} : await misskeyApiGet('emoji', {
 					name: props.reaction.replace(/:/g, '').replace(/@\./, ''),
 				}),
 			}, {
