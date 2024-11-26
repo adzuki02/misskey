@@ -188,7 +188,7 @@ const searchResultUnicode = ref<UnicodeEmojiDef[]>([]);
 
 const availableTags = computed<Set<string>>(() => {
 	if (selectedTags.size === 0) return new Set(pinnedTags.value);
-	console.log(customEmojiTagCombinations.value);
+
 	let tags = new Set<string>(pinnedTags.value);
 	for (const selectedTag of selectedTags) {
 		if (customEmojiTagCombinations.value.has(selectedTag)) {
