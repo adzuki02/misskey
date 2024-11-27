@@ -190,19 +190,9 @@ describe('独自拡張', () => {
 				assert.strictEqual(res.body.updatedAt, null);
 			});
 
-			test('は認証情報がなければnotesCountが0である。', async () => {
-				const res = await api('users/show', { userId: alice.id });
-				assert.strictEqual(res.body.notesCount, 0);
-			});
-
 			test('は認証情報があればupdatedAtがnullでない。', async () => {
 				const res = await api('users/show', { userId: alice.id }, bob);
 				assert.notStrictEqual(res.body.updatedAt, null);
-			});
-
-			test('は認証情報があればnotesCountが0でない。', async () => {
-				const res = await api('users/show', { userId: alice.id }, bob);
-				assert.notStrictEqual(res.body.notesCount, 0);
 			});
 		});
 	});

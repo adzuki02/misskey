@@ -536,7 +536,7 @@ describe('ユーザー', () => {
 	] as const)('を取得することができる（$label）', async ({ parameters, user, type }) => {
 		const response = await successfulApiCall({ endpoint: 'users/show', parameters: parameters(), user: user?.() });
 		const expected = type(alice);
-		assert.deepStrictEqual(response, type === userDetailedNotMe ? Object.assign(expected, { notesCount: 0, updatedAt: null }) : expected);
+		assert.deepStrictEqual(response, type === userDetailedNotMe ? Object.assign(expected, { updatedAt: null }) : expected);
 	});
 	test.each([
 		{ label: 'Administratorになっている', user: () => userAdmin, me: () => userAdmin, selector: (user: misskey.entities.MeDetailed) => user.isAdmin },

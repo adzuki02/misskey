@@ -33,7 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.status">
 				<div :class="$style.statusItem">
 					<div :class="$style.statusItemLabel">{{ i18n.ts.notes }}</div>
-					<div>{{ $i ? number(user.notesCount) : '-' }}</div>
+					<div>{{ number(user.notesCount) }}</div>
 				</div>
 				<div v-if="isFollowingVisibleForMe(user)" :class="$style.statusItem">
 					<div :class="$style.statusItemLabel">{{ i18n.ts.following }}</div>
