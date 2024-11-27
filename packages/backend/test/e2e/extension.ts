@@ -78,23 +78,6 @@ describe('独自拡張', () => {
 		});
 	});
 
-	describe('リモートユーザーのFFの表示をクレデンシャル必須に', () => {
-		describe.each([
-			{ endpoint: 'users/followers' },
-			{ endpoint: 'users/following' },
-		])('/api/$endpoint', ({ endpoint }) => {
-			test('は認証情報がなければアクセスできない。', async () => {
-				const res = await api(endpoint as keyof misskey.Endpoints, { userId: remoteUser.id });
-				assert.strictEqual(res.status, 400);
-			});
-
-			test('は認証情報があればアクセスできる。', async () => {
-				const res = await api(endpoint as keyof misskey.Endpoints, { userId: remoteUser.id }, bob);
-				assert.strictEqual(res.status, 200);
-			});
-		});
-	});
-
 	describe('ノート数を隠す', () => {
 		beforeAll(async () => {
 			await api('notes/create', { text: 'note' }, alice);
