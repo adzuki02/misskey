@@ -549,7 +549,7 @@ onUnmounted(() => {
 					padding: 24px;
 					border-top: solid 0.5px var(--divider);
 
-					> a {
+					> a, div {
 						flex: 1;
 						text-align: center;
 

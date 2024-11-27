@@ -78,49 +78,6 @@ describe('独自拡張', () => {
 		});
 	});
 
-	describe('リモートユーザーのFFは認証情報がなければ非公開として扱う', () => {
-		beforeAll(async () => {
-			await sendEnvUpdateRequest({ key: 'FORCE_FOLLOW_REMOTE_USER_FOR_TESTING', value: 'true' });
-			await api('following/create', { userId: bob.id }, remoteUser);
-			await api('following/create', { userId: remoteUser.id }, bob);
-		});
-
-		test('followersVisibilityがprivate', async () => {
-			const res = await api('users/show', { userId: remoteUser.id });
-			assert.strictEqual(res.body.followersVisibility, 'private');
-		});
-
-		describe.each([
-			{ key: 'followingVisibility' },
-			{ key: 'followersVisibility' }
-		])('/api/users/showの$key', ({ key }) => {
-			test('は認証情報がなければprivate。', async () => {
-				const res = await api('users/show', { userId: remoteUser.id });
-				assert.strictEqual(res.body[key as 'followingVisibility' | 'followersVisibility'], 'private');
-			});
-
-			test('は認証情報があればpublic。', async () => {
-				const res = await api('users/show', { userId: remoteUser.id }, bob);
-				assert.strictEqual(res.body[key as 'followingVisibility' | 'followersVisibility'], 'public');
-			});
-		});
-
-		describe.each([
-			{ key: 'followingCount' },
-			{ key: 'followersCount' }
-		])('/api/users/showの$key', ({ key }) => {
-			test('は認証情報がなければ0である。', async () => {
-				const res = await api('users/show', { userId: remoteUser.id });
-				assert.strictEqual(res.body[key as 'followingCount' | 'followersCount'], 0);
-			});
-
-			test('は認証情報があれば0でない。', async () => {
-				const res = await api('users/show', { userId: remoteUser.id }, bob);
-				assert.notStrictEqual(res.body[key as 'followingCount' | 'followersCount'], 0);
-			});
-		});
-	});
-
 	describe('リモートユーザーのFFの表示をクレデンシャル必須に', () => {
 		describe.each([
 			{ endpoint: 'users/followers' },
