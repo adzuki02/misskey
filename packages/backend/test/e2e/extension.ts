@@ -227,7 +227,7 @@ describe('独自拡張', () => {
 			assert.notStrictEqual(followers.body[0].follower, undefined);
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			assert.strictEqual(followers.body[0].follower!.id, alice.id);
-			assert.strictEqual(followers.body.filter(elem => elem.follower?.id === proxy.id), undefined);
+			assert.strictEqual(followers.body.findIndex(elem => elem.followerId === proxy.id), -1);
 		});
 
 		// 動作しない
