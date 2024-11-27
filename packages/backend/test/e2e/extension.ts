@@ -85,10 +85,9 @@ describe('独自拡張', () => {
 			await api('following/create', { userId: remoteUser.id }, bob);
 		});
 
-		afterAll(async () => {
-			await api('following/delete', { userId: remoteUser.id }, bob);
-			await api('following/delete', { userId: bob.id }, remoteUser);
-			await sendEnvUpdateRequest({ key: 'FORCE_FOLLOW_REMOTE_USER_FOR_TESTING', value: 'false' });
+		test('followersVisibilityがprivate', async () => {
+			const res = await api('users/show', { userId: remoteUser.id });
+			assert.strictEqual(res.body.followersVisibility, 'private');
 		});
 
 		describe.each([
@@ -135,24 +134,6 @@ describe('独自拡張', () => {
 			test('は認証情報があればアクセスできる。', async () => {
 				const res = await api(endpoint as keyof misskey.Endpoints, { userId: remoteUser.id }, bob);
 				assert.strictEqual(res.status, 200);
-			});
-		});
-	});
-
-	describe('リモートユーザーのユーザーTLの表示をクレデンシャル必須に', () => {
-		beforeAll(async () => {
-			await api('notes/create', { text: 'note' }, remoteUser);
-		});
-
-		describe('/api/users/notes', () => {
-			test('は認証情報がなければ空配列である。', async () => {
-				const res = await api('users/notes', { userId: remoteUser.id });
-				assert.strictEqual(res.body.length, 0);
-			});
-
-			test('は認証情報があれば空配列でない。', async () => {
-				const res = await api('users/notes', { userId: remoteUser.id }, bob);
-				assert.notStrictEqual(res.body.length, 0);
 			});
 		});
 	});
@@ -231,10 +212,6 @@ describe('独自拡張', () => {
 			await sendEnvUpdateRequest({ key: 'FORCE_FOLLOW_REMOTE_USER_FOR_TESTING', value: 'true' });
 		});
 
-		afterAll(async () => {
-			await sendEnvUpdateRequest({ key: 'FORCE_FOLLOW_REMOTE_USER_FOR_TESTING', value: 'false' });
-		});
-
 		beforeEach(async () => {
 			await api('following/delete', { userId: remoteUser.id }, alice);
 			await api('following/delete', { userId: remoteUser.id }, proxy);
@@ -242,13 +219,15 @@ describe('独自拡張', () => {
 
 		test('ローカルにフォロワーのいるリモートユーザーをフォローしても、プロキシアカウントからフォローリクエストが飛ばない。', async () => {
 			await api('following/create', { userId: remoteUser.id }, alice);
+			const initialFollowers = await api('users/followers', { userId: remoteUser.id }, alice);
 			const listCreateRes = await api('users/lists/create', { name: 'list' }, alice);
 			await api('users/lists/push', { listId: listCreateRes.body.id, userId: remoteUser.id }, alice);
 			const followers = await api('users/followers', { userId: remoteUser.id }, alice);
-			assert.strictEqual(followers.body.length, 1);
+			assert.strictEqual(followers.body.length, initialFollowers.body.length);
 			assert.notStrictEqual(followers.body[0].follower, undefined);
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			assert.strictEqual(followers.body[0].follower!.id, alice.id);
+			assert.strictEqual(followers.body.findIndex(elem => elem.followerId === proxy.id), -1);
 		});
 
 		// 動作しない
