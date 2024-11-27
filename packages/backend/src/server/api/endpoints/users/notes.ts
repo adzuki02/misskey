@@ -82,15 +82,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private fanoutTimelineEndpointService: FanoutTimelineEndpointService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			if (!me) {
-				const user = await this.cacheService.userByIdCache.fetchMaybe(
-					ps.userId,
-					() => this.usersRepository.findOneBy({ id: ps.userId }).then(x => x ?? undefined),
-				);
+			const user = await this.cacheService.userByIdCache.fetchMaybe(
+				ps.userId,
+				() => this.usersRepository.findOneBy({ id: ps.userId }).then(x => x ?? undefined),
+			);
 
-				if (user && user.host) {
-					return [];
-				}
+			if (user && user.host && !me) {
+				return [];
 			}
 
 			const untilId = ps.untilId ?? (ps.untilDate ? this.idService.gen(ps.untilDate!) : null);
