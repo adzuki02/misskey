@@ -219,13 +219,15 @@ describe('独自拡張', () => {
 
 		test('ローカルにフォロワーのいるリモートユーザーをフォローしても、プロキシアカウントからフォローリクエストが飛ばない。', async () => {
 			await api('following/create', { userId: remoteUser.id }, alice);
+			const initialFollowers = await api('users/followers', { userId: remoteUser.id }, alice);
 			const listCreateRes = await api('users/lists/create', { name: 'list' }, alice);
 			await api('users/lists/push', { listId: listCreateRes.body.id, userId: remoteUser.id }, alice);
 			const followers = await api('users/followers', { userId: remoteUser.id }, alice);
-			assert.strictEqual(followers.body.length, 1);
+			assert.strictEqual(followers.body.length, initialFollowers.body.length);
 			assert.notStrictEqual(followers.body[0].follower, undefined);
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			assert.strictEqual(followers.body[0].follower!.id, alice.id);
+			assert.strictEqual(followers.body.filter(elem => elem.follower?.id === proxy.id), undefined);
 		});
 
 		// 動作しない
