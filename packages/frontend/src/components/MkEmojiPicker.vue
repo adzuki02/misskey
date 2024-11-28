@@ -757,7 +757,7 @@ defineExpose({
 			> .tag {
 				color: var(--MI_THEME-fg);
 				background: var(--MI_THEME-buttonBg);
-				border: 1px solid var(--MI_THEME-buttonBg);
+				border: 1px solid var(--MI_THEME-divider);
 				border-radius: 5px;
 				padding-inline: 0.5em;
 				padding-block: 0.2rem;
@@ -777,8 +777,7 @@ defineExpose({
 					cursor: default;
 					background: linear-gradient(-45deg, transparent 0% 48%, var(--X6) 48% 52%, transparent 52% 100%);
 					filter: grayscale(1);
-					mix-blend-mode: exclusion;
-					opacity: 0.8;
+					opacity: 0.6;
 				}
 			}
 		}
