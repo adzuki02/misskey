@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
-import type { UserDetailed } from 'misskey-js/entities.js';
+import type { SignupResponse, SigninFlowResponse, UserDetailed } from 'misskey-js/entities.js';
 import FormSuspense from '@/components/form/suspense.vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
@@ -47,43 +47,37 @@ const init = async () => {
 	});
 };
 
-function menu(account, ev) {
-	os.popupMenu([
-		{
-			text: i18n.ts.switch,
-			icon: 'ti ti-switch-horizontal',
-			action: () => switchAccount(account),
-		},
-		{
-			text: i18n.ts.logout,
-			icon: 'ti ti-trash',
-			danger: true,
-			action: () => removeAccount(account),
-		},
-	], ev.currentTarget ?? ev.target);
+function menu(account: UserDetailed, ev: MouseEvent) {
+	os.popupMenu([{
+		text: i18n.ts.switch,
+		icon: 'ti ti-switch-horizontal',
+		action: () => switchAccount(account),
+	}, {
+		text: i18n.ts.logout,
+		icon: 'ti ti-trash',
+		danger: true,
+		action: () => removeAccount(account),
+	}], ev.currentTarget ?? ev.target);
 }
 
-function addAccount(ev) {
-	os.popupMenu([
-		{
-			text: i18n.ts.existingAccount,
-			action: () => { addExistingAccount(); },
-		},
-		{
-			text: i18n.ts.createAccount,
-			action: () => { createAccount(); },
-		},
-	], ev.currentTarget ?? ev.target);
+function addAccount(ev: MouseEvent) {
+	os.popupMenu([{
+		text: i18n.ts.existingAccount,
+		action: () => { addExistingAccount(); },
+	}, {
+		text: i18n.ts.createAccount,
+		action: () => { createAccount(); },
+	}], ev.currentTarget ?? ev.target);
 }
 
-async function removeAccount(account) {
+async function removeAccount(account: UserDetailed) {
 	await _removeAccount(account.id);
 	accounts.value = accounts.value.filter(x => x.id !== account.id);
 }
 
 function addExistingAccount() {
 	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkSigninDialog.vue')), {}, {
-		done: async res => {
+		done: async (res: SigninFlowResponse & { finished: true }) => {
 			await addAccounts(res.id, res.i);
 			os.success();
 			init();
@@ -94,17 +88,17 @@ function addExistingAccount() {
 
 function createAccount() {
 	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkSignupDialog.vue')), {}, {
-		done: async res => {
-			await addAccounts(res.id, res.i);
-			switchAccountWithToken(res.i);
+		done: async (res: SignupResponse) => {
+			await addAccounts(res.id, res.token);
+			switchAccountWithToken(res.token);
 		},
 		closed: () => dispose(),
 	});
 }
 
 async function switchAccount(account: any) {
-	const fetchedAccounts: any[] = await getAccounts();
-	const token = fetchedAccounts.find(x => x.id === account.id).token;
+	const fetchedAccounts = await getAccounts();
+	const token = fetchedAccounts.find(x => x.id === account.id)!.token;
 	switchAccountWithToken(token);
 }
 

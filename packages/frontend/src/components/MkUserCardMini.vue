@@ -68,8 +68,4 @@ $bodyInfoHieght: 16px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-
-.chart {
-	height: 30px;
-}
 </style>

@@ -1,12 +1,33 @@
 ## Unreleased
 
+### Note
+- ユーザーデータを読み込む際の型が一部変更されました。
+	- `twoFactorEnabled`, `usePasswordLessLogin`, `securityKeys`: 自分とモデレーター以外のユーザーからは取得できなくなりました
+
 ### General
+- Enhance: セキュリティ向上のため、サインイン時もCAPTCHAを求めるようになりました
+
+### Client
+- Enhance: デザインの調整
+- Enhance: ログイン画面の認証フローを改善
+- メールアドレス不要でCaptchaが有効な場合にアカウント登録完了後自動でのログインに失敗する問題を修正
+
+### Server
+- Enhance: セキュリティ向上のため、ログイン時にメール通知を行うように
+- Enhance: 自分とモデレーター以外のユーザーから二要素認証関連のデータが取得できないように
+
+
+## 2024.9.0
+
+### General
+- Feat: パスキーでログインボタンを実装 (#14574)
 - Feat: 連合をホワイトリスト制にできるように
 - Feat: モデレーターはユーザーにかかわらずファイルが添付されているノートを検索できるように  
   (Cherry-picked from https://github.com/MisskeyIO/misskey/pull/680)
 - Enhance: ユーザーによるコンテンツインポートの可否をロールポリシーで制御できるように
 - Enhance: 依存関係の更新
 - Enhance: l10nの更新
+- Feat: パスキーでログインボタンを実装 (#14574)
 
 ### Client
 - Enhance: サイズ制限を超過するファイルをアップロードしようとした際にエラーを出すように

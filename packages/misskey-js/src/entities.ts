@@ -6,6 +6,7 @@ import {
 	RolePolicies,
 	User,
 } from './autogen/models.js';
+import type { AuthenticationResponseJSON, PublicKeyCredentialRequestOptionsJSON } from '@simplewebauthn/types';
 
 export * from './autogen/entities.js';
 export * from './autogen/models.js';
@@ -71,6 +72,7 @@ export type SignupRequest = {
 	'hcaptcha-response'?: string | null;
 	'g-recaptcha-response'?: string | null;
 	'turnstile-response'?: string | null;
+	'm-captcha-response'?: string | null;
 }
 
 export type SignupResponse = MeDetailed & {
@@ -86,15 +88,42 @@ export type SignupPendingResponse = {
 	i: string,
 };
 
-export type SigninRequest = {
+export type SigninFlowRequest = {
 	username: string;
-	password: string;
+	password?: string;
 	token?: string;
+	credential?: AuthenticationResponseJSON;
+	'hcaptcha-response'?: string | null;
+	'g-recaptcha-response'?: string | null;
+	'turnstile-response'?: string | null;
+	'm-captcha-response'?: string | null;
 };
 
-export type SigninResponse = {
-	id: User['id'],
-	i: string,
+export type SigninFlowResponse = {
+	finished: true;
+	id: User['id'];
+	i: string;
+} | {
+	finished: false;
+	next: 'captcha' | 'password' | 'totp';
+} | {
+	finished: false;
+	next: 'passkey';
+	authRequest: PublicKeyCredentialRequestOptionsJSON;
+};
+
+export type SigninWithPasskeyRequest = {
+	credential?: AuthenticationResponseJSON;
+	context?: string;
+};
+
+export type SigninWithPasskeyInitResponse = {
+	option: PublicKeyCredentialRequestOptionsJSON;
+	context: string;
+};
+
+export type SigninWithPasskeyResponse = {
+	signinResponse: SigninFlowResponse & { finished: true };
 };
 
 type Values<T extends Record<PropertyKey, unknown>> = T[keyof T];

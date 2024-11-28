@@ -80,9 +80,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import { toUnicode } from 'punycode/';
-import type { SigninResponse } from 'misskey-js/entities.js';
 import MkButton from './MkButton.vue';
 import MkInput from './MkInput.vue';
+import type { SignupRequest, SignupResponse } from 'misskey-js/entities.js';
 import MkCaptcha, { type Captcha } from '@/components/MkCaptcha.vue';
 import * as config from '@/config.js';
 import * as os from '@/os.js';
@@ -98,13 +98,14 @@ const props = withDefaults(defineProps<{
 });
 
 const emit = defineEmits<{
-	(ev: 'signup', user: SigninResponse): void;
+	(ev: 'signup', user: SignupResponse): void;
 	(ev: 'signupEmailPending'): void;
 }>();
 
 const host = toUnicode(config.host);
 
 const hcaptcha = ref<Captcha | undefined>();
+const mcaptcha = ref<Captcha | undefined>();
 const recaptcha = ref<Captcha | undefined>();
 const turnstile = ref<Captcha | undefined>();
 
@@ -249,18 +250,30 @@ async function onSubmit(): Promise<void> {
 	if (submitting.value) return;
 	submitting.value = true;
 
-	try {
-		await misskeyApi('signup', {
-			username: username.value,
-			password: password.value,
-			emailAddress: email.value,
-			invitationCode: invitationCode.value,
-			'hcaptcha-response': hCaptchaResponse.value,
-			'm-captcha-response': mCaptchaResponse.value,
-			'g-recaptcha-response': reCaptchaResponse.value,
-			'turnstile-response': turnstileResponse.value,
-		});
-		if (instance.emailRequiredForSignup) {
+	const signupPayload: SignupRequest = {
+		username: username.value,
+		password: password.value,
+		emailAddress: email.value,
+		invitationCode: invitationCode.value,
+		'hcaptcha-response': hCaptchaResponse.value,
+		'm-captcha-response': mCaptchaResponse.value,
+		'g-recaptcha-response': reCaptchaResponse.value,
+		'turnstile-response': turnstileResponse.value,
+	};
+
+	const res = await fetch(`${config.apiUrl}/signup`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(signupPayload),
+	}).catch(() => {
+		onSignupApiError();
+		return null;
+	});
+
+	if (res) {
+		if (res.status === 204 || instance.emailRequiredForSignup) {
 			os.alert({
 				type: 'success',
 				title: i18n.ts._signup.almostThere,
@@ -268,27 +281,31 @@ async function onSubmit(): Promise<void> {
 			});
 			emit('signupEmailPending');
 		} else {
-			const res = await misskeyApi('signin', {
-				username: username.value,
-				password: password.value,
-			});
-			emit('signup', res);
+			const resJson = (await res.json()) as SignupResponse;
+			if (_DEV_) console.log(resJson);
+
+			emit('signup', resJson);
 
 			if (props.autoSet) {
-				return login(res.i);
+				await login(resJson.token);
 			}
 		}
-	} catch {
-		submitting.value = false;
-		hcaptcha.value?.reset?.();
-		recaptcha.value?.reset?.();
-		turnstile.value?.reset?.();
-
-		os.alert({
-			type: 'error',
-			text: i18n.ts.somethingHappened,
-		});
 	}
+
+	submitting.value = false;
+}
+
+function onSignupApiError() {
+	submitting.value = false;
+	hcaptcha.value?.reset?.();
+	mcaptcha.value?.reset?.();
+	recaptcha.value?.reset?.();
+	turnstile.value?.reset?.();
+
+	os.alert({
+		type: 'error',
+		text: i18n.ts.somethingHappened,
+	});
 }
 </script>
 

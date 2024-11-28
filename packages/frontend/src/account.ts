@@ -4,7 +4,7 @@
  */
 
 import { defineAsyncComponent, reactive, ref } from 'vue';
-import type { MeDetailed, UserDetailed } from 'misskey-js/entities.js';
+import type { SignupResponse, SigninFlowResponse, MeDetailed, UserDetailed } from 'misskey-js/entities.js';
 import { showSuspendedDialog } from '@/scripts/show-suspended-dialog.js';
 import { i18n } from '@/i18n.js';
 import { miLocalStorage } from '@/local-storage.js';
@@ -225,7 +225,7 @@ export async function openAccountMenu(opts: {
 
 	function showSigninDialog() {
 		const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkSigninDialog.vue')), {}, {
-			done: res => {
+			done: (res: SigninFlowResponse & { finished: true }) => {
 				addAccount(res.id, res.i);
 				success();
 			},
@@ -235,9 +235,9 @@ export async function openAccountMenu(opts: {
 
 	function createAccount() {
 		const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkSignupDialog.vue')), {}, {
-			done: res => {
-				addAccount(res.id, res.i);
-				switchAccountWithToken(res.i);
+			done: (res: SignupResponse) => {
+				addAccount(res.id, res.token);
+				switchAccountWithToken(res.token);
 			},
 			closed: () => dispose(),
 		});

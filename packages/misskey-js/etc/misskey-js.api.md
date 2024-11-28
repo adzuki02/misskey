@@ -4,7 +4,9 @@
 
 ```ts
 
+import type { AuthenticationResponseJSON } from '@simplewebauthn/types';
 import { EventEmitter } from 'eventemitter3';
+import type { PublicKeyCredentialRequestOptionsJSON } from '@simplewebauthn/types';
 
 // @public (undocumented)
 export type Acct = {
@@ -935,9 +937,25 @@ export type Endpoints = Overwrite<Endpoints_2, {
         req: SignupPendingRequest;
         res: SignupPendingResponse;
     };
-    'signin': {
-        req: SigninRequest;
-        res: SigninResponse;
+    'signin-flow': {
+        req: SigninFlowRequest;
+        res: SigninFlowResponse;
+    };
+    'signin-with-passkey': {
+        req: SigninWithPasskeyRequest;
+        res: {
+            $switch: {
+                $cases: [
+                [
+                    {
+                    context: string;
+                },
+                SigninWithPasskeyResponse
+                ]
+                ];
+                $default: SigninWithPasskeyInitResponse;
+            };
+        };
     };
     'admin/roles/create': {
         req: Overwrite<AdminRolesCreateRequest, {
@@ -966,8 +984,11 @@ declare namespace entities {
         SignupResponse,
         SignupPendingRequest,
         SignupPendingResponse,
-        SigninRequest,
-        SigninResponse,
+        SigninFlowRequest,
+        SigninFlowResponse,
+        SigninWithPasskeyRequest,
+        SigninWithPasskeyInitResponse,
+        SigninWithPasskeyResponse,
         PartialRolePolicyOverride,
         EmptyRequest,
         EmptyResponse,
@@ -2213,16 +2234,48 @@ type ServerStatsLog = ServerStats[];
 type Signin = components['schemas']['Signin'];
 
 // @public (undocumented)
-type SigninRequest = {
+type SigninFlowRequest = {
     username: string;
-    password: string;
+    password?: string;
     token?: string;
+    credential?: AuthenticationResponseJSON;
+    'hcaptcha-response'?: string | null;
+    'g-recaptcha-response'?: string | null;
+    'turnstile-response'?: string | null;
+    'm-captcha-response'?: string | null;
 };
 
 // @public (undocumented)
-type SigninResponse = {
+type SigninFlowResponse = {
+    finished: true;
     id: User['id'];
     i: string;
+} | {
+    finished: false;
+    next: 'captcha' | 'password' | 'totp';
+} | {
+    finished: false;
+    next: 'passkey';
+    authRequest: PublicKeyCredentialRequestOptionsJSON;
+};
+
+// @public (undocumented)
+type SigninWithPasskeyInitResponse = {
+    option: PublicKeyCredentialRequestOptionsJSON;
+    context: string;
+};
+
+// @public (undocumented)
+type SigninWithPasskeyRequest = {
+    credential?: AuthenticationResponseJSON;
+    context?: string;
+};
+
+// @public (undocumented)
+type SigninWithPasskeyResponse = {
+    signinResponse: SigninFlowResponse & {
+        finished: true;
+    };
 };
 
 // @public (undocumented)
@@ -2246,6 +2299,7 @@ type SignupRequest = {
     'hcaptcha-response'?: string | null;
     'g-recaptcha-response'?: string | null;
     'turnstile-response'?: string | null;
+    'm-captcha-response'?: string | null;
 };
 
 // @public (undocumented)
