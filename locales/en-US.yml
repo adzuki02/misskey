@@ -2435,7 +2435,6 @@ _notification:
     login: "Sign In"
     test: "Notification test"
     app: "Notifications from linked apps"
-    test: "Test"
   _actions:
     followBack: "followed you back"
     reply: "Reply"
