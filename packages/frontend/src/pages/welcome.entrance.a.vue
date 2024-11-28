@@ -48,7 +48,7 @@ import { instance as meta } from '@/instance.js';
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		background: var(--accent);
+		background: var(--MI_THEME-accent);
 		clip-path: polygon(0% 0%, 45% 0%, 20% 100%, 0% 100%);
 	}
 	> .shape2 {
@@ -57,7 +57,7 @@ import { instance as meta } from '@/instance.js';
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		background: var(--accent);
+		background: var(--MI_THEME-accent);
 		clip-path: polygon(0% 0%, 25% 0%, 35% 100%, 0% 100%);
 		opacity: 0.5;
 	}

@@ -123,7 +123,7 @@ function choose(visibility: typeof noteVisibilities[number]): void {
 	}
 
 	&.active {
-		color: var(--accent);
+		color: var(--MI_THEME-accent);
 	}
 }
 

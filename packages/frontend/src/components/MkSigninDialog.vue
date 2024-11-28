@@ -69,8 +69,8 @@ function onLogin(res: Misskey.entities.SigninFlowResponse & { finished: true }) 
 	height: 100%;
 	max-height: 450px;
 	box-sizing: border-box;
-	background: var(--panel);
-	border-radius: var(--radius);
+	background: var(--MI_THEME-panel);
+	border-radius: var(--MI-radius);
 }
 
 .header {
@@ -83,8 +83,8 @@ function onLogin(res: Misskey.entities.SigninFlowResponse & { finished: true }) 
 	display: flex;
 	align-items: center;
 	font-weight: bold;
-	backdrop-filter: var(--blur, blur(15px));
-	background: var(--acrylicBg);
+	backdrop-filter: var(--MI-blur, blur(15px));
+	background: var(--MI_THEME-acrylicBg);
 	z-index: 1;
 }
 

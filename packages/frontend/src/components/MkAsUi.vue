@@ -142,7 +142,7 @@ function openPostForm() {
 }
 
 .postForm {
-	background: var(--bg);
+	background: var(--MI_THEME-bg);
 	border-radius: 8px;
 }
 </style>

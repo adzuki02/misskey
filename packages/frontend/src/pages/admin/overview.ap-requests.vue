@@ -275,7 +275,7 @@ onMounted(async () => {
 				padding: 16px;
 
 				&:first-child {
-					border-bottom: solid 0.5px var(--divider);
+					border-bottom: solid 0.5px var(--MI_THEME-divider);
 				}
 			}
 		}

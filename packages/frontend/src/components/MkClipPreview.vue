@@ -43,13 +43,13 @@ const props = withDefaults(defineProps<{
 		outline: none;
 
 		.root {
-			box-shadow: inset 0 0 0 2px var(--focus);
+			box-shadow: inset 0 0 0 2px var(--MI_THEME-focus);
 		}
 	}
 
 	&:hover {
 		text-decoration: none;
-		color: var(--accent);
+		color: var(--MI_THEME-accent);
 	}
 }
 
@@ -59,7 +59,7 @@ const props = withDefaults(defineProps<{
 
 .divider {
 	height: 1px;
-	background: var(--divider);
+	background: var(--MI_THEME-divider);
 }
 
 .description {

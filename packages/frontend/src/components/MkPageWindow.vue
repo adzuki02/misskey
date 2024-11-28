@@ -171,8 +171,8 @@ defineExpose({
 	overscroll-behavior: contain;
 
 	min-height: 100%;
-	background: var(--bg);
+	background: var(--MI_THEME-bg);
 
-	--margin: var(--marginHalf);
+	--MI-margin: var(--MI-marginHalf);
 }
 </style>

@@ -659,7 +659,7 @@ defineExpose({
 
 						&:disabled {
 							cursor: not-allowed;
-							background: linear-gradient(-45deg, transparent 0% 48%, var(--X6) 48% 52%, transparent 52% 100%);
+							background: linear-gradient(-45deg, transparent 0% 48%, var(--MI_THEME-X6) 48% 52%, transparent 52% 100%);
 							opacity: 1;
 
 							> .emoji {
@@ -694,7 +694,7 @@ defineExpose({
 
 						&:disabled {
 							cursor: not-allowed;
-							background: linear-gradient(-45deg, transparent 0% 48%, var(--X6) 48% 52%, transparent 52% 100%);
+							background: linear-gradient(-45deg, transparent 0% 48%, var(--MI_THEME-X6) 48% 52%, transparent 52% 100%);
 							opacity: 1;
 
 							> .emoji {
@@ -717,7 +717,7 @@ defineExpose({
 		outline: none;
 		border: none;
 		background: transparent;
-		color: var(--fg);
+		color: var(--MI_THEME-fg);
 
 		&:not(:focus):not(.filled) {
 			margin-bottom: env(safe-area-inset-bottom, 0px);
@@ -726,7 +726,7 @@ defineExpose({
 		&:not(.filled) {
 			order: 1;
 			z-index: 2;
-			box-shadow: 0px -1px 0 0px var(--divider);
+			box-shadow: 0px -1px 0 0px var(--MI_THEME-divider);
 		}
 	}
 
@@ -755,9 +755,9 @@ defineExpose({
 			}
 
 			> .tag {
-				color: var(--fg);
-				background: var(--buttonBg);
-				border: 1px solid var(--buttonBg);
+				color: var(--MI_THEME-fg);
+				background: var(--MI_THEME-buttonBg);
+				border: 1px solid var(--MI_THEME-buttonBg);
 				border-radius: 5px;
 				padding-inline: 0.5em;
 				padding-block: 0.2rem;
@@ -770,7 +770,7 @@ defineExpose({
 				}
 
 				&.selected {
-					border-color: var(--accent);
+					border-color: var(--MI_THEME-accent);
 				}
 
 				&:disabled {
@@ -786,7 +786,7 @@ defineExpose({
 		> .group {
 			&:not(.index) {
 				padding: 4px 0 8px 0;
-				border-top: solid 0.5px var(--divider);
+				border-top: solid 0.5px var(--MI_THEME-divider);
 			}
 
 			> header {
@@ -813,7 +813,7 @@ defineExpose({
 				cursor: pointer;
 
 				&:hover {
-					color: var(--accent);
+					color: var(--MI_THEME-accent);
 				}
 			}
 
@@ -835,13 +835,13 @@ defineExpose({
 					}
 
 					&:active {
-						background: var(--accent);
+						background: var(--MI_THEME-accent);
 						box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15);
 					}
 
 					&:disabled {
 						cursor: not-allowed;
-						background: linear-gradient(-45deg, transparent 0% 48%, var(--X6) 48% 52%, transparent 52% 100%);
+						background: linear-gradient(-45deg, transparent 0% 48%, var(--MI_THEME-X6) 48% 52%, transparent 52% 100%);
 						opacity: 1;
 
 						> .emoji {
@@ -862,7 +862,7 @@ defineExpose({
 			}
 
 			&.result {
-				border-bottom: solid 0.5px var(--divider);
+				border-bottom: solid 0.5px var(--MI_THEME-divider);
 
 				&:empty {
 					display: none;

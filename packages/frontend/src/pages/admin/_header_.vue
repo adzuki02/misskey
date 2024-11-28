@@ -140,8 +140,8 @@ onMounted(() => {
 	--height: 60px;
 	display: flex;
 	width: 100%;
-	-webkit-backdrop-filter: var(--blur, blur(15px));
-	backdrop-filter: var(--blur, blur(15px));
+	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
+	backdrop-filter: var(--MI-blur, blur(15px));
 
 	> .buttons {
 		--margin: 8px;
@@ -266,7 +266,7 @@ onMounted(() => {
 			position: absolute;
 			bottom: 0;
 			height: 3px;
-			background: var(--accent);
+			background: var(--MI_THEME-accent);
 			border-radius: 999px;
 			transition: all 0.2s ease;
 			pointer-events: none;
