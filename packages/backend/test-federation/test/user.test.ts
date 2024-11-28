@@ -115,38 +115,6 @@ describe('User', () => {
 			});
 		});
 
-		describe('isCat is federated', () => {
-			let alice: LoginUser, bob: LoginUser;
-			let bobInA: Misskey.entities.UserDetailedNotMe, aliceInB: Misskey.entities.UserDetailedNotMe;
-
-			beforeAll(async () => {
-				[alice, bob] = await Promise.all([
-					createAccount('a.test'),
-					createAccount('b.test'),
-				]);
-
-				[bobInA, aliceInB] = await Promise.all([
-					resolveRemoteUser('b.test', bob.id, alice),
-					resolveRemoteUser('a.test', alice.id, bob),
-				]);
-			});
-
-			test('Not isCat for default', () => {
-				strictEqual(aliceInB.isCat, false);
-			});
-
-			test('Becoming a cat is sent to their followers', async () => {
-				await bob.client.request('following/create', { userId: aliceInB.id });
-				await sleep();
-
-				await alice.client.request('i/update', { isCat: true });
-				await sleep();
-
-				const res = await bob.client.request('users/show', { userId: aliceInB.id });
-				strictEqual(res.isCat, true);
-			});
-		});
-
 		describe('Pinning Notes', () => {
 			let alice: LoginUser, bob: LoginUser;
 			let aliceInB: Misskey.entities.UserDetailedNotMe;

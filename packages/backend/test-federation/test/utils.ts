@@ -3,6 +3,7 @@ import { readFile } from 'fs/promises';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import * as Misskey from 'misskey-js';
+import type { NoteUpdatedEvent } from 'misskey-js/streaming.types.js';
 import { WebSocket } from 'ws';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -263,7 +264,7 @@ export async function isNoteUpdatedEventFired(
 	user: { i: string },
 	noteId: string,
 	trigger: () => Promise<unknown>,
-	cond: (msg: Parameters<Misskey.StreamEvents['noteUpdated']>[0]) => boolean,
+	cond: (msg: NoteUpdatedEvent) => boolean,
 ): Promise<boolean> {
 	return new Promise<boolean>(async (resolve, reject) => {
 		// @ts-expect-error TODO: why?

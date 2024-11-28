@@ -1,6 +1,7 @@
 import { strictEqual } from 'assert';
 import * as Misskey from 'misskey-js';
 import { createAccount, fetchAdmin, isNoteUpdatedEventFired, isFired, type LoginUser, type Request, resolveRemoteUser, sleep, createRole } from './utils.js';
+import type { NoteUpdatedEvent } from 'misskey-js/streaming.types.js';
 
 const bAdmin = await fetchAdmin('b.test');
 
@@ -73,7 +74,7 @@ describe('Timeline', () => {
 			const streamingFired = await isNoteUpdatedEventFired(
 				'b.test', bob, noteInB!.id,
 				async () => await alice.client.request('notes/delete', { noteId: note!.id }),
-				msg => msg.type === 'deleted' && msg.id === noteInB!.id,
+				(msg: NoteUpdatedEvent) => msg.type === 'deleted' && msg.id === noteInB!.id,
 			);
 			strictEqual(streamingFired, true);
 
