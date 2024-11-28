@@ -37,6 +37,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFolder>
 
 			<MkFolder>
+				<template #icon><i class="ti ti-flask"></i></template>
+				<template #label>{{ i18n.ts.experimentalFeatures }}</template>
+
+				<div class="_gaps_m">
+					<MkSwitch v-model="skipNoteRender">
+						<template #label>Enable note render skipping</template>
+					</MkSwitch>
+				</div>
+			</MkFolder>
+
+			<MkFolder>
 				<template #icon><i class="ti ti-code"></i></template>
 				<template #label>{{ i18n.ts.developer }}</template>
 
@@ -82,8 +93,13 @@ import FormSection from '@/components/form/section.vue';
 
 const $i = signinRequired();
 
+const skipNoteRender = computed(defaultStore.makeGetterSetter('skipNoteRender'));
 const devMode = computed(defaultStore.makeGetterSetter('devMode'));
 const defaultWithReplies = computed(defaultStore.makeGetterSetter('defaultWithReplies'));
+
+watch(skipNoteRender, async () => {
+	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+});
 
 async function deleteAccount() {
 	{
