@@ -191,6 +191,8 @@ async function onPasswordSubmitted(pw: PwResponse) {
 			'm-captcha-response': pw.captcha.mCaptchaResponse,
 			'g-recaptcha-response': pw.captcha.reCaptchaResponse,
 			'turnstile-response': pw.captcha.turnstileResponse,
+			// @ts-expect-error testCaptchaの型はmisskey-jsにない
+			'testcaptcha-response': pw.captcha.testcaptchaResponse,
 		});
 	}
 }

@@ -16,6 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template v-else-if="enableMcaptcha" #suffix>mCaptcha</template>
 					<template v-else-if="enableRecaptcha" #suffix>reCAPTCHA</template>
 					<template v-else-if="enableTurnstile" #suffix>Turnstile</template>
+					<template v-else-if="enableTestcaptcha" #suffix>testCaptcha</template>
 					<template v-else #suffix>{{ i18n.ts.none }} ({{ i18n.ts.notRecommended }})</template>
 
 					<XBotProtection/>
@@ -147,6 +148,7 @@ const enableHcaptcha = ref<boolean>(false);
 const enableMcaptcha = ref<boolean>(false);
 const enableRecaptcha = ref<boolean>(false);
 const enableTurnstile = ref<boolean>(false);
+const enableTestcaptcha = ref<boolean>(false);
 const sensitiveMediaDetection = ref<AdminUpdateMetaRequest['sensitiveMediaDetection']>('none');
 const sensitiveMediaDetectionSensitivity = ref<0 | 1 | 2 | 3 | 4>(0);
 const setSensitiveFlagAutomatically = ref<boolean>(false);
@@ -166,6 +168,7 @@ async function init() {
 	enableMcaptcha.value = meta.enableMcaptcha;
 	enableRecaptcha.value = meta.enableRecaptcha;
 	enableTurnstile.value = meta.enableTurnstile;
+	enableTestcaptcha.value = meta.enableTestcaptcha;
 	sensitiveMediaDetection.value = meta.sensitiveMediaDetection;
 	sensitiveMediaDetectionSensitivity.value =
 		meta.sensitiveMediaDetectionSensitivity === 'veryLow' ? 0 :
