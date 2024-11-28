@@ -194,7 +194,11 @@ export function getNoteMenu(props: {
 	function togglePin(pin: boolean): void {
 		os.apiWithDialog(pin ? 'i/pin' : 'i/unpin', {
 			noteId: appearNote.id,
-		}, undefined);
+		}, undefined, {
+			'72dab508-c64d-498f-8740-a8eec1ba385a': {
+				text: i18n.ts.pinLimitExceeded,
+			},
+		});
 	}
 
 	async function unclip(): Promise<void> {
