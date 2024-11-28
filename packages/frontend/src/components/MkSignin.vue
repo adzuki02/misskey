@@ -65,10 +65,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, ref, shallowRef, useTemplateRef } from 'vue';
-import * as Misskey from 'misskey-js';
-import { supported as webAuthnSupported, parseRequestOptionsFromJSON } from '@github/webauthn-json/browser-ponyfill';
+import { supported as webAuthnSupported, parseRequestOptionsFromJSON, type AuthenticationPublicKeyCredential } from '@github/webauthn-json/browser-ponyfill';
+import type { SigninFlowRequest, SigninFlowResponse, SigninWithPasskeyResponse, UserDetailed } from 'misskey-js/entities.js';
 
-import type { AuthenticationPublicKeyCredential } from '@github/webauthn-json/browser-ponyfill';
 import type { OpenOnRemoteOptions } from '@/scripts/please-login.js';
 
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -83,7 +82,7 @@ import XTotp from '@/components/MkSignin.totp.vue';
 import XPasskey from '@/components/MkSignin.passkey.vue';
 
 const emit = defineEmits<{
-	(ev: 'login', v: Misskey.entities.SigninFlowResponse): void;
+	(ev: 'login', v: SigninFlowResponse): void;
 }>();
 
 const props = withDefaults(defineProps<{
@@ -102,7 +101,7 @@ const waiting = ref(false);
 const passwordPageEl = useTemplateRef('passwordPageEl');
 const needCaptcha = ref(false);
 
-const userInfo = ref<null | Misskey.entities.UserDetailed>(null);
+const userInfo = ref<null | UserDetailed>(null);
 const password = ref('');
 
 //#region Passkey Passwordless
@@ -116,7 +115,6 @@ function onPasskeyLogin(): void {
 		waiting.value = true;
 		misskeyApi('signin-with-passkey', {})
 			.then((res) => {
-				// @ts-expect-error 後でなんとかする
 				passkeyContext.value = res.context ?? '';
 				credentialRequest.value = parseRequestOptionsFromJSON({
 					// @ts-expect-error 後でなんとかする
@@ -138,7 +136,8 @@ function onPasskeyDone(credential: AuthenticationPublicKeyCredential): void {
 			// @ts-expect-error 後でなんとかする
 			credential: credential.toJSON(),
 			context: passkeyContext.value,
-		}).then((res) => {
+		}).then((_res) => {
+			const res = _res as unknown as SigninWithPasskeyResponse;
 			if (res.signinResponse == null) {
 				onSigninApiError();
 				return;
@@ -216,13 +215,13 @@ async function onTotpSubmitted(token: string) {
 	}
 }
 
-async function tryLogin(req: Partial<Misskey.entities.SigninFlowRequest>): Promise<Misskey.entities.SigninFlowResponse> {
+async function tryLogin(req: Partial<SigninFlowRequest>): Promise<SigninFlowResponse> {
 	const _req = {
 		username: req.username ?? userInfo.value?.username,
 		...req,
 	};
 
-	function assertIsSigninFlowRequest(x: Partial<Misskey.entities.SigninFlowRequest>): x is Misskey.entities.SigninFlowRequest {
+	function assertIsSigninFlowRequest(x: Partial<SigninFlowRequest>): x is SigninFlowRequest {
 		return x.username != null;
 	}
 
@@ -281,7 +280,7 @@ async function tryLogin(req: Partial<Misskey.entities.SigninFlowRequest>): Promi
 	});
 }
 
-async function onLoginSucceeded(res: Misskey.entities.SigninFlowResponse & { finished: true; }) {
+async function onLoginSucceeded(res: SigninFlowResponse & { finished: true; }) {
 	if (props.autoSet) {
 		await login(res.i);
 	}

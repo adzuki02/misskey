@@ -2266,12 +2266,6 @@ type SigninWithPasskeyInitResponse = {
 };
 
 // @public (undocumented)
-type SigninWithPasskeyInitResponse = {
-    option: PublicKeyCredentialRequestOptionsJSON;
-    context: string;
-};
-
-// @public (undocumented)
 type SigninWithPasskeyRequest = {
     credential?: AuthenticationResponseJSON;
     context?: string;
