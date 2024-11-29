@@ -748,6 +748,7 @@ defineExpose({
 			border-bottom: solid 0.5px var(--MI_THEME-divider);
 			display: flex;
 			flex-wrap: wrap;
+			gap: 6px;
 
 			&.oneline {
 				flex-wrap: nowrap;
@@ -761,8 +762,6 @@ defineExpose({
 				border-radius: 5px;
 				padding-inline: 0.5em;
 				padding-block: 0.2rem;
-				margin-inline: 4px;
-				margin-block: 4px;
 				white-space: nowrap;
 
 				&:hover {
