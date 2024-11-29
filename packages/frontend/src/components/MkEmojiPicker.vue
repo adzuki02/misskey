@@ -745,7 +745,7 @@ defineExpose({
 			width: 100%;
 			padding: 12px;
 			box-sizing: border-box;
-			border-bottom: solid 0.5px var(--divider);
+			border-bottom: solid 0.5px var(--MI_THEME-divider);
 			display: flex;
 			flex-wrap: wrap;
 
