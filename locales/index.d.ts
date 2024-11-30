@@ -559,6 +559,10 @@ export interface Locale extends ILocale {
      */
     "emojiPickerTags": string;
     /**
+     * ラベルに絵文字を使用する場合、一つしか含めることはできず、他の文字列を含めることもできません。
+     */
+    "emojiPickerTagsDescription": string;
+    /**
      * リアクション設定から上書きする
      */
     "overwriteFromPinnedEmojisForReaction": string;

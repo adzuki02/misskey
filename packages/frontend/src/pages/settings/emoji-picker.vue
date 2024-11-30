@@ -156,7 +156,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<button v-if="pinnedTagPairsEditMode" class="_button" :class="$style.dragItemRemove" @click="deleteTagPair(index)"><i class="ti ti-x"></i></button>
 								<div :class="$style.dragItemForm">
 									<FormSplit :minWidth="200">
-										<MkInput v-model="element.name" small>
+										<MkInput v-model="element.name" :mfmAutocomplete="['emoji']" small>
 											<template #label>{{ i18n.ts._profile.metadataLabel }}</template>
 										</MkInput>
 										<MkSelect v-model="element.tag" small>
@@ -168,6 +168,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</div>
 						</template>
 					</Sortable>
+
+					<div :class="$style.tagPairsCaption">{{ i18n.ts.emojiPickerTagsDescription }}</div>
 				</div>
 			</MkFolder>
 		</div>
@@ -358,6 +360,12 @@ definePageMetadata(() => ({
 
 .tagPairsMargin {
 	margin-bottom: 1.5em;
+}
+
+.tagPairsCaption {
+	font-size: 0.85em;
+	padding: 8px 0 0 0;
+	color: var(--MI_THEME-fgTransparentWeak);
 }
 
 .tagPairsDragItem {
