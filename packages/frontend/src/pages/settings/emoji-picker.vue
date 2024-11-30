@@ -133,31 +133,43 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #icon><i class="ti ti-pin"></i></template>
 				<template #label>{{ i18n.ts.emojiPickerTags }}</template>
 
-				<div class="_gaps">
-					<div>
-						<div v-panel style="border-radius: 6px;">
-							<Sortable
-								v-model="pinnedTags"
-								:class="$style.tags"
-								:itemKey="item => item"
-								:animation="150"
-								:delay="100"
-								:delayOnTouchOnly="true"
-							>
-								<template #item="{element}">
-									<button class="_button" :class="$style.tagItem" @click="removeTag(element, $event)">
-										{{ element }}
-									</button>
-								</template>
-								<template #footer>
-									<button class="_button" :class="$style.tagsAdd" @click="chooseTag">
-										<i class="ti ti-plus"></i>
-									</button>
-								</template>
-							</Sortable>
-						</div>
-						<div :class="$style.editorCaption">{{ i18n.ts.reactionSettingDescription2 }}</div>
+				<div :class="$style.tagPairsRoot">
+					<div :class="$style.tagPairsMargin">
+						<MkButton inline style="margin-right: 8px;" @click="addPinnedTagPair"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
+						<MkButton v-if="!pinnedTagPairsEditMode" inline danger style="margin-right: 8px;" @click="pinnedTagPairsEditMode = !pinnedTagPairsEditMode"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
+						<MkButton v-else inline style="margin-right: 8px;" @click="pinnedTagPairsEditMode = !pinnedTagPairsEditMode"><i class="ti ti-arrows-sort"></i> {{ i18n.ts.rearrange }}</MkButton>
+						<MkButton inline primary @click="savePinnedTagPairs"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
 					</div>
+
+					<Sortable
+						v-model="pinnedTagPairs"
+						class="_gaps_s"
+						itemKey="id"
+						:animation="150"
+						:handle="'.' + $style.dragItemHandle"
+						@start="e => e.item.classList.add('active')"
+						@end="e => e.item.classList.remove('active')"
+					>
+						<template #item="{element, index}">
+							<div :class="$style.tagPairsDragItem">
+								<button v-if="!pinnedTagPairsEditMode" class="_button" :class="$style.dragItemHandle" tabindex="-1"><i class="ti ti-menu"></i></button>
+								<button v-if="pinnedTagPairsEditMode" class="_button" :class="$style.dragItemRemove" @click="deleteTagPair(index)"><i class="ti ti-x"></i></button>
+								<div :class="$style.dragItemForm">
+									<FormSplit :minWidth="200">
+										<MkInput v-model="element.name" :mfmAutocomplete="['emoji']" small>
+											<template #label>{{ i18n.ts._profile.metadataLabel }}</template>
+										</MkInput>
+										<MkSelect v-model="element.tag" small>
+											<template #label>{{ i18n.ts.tags }}</template>
+											<option v-for="x in customEmojiTags" :key="x" :value="x">{{ x }}</option>
+										</MkSelect>
+									</FormSplit>
+								</div>
+							</div>
+						</template>
+					</Sortable>
+
+					<div :class="$style.tagPairsCaption">{{ i18n.ts.emojiPickerTagsDescription }}</div>
 				</div>
 			</MkFolder>
 		</div>
@@ -170,8 +182,10 @@ import { computed, ref, type Ref, watch } from 'vue';
 import Sortable from 'vuedraggable';
 import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
+import MkInput from '@/components/MkInput.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import FormSection from '@/components/form/section.vue';
+import FormSplit from '@/components/form/split.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import * as os from '@/os.js';
 import { defaultStore } from '@/store.js';
@@ -180,13 +194,15 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { deepClone } from '@/scripts/clone.js';
 import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { emojiPicker } from '@/scripts/emoji-picker.js';
+import { customEmojiTags } from '@/custom-emojis';
 import MkCustomEmoji from '@/components/global/MkCustomEmoji.vue';
 import MkEmoji from '@/components/global/MkEmoji.vue';
 import MkFolder from '@/components/MkFolder.vue';
 
 const pinnedEmojisForReaction: Ref<string[]> = ref(deepClone(defaultStore.state.reactions));
 const pinnedEmojis: Ref<string[]> = ref(deepClone(defaultStore.state.pinnedEmojis));
-const pinnedTags: Ref<string[]> = ref(deepClone(defaultStore.state.emojiPickerTags));
+const pinnedTagPairs: Ref<({ name: string, tag: string })[]> = ref(Object.entries(defaultStore.state.emojiPickerTagPairs).map(([name, tag]) => ({ name, tag })));
+const pinnedTagPairsEditMode = ref(false);
 
 const emojiPickerScale = computed(defaultStore.makeGetterSetter('emojiPickerScale'));
 const emojiPickerWidth = computed(defaultStore.makeGetterSetter('emojiPickerWidth'));
@@ -203,16 +219,23 @@ const removeEmoji = (reaction: string, ev: MouseEvent) => remove(pinnedEmojis, r
 const chooseEmoji = (ev: MouseEvent) => pickEmoji(pinnedEmojis, ev);
 const setDefaultEmoji = () => setDefault(pinnedEmojis);
 
-const removeTag = (tag: string, ev: MouseEvent) => remove(pinnedTags, tag, ev);
-const chooseTag = () => {
-	os.inputText({
-		type: 'text',
-		title: i18n.ts.tags,
-	}).then(({ canceled, result }) => {
-		if (!canceled && !pinnedTags.value.includes(result)) {
-			pinnedTags.value.push(result);
-		}
+const addPinnedTagPair = () => {
+	pinnedTagPairs.value.push({
+		name: '',
+		tag: '',
 	});
+};
+
+if (pinnedTagPairs.value.length === 0) {
+	addPinnedTagPair();
+}
+
+const deleteTagPair = (index: number) => {
+	pinnedTagPairs.value.splice(index, 1);
+};
+
+const savePinnedTagPairs = () => {
+	defaultStore.set('emojiPickerTagPairs', Object.fromEntries(pinnedTagPairs.value.filter(pair => pair.name !== '' && customEmojiTags.value.includes(pair.tag)).map(pair => [pair.name, pair.tag])));
 };
 
 function previewReaction(ev: MouseEvent) {
@@ -296,12 +319,6 @@ watch(pinnedEmojis, () => {
 	deep: true,
 });
 
-watch(pinnedTags, () => {
-	defaultStore.set('emojiPickerTags', pinnedTags.value);
-}, {
-	deep: true,
-});
-
 definePageMetadata(() => ({
 	title: i18n.ts.emojiPicker,
 	icon: 'ti ti-mood-happy',
@@ -331,31 +348,72 @@ definePageMetadata(() => ({
   padding: 8px;
 }
 
-.tags {
-	padding: 12px;
-  font-size: 1.1em;
-}
-
-.tagItem {
-	color: var(--fg);
-	background: var(--buttonBg);
-	border: 1px solid var(--buttonBg);
-	border-radius: 5px;
-	padding-block: 2px;
-	padding-inline: 0.5em;
-	padding-block: 0.2rem;
-	margin-inline: 4px;
-	margin-block: 4px;
-}
-
-.tagsAdd {
-  display: inline-block;
-  padding: 8px;
-}
-
 .editorCaption {
 	font-size: 0.85em;
 	padding: 8px 0 0 0;
 	color: var(--MI_THEME-fgTransparentWeak);
+}
+
+.tagPairsRoot {
+	container-type: inline-size;
+}
+
+.tagPairsMargin {
+	margin-bottom: 1.5em;
+}
+
+.tagPairsCaption {
+	font-size: 0.85em;
+	padding: 8px 0 0 0;
+	color: var(--MI_THEME-fgTransparentWeak);
+}
+
+.tagPairsDragItem {
+	display: flex;
+	padding-bottom: .75em;
+	align-items: flex-end;
+	border-bottom: solid 0.5px var(--MI_THEME-divider);
+
+	&:last-child {
+		border-bottom: 0;
+	}
+
+	/* (drag button) 32px + (drag button margin) 8px + (input width) 200px * 2 + (input gap) 12px = 452px */
+	@container (max-width: 452px) {
+		align-items: center;
+	}
+}
+
+.dragItemHandle {
+	cursor: grab;
+	width: 32px;
+	height: 32px;
+	margin: 0 8px 0 0;
+	opacity: 0.5;
+	flex-shrink: 0;
+
+	&:active {
+		cursor: grabbing;
+	}
+}
+
+.dragItemRemove {
+	@extend .dragItemHandle;
+
+	color: #ff2a2a;
+	opacity: 1;
+	cursor: pointer;
+
+	&:hover, &:focus {
+		opacity: .7;
+	}
+
+	&:active {
+		cursor: pointer;
+	}
+}
+
+.dragItemForm {
+	flex-grow: 1;
 }
 </style>

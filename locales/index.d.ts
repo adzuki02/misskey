@@ -555,9 +555,13 @@ export interface Locale extends ILocale {
      */
     "emojiPickerTagOneline": string;
     /**
-     * 絵文字ピッカーのタグ欄に表示するタグ
+     * 絵文字ピッカーのタグ欄のカスタマイズ
      */
     "emojiPickerTags": string;
+    /**
+     * ラベルに絵文字を使用する場合、一つしか含めることはできず、他の文字列を含めることもできません。
+     */
+    "emojiPickerTagsDescription": string;
     /**
      * リアクション設定から上書きする
      */
