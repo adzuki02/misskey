@@ -258,7 +258,7 @@ watch([q, selectedTagNames], () => {
 	const searchCustom = () => {
 		const MAX = 100;
 		const selectedTagsArray: string[] = Array.from(selectedTagNames).map(name => pinnedTagPairs.value[name]);
-		const emojis = customEmojis.value.filter(emoji => selectedTagsArray.length === 0 || selectedTagsArray.every(selectedTag => emoji.tags.includes(selectedTag)));
+		const emojis = selectedTagsArray.length === 0 ? customEmojis.value : customEmojis.value.filter(emoji => selectedTagsArray.every(selectedTag => emoji.tags.includes(selectedTag)));
 		const matches = new Set<EmojiSimple>();
 
 		if (newQ === '') {
