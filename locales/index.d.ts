@@ -555,7 +555,7 @@ export interface Locale extends ILocale {
      */
     "emojiPickerTagOneline": string;
     /**
-     * 絵文字ピッカーのタグ欄に表示するタグ
+     * 絵文字ピッカーのタグ欄のカスタマイズ
      */
     "emojiPickerTags": string;
     /**
