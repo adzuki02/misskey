@@ -254,9 +254,9 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
-	emojiPickerTags: {
+	emojiPickerTagPairs: {
 		where: 'device',
-		default: [] as string[],
+		default: {} as Record<string, string>,
 	},
 	recentlyUsedEmojis: {
 		where: 'device',

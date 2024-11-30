@@ -20,8 +20,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 	<!-- FirefoxのTabフォーカスが想定外の挙動となるためtabindex="-1"を追加 https://github.com/misskey-dev/misskey/issues/10744 -->
 	<div ref="emojisEl" class="emojis" tabindex="-1">
-		<div v-if="defaultStore.reactiveState.emojiPickerTagSection.value && pinnedTags.length > 0" :class="{ oneline: defaultStore.reactiveState.emojiPickerTagOneline.value }" class="tags">
-			<button v-for="tag in pinnedTags" :key="tag" class="_button tag" :class="{ selected: selectedTags.has(tag) }" :disabled="!availableTags.has(tag)" @click="() => selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag)">{{ tag }}</button>
+		<div v-if="defaultStore.reactiveState.emojiPickerTagSection.value && Object.keys(pinnedTagPairs).length > 0" :class="{ oneline: defaultStore.reactiveState.emojiPickerTagOneline.value }" class="tags">
+			<button v-for="(tag, name) in pinnedTagPairs" :key="name" class="_button tag" :class="{ selected: selectedTagNames.has(name) }" :disabled="!availableTagNames.has(name)" @click="() => selectedTagNames.has(name) ? selectedTagNames.delete(name) : selectedTagNames.add(name)">{{ name }}</button>
 		</div>
 
 		<section class="result">
@@ -169,11 +169,11 @@ const recentlyUsedEmojisDef = computed(() => {
 const pinnedEmojisDef = computed(() => {
 	return pinned.value?.map(getDef);
 });
-const pinnedTags = computed<string[]>(() => {
-	if (defaultStore.reactiveState.emojiPickerTags.value.length === 0) {
-		return customEmojiTags.value;
+const pinnedTagPairs = computed<Record<string, string>>(() => {
+	if (Object.keys(defaultStore.reactiveState.emojiPickerTagPairs.value).length === 0) {
+		return Object.fromEntries(customEmojiTags.value.map(tag => [tag, tag]));
 	} else {
-		return defaultStore.reactiveState.emojiPickerTags.value.filter(tag => customEmojiTags.value.includes(tag));
+		return defaultStore.reactiveState.emojiPickerTagPairs.value;
 	}
 });
 
@@ -182,23 +182,23 @@ const size = computed(() => emojiPickerScale.value);
 const width = computed(() => emojiPickerWidth.value);
 const height = computed(() => emojiPickerHeight.value);
 const q = ref<string>('');
-const selectedTags = reactive(new Set<string>());
+const selectedTagNames = reactive(new Set<string>());
 const searchResultCustom = ref<EmojiSimple[]>([]);
 const searchResultUnicode = ref<UnicodeEmojiDef[]>([]);
 
-const availableTags = computed<Set<string>>(() => {
-	if (selectedTags.size === 0) return new Set(pinnedTags.value);
+const availableTagNames = computed<Set<string>>(() => {
+	if (selectedTagNames.size === 0) return new Set(Object.keys(pinnedTagPairs.value));
 
-	let tags = new Set<string>(pinnedTags.value);
-	for (const selectedTag of selectedTags) {
-		if (customEmojiTagCombinations.value.has(selectedTag)) {
-			tags = tags.intersection(customEmojiTagCombinations.value.get(selectedTag)!);
+	let tags = new Set<string>(Object.values(pinnedTagPairs.value));
+	for (const selectedTagName of selectedTagNames) {
+		if (customEmojiTagCombinations.value.has(pinnedTagPairs.value[selectedTagName])) {
+			tags = tags.intersection(customEmojiTagCombinations.value.get(pinnedTagPairs.value[selectedTagName])!);
 		} else {
-			tags = selectedTags;
-			break;
+			return new Set<string>(selectedTagNames);
 		}
 	}
-	return tags;
+
+	return new Set<string>(Object.keys(pinnedTagPairs.value).filter(name => tags.has(pinnedTagPairs.value[name])));
 });
 
 const customEmojiFolderRoot: CustomEmojiFolderTree = { value: '', category: '', children: [] };
@@ -230,11 +230,11 @@ customEmojiCategories.value.forEach(ec => {
 
 parseAndMergeCategories('', customEmojiFolderRoot);
 
-watch([q, selectedTags], () => {
+watch([q, selectedTagNames], () => {
 	if (emojisEl.value) emojisEl.value.scrollTop = 0;
 
 	// 検索クエリなし かつ タグ選択なし なら 検索結果は空
-	if (q.value === '' && selectedTags.size === 0) {
+	if (q.value === '' && selectedTagNames.size === 0) {
 		searchResultCustom.value = [];
 		searchResultUnicode.value = [];
 		return;
@@ -245,7 +245,7 @@ watch([q, selectedTags], () => {
 	const newQ = q.value.replace(/:/g, '').toLowerCase().trim();
 
 	// 検索クエリなし かつ タグ選択なし なら 検索結果は空
-	if (newQ === '' && selectedTags.size === 0) {
+	if (newQ === '' && selectedTagNames.size === 0) {
 		searchResultCustom.value = [];
 		searchResultUnicode.value = [];
 		return;
@@ -253,7 +253,7 @@ watch([q, selectedTags], () => {
 
 	const searchCustom = () => {
 		const MAX = 100;
-		const selectedTagsArray = Array.from(selectedTags);
+		const selectedTagsArray: string[] = Array.from(selectedTagNames).map(name => pinnedTagPairs.value[name]);
 		const emojis = customEmojis.value.filter(emoji => selectedTagsArray.length === 0 || selectedTagsArray.every(selectedTag => emoji.tags.includes(selectedTag)));
 		const matches = new Set<EmojiSimple>();
 
@@ -441,7 +441,7 @@ watch([q, selectedTags], () => {
 	};
 
 	searchResultCustom.value = Array.from(searchCustom());
-	searchResultUnicode.value = selectedTags.size > 0 ? [] : Array.from(searchUnicode());
+	searchResultUnicode.value = selectedTagNames.size > 0 ? [] : Array.from(searchUnicode());
 });
 
 function canReact(emoji: EmojiSimple | UnicodeEmojiDef | string): boolean {
@@ -463,7 +463,7 @@ function focus() {
 function reset() {
 	if (emojisEl.value) emojisEl.value.scrollTop = 0;
 	q.value = '';
-	selectedTags.clear();
+	selectedTagNames.clear();
 }
 
 function getKey(emoji: string | EmojiSimple | UnicodeEmojiDef): string {
