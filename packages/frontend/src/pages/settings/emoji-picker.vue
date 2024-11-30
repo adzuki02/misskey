@@ -180,6 +180,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { deepClone } from '@/scripts/clone.js';
 import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { emojiPicker } from '@/scripts/emoji-picker.js';
+import { customEmojiTags } from '@/custom-emojis';
 import MkCustomEmoji from '@/components/global/MkCustomEmoji.vue';
 import MkEmoji from '@/components/global/MkEmoji.vue';
 import MkFolder from '@/components/MkFolder.vue';
@@ -205,9 +206,12 @@ const setDefaultEmoji = () => setDefault(pinnedEmojis);
 
 const removeTag = (tag: string, ev: MouseEvent) => remove(pinnedTags, tag, ev);
 const chooseTag = () => {
-	os.inputText({
-		type: 'text',
+	os.select({
 		title: i18n.ts.tags,
+		items: customEmojiTags.value.map(item => ({
+			value: item,
+			text: item,
+		})),
 	}).then(({ canceled, result }) => {
 		if (!canceled && !pinnedTags.value.includes(result)) {
 			pinnedTags.value.push(result);
