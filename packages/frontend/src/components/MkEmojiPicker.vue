@@ -21,7 +21,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<!-- FirefoxのTabフォーカスが想定外の挙動となるためtabindex="-1"を追加 https://github.com/misskey-dev/misskey/issues/10744 -->
 	<div ref="emojisEl" class="emojis" tabindex="-1">
 		<div v-if="defaultStore.reactiveState.emojiPickerTagSection.value && Object.keys(pinnedTagPairs).length > 0" :class="{ oneline: defaultStore.reactiveState.emojiPickerTagOneline.value }" class="tags">
-			<button v-for="(tag, name) in pinnedTagPairs" :key="name" class="_button tag" :class="{ selected: selectedTagNames.has(name) }" :disabled="!availableTagNames.has(name)" @click="() => selectedTagNames.has(name) ? selectedTagNames.delete(name) : selectedTagNames.add(name)">{{ name }}</button>
+			<button v-for="(tag, name) in pinnedTagPairs" :key="name" class="_button tag" :class="{ selected: selectedTagNames.has(name) }" :disabled="!availableTagNames.has(name)" @click="() => selectedTagNames.has(name) ? selectedTagNames.delete(name) : selectedTagNames.add(name)">
+				<MkEmoji v-if="typeof getUnicodeEmoji(name) === 'object'" class="emoji" :emoji="(getUnicodeEmoji(name) as Exclude<ReturnType<typeof getUnicodeEmoji>, string>).char"/>
+				<MkCustomEmoji v-else-if="name.startsWith(':') && name.indexOf(':', 1) === name.length - 1" class="emoji customEmoji" :name="name"/>
+				<span v-else>{{ name }}</span>
+			</button>
 		</div>
 
 		<section class="result">
@@ -777,6 +781,14 @@ defineExpose({
 					background: linear-gradient(-45deg, transparent 0% 48%, var(--X6) 48% 52%, transparent 52% 100%);
 					filter: grayscale(1);
 					opacity: 0.6;
+				}
+
+				.customEmoji {
+					height: 1.25em;
+
+					&:hover {
+						transform: none;
+					}
 				}
 			}
 		}
