@@ -765,7 +765,7 @@ defineExpose({
 				border: 1px solid var(--MI_THEME-divider);
 				border-radius: 5px;
 				padding-inline: 0.5em;
-				padding-block: 0.2rem;
+				padding-block: 0.2em;
 				white-space: nowrap;
 
 				&:hover {
