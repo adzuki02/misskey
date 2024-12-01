@@ -92,6 +92,10 @@ const routes: RouteDef[] = [{
 		name: 'general',
 		component: page(() => import('@/pages/settings/general.vue')),
 	}, {
+		path: '/timeline',
+		name: 'timeline',
+		component: page(() => import('@/pages/settings/timeline.vue')),
+	}, {
 		path: '/theme/install',
 		name: 'theme',
 		component: page(() => import('@/pages/settings/theme.install.vue')),
