@@ -44,8 +44,8 @@ import { deviceKind } from '@/scripts/device-kind.js';
 import { deepMerge } from '@/scripts/merge.js';
 import { MenuItem } from '@/types/menu.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { availableBasicTimelines, hasWithReplies, isAvailableBasicTimeline, isBasicTimeline, basicTimelineIconClass } from '@/timelines.js';
-	
+import { availableBasicTimelines, hasWithReplies, isAvailableBasicTimeline, isBasicTimeline, basicTimelineIconClass, basicTimelineTypes } from '@/timelines.js';
+
 provide('shouldOmitHeaderTitle', true);
 
 const tlComponent = shallowRef<InstanceType<typeof MkTimeline>>();
@@ -285,16 +285,16 @@ const headerActions = computed(() => [
 ]);
 
 const headerTabs = computed<Tab[]>(() => [
-	...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
-		key: 'list:' + l.id,
-		title: l.name,
-		icon: 'ti ti-star',
-		iconOnly: true,
-	}))),
-	...availableBasicTimelines().map(tl => ({
-		key: tl,
-		title: i18n.ts._timelines[tl],
-		icon: basicTimelineIconClass(tl),
+	...defaultStore.reactiveState.timelineTabs.value.filter(tlTab => {
+		if (basicTimelineTypes.includes(tlTab.type as BasicTimelineType)) {
+			return availableBasicTimelines().includes(tlTab.type as BasicTimelineType);
+		} else {
+			return true;
+		}
+	}).map(tlTab => ({
+		key: basicTimelineTypes.includes(tlTab.type as BasicTimelineType) ? tlTab.type : tlTab.type === 'list' ? `list:${tlTab.userList.id}` : Math.random().toString(),
+		title: tlTab.name,
+		icon: tlTab.icon,
 		iconOnly: true,
 	})),
 	{

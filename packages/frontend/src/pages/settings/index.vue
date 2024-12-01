@@ -106,6 +106,11 @@ const menuDef = computed(() => [{
 		to: '/settings/general',
 		active: currentPage.value?.route.name === 'general',
 	}, {
+		icon: 'ti ti-timeline',
+		text: i18n.ts.timeline,
+		to: '/settings/timeline',
+		active: currentPage.value?.route.name === 'timeline',
+	}, {
 		icon: 'ti ti-palette',
 		text: i18n.ts.theme,
 		to: '/settings/theme',

@@ -11,6 +11,7 @@ import type { SoundType } from '@/scripts/sound.js';
 import lightTheme from '@/themes/l-light.json5';
 import darkTheme from '@/themes/d-green-lime.json5';
 import { Storage } from '@/pizzax.js';
+import { i18n } from './i18n.js';
 
 interface PostFormAction {
 	title: string,
@@ -49,6 +50,18 @@ export type SoundStore = {
 	fileUrl: string;
 
 	volume: number;
+}
+
+export type TimelineTab = {
+	type: 'home' | 'local' | 'social' | 'global';
+	userList: Pick<UserList, 'id' | 'name'> | null;
+	name: string;
+	icon: string;
+} | {
+	type: 'list';
+	userList: Pick<UserList, 'id' | 'name'>;
+	name: string;
+	icon: string;
 }
 
 export const postFormActions: PostFormAction[] = [];
@@ -152,6 +165,15 @@ export const defaultStore = markRaw(new Storage('base', {
 	pinnedUserLists: {
 		where: 'deviceAccount',
 		default: [] as UserList[],
+	},
+	timelineTabs: {
+		where: 'deviceAccount',
+		default: [
+			{ type: 'home', userList: null, name: i18n.ts._timelines.home, icon: 'ti ti-home' },
+			{ type: 'local', userList: null, name: i18n.ts._timelines.local, icon: 'ti ti-planet' },
+			{ type: 'social', userList: null, name: i18n.ts._timelines.social, icon: 'ti ti-universe' },
+			{ type: 'global', userList: null, name: i18n.ts._timelines.global, icon: 'ti ti-whirl' },
+		] as TimelineTab[],
 	},
 
 	overridedDeviceKind: {
