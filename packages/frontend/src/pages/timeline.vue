@@ -292,7 +292,7 @@ const headerTabs = computed<Tab[]>(() => [
 			return true;
 		}
 	}).map(tlTab => ({
-		key: basicTimelineTypes.includes(tlTab.type as BasicTimelineType) ? tlTab.type : tlTab.type === 'list' ? `list:${tlTab.userList!.id}` : Math.random().toString(),
+		key: basicTimelineTypes.includes(tlTab.type as BasicTimelineType) ? tlTab.type : tlTab.type === 'list' ? `list:${tlTab.userList.id}` : Math.random().toString(),
 		title: tlTab.name,
 		icon: tlTab.icon,
 		iconOnly: true,

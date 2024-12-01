@@ -52,6 +52,18 @@ export type SoundStore = {
 	volume: number;
 }
 
+export type TimelineTab = {
+	type: 'home' | 'local' | 'social' | 'global';
+	userList: Pick<UserList, 'id' | 'name'> | null;
+	name: string;
+	icon: string;
+} | {
+	type: 'list';
+	userList: Pick<UserList, 'id' | 'name'>;
+	name: string;
+	icon: string;
+}
+
 export const postFormActions: PostFormAction[] = [];
 export const userActions: UserAction[] = [];
 export const noteActions: NoteAction[] = [];
@@ -161,7 +173,7 @@ export const defaultStore = markRaw(new Storage('base', {
 			{ type: 'local', userList: null, name: i18n.ts._timelines.local, icon: 'ti ti-planet' },
 			{ type: 'social', userList: null, name: i18n.ts._timelines.social, icon: 'ti ti-universe' },
 			{ type: 'global', userList: null, name: i18n.ts._timelines.global, icon: 'ti ti-whirl' },
-		] as ({ type: 'home' | 'local' | 'social' | 'global' | 'list', userList: Pick<UserList, 'id' | 'name'> | null, name: string, icon: string })[],
+		] as TimelineTab[],
 	},
 
 	overridedDeviceKind: {
