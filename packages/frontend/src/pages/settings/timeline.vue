@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div>
 				<div :class="$style.tlTabsMargin">
 					<MkButton inline style="margin-right: 8px;" @click="addTlTab"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
-					<MkButton v-if="!tlTabsEditMode" inline danger style="margin-right: 8px;" @click="tlTabsEditMode = !tlTabsEditMode"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
+					<MkButton v-if="!tlTabsEditMode" :disabled="tlTabs.length < 2" inline danger style="margin-right: 8px;" @click="tlTabsEditMode = !tlTabsEditMode"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
 					<MkButton v-else inline style="margin-right: 8px;" @click="tlTabsEditMode = !tlTabsEditMode"><i class="ti ti-arrows-sort"></i> {{ i18n.ts.rearrange }}</MkButton>
 					<MkButton inline primary @click="saveTlTabs"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
 				</div>
@@ -69,7 +69,7 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { basicTimelineIconClass, BasicTimelineType, basicTimelineTypes } from '@/timelines';
+import { availableBasicTimelines, basicTimelineIconClass, basicTimelineTypes, type BasicTimelineType } from '@/timelines';
 
 const tlTabs = ref(deepClone(defaultStore.state.timelineTabs));
 const tlTabsEditMode = ref(false);
@@ -87,14 +87,14 @@ const addTlTab = async () => {
 	const { canceled: canceled1, result: type } = await os.select({
 		title: i18n.ts.type,
 		items: [
-			...basicTimelineTypes.map(tl => ({ text: i18n.ts._timelines[tl], value: tl })),
+			...availableBasicTimelines().map(tl => ({ text: i18n.ts._timelines[tl], value: tl })),
 			{ text: i18n.ts.lists, value: 'list' },
 		],
 	});
 
 	if (canceled1) return;
 
-	if (type !== 'list') {
+	if (basicTimelineTypes.includes(type as BasicTimelineType)) {
 		tlTabs.value.push({
 			type: type as BasicTimelineType,
 			userList: null,
@@ -103,32 +103,37 @@ const addTlTab = async () => {
 		});
 
 		return;
-	}
+	} else if (type === 'list') {
+		const lists = await misskeyApi('users/lists/list');
 
-	const lists = await misskeyApi('users/lists/list');
+		const { canceled: canceled2, result: list } = await os.select({
+			title: i18n.ts.selectList,
+			items: lists.map(x => ({
+				value: x, text: x.name,
+			})),
+		});
 
-	const { canceled: canceled2, result: list } = await os.select({
-		title: i18n.ts.selectList,
-		items: lists.map(x => ({
-			value: x, text: x.name,
-		})),
-	});
+		if (canceled2) return;
 
-	if (canceled2) return;
-
-	tlTabs.value.push({
-		type: 'list',
-		userList: {
-			id: list.id,
+		tlTabs.value.push({
+			type: 'list',
+			userList: {
+				id: list.id,
+				name: list.name,
+			},
 			name: list.name,
-		},
-		name: list.name,
-		icon: 'ti ti-list',
-	});
+			icon: 'ti ti-list',
+		});
+	}
 };
 
 if (tlTabs.value.length === 0) {
-	addTlTab();
+	tlTabs.value.push({
+		type: 'home',
+		userList: null,
+		name: i18n.ts._timelines.home,
+		icon: 'ti ti-home',
+	});
 }
 
 const deleteTlTab = (index: number) => {
@@ -136,7 +141,15 @@ const deleteTlTab = (index: number) => {
 };
 
 const saveTlTabs = () => {
-	defaultStore.set('timelineTabs', tlTabs.value.filter(tlTab => (tlTab.type !== 'list' || tlTab.userList !== null)).map(tlTab => tlTab.type !== 'list' ? { type: tlTab.type, name: i18n.ts._timelines[tlTab.type], icon: basicTimelineIconClass(tlTab.type), userList: null } : tlTab));
+	defaultStore.set('timelineTabs', tlTabs.value.filter(tlTab => {
+		if (basicTimelineTypes.includes(tlTab.type as BasicTimelineType)) {
+			return true;
+		} else if (tlTab.type === 'list') {
+			return tlTab.userList !== null;
+		} else {
+			return false;
+		}
+	}));
 };
 
 definePageMetadata(() => ({
