@@ -1139,6 +1139,8 @@ channelArchiveConfirmDescription: "アーカイブすると、チャンネル一
 thisChannelArchived: "このチャンネルはアーカイブされています。"
 displayOfNote: "ノートの表示"
 displayOfReaction: "リアクションの表示"
+displayOfMedia: "メディアの表示"
+animation: "アニメーション"
 initialAccountSetting: "初期設定"
 youFollowing: "フォロー中"
 preventAiLearning: "生成AIによる学習を拒否"

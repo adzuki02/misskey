@@ -1140,6 +1140,8 @@ channelArchiveConfirmDescription: "An archived channel won't appear in the chann
 thisChannelArchived: "This channel has been archived."
 displayOfNote: "Note display"
 displayOfReaction: "Reaction display"
+displayOfMedia: "Media display"
+animation: "Animation"
 initialAccountSetting: "Profile setup"
 youFollowing: "Followed"
 preventAiLearning: "Reject usage in Machine Learning (Generative AI)"

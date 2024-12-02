@@ -29,18 +29,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #label>{{ i18n.ts.displayOfNote }}</template>
 
 		<div class="_gaps_m">
+			<MkSwitch v-model="collapseRenotes">
+				<template #label>{{ i18n.ts.collapseRenotes }}</template>
+				<template #caption>{{ i18n.ts.collapseRenotesDescription }}</template>
+			</MkSwitch>
+
 			<div class="_gaps_s">
-				<MkSwitch v-model="collapseRenotes">
-					<template #label>{{ i18n.ts.collapseRenotes }}</template>
-					<template #caption>{{ i18n.ts.collapseRenotesDescription }}</template>
-				</MkSwitch>
 				<MkSwitch v-model="showNoteActionsOnlyHover">{{ i18n.ts.showNoteActionsOnlyHover }}</MkSwitch>
 				<MkSwitch v-model="showClipButtonInNoteFooter">{{ i18n.ts.showClipButtonInNoteFooter }}</MkSwitch>
+				<MkSwitch v-model="useReactionPickerForContextMenu">{{ i18n.ts.useReactionPickerForContextMenu }}</MkSwitch>
+			</div>
+
+			<div class="_gaps_s">
 				<MkSwitch v-model="advancedMfm">{{ i18n.ts.enableAdvancedMfm }}</MkSwitch>
 				<MkSwitch v-if="advancedMfm" v-model="animatedMfm">{{ i18n.ts.enableAnimatedMfm }}</MkSwitch>
-				<MkSwitch v-model="showGapBetweenNotesInTimeline">{{ i18n.ts.showGapBetweenNotesInTimeline }}</MkSwitch>
-				<MkSwitch v-model="loadRawImages">{{ i18n.ts.loadRawImages }}</MkSwitch>
 			</div>
+
+			<MkSwitch v-model="showGapBetweenNotesInTimeline">{{ i18n.ts.showGapBetweenNotesInTimeline }}</MkSwitch>
 
 			<MkSelect v-model="instanceTicker">
 				<template #label>{{ i18n.ts.instanceTicker }}</template>
@@ -50,13 +55,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="remoteIcon">{{ i18n.ts._instanceTicker.remoteIcon }}</option>
 				<option value="alwaysIcon">{{ i18n.ts._instanceTicker.alwaysIcon }}</option>
 			</MkSelect>
+		</div>
+	</FormSection>
 
-			<MkSelect v-model="nsfw">
-				<template #label>{{ i18n.ts.displayOfSensitiveMedia }}</template>
-				<option value="respect">{{ i18n.ts._displayOfSensitiveMedia.respect }}</option>
-				<option value="ignore">{{ i18n.ts._displayOfSensitiveMedia.ignore }}</option>
-				<option value="force">{{ i18n.ts._displayOfSensitiveMedia.force }}</option>
-			</MkSelect>
+	<FormSection>
+		<template #label>{{ i18n.ts.displayOfMedia }}</template>
+
+		<div class="_gaps_m">
+			<MkSwitch v-model="loadRawImages">{{ i18n.ts.loadRawImages }}</MkSwitch>
 
 			<MkRadios v-model="mediaListWithOneImageAppearance">
 				<template #label>{{ i18n.ts.mediaListWithOneImageAppearance }}</template>
@@ -65,6 +71,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="1_1">{{ i18n.tsx.limitTo({ x: '1:1' }) }}</option>
 				<option value="2_3">{{ i18n.tsx.limitTo({ x: '2:3' }) }}</option>
 			</MkRadios>
+
+			<MkSelect v-model="nsfw">
+				<template #label>{{ i18n.ts.displayOfSensitiveMedia }}</template>
+				<option value="respect">{{ i18n.ts._displayOfSensitiveMedia.respect }}</option>
+				<option value="ignore">{{ i18n.ts._displayOfSensitiveMedia.ignore }}</option>
+				<option value="force">{{ i18n.ts._displayOfSensitiveMedia.force }}</option>
+			</MkSelect>
+
+			<div class="_gaps_s">
+				<MkSwitch v-model="highlightSensitiveMedia">{{ i18n.ts.highlightSensitiveMedia }}</MkSwitch>
+				<MkSwitch v-model="confirmWhenRevealingSensitiveMedia">{{ i18n.ts.confirmWhenRevealingSensitiveMedia }}</MkSwitch>
+			</div>
 		</div>
 	</FormSection>
 
@@ -72,17 +90,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #label>{{ i18n.ts.displayOfReaction }}</template>
 
 		<div class="_gaps_m">
+			<MkRadios v-model="reactionsDisplaySize">
+				<template #label>{{ i18n.ts.reactionsDisplaySize }}</template>
+				<option value="small">{{ i18n.ts.small }}</option>
+				<option value="medium">{{ i18n.ts.medium }}</option>
+				<option value="large">{{ i18n.ts.large }}</option>
+			</MkRadios>
+
 			<div class="_gaps_s">
-				<MkRadios v-model="reactionsDisplaySize">
-					<template #label>{{ i18n.ts.reactionsDisplaySize }}</template>
-					<option value="small">{{ i18n.ts.small }}</option>
-					<option value="medium">{{ i18n.ts.medium }}</option>
-					<option value="large">{{ i18n.ts.large }}</option>
-				</MkRadios>
 				<MkSwitch v-model="limitWidthOfReaction">{{ i18n.ts.limitWidthOfReaction }}</MkSwitch>
-				<MkSwitch v-model="hideReactionsViewerOnTimeline">{{ i18n.ts.hideReactionsViewerOnTimeline }}</MkSwitch>
 				<MkSwitch v-model="hideReactionsCount">{{ i18n.ts.hideReactionsCount }}</MkSwitch>
+				<MkSwitch v-model="hideReactionsViewerOnTimeline">{{ i18n.ts.hideReactionsViewerOnTimeline }}</MkSwitch>
 			</div>
+		</div>
+	</FormSection>
+
+	<FormSection>
+		<template #label>{{ i18n.ts.animation }}</template>
+
+		<div class="_gaps_s">
+			<MkSwitch v-model="reduceAnimation">{{ i18n.ts.reduceUiAnimation }}</MkSwitch>
+			<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}</MkSwitch>
+			<MkSwitch v-model="forceShowingAnimatedImagesOnPopup">{{ i18n.ts.forceShowingAnimatedImagesOnPopup }}</MkSwitch>
 		</div>
 	</FormSection>
 
@@ -91,17 +120,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div class="_gaps_m">
 			<div class="_gaps_s">
-				<MkSwitch v-model="reduceAnimation">{{ i18n.ts.reduceUiAnimation }}</MkSwitch>
 				<MkSwitch v-model="useBlurEffect">{{ i18n.ts.useBlurEffect }}</MkSwitch>
 				<MkSwitch v-model="useBlurEffectForModal">{{ i18n.ts.useBlurEffectForModal }}</MkSwitch>
-				<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}</MkSwitch>
-				<MkSwitch v-model="forceShowingAnimatedImagesOnPopup">{{ i18n.ts.forceShowingAnimatedImagesOnPopup }}</MkSwitch>
-				<MkSwitch v-model="highlightSensitiveMedia">{{ i18n.ts.highlightSensitiveMedia }}</MkSwitch>
+			</div>
+
+			<div class="_gaps_s">
 				<MkSwitch v-model="squareAvatars">{{ i18n.ts.squareAvatars }}</MkSwitch>
 				<MkSwitch v-model="showAvatarDecorations">{{ i18n.ts.showAvatarDecorations }}</MkSwitch>
-				<MkSwitch v-model="useSystemFont">{{ i18n.ts.useSystemFont }}</MkSwitch>
-				<MkSwitch v-model="useNativeUIForVideoAudioPlayer">{{ i18n.ts.useNativeUIForVideoAudioPlayer }}</MkSwitch>
 			</div>
+
+			<MkSwitch v-model="useNativeUIForVideoAudioPlayer">{{ i18n.ts.useNativeUIForVideoAudioPlayer }}</MkSwitch>
+		
+			<MkSwitch v-model="useSystemFont">{{ i18n.ts.useSystemFont }}</MkSwitch>
+
+			<MkRadios v-model="fontSize">
+				<template #label>{{ i18n.ts.fontSize }}</template>
+				<option :value="null"><span style="font-size: 14px;">Aa</span></option>
+				<option value="1"><span style="font-size: 15px;">Aa</span></option>
+				<option value="2"><span style="font-size: 16px;">Aa</span></option>
+				<option value="3"><span style="font-size: 17px;">Aa</span></option>
+			</MkRadios>
 
 			<MkSelect v-model="menuStyle">
 				<template #label>{{ i18n.ts.menuStyle }}</template>
@@ -118,14 +156,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkRadios>
 				<div style="margin: 8px 0 0 0; font-size: 1.5em;"><Mfm :key="emojiStyle" text="🍮🍦🍭🍩🍰🍫🍬🥞🍪"/></div>
 			</div>
-
-			<MkRadios v-model="fontSize">
-				<template #label>{{ i18n.ts.fontSize }}</template>
-				<option :value="null"><span style="font-size: 14px;">Aa</span></option>
-				<option value="1"><span style="font-size: 15px;">Aa</span></option>
-				<option value="2"><span style="font-size: 16px;">Aa</span></option>
-				<option value="3"><span style="font-size: 17px;">Aa</span></option>
-			</MkRadios>
 		</div>
 	</FormSection>
 
@@ -134,29 +164,34 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div class="_gaps_m">
 			<div class="_gaps_s">
-				<MkSwitch v-model="useReactionPickerForContextMenu">{{ i18n.ts.useReactionPickerForContextMenu }}</MkSwitch>
 				<MkSwitch v-model="enableInfiniteScroll">{{ i18n.ts.enableInfiniteScroll }}</MkSwitch>
 				<MkSwitch v-model="disableStreamingTimeline">{{ i18n.ts.disableStreamingTimeline }}</MkSwitch>
 				<MkSwitch v-model="alwaysConfirmFollow">{{ i18n.ts.alwaysConfirmFollow }}</MkSwitch>
-				<MkSwitch v-model="confirmWhenRevealingSensitiveMedia">{{ i18n.ts.confirmWhenRevealingSensitiveMedia }}</MkSwitch>
 			</div>
+
 			<MkSelect v-model="serverDisconnectedBehavior">
 				<template #label>{{ i18n.ts.whenServerDisconnected }}</template>
 				<option value="reload">{{ i18n.ts._serverDisconnectedBehavior.reload }}</option>
 				<option value="dialog">{{ i18n.ts._serverDisconnectedBehavior.dialog }}</option>
 				<option value="quiet">{{ i18n.ts._serverDisconnectedBehavior.quiet }}</option>
 			</MkSelect>
+
 			<MkSelect v-model="contextMenu">
 				<template #label>{{ i18n.ts._contextMenu.title }}</template>
 				<option value="app">{{ i18n.ts._contextMenu.app }}</option>
 				<option value="appWithShift">{{ i18n.ts._contextMenu.appWithShift }}</option>
 				<option value="native">{{ i18n.ts._contextMenu.native }}</option>
 			</MkSelect>
+
 			<MkRange v-model="numberOfPageCache" :min="1" :max="10" :step="1" easing>
 				<template #label>{{ i18n.ts.numberOfPageCache }}</template>
 				<template #caption>{{ i18n.ts.numberOfPageCacheDescription }}</template>
 			</MkRange>
+		</div>
+	</FormSection>
 
+	<FormSection>
+		<div class="_gaps_m">
 			<MkFolder>
 				<template #label>{{ i18n.ts.dataSaver }}</template>
 
