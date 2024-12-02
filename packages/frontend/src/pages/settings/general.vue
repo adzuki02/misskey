@@ -194,15 +194,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #label>{{ i18n.ts.other }}</template>
 
 		<div class="_gaps">
-			<MkFolder>
-				<template #label>{{ i18n.ts.additionalEmojiDictionary }}</template>
-				<div class="_buttons">
-					<template v-for="lang in emojiIndexLangs" :key="lang">
-						<MkButton v-if="defaultStore.reactiveState.additionalUnicodeEmojiIndexes.value[lang]" danger @click="removeEmojiIndex(lang)"><i class="ti ti-trash"></i> {{ i18n.ts.remove }} ({{ getEmojiIndexLangName(lang) }})</MkButton>
-						<MkButton v-else @click="downloadEmojiIndex(lang)"><i class="ti ti-download"></i> {{ getEmojiIndexLangName(lang) }}{{ defaultStore.reactiveState.additionalUnicodeEmojiIndexes.value[lang] ? ` (${ i18n.ts.installed })` : '' }}</MkButton>
-					</template>
-				</div>
-			</MkFolder>
 			<FormLink to="/settings/deck">{{ i18n.ts.deck }}</FormLink>
 			<FormLink to="/settings/custom-css"><template #icon><i class="ti ti-code"></i></template>{{ i18n.ts.customCss }}</FormLink>
 		</div>
@@ -316,71 +307,6 @@ watch([
 ], async () => {
 	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
-
-const emojiIndexLangs = ['en-US'] as const;
-
-function getEmojiIndexLangName(targetLang: typeof emojiIndexLangs[number]) {
-	if (langs.find(x => x[0] === targetLang)) {
-		return langs.find(x => x[0] === targetLang)![1];
-	} else {
-		return targetLang;
-	}
-}
-
-function downloadEmojiIndex(lang: typeof emojiIndexLangs[number]) {
-	async function main() {
-		const currentIndexes = defaultStore.state.additionalUnicodeEmojiIndexes;
-
-		function download() {
-			switch (lang) {
-				case 'en-US': return import('../../unicode-emoji-indexes/en-US.json').then(x => x.default);
-				default: throw new Error('unrecognized lang: ' + lang);
-			}
-		}
-
-		currentIndexes[lang] = await download();
-		await defaultStore.set('additionalUnicodeEmojiIndexes', currentIndexes);
-	}
-
-	os.promiseDialog(main());
-}
-
-function removeEmojiIndex(lang: string) {
-	async function main() {
-		const currentIndexes = defaultStore.state.additionalUnicodeEmojiIndexes;
-		delete currentIndexes[lang];
-		await defaultStore.set('additionalUnicodeEmojiIndexes', currentIndexes);
-	}
-
-	os.promiseDialog(main());
-}
-
-async function setPinnedList() {
-	const lists = await misskeyApi('users/lists/list');
-	const { canceled, result: list } = await os.select({
-		title: i18n.ts.selectList,
-		items: lists.map(x => ({
-			value: x, text: x.name,
-		})),
-	});
-	if (canceled) return;
-
-	defaultStore.set('pinnedUserLists', [list]);
-}
-
-function removePinnedList() {
-	defaultStore.set('pinnedUserLists', []);
-}
-
-function testNotification(): void {
-	const notification: Notification = {
-		id: Math.random().toString(),
-		createdAt: new Date().toUTCString(),
-		type: 'test',
-	};
-
-	globalEvents.emit('clientNotification', notification);
-}
 
 function enableAllDataSaver() {
 	const g = { ...defaultStore.state.dataSaver };
