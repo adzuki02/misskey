@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #item="{element, index}">
 						<div :class="$style.tlTabsDragItem">
 							<button v-if="!tlTabsEditMode" class="_button" :class="$style.dragItemHandle" tabindex="-1"><i class="ti ti-menu"></i></button>
-							<button v-if="tlTabsEditMode" class="_button" :class="$style.dragItemRemove" @click="deleteTlTab(index)"><i class="ti ti-x"></i></button>
+							<button v-if="tlTabsEditMode" :disabled="tlTabs.length < 2" class="_button" :class="$style.dragItemRemove" @click="deleteTlTab(index)"><i class="ti ti-x"></i></button>
 							<div :class="$style.tlTabsDragItemTlIcon">
 								<i :class="element.icon"></i>
 							</div>
