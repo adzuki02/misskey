@@ -42,46 +42,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</FormSection>
-
-	<FormSection>
-		<template #label>{{ i18n.ts.displayOfNote }}</template>
-
-		<div class="_gaps_m">
-			<div class="_gaps_s">
-				<MkSwitch v-model="showGapBetweenNotesInTimeline">{{ i18n.ts.showGapBetweenNotesInTimeline }}</MkSwitch>
-				<MkSwitch v-model="hideReactionsViewerOnTimeline">{{ i18n.ts.hideReactionsViewerOnTimeline }}</MkSwitch>
-			</div>
-		</div>
-	</FormSection>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
+import { ref } from 'vue';
 import Sortable from 'vuedraggable';
-import MkSwitch from '@/components/MkSwitch.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';
 import { defaultStore } from '@/store.js';
 import { deepClone } from '@/scripts/clone.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
-import { reloadAsk } from '@/scripts/reload-ask.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { availableBasicTimelines, basicTimelineIconClass, basicTimelineTypes, type BasicTimelineType } from '@/timelines';
 
 const tlTabs = ref(deepClone(defaultStore.state.timelineTabs));
 const tlTabsEditMode = ref(false);
-
-const hideReactionsViewerOnTimeline = computed(defaultStore.makeGetterSetter('hideReactionsViewerOnTimeline'));
-const showGapBetweenNotesInTimeline = computed(defaultStore.makeGetterSetter('showGapBetweenNotesInTimeline'));
-
-watch([
-	showGapBetweenNotesInTimeline,
-], async () => {
-	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
-});
 
 const addTlTab = async () => {
 	const { canceled: canceled1, result: type } = await os.select({
@@ -141,15 +119,7 @@ const deleteTlTab = (index: number) => {
 };
 
 const saveTlTabs = () => {
-	defaultStore.set('timelineTabs', tlTabs.value.filter(tlTab => {
-		if (basicTimelineTypes.includes(tlTab.type as BasicTimelineType)) {
-			return true;
-		} else if (tlTab.type === 'list') {
-			return tlTab.userList !== null;
-		} else {
-			return false;
-		}
-	}));
+	defaultStore.set('timelineTabs', tlTabs.value);
 };
 
 definePageMetadata(() => ({

@@ -40,15 +40,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-if="advancedMfm" v-model="animatedMfm">{{ i18n.ts.enableAnimatedMfm }}</MkSwitch>
 				<MkSwitch v-model="showGapBetweenNotesInTimeline">{{ i18n.ts.showGapBetweenNotesInTimeline }}</MkSwitch>
 				<MkSwitch v-model="loadRawImages">{{ i18n.ts.loadRawImages }}</MkSwitch>
-				<MkRadios v-model="reactionsDisplaySize">
-					<template #label>{{ i18n.ts.reactionsDisplaySize }}</template>
-					<option value="small">{{ i18n.ts.small }}</option>
-					<option value="medium">{{ i18n.ts.medium }}</option>
-					<option value="large">{{ i18n.ts.large }}</option>
-				</MkRadios>
-				<MkSwitch v-model="limitWidthOfReaction">{{ i18n.ts.limitWidthOfReaction }}</MkSwitch>
-				<MkSwitch v-model="hideReactionsViewerOnTimeline">{{ i18n.ts.hideReactionsViewerOnTimeline }}</MkSwitch>
-				<MkSwitch v-model="hideReactionsCount">{{ i18n.ts.hideReactionsCount }}</MkSwitch>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
@@ -74,6 +65,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="1_1">{{ i18n.tsx.limitTo({ x: '1:1' }) }}</option>
 				<option value="2_3">{{ i18n.tsx.limitTo({ x: '2:3' }) }}</option>
 			</MkRadios>
+		</div>
+	</FormSection>
+
+	<FormSection>
+		<template #label>{{ i18n.ts.displayOfReaction }}</template>
+
+		<div class="_gaps_m">
+			<div class="_gaps_s">
+				<MkRadios v-model="reactionsDisplaySize">
+					<template #label>{{ i18n.ts.reactionsDisplaySize }}</template>
+					<option value="small">{{ i18n.ts.small }}</option>
+					<option value="medium">{{ i18n.ts.medium }}</option>
+					<option value="large">{{ i18n.ts.large }}</option>
+				</MkRadios>
+				<MkSwitch v-model="limitWidthOfReaction">{{ i18n.ts.limitWidthOfReaction }}</MkSwitch>
+				<MkSwitch v-model="hideReactionsViewerOnTimeline">{{ i18n.ts.hideReactionsViewerOnTimeline }}</MkSwitch>
+				<MkSwitch v-model="hideReactionsCount">{{ i18n.ts.hideReactionsCount }}</MkSwitch>
+			</div>
 		</div>
 	</FormSection>
 
