@@ -78,30 +78,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</FormSection>
 
 	<FormSection>
-		<template #label>{{ i18n.ts.notificationDisplay }}</template>
-
-		<div class="_gaps_m">
-			<MkSwitch v-model="useGroupedNotifications">{{ i18n.ts.useGroupedNotifications }}</MkSwitch>
-
-			<MkRadios v-model="notificationPosition">
-				<template #label>{{ i18n.ts.position }}</template>
-				<option value="leftTop"><i class="ti ti-align-box-left-top"></i> {{ i18n.ts.leftTop }}</option>
-				<option value="rightTop"><i class="ti ti-align-box-right-top"></i> {{ i18n.ts.rightTop }}</option>
-				<option value="leftBottom"><i class="ti ti-align-box-left-bottom"></i> {{ i18n.ts.leftBottom }}</option>
-				<option value="rightBottom"><i class="ti ti-align-box-right-bottom"></i> {{ i18n.ts.rightBottom }}</option>
-			</MkRadios>
-
-			<MkRadios v-model="notificationStackAxis">
-				<template #label>{{ i18n.ts.stackAxis }}</template>
-				<option value="vertical"><i class="ti ti-carousel-vertical"></i> {{ i18n.ts.vertical }}</option>
-				<option value="horizontal"><i class="ti ti-carousel-horizontal"></i> {{ i18n.ts.horizontal }}</option>
-			</MkRadios>
-
-			<MkButton @click="testNotification">{{ i18n.ts._notification.checkNotificationBehavior }}</MkButton>
-		</div>
-	</FormSection>
-
-	<FormSection>
 		<template #label>{{ i18n.ts.appearance }}</template>
 
 		<div class="_gaps_m">
@@ -282,10 +258,7 @@ const useReactionPickerForContextMenu = computed(defaultStore.makeGetterSetter('
 const squareAvatars = computed(defaultStore.makeGetterSetter('squareAvatars'));
 const showAvatarDecorations = computed(defaultStore.makeGetterSetter('showAvatarDecorations'));
 const mediaListWithOneImageAppearance = computed(defaultStore.makeGetterSetter('mediaListWithOneImageAppearance'));
-const notificationPosition = computed(defaultStore.makeGetterSetter('notificationPosition'));
-const notificationStackAxis = computed(defaultStore.makeGetterSetter('notificationStackAxis'));
 const disableStreamingTimeline = computed(defaultStore.makeGetterSetter('disableStreamingTimeline'));
-const useGroupedNotifications = computed(defaultStore.makeGetterSetter('useGroupedNotifications'));
 const useNativeUIForVideoAudioPlayer = computed(defaultStore.makeGetterSetter('useNativeUIForVideoAudioPlayer'));
 const alwaysConfirmFollow = computed(defaultStore.makeGetterSetter('alwaysConfirmFollow'));
 const confirmWhenRevealingSensitiveMedia = computed(defaultStore.makeGetterSetter('confirmWhenRevealingSensitiveMedia'));
