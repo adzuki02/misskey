@@ -215,6 +215,11 @@ definePageMetadata(() => ({
 	&:active {
 		cursor: pointer;
 	}
+
+	&[disabled] {
+		cursor: not-allowed;
+		opacity: .7;
+	}
 }
 
 .dragItemForm {
