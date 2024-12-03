@@ -74,29 +74,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</FormSection>
 
 					<FormSection>
-						<template #label>ServiceWorker</template>
-
-						<div class="_gaps_m">
-							<MkSwitch v-model="enableServiceWorker">
-								<template #label>{{ i18n.ts.enableServiceworker }}</template>
-								<template #caption>{{ i18n.ts.serviceworkerInfo }}</template>
-							</MkSwitch>
-
-							<template v-if="enableServiceWorker">
-								<MkInput v-model="swPublicKey">
-									<template #prefix><i class="ti ti-key"></i></template>
-									<template #label>Public key</template>
-								</MkInput>
-
-								<MkInput v-model="swPrivateKey">
-									<template #prefix><i class="ti ti-key"></i></template>
-									<template #label>Private key</template>
-								</MkInput>
-							</template>
-						</div>
-					</FormSection>
-
-					<FormSection>
 						<template #label>Misskey® Fan-out Timeline Technology™ (FTT)</template>
 
 						<div class="_gaps_m">
@@ -234,9 +211,6 @@ const impressumUrl = ref<string | null>(null);
 const pinnedUsers = ref<string>('');
 const cacheRemoteFiles = ref<boolean>(false);
 const cacheRemoteSensitiveFiles = ref<boolean>(false);
-const enableServiceWorker = ref<boolean>(false);
-const swPublicKey = ref<string | null>(null);
-const swPrivateKey = ref<string | null>(null);
 const enableFanoutTimeline = ref<boolean>(false);
 const enableFanoutTimelineDbFallback = ref<boolean>(false);
 const perLocalUserUserTimelineCacheMax = ref<number>(0);
@@ -264,9 +238,6 @@ async function init(): Promise<void> {
 	pinnedUsers.value = meta.pinnedUsers.join('\n');
 	cacheRemoteFiles.value = meta.cacheRemoteFiles;
 	cacheRemoteSensitiveFiles.value = meta.cacheRemoteSensitiveFiles;
-	enableServiceWorker.value = meta.enableServiceWorker;
-	swPublicKey.value = meta.swPublickey;
-	swPrivateKey.value = meta.swPrivateKey;
 	enableFanoutTimeline.value = meta.enableFanoutTimeline;
 	enableFanoutTimelineDbFallback.value = meta.enableFanoutTimelineDbFallback;
 	perLocalUserUserTimelineCacheMax.value = meta.perLocalUserUserTimelineCacheMax;
@@ -295,9 +266,6 @@ async function save() {
 		pinnedUsers: pinnedUsers.value.split('\n'),
 		cacheRemoteFiles: cacheRemoteFiles.value,
 		cacheRemoteSensitiveFiles: cacheRemoteSensitiveFiles.value,
-		enableServiceWorker: enableServiceWorker.value,
-		swPublicKey: swPublicKey.value,
-		swPrivateKey: swPrivateKey.value,
 		enableFanoutTimeline: enableFanoutTimeline.value,
 		enableFanoutTimelineDbFallback: enableFanoutTimelineDbFallback.value,
 		perLocalUserUserTimelineCacheMax: perLocalUserUserTimelineCacheMax.value,
