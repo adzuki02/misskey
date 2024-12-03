@@ -326,23 +326,6 @@ export class MiMeta {
 	})
 	public smtpPass: string | null;
 
-	@Column('boolean', {
-		default: false,
-	})
-	public enableServiceWorker: boolean;
-
-	@Column('varchar', {
-		length: 1024,
-		nullable: true,
-	})
-	public swPublicKey: string | null;
-
-	@Column('varchar', {
-		length: 1024,
-		nullable: true,
-	})
-	public swPrivateKey: string | null;
-
 	@Column('varchar', {
 		length: 1024,
 		nullable: true,

@@ -1371,13 +1371,6 @@ declare namespace entities {
         ResetPasswordRequest,
         ServerInfoResponse,
         StatsResponse,
-        SwShowRegistrationRequest,
-        SwShowRegistrationResponse,
-        SwUpdateRegistrationRequest,
-        SwUpdateRegistrationResponse,
-        SwRegisterRequest,
-        SwRegisterResponse,
-        SwUnregisterRequest,
         TestRequest,
         TestResponse,
         UsernameAvailableRequest,
@@ -2340,27 +2333,6 @@ export class Stream extends EventEmitter<StreamEvents> {
 //
 // @public (undocumented)
 type SwitchCaseResponseType<E extends keyof Endpoints, P extends Endpoints[E]['req']> = Endpoints[E]['res'] extends SwitchCase ? IsCaseMatched<E, P, 0> extends true ? GetCaseResult<E, P, 0> : IsCaseMatched<E, P, 1> extends true ? GetCaseResult<E, P, 1> : IsCaseMatched<E, P, 2> extends true ? GetCaseResult<E, P, 2> : IsCaseMatched<E, P, 3> extends true ? GetCaseResult<E, P, 3> : IsCaseMatched<E, P, 4> extends true ? GetCaseResult<E, P, 4> : IsCaseMatched<E, P, 5> extends true ? GetCaseResult<E, P, 5> : IsCaseMatched<E, P, 6> extends true ? GetCaseResult<E, P, 6> : IsCaseMatched<E, P, 7> extends true ? GetCaseResult<E, P, 7> : IsCaseMatched<E, P, 8> extends true ? GetCaseResult<E, P, 8> : IsCaseMatched<E, P, 9> extends true ? GetCaseResult<E, P, 9> : Endpoints[E]['res']['$switch']['$default'] : Endpoints[E]['res'];
-
-// @public (undocumented)
-type SwRegisterRequest = operations['sw___register']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type SwRegisterResponse = operations['sw___register']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type SwShowRegistrationRequest = operations['sw___show-registration']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type SwShowRegistrationResponse = operations['sw___show-registration']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type SwUnregisterRequest = operations['sw___unregister']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type SwUpdateRegistrationRequest = operations['sw___update-registration']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type SwUpdateRegistrationResponse = operations['sw___update-registration']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type TestRequest = operations['test']['requestBody']['content']['application/json'];

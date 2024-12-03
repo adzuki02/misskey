@@ -99,9 +99,6 @@ export const paramDef = {
 		smtpPort: { type: 'integer', nullable: true },
 		smtpUser: { type: 'string', nullable: true },
 		smtpPass: { type: 'string', nullable: true },
-		enableServiceWorker: { type: 'boolean' },
-		swPublicKey: { type: 'string', nullable: true },
-		swPrivateKey: { type: 'string', nullable: true },
 		tosUrl: { type: 'string', nullable: true },
 		repositoryUrl: { type: 'string', nullable: true },
 		feedbackUrl: { type: 'string', nullable: true },
@@ -413,18 +410,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.smtpPass !== undefined) {
 				set.smtpPass = ps.smtpPass;
-			}
-
-			if (ps.enableServiceWorker !== undefined) {
-				set.enableServiceWorker = ps.enableServiceWorker;
-			}
-
-			if (ps.swPublicKey !== undefined) {
-				set.swPublicKey = ps.swPublicKey;
-			}
-
-			if (ps.swPrivateKey !== undefined) {
-				set.swPrivateKey = ps.swPrivateKey;
 			}
 
 			if (ps.tosUrl !== undefined) {

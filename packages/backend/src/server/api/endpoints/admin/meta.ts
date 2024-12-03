@@ -73,10 +73,6 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
-			swPublickey: {
-				type: 'string',
-				optional: false, nullable: true,
-			},
 			mascotImageUrl: {
 				type: 'string',
 				optional: false, nullable: true,
@@ -111,10 +107,6 @@ export const meta = {
 				optional: false, nullable: true,
 			},
 			enableEmail: {
-				type: 'boolean',
-				optional: false, nullable: false,
-			},
-			enableServiceWorker: {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
@@ -252,10 +244,6 @@ export const meta = {
 				optional: false, nullable: true,
 			},
 			smtpPass: {
-				type: 'string',
-				optional: false, nullable: true,
-			},
-			swPrivateKey: {
 				type: 'string',
 				optional: false, nullable: true,
 			},
@@ -551,7 +539,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				enableTurnstile: instance.enableTurnstile,
 				turnstileSiteKey: instance.turnstileSiteKey,
 				enableTestcaptcha: instance.enableTestcaptcha,
-				swPublickey: instance.swPublicKey,
 				themeColor: instance.themeColor,
 				mascotImageUrl: instance.mascotImageUrl,
 				bannerUrl: instance.bannerUrl,
@@ -566,7 +553,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				defaultLightTheme: instance.defaultLightTheme,
 				defaultDarkTheme: instance.defaultDarkTheme,
 				enableEmail: instance.enableEmail,
-				enableServiceWorker: instance.enableServiceWorker,
 				translatorAvailable: instance.deeplAuthKey != null,
 				cacheRemoteFiles: instance.cacheRemoteFiles,
 				cacheRemoteSensitiveFiles: instance.cacheRemoteSensitiveFiles,
@@ -593,7 +579,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				smtpPort: instance.smtpPort,
 				smtpUser: instance.smtpUser,
 				smtpPass: instance.smtpPass,
-				swPrivateKey: instance.swPrivateKey,
 				useObjectStorage: instance.useObjectStorage,
 				objectStorageBaseUrl: instance.objectStorageBaseUrl,
 				objectStorageBucket: instance.objectStorageBucket,

@@ -389,13 +389,6 @@ import type {
 	ResetPasswordRequest,
 	ServerInfoResponse,
 	StatsResponse,
-	SwShowRegistrationRequest,
-	SwShowRegistrationResponse,
-	SwUpdateRegistrationRequest,
-	SwUpdateRegistrationResponse,
-	SwRegisterRequest,
-	SwRegisterResponse,
-	SwUnregisterRequest,
 	TestRequest,
 	TestResponse,
 	UsernameAvailableRequest,
@@ -712,10 +705,6 @@ export type Endpoints = {
 	'reset-password': { req: ResetPasswordRequest; res: EmptyResponse };
 	'server-info': { req: EmptyRequest; res: ServerInfoResponse };
 	'stats': { req: EmptyRequest; res: StatsResponse };
-	'sw/show-registration': { req: SwShowRegistrationRequest; res: SwShowRegistrationResponse };
-	'sw/update-registration': { req: SwUpdateRegistrationRequest; res: SwUpdateRegistrationResponse };
-	'sw/register': { req: SwRegisterRequest; res: SwRegisterResponse };
-	'sw/unregister': { req: SwUnregisterRequest; res: EmptyResponse };
 	'test': { req: TestRequest; res: TestResponse };
 	'username/available': { req: UsernameAvailableRequest; res: UsernameAvailableResponse };
 	'users/clips': { req: UsersClipsRequest; res: UsersClipsResponse };

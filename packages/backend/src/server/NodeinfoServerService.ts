@@ -107,7 +107,6 @@ export class NodeinfoServerService {
 					enableTurnstile: meta.enableTurnstile,
 					maxNoteTextLength: MAX_NOTE_TEXT_LENGTH,
 					enableEmail: meta.enableEmail,
-					enableServiceWorker: meta.enableServiceWorker,
 					proxyAccountName: proxyAccount ? proxyAccount.username : null,
 					themeColor: meta.themeColor ?? '#86b300',
 				},
