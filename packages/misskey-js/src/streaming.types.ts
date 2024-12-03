@@ -117,15 +117,6 @@ export type Channels = {
 		};
 		receives: null;
 	};
-	roleTimeline: {
-		params: {
-			roleId: string;
-		};
-		events: {
-			note: (payload: Note) => void;
-		};
-		receives: null;
-	};
 	antenna: {
 		params: {
 			antennaId: string;

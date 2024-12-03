@@ -523,20 +523,6 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 	}
 
 	@bindThis
-	public async addNoteToRoleTimeline(note: Packed<'Note'>): Promise<void> {
-		const roles = await this.getUserRoles(note.userId);
-
-		const redisPipeline = this.redisForTimelines.pipeline();
-
-		for (const role of roles) {
-			this.fanoutTimelineService.push(`roleTimeline:${role.id}`, note.id, 1000, redisPipeline);
-			this.globalEventService.publishRoleTimelineStream(role.id, 'note', note);
-		}
-
-		redisPipeline.exec();
-	}
-
-	@bindThis
 	public async create(values: Partial<MiRole>, moderator?: MiUser): Promise<MiRole> {
 		const date = new Date();
 		const created = await this.rolesRepository.insertOne({

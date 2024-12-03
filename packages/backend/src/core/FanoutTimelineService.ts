@@ -36,9 +36,6 @@ export type FanoutTimelineName =
 	// channel timelines
 	| `channelTimeline:${string}` // replies are included
 
-	// role timelines
-	| `roleTimeline:${string}` // any notes are included
-
 @Injectable()
 export class FanoutTimelineService {
 	constructor(

@@ -29,11 +29,10 @@ import { defaultStore } from '@/store.js';
 import { Paging } from '@/components/MkPagination.vue';
 
 const props = withDefaults(defineProps<{
-	src: BasicTimelineType | 'mentions' | 'directs' | 'list' | 'antenna' | 'channel' | 'role';
+	src: BasicTimelineType | 'mentions' | 'directs' | 'list' | 'antenna' | 'channel';
 	list?: string;
 	antenna?: string;
 	channel?: string;
-	role?: string;
 	sound?: boolean;
 	withRenotes?: boolean;
 	withReplies?: boolean;
@@ -136,11 +135,6 @@ function connectChannel() {
 		(connection as ChannelConnection<Channels['channel']>) = stream.useChannel('channel', {
 			channelId: props.channel,
 		});
-	} else if (props.src === 'role') {
-		if (props.role == null) return;
-		(connection as ChannelConnection<Channels['roleTimeline']>) = stream.useChannel('roleTimeline', {
-			roleId: props.role,
-		});
 	}
 	if (props.src !== 'directs' && props.src !== 'mentions') connection?.on('note', prepend);
 }
@@ -205,11 +199,6 @@ function updatePaginationQuery() {
 		query = {
 			channelId: props.channel,
 		};
-	} else if (props.src === 'role') {
-		endpoint = 'roles/notes';
-		query = {
-			roleId: props.role,
-		};
 	} else {
 		endpoint = null;
 		query = null;
@@ -237,7 +226,7 @@ function refreshEndpointAndChannel() {
 
 // デッキのリストカラムでwithRenotesを変更した場合に自動的に更新されるようにさせる
 // IDが切り替わったら切り替え先のTLを表示させたい
-watch(() => [props.list, props.antenna, props.channel, props.role, props.withRenotes], refreshEndpointAndChannel);
+watch(() => [props.list, props.antenna, props.channel, props.withRenotes], refreshEndpointAndChannel);
 
 // 初回表示用
 refreshEndpointAndChannel();
