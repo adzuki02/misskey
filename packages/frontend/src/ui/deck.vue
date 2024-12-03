@@ -184,7 +184,6 @@ const addColumn = async (ev) => {
 		id: uuid(),
 		name: i18n.ts._deck._columns[column],
 		width: 330,
-		soundSetting: { type: null, volume: 1 },
 	});
 };
 

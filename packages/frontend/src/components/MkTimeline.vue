@@ -23,7 +23,6 @@ import type { BasicTimelineType } from '@/timelines.js';
 import MkNotes from '@/components/MkNotes.vue';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
 import { useStream } from '@/stream.js';
-import * as sound from '@/scripts/sound.js';
 import { $i } from '@/account.js';
 import { defaultStore } from '@/store.js';
 import { Paging } from '@/components/MkPagination.vue';
@@ -33,7 +32,6 @@ const props = withDefaults(defineProps<{
 	list?: string;
 	antenna?: string;
 	channel?: string;
-	sound?: boolean;
 	withRenotes?: boolean;
 	withReplies?: boolean;
 	onlyFiles?: boolean;
@@ -71,10 +69,6 @@ function prepend(note) {
 	tlComponent.value.pagingComponent?.prepend(note);
 
 	emit('note');
-
-	if (props.sound) {
-		sound.playMisskeySfx($i && (note.userId === $i.id) ? 'noteMy' : 'note');
-	}
 }
 
 let connection: ChannelConnection | null = null;

@@ -30,7 +30,6 @@ import { $i } from '@/account.js';
 import MkReactionEffect from '@/components/MkReactionEffect.vue';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
-import * as sound from '@/scripts/sound.js';
 import { checkReactionPermissions } from '@/scripts/check-reaction-permissions.js';
 import { customEmojisMap } from '@/custom-emojis.js';
 import { getUnicodeEmoji } from '@/scripts/emojilist.js';
@@ -69,10 +68,6 @@ async function toggleReaction() {
 		});
 		if (confirm.canceled) return;
 
-		if (oldReaction !== props.reaction) {
-			sound.playMisskeySfx('reaction');
-		}
-
 		if (mock) {
 			emit('reactionToggled', props.reaction, (props.count - 1));
 			return;
@@ -89,8 +84,6 @@ async function toggleReaction() {
 			}
 		});
 	} else {
-		sound.playMisskeySfx('reaction');
-
 		if (mock) {
 			emit('reactionToggled', props.reaction, (props.count + 1));
 			return;
