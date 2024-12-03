@@ -36,7 +36,6 @@ import { NotePiningService } from './NotePiningService.js';
 import { NoteReadService } from './NoteReadService.js';
 import { NotificationService } from './NotificationService.js';
 import { PollService } from './PollService.js';
-import { PushNotificationService } from './PushNotificationService.js';
 import { QueryService } from './QueryService.js';
 import { ReactionService } from './ReactionService.js';
 import { RelayService } from './RelayService.js';
@@ -157,7 +156,6 @@ const $NoteReadService: Provider = { provide: 'NoteReadService', useExisting: No
 const $NotificationService: Provider = { provide: 'NotificationService', useExisting: NotificationService };
 const $PollService: Provider = { provide: 'PollService', useExisting: PollService };
 const $ProxyAccountService: Provider = { provide: 'ProxyAccountService', useExisting: ProxyAccountService };
-const $PushNotificationService: Provider = { provide: 'PushNotificationService', useExisting: PushNotificationService };
 const $QueryService: Provider = { provide: 'QueryService', useExisting: QueryService };
 const $ReactionService: Provider = { provide: 'ReactionService', useExisting: ReactionService };
 const $RelayService: Provider = { provide: 'RelayService', useExisting: RelayService };
@@ -280,7 +278,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		NotificationService,
 		PollService,
 		ProxyAccountService,
-		PushNotificationService,
 		QueryService,
 		ReactionService,
 		RelayService,
@@ -399,7 +396,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$NotificationService,
 		$PollService,
 		$ProxyAccountService,
-		$PushNotificationService,
 		$QueryService,
 		$ReactionService,
 		$RelayService,
@@ -519,7 +515,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		NotificationService,
 		PollService,
 		ProxyAccountService,
-		PushNotificationService,
 		QueryService,
 		ReactionService,
 		RelayService,
@@ -637,7 +632,6 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$NotificationService,
 		$PollService,
 		$ProxyAccountService,
-		$PushNotificationService,
 		$QueryService,
 		$ReactionService,
 		$RelayService,

@@ -62,22 +62,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<FormLink to="/settings/notifications" @click="flushNotification">{{ i18n.ts._notification.flushNotification }}</FormLink>
 		</div>
 	</FormSection>
-	<FormSection>
-		<template #label>{{ i18n.ts.pushNotification }}</template>
-
-		<div class="_gaps_m">
-			<MkPushNotificationAllowButton ref="allowButton"/>
-			<MkSwitch :disabled="!pushRegistrationInServer" :modelValue="sendReadMessage" @update:modelValue="onChangeSendReadMessage">
-				<template #label>{{ i18n.ts.sendPushNotificationReadMessage }}</template>
-				<template #caption>{{ i18n.ts.sendPushNotificationReadMessageCaption }}</template>
-			</MkSwitch>
-		</div>
-	</FormSection>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { shallowRef, computed } from 'vue';
+import { computed } from 'vue';
 import XNotificationConfig from './notifications.notification-config.vue';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
@@ -90,7 +79,6 @@ import { signinRequired } from '@/account.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-import MkPushNotificationAllowButton from '@/components/MkPushNotificationAllowButton.vue';
 import { notificationTypes } from '@/const.js';
 import { defaultStore } from '@/store.js';
 
@@ -102,9 +90,6 @@ const notificationStackAxis = computed(defaultStore.makeGetterSetter('notificati
 
 const nonConfigurableNotificationTypes = ['note', 'roleAssigned', 'followRequestAccepted'];
 
-const allowButton = shallowRef<InstanceType<typeof MkPushNotificationAllowButton>>();
-const pushRegistrationInServer = computed(() => allowButton.value?.pushRegistrationInServer);
-const sendReadMessage = computed(() => pushRegistrationInServer.value?.sendReadMessage || false);
 const userLists = await misskeyApi('users/lists/list');
 
 async function readAllUnreadNotes() {
@@ -123,18 +108,6 @@ async function updateReceiveConfig(type, value) {
 		},
 	}).then(i => {
 		$i.notificationRecieveConfig = i.notificationRecieveConfig;
-	});
-}
-
-function onChangeSendReadMessage(v: boolean) {
-	if (!pushRegistrationInServer.value) return;
-
-	os.apiWithDialog('sw/update-registration', {
-		endpoint: pushRegistrationInServer.value.endpoint,
-		sendReadMessage: v,
-	}).then(res => {
-		if (!allowButton.value)	return;
-		allowButton.value.pushRegistrationInServer = res;
 	});
 }
 

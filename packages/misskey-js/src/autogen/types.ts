@@ -2486,45 +2486,6 @@ export type paths = {
      */
     post: operations['stats'];
   };
-  '/sw/show-registration': {
-    /**
-     * sw/show-registration
-     * @description Check push notification registration exists.
-     *
-     * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
-     * **Credential required**: *Yes*
-     */
-    post: operations['sw___show-registration'];
-  };
-  '/sw/update-registration': {
-    /**
-     * sw/update-registration
-     * @description Update push notification registration.
-     *
-     * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
-     * **Credential required**: *Yes*
-     */
-    post: operations['sw___update-registration'];
-  };
-  '/sw/register': {
-    /**
-     * sw/register
-     * @description Register to receive push notifications.
-     *
-     * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
-     * **Credential required**: *Yes*
-     */
-    post: operations['sw___register'];
-  };
-  '/sw/unregister': {
-    /**
-     * sw/unregister
-     * @description Unregister from receiving push notifications.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['sw___unregister'];
-  };
   '/test': {
     /**
      * test
@@ -3796,7 +3757,6 @@ export type components = {
       enableTurnstile: boolean;
       turnstileSiteKey: string | null;
       enableTestcaptcha: boolean;
-      swPublickey: string | null;
       /** @default /assets/ai.png */
       mascotImageUrl: string;
       bannerUrl: string | null;
@@ -3806,7 +3766,6 @@ export type components = {
       iconUrl: string | null;
       maxNoteTextLength: number;
       enableEmail: boolean;
-      enableServiceWorker: boolean;
       translatorAvailable: boolean;
       mediaProxy: string;
       enableUrlPreview: boolean;
@@ -3835,7 +3794,6 @@ export type components = {
         turnstile: boolean;
         recaptcha: boolean;
         objectStorage: boolean;
-        serviceWorker: boolean;
         /** @default true */
         miauth?: boolean;
       };
@@ -3885,7 +3843,6 @@ export type operations = {
             enableTurnstile: boolean;
             turnstileSiteKey: string | null;
             enableTestcaptcha: boolean;
-            swPublickey: string | null;
             /** @default /assets/ai.png */
             mascotImageUrl: string | null;
             bannerUrl: string | null;
@@ -3896,7 +3853,6 @@ export type operations = {
             app192IconUrl: string | null;
             app512IconUrl: string | null;
             enableEmail: boolean;
-            enableServiceWorker: boolean;
             translatorAvailable: boolean;
             silencedHosts: string[];
             mediaSilencedHosts: string[];
@@ -3925,7 +3881,6 @@ export type operations = {
             smtpPort: number | null;
             smtpUser: string | null;
             smtpPass: string | null;
-            swPrivateKey: string | null;
             useObjectStorage: boolean;
             objectStorageBaseUrl: string | null;
             objectStorageBucket: string | null;
@@ -7265,9 +7220,6 @@ export type operations = {
           smtpPort?: number | null;
           smtpUser?: string | null;
           smtpPass?: string | null;
-          enableServiceWorker?: boolean;
-          swPublicKey?: string | null;
-          swPrivateKey?: string | null;
           tosUrl?: string | null;
           repositoryUrl?: string | null;
           feedbackUrl?: string | null;
@@ -19767,243 +19719,6 @@ export type operations = {
             driveUsageRemote: number;
           };
         };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * sw/show-registration
-   * @description Check push notification registration exists.
-   *
-   * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
-   * **Credential required**: *Yes*
-   */
-  'sw___show-registration': {
-    requestBody: {
-      content: {
-        'application/json': {
-          endpoint: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': {
-            userId: string;
-            endpoint: string;
-            sendReadMessage: boolean;
-          } | null;
-        };
-      };
-      /** @description OK (without any results) */
-      204: {
-        content: never;
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * sw/update-registration
-   * @description Update push notification registration.
-   *
-   * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
-   * **Credential required**: *Yes*
-   */
-  'sw___update-registration': {
-    requestBody: {
-      content: {
-        'application/json': {
-          endpoint: string;
-          sendReadMessage?: boolean;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': {
-            userId: string;
-            endpoint: string;
-            sendReadMessage: boolean;
-          };
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * sw/register
-   * @description Register to receive push notifications.
-   *
-   * **Internal Endpoint**: This endpoint is an API for the misskey mainframe and is not intended for use by third parties.
-   * **Credential required**: *Yes*
-   */
-  sw___register: {
-    requestBody: {
-      content: {
-        'application/json': {
-          endpoint: string;
-          auth: string;
-          publickey: string;
-          /** @default false */
-          sendReadMessage?: boolean;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': {
-            /** @enum {string} */
-            state?: 'already-subscribed' | 'subscribed';
-            key: string | null;
-            userId: string;
-            endpoint: string;
-            sendReadMessage: boolean;
-          };
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * sw/unregister
-   * @description Unregister from receiving push notifications.
-   *
-   * **Credential required**: *No*
-   */
-  sw___unregister: {
-    requestBody: {
-      content: {
-        'application/json': {
-          endpoint: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
       };
       /** @description Client error */
       400: {

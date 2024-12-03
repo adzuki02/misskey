@@ -119,10 +119,6 @@ export const packedMetaLiteSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
-		swPublickey: {
-			type: 'string',
-			optional: false, nullable: true,
-		},
 		mascotImageUrl: {
 			type: 'string',
 			optional: false, nullable: false,
@@ -153,10 +149,6 @@ export const packedMetaLiteSchema = {
 			optional: false, nullable: false,
 		},
 		enableEmail: {
-			type: 'boolean',
-			optional: false, nullable: false,
-		},
-		enableServiceWorker: {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
@@ -258,10 +250,6 @@ export const packedMetaDetailedOnlySchema = {
 					optional: false, nullable: false,
 				},
 				objectStorage: {
-					type: 'boolean',
-					optional: false, nullable: false,
-				},
-				serviceWorker: {
 					type: 'boolean',
 					optional: false, nullable: false,
 				},

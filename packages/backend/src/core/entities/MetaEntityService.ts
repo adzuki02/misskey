@@ -83,7 +83,6 @@ export class MetaEntityService {
 			enableTurnstile: instance.enableTurnstile,
 			turnstileSiteKey: instance.turnstileSiteKey,
 			enableTestcaptcha: instance.enableTestcaptcha,
-			swPublickey: instance.swPublicKey,
 			themeColor: instance.themeColor,
 			mascotImageUrl: instance.mascotImageUrl ?? '/assets/ai.png',
 			bannerUrl: instance.bannerUrl,
@@ -97,7 +96,6 @@ export class MetaEntityService {
 			defaultLightTheme,
 			defaultDarkTheme,
 			enableEmail: instance.enableEmail,
-			enableServiceWorker: instance.enableServiceWorker,
 
 			translatorAvailable: instance.deeplAuthKey != null,
 
@@ -141,7 +139,6 @@ export class MetaEntityService {
 				recaptcha: instance.enableRecaptcha,
 				turnstile: instance.enableTurnstile,
 				objectStorage: instance.useObjectStorage,
-				serviceWorker: instance.enableServiceWorker,
 				miauth: true,
 			},
 		};

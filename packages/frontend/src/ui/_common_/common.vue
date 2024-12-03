@@ -46,7 +46,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
-import { swInject } from './sw-inject.js';
 import XNotification from './notification.vue';
 import type { Notification } from 'misskey-js/entities.js';
 import { popups } from '@/os.js';
@@ -92,11 +91,6 @@ if ($i) {
 	const connection = useStream().useChannel('main', null, 'UI');
 	connection.on('notification', onNotification);
 	globalEvents.on('clientNotification', notification => onNotification(notification, true));
-
-	//#region Listen message from SW
-	if ('serviceWorker' in navigator) {
-		swInject();
-	}
 }
 </script>
 

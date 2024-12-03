@@ -46,7 +46,6 @@ import {
 	MiRole,
 	MiRoleAssignment,
 	MiSignin,
-	MiSwSubscription,
 	MiUsedUsername,
 	MiUser,
 	MiUserIp,
@@ -244,12 +243,6 @@ const $blockingsRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $swSubscriptionsRepository: Provider = {
-	provide: DI.swSubscriptionsRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiSwSubscription).extend(miRepository as MiRepository<MiSwSubscription>),
-	inject: [DI.db],
-};
-
 const $hashtagsRepository: Provider = {
 	provide: DI.hashtagsRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiHashtag).extend(miRepository as MiRepository<MiHashtag>),
@@ -409,7 +402,6 @@ const $userMemosRepository: Provider = {
 		$mutingsRepository,
 		$renoteMutingsRepository,
 		$blockingsRepository,
-		$swSubscriptionsRepository,
 		$hashtagsRepository,
 		$registrationTicketsRepository,
 		$authSessionsRepository,
@@ -463,7 +455,6 @@ const $userMemosRepository: Provider = {
 		$mutingsRepository,
 		$renoteMutingsRepository,
 		$blockingsRepository,
-		$swSubscriptionsRepository,
 		$hashtagsRepository,
 		$registrationTicketsRepository,
 		$authSessionsRepository,
