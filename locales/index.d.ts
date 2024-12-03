@@ -4571,6 +4571,18 @@ export interface Locale extends ILocale {
      */
     "displayOfNote": string;
     /**
+     * リアクションの表示
+     */
+    "displayOfReaction": string;
+    /**
+     * メディアの表示
+     */
+    "displayOfMedia": string;
+    /**
+     * アニメーション
+     */
+    "animation": string;
+    /**
      * 初期設定
      */
     "initialAccountSetting": string;

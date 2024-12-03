@@ -174,6 +174,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFolder>
 		</div>
 	</FormSection>
+
+	<FormSection>
+		<div class="_gaps">
+			<MkFolder>
+				<template #label>{{ i18n.ts.additionalEmojiDictionary }}</template>
+				<div class="_buttons">
+					<template v-for="lang in emojiIndexLangs" :key="lang">
+						<MkButton v-if="defaultStore.reactiveState.additionalUnicodeEmojiIndexes.value[lang]" danger @click="removeEmojiIndex(lang)"><i class="ti ti-trash"></i> {{ i18n.ts.remove }} ({{ getEmojiIndexLangName(lang) }})</MkButton>
+						<MkButton v-else @click="downloadEmojiIndex(lang)"><i class="ti ti-download"></i> {{ getEmojiIndexLangName(lang) }}{{ defaultStore.reactiveState.additionalUnicodeEmojiIndexes.value[lang] ? ` (${ i18n.ts.installed })` : '' }}</MkButton>
+					</template>
+				</div>
+			</MkFolder>
+		</div>
+	</FormSection>
 </div>
 </template>
 
@@ -188,6 +202,7 @@ import FormSection from '@/components/form/section.vue';
 import FormSplit from '@/components/form/split.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import * as os from '@/os.js';
+import { langs } from '@/config.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
@@ -198,6 +213,44 @@ import { customEmojiTags } from '@/custom-emojis';
 import MkCustomEmoji from '@/components/global/MkCustomEmoji.vue';
 import MkEmoji from '@/components/global/MkEmoji.vue';
 import MkFolder from '@/components/MkFolder.vue';
+
+const emojiIndexLangs = ['en-US'] as const;
+
+function getEmojiIndexLangName(targetLang: typeof emojiIndexLangs[number]) {
+	if (langs.find(x => x[0] === targetLang)) {
+		return langs.find(x => x[0] === targetLang)![1];
+	} else {
+		return targetLang;
+	}
+}
+
+function downloadEmojiIndex(lang: typeof emojiIndexLangs[number]) {
+	async function main() {
+		const currentIndexes = defaultStore.state.additionalUnicodeEmojiIndexes;
+
+		function download() {
+			switch (lang) {
+				case 'en-US': return import('../../unicode-emoji-indexes/en-US.json').then(x => x.default);
+				default: throw new Error('unrecognized lang: ' + lang);
+			}
+		}
+
+		currentIndexes[lang] = await download();
+		await defaultStore.set('additionalUnicodeEmojiIndexes', currentIndexes);
+	}
+
+	os.promiseDialog(main());
+}
+
+function removeEmojiIndex(lang: string) {
+	async function main() {
+		const currentIndexes = defaultStore.state.additionalUnicodeEmojiIndexes;
+		delete currentIndexes[lang];
+		await defaultStore.set('additionalUnicodeEmojiIndexes', currentIndexes);
+	}
+
+	os.promiseDialog(main());
+}
 
 const pinnedEmojisForReaction: Ref<string[]> = ref(deepClone(defaultStore.state.reactions));
 const pinnedEmojis: Ref<string[]> = ref(deepClone(defaultStore.state.pinnedEmojis));

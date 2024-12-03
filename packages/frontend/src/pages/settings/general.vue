@@ -29,27 +29,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #label>{{ i18n.ts.displayOfNote }}</template>
 
 		<div class="_gaps_m">
+			<MkSwitch v-model="collapseRenotes">
+				<template #label>{{ i18n.ts.collapseRenotes }}</template>
+				<template #caption>{{ i18n.ts.collapseRenotesDescription }}</template>
+			</MkSwitch>
+
 			<div class="_gaps_s">
-				<MkSwitch v-model="collapseRenotes">
-					<template #label>{{ i18n.ts.collapseRenotes }}</template>
-					<template #caption>{{ i18n.ts.collapseRenotesDescription }}</template>
-				</MkSwitch>
 				<MkSwitch v-model="showNoteActionsOnlyHover">{{ i18n.ts.showNoteActionsOnlyHover }}</MkSwitch>
 				<MkSwitch v-model="showClipButtonInNoteFooter">{{ i18n.ts.showClipButtonInNoteFooter }}</MkSwitch>
+				<MkSwitch v-model="useReactionPickerForContextMenu">{{ i18n.ts.useReactionPickerForContextMenu }}</MkSwitch>
+			</div>
+
+			<div class="_gaps_s">
 				<MkSwitch v-model="advancedMfm">{{ i18n.ts.enableAdvancedMfm }}</MkSwitch>
 				<MkSwitch v-if="advancedMfm" v-model="animatedMfm">{{ i18n.ts.enableAnimatedMfm }}</MkSwitch>
-				<MkSwitch v-model="showGapBetweenNotesInTimeline">{{ i18n.ts.showGapBetweenNotesInTimeline }}</MkSwitch>
-				<MkSwitch v-model="loadRawImages">{{ i18n.ts.loadRawImages }}</MkSwitch>
-				<MkRadios v-model="reactionsDisplaySize">
-					<template #label>{{ i18n.ts.reactionsDisplaySize }}</template>
-					<option value="small">{{ i18n.ts.small }}</option>
-					<option value="medium">{{ i18n.ts.medium }}</option>
-					<option value="large">{{ i18n.ts.large }}</option>
-				</MkRadios>
-				<MkSwitch v-model="limitWidthOfReaction">{{ i18n.ts.limitWidthOfReaction }}</MkSwitch>
-				<MkSwitch v-model="hideReactionsViewerOnTimeline">{{ i18n.ts.hideReactionsViewerOnTimeline }}</MkSwitch>
-				<MkSwitch v-model="hideReactionsCount">{{ i18n.ts.hideReactionsCount }}</MkSwitch>
 			</div>
+
+			<MkSwitch v-model="showGapBetweenNotesInTimeline">{{ i18n.ts.showGapBetweenNotesInTimeline }}</MkSwitch>
 
 			<MkSelect v-model="instanceTicker">
 				<template #label>{{ i18n.ts.instanceTicker }}</template>
@@ -59,13 +55,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="remoteIcon">{{ i18n.ts._instanceTicker.remoteIcon }}</option>
 				<option value="alwaysIcon">{{ i18n.ts._instanceTicker.alwaysIcon }}</option>
 			</MkSelect>
+		</div>
+	</FormSection>
 
-			<MkSelect v-model="nsfw">
-				<template #label>{{ i18n.ts.displayOfSensitiveMedia }}</template>
-				<option value="respect">{{ i18n.ts._displayOfSensitiveMedia.respect }}</option>
-				<option value="ignore">{{ i18n.ts._displayOfSensitiveMedia.ignore }}</option>
-				<option value="force">{{ i18n.ts._displayOfSensitiveMedia.force }}</option>
-			</MkSelect>
+	<FormSection>
+		<template #label>{{ i18n.ts.displayOfMedia }}</template>
+
+		<div class="_gaps_m">
+			<MkSwitch v-model="loadRawImages">{{ i18n.ts.loadRawImages }}</MkSwitch>
 
 			<MkRadios v-model="mediaListWithOneImageAppearance">
 				<template #label>{{ i18n.ts.mediaListWithOneImageAppearance }}</template>
@@ -74,30 +71,47 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="1_1">{{ i18n.tsx.limitTo({ x: '1:1' }) }}</option>
 				<option value="2_3">{{ i18n.tsx.limitTo({ x: '2:3' }) }}</option>
 			</MkRadios>
+
+			<MkSelect v-model="nsfw">
+				<template #label>{{ i18n.ts.displayOfSensitiveMedia }}</template>
+				<option value="respect">{{ i18n.ts._displayOfSensitiveMedia.respect }}</option>
+				<option value="ignore">{{ i18n.ts._displayOfSensitiveMedia.ignore }}</option>
+				<option value="force">{{ i18n.ts._displayOfSensitiveMedia.force }}</option>
+			</MkSelect>
+
+			<div class="_gaps_s">
+				<MkSwitch v-model="highlightSensitiveMedia">{{ i18n.ts.highlightSensitiveMedia }}</MkSwitch>
+				<MkSwitch v-model="confirmWhenRevealingSensitiveMedia">{{ i18n.ts.confirmWhenRevealingSensitiveMedia }}</MkSwitch>
+			</div>
 		</div>
 	</FormSection>
 
 	<FormSection>
-		<template #label>{{ i18n.ts.notificationDisplay }}</template>
+		<template #label>{{ i18n.ts.displayOfReaction }}</template>
 
 		<div class="_gaps_m">
-			<MkSwitch v-model="useGroupedNotifications">{{ i18n.ts.useGroupedNotifications }}</MkSwitch>
-
-			<MkRadios v-model="notificationPosition">
-				<template #label>{{ i18n.ts.position }}</template>
-				<option value="leftTop"><i class="ti ti-align-box-left-top"></i> {{ i18n.ts.leftTop }}</option>
-				<option value="rightTop"><i class="ti ti-align-box-right-top"></i> {{ i18n.ts.rightTop }}</option>
-				<option value="leftBottom"><i class="ti ti-align-box-left-bottom"></i> {{ i18n.ts.leftBottom }}</option>
-				<option value="rightBottom"><i class="ti ti-align-box-right-bottom"></i> {{ i18n.ts.rightBottom }}</option>
+			<MkRadios v-model="reactionsDisplaySize">
+				<template #label>{{ i18n.ts.reactionsDisplaySize }}</template>
+				<option value="small">{{ i18n.ts.small }}</option>
+				<option value="medium">{{ i18n.ts.medium }}</option>
+				<option value="large">{{ i18n.ts.large }}</option>
 			</MkRadios>
 
-			<MkRadios v-model="notificationStackAxis">
-				<template #label>{{ i18n.ts.stackAxis }}</template>
-				<option value="vertical"><i class="ti ti-carousel-vertical"></i> {{ i18n.ts.vertical }}</option>
-				<option value="horizontal"><i class="ti ti-carousel-horizontal"></i> {{ i18n.ts.horizontal }}</option>
-			</MkRadios>
+			<div class="_gaps_s">
+				<MkSwitch v-model="limitWidthOfReaction">{{ i18n.ts.limitWidthOfReaction }}</MkSwitch>
+				<MkSwitch v-model="hideReactionsCount">{{ i18n.ts.hideReactionsCount }}</MkSwitch>
+				<MkSwitch v-model="hideReactionsViewerOnTimeline">{{ i18n.ts.hideReactionsViewerOnTimeline }}</MkSwitch>
+			</div>
+		</div>
+	</FormSection>
 
-			<MkButton @click="testNotification">{{ i18n.ts._notification.checkNotificationBehavior }}</MkButton>
+	<FormSection>
+		<template #label>{{ i18n.ts.animation }}</template>
+
+		<div class="_gaps_s">
+			<MkSwitch v-model="reduceAnimation">{{ i18n.ts.reduceUiAnimation }}</MkSwitch>
+			<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}</MkSwitch>
+			<MkSwitch v-model="forceShowingAnimatedImagesOnPopup">{{ i18n.ts.forceShowingAnimatedImagesOnPopup }}</MkSwitch>
 		</div>
 	</FormSection>
 
@@ -106,17 +120,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div class="_gaps_m">
 			<div class="_gaps_s">
-				<MkSwitch v-model="reduceAnimation">{{ i18n.ts.reduceUiAnimation }}</MkSwitch>
 				<MkSwitch v-model="useBlurEffect">{{ i18n.ts.useBlurEffect }}</MkSwitch>
 				<MkSwitch v-model="useBlurEffectForModal">{{ i18n.ts.useBlurEffectForModal }}</MkSwitch>
-				<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}</MkSwitch>
-				<MkSwitch v-model="forceShowingAnimatedImagesOnPopup">{{ i18n.ts.forceShowingAnimatedImagesOnPopup }}</MkSwitch>
-				<MkSwitch v-model="highlightSensitiveMedia">{{ i18n.ts.highlightSensitiveMedia }}</MkSwitch>
+			</div>
+
+			<div class="_gaps_s">
 				<MkSwitch v-model="squareAvatars">{{ i18n.ts.squareAvatars }}</MkSwitch>
 				<MkSwitch v-model="showAvatarDecorations">{{ i18n.ts.showAvatarDecorations }}</MkSwitch>
-				<MkSwitch v-model="useSystemFont">{{ i18n.ts.useSystemFont }}</MkSwitch>
-				<MkSwitch v-model="useNativeUIForVideoAudioPlayer">{{ i18n.ts.useNativeUIForVideoAudioPlayer }}</MkSwitch>
 			</div>
+
+			<MkSwitch v-model="useNativeUIForVideoAudioPlayer">{{ i18n.ts.useNativeUIForVideoAudioPlayer }}</MkSwitch>
+		
+			<MkSwitch v-model="useSystemFont">{{ i18n.ts.useSystemFont }}</MkSwitch>
+
+			<MkRadios v-model="fontSize">
+				<template #label>{{ i18n.ts.fontSize }}</template>
+				<option :value="null"><span style="font-size: 14px;">Aa</span></option>
+				<option value="1"><span style="font-size: 15px;">Aa</span></option>
+				<option value="2"><span style="font-size: 16px;">Aa</span></option>
+				<option value="3"><span style="font-size: 17px;">Aa</span></option>
+			</MkRadios>
 
 			<MkSelect v-model="menuStyle">
 				<template #label>{{ i18n.ts.menuStyle }}</template>
@@ -133,14 +156,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkRadios>
 				<div style="margin: 8px 0 0 0; font-size: 1.5em;"><Mfm :key="emojiStyle" text="🍮🍦🍭🍩🍰🍫🍬🥞🍪"/></div>
 			</div>
-
-			<MkRadios v-model="fontSize">
-				<template #label>{{ i18n.ts.fontSize }}</template>
-				<option :value="null"><span style="font-size: 14px;">Aa</span></option>
-				<option value="1"><span style="font-size: 15px;">Aa</span></option>
-				<option value="2"><span style="font-size: 16px;">Aa</span></option>
-				<option value="3"><span style="font-size: 17px;">Aa</span></option>
-			</MkRadios>
 		</div>
 	</FormSection>
 
@@ -149,29 +164,34 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div class="_gaps_m">
 			<div class="_gaps_s">
-				<MkSwitch v-model="useReactionPickerForContextMenu">{{ i18n.ts.useReactionPickerForContextMenu }}</MkSwitch>
 				<MkSwitch v-model="enableInfiniteScroll">{{ i18n.ts.enableInfiniteScroll }}</MkSwitch>
 				<MkSwitch v-model="disableStreamingTimeline">{{ i18n.ts.disableStreamingTimeline }}</MkSwitch>
 				<MkSwitch v-model="alwaysConfirmFollow">{{ i18n.ts.alwaysConfirmFollow }}</MkSwitch>
-				<MkSwitch v-model="confirmWhenRevealingSensitiveMedia">{{ i18n.ts.confirmWhenRevealingSensitiveMedia }}</MkSwitch>
 			</div>
+
 			<MkSelect v-model="serverDisconnectedBehavior">
 				<template #label>{{ i18n.ts.whenServerDisconnected }}</template>
 				<option value="reload">{{ i18n.ts._serverDisconnectedBehavior.reload }}</option>
 				<option value="dialog">{{ i18n.ts._serverDisconnectedBehavior.dialog }}</option>
 				<option value="quiet">{{ i18n.ts._serverDisconnectedBehavior.quiet }}</option>
 			</MkSelect>
+
 			<MkSelect v-model="contextMenu">
 				<template #label>{{ i18n.ts._contextMenu.title }}</template>
 				<option value="app">{{ i18n.ts._contextMenu.app }}</option>
 				<option value="appWithShift">{{ i18n.ts._contextMenu.appWithShift }}</option>
 				<option value="native">{{ i18n.ts._contextMenu.native }}</option>
 			</MkSelect>
+
 			<MkRange v-model="numberOfPageCache" :min="1" :max="10" :step="1" easing>
 				<template #label>{{ i18n.ts.numberOfPageCache }}</template>
 				<template #caption>{{ i18n.ts.numberOfPageCacheDescription }}</template>
 			</MkRange>
+		</div>
+	</FormSection>
 
+	<FormSection>
+		<div class="_gaps_m">
 			<MkFolder>
 				<template #label>{{ i18n.ts.dataSaver }}</template>
 
@@ -209,15 +229,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #label>{{ i18n.ts.other }}</template>
 
 		<div class="_gaps">
-			<MkFolder>
-				<template #label>{{ i18n.ts.additionalEmojiDictionary }}</template>
-				<div class="_buttons">
-					<template v-for="lang in emojiIndexLangs" :key="lang">
-						<MkButton v-if="defaultStore.reactiveState.additionalUnicodeEmojiIndexes.value[lang]" danger @click="removeEmojiIndex(lang)"><i class="ti ti-trash"></i> {{ i18n.ts.remove }} ({{ getEmojiIndexLangName(lang) }})</MkButton>
-						<MkButton v-else @click="downloadEmojiIndex(lang)"><i class="ti ti-download"></i> {{ getEmojiIndexLangName(lang) }}{{ defaultStore.reactiveState.additionalUnicodeEmojiIndexes.value[lang] ? ` (${ i18n.ts.installed })` : '' }}</MkButton>
-					</template>
-				</div>
-			</MkFolder>
 			<FormLink to="/settings/deck">{{ i18n.ts.deck }}</FormLink>
 			<FormLink to="/settings/custom-css"><template #icon><i class="ti ti-code"></i></template>{{ i18n.ts.customCss }}</FormLink>
 		</div>
@@ -282,10 +293,7 @@ const useReactionPickerForContextMenu = computed(defaultStore.makeGetterSetter('
 const squareAvatars = computed(defaultStore.makeGetterSetter('squareAvatars'));
 const showAvatarDecorations = computed(defaultStore.makeGetterSetter('showAvatarDecorations'));
 const mediaListWithOneImageAppearance = computed(defaultStore.makeGetterSetter('mediaListWithOneImageAppearance'));
-const notificationPosition = computed(defaultStore.makeGetterSetter('notificationPosition'));
-const notificationStackAxis = computed(defaultStore.makeGetterSetter('notificationStackAxis'));
 const disableStreamingTimeline = computed(defaultStore.makeGetterSetter('disableStreamingTimeline'));
-const useGroupedNotifications = computed(defaultStore.makeGetterSetter('useGroupedNotifications'));
 const useNativeUIForVideoAudioPlayer = computed(defaultStore.makeGetterSetter('useNativeUIForVideoAudioPlayer'));
 const alwaysConfirmFollow = computed(defaultStore.makeGetterSetter('alwaysConfirmFollow'));
 const confirmWhenRevealingSensitiveMedia = computed(defaultStore.makeGetterSetter('confirmWhenRevealingSensitiveMedia'));
@@ -334,71 +342,6 @@ watch([
 ], async () => {
 	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
-
-const emojiIndexLangs = ['en-US'] as const;
-
-function getEmojiIndexLangName(targetLang: typeof emojiIndexLangs[number]) {
-	if (langs.find(x => x[0] === targetLang)) {
-		return langs.find(x => x[0] === targetLang)![1];
-	} else {
-		return targetLang;
-	}
-}
-
-function downloadEmojiIndex(lang: typeof emojiIndexLangs[number]) {
-	async function main() {
-		const currentIndexes = defaultStore.state.additionalUnicodeEmojiIndexes;
-
-		function download() {
-			switch (lang) {
-				case 'en-US': return import('../../unicode-emoji-indexes/en-US.json').then(x => x.default);
-				default: throw new Error('unrecognized lang: ' + lang);
-			}
-		}
-
-		currentIndexes[lang] = await download();
-		await defaultStore.set('additionalUnicodeEmojiIndexes', currentIndexes);
-	}
-
-	os.promiseDialog(main());
-}
-
-function removeEmojiIndex(lang: string) {
-	async function main() {
-		const currentIndexes = defaultStore.state.additionalUnicodeEmojiIndexes;
-		delete currentIndexes[lang];
-		await defaultStore.set('additionalUnicodeEmojiIndexes', currentIndexes);
-	}
-
-	os.promiseDialog(main());
-}
-
-async function setPinnedList() {
-	const lists = await misskeyApi('users/lists/list');
-	const { canceled, result: list } = await os.select({
-		title: i18n.ts.selectList,
-		items: lists.map(x => ({
-			value: x, text: x.name,
-		})),
-	});
-	if (canceled) return;
-
-	defaultStore.set('pinnedUserLists', [list]);
-}
-
-function removePinnedList() {
-	defaultStore.set('pinnedUserLists', []);
-}
-
-function testNotification(): void {
-	const notification: Notification = {
-		id: Math.random().toString(),
-		createdAt: new Date().toUTCString(),
-		type: 'test',
-	};
-
-	globalEvents.emit('clientNotification', notification);
-}
 
 function enableAllDataSaver() {
 	const g = { ...defaultStore.state.dataSaver };
