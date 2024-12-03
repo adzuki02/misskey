@@ -32,7 +32,6 @@ import { customEmojisMap } from '@/custom-emojis.js';
 import * as os from '@/os.js';
 import { misskeyApiGet } from '@/scripts/misskey-api.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
-import * as sound from '@/scripts/sound.js';
 import { i18n } from '@/i18n.js';
 import MkCustomEmojiDetailedDialog from '@/components/MkCustomEmojiDetailedDialog.vue';
 
@@ -104,7 +103,6 @@ function onClick(ev: MouseEvent) {
 					icon: 'ti ti-plus',
 					action: () => {
 						react(props.host ? `:${props.name}@${props.host}:` : `:${props.name}:`);
-						sound.playMisskeySfx('reaction');
 					},
 				}
 				: undefined,

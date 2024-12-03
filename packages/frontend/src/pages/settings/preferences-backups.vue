@@ -102,10 +102,6 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'defaultWithReplies',
 	'disableStreamingTimeline',
 	'useGroupedNotifications',
-	'sound_masterVolume',
-	'sound_note',
-	'sound_noteMy',
-	'sound_notification',
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	'lightTheme',

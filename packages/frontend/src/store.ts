@@ -7,11 +7,10 @@ import { markRaw, ref } from 'vue';
 import { miLocalStorage } from './local-storage.js';
 import type { Note, UserList, UserDetailed } from 'misskey-js/entities.js';
 import type { noteVisibilities } from 'misskey-js/consts.js';
-import type { SoundType } from '@/scripts/sound.js';
 import lightTheme from '@/themes/l-light.json5';
 import darkTheme from '@/themes/d-green-lime.json5';
 import { Storage } from '@/pizzax.js';
-import { i18n } from './i18n.js';
+import { i18n } from '@/i18n.js';
 
 interface PostFormAction {
 	title: string,
@@ -34,22 +33,6 @@ interface NoteViewInterruptor {
 
 interface NotePostInterruptor {
 	handler: (note: any) => unknown;
-}
-
-/** サウンド設定 */
-export type SoundStore = {
-	type: Exclude<SoundType, '_driveFile_'>;
-	volume: number;
-} | {
-	type: '_driveFile_';
-
-	/** ドライブのファイルID */
-	fileId: string;
-
-	/** ファイルURL（こちらが優先される） */
-	fileUrl: string;
-
-	volume: number;
 }
 
 export type TimelineTab = {
@@ -404,35 +387,6 @@ export const defaultStore = markRaw(new Storage('base', {
 	skipNoteRender: {
 		where: 'device',
 		default: true,
-	},
-
-	sound_masterVolume: {
-		where: 'device',
-		default: 0.3,
-	},
-	sound_notUseSound: {
-		where: 'device',
-		default: false,
-	},
-	sound_useSoundOnlyWhenActive: {
-		where: 'device',
-		default: false,
-	},
-	sound_note: {
-		where: 'device',
-		default: { type: null, volume: 1 } as SoundStore,
-	},
-	sound_noteMy: {
-		where: 'device',
-		default: { type: 'syuilo/n-cea-4va', volume: 1 } as SoundStore,
-	},
-	sound_notification: {
-		where: 'device',
-		default: { type: null, volume: 1 } as SoundStore,
-	},
-	sound_reaction: {
-		where: 'device',
-		default: { type: null, volume: 1 } as SoundStore,
 	},
 }));
 

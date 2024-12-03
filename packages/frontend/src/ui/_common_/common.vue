@@ -52,7 +52,6 @@ import type { Notification } from 'misskey-js/entities.js';
 import { popups } from '@/os.js';
 import { pendingApiRequestsCount } from '@/scripts/misskey-api.js';
 import { uploads } from '@/scripts/upload.js';
-import * as sound from '@/scripts/sound.js';
 import { $i } from '@/account.js';
 import { useStream } from '@/stream.js';
 import { i18n } from '@/i18n.js';
@@ -87,8 +86,6 @@ function onNotification(notification: Notification, isClient = false) {
 			notifications.value = notifications.value.filter(x => x.id !== notification.id);
 		}, 6000);
 	}
-
-	sound.playMisskeySfx('notification');
 }
 
 if ($i) {

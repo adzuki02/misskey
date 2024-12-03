@@ -184,7 +184,6 @@ import { checkWordMute } from '@/scripts/check-word-mute.js';
 import { userPage } from '@/filters/user.js';
 import number from '@/filters/number.js';
 import * as os from '@/os.js';
-import * as sound from '@/scripts/sound.js';
 import { misskeyApi, misskeyApiGet } from '@/scripts/misskey-api.js';
 import { defaultStore, noteViewInterruptors } from '@/store.js';
 import { reactionPicker } from '@/scripts/reaction-picker.js';
@@ -441,8 +440,6 @@ function react(): void {
 	pleaseLogin(undefined, pleaseLoginContext.value);
 	showMovedDialog();
 	if (appearNote.value.reactionAcceptance === 'likeOnly') {
-		sound.playMisskeySfx('reaction');
-
 		if (props.mock) {
 			return;
 		}
@@ -463,8 +460,6 @@ function react(): void {
 	} else {
 		blur();
 		reactionPicker.show(reactButton.value, note.value, reaction => {
-			sound.playMisskeySfx('reaction');
-
 			if (props.mock) {
 				emit('reaction', reaction);
 				return;

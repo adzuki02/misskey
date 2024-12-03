@@ -15,7 +15,6 @@ import { defaultStore } from '@/store.js';
 import { colorizeEmoji, getEmojiName } from '@/scripts/emojilist.js';
 import * as os from '@/os.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
-import * as sound from '@/scripts/sound.js';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
@@ -56,7 +55,6 @@ function onClick(ev: MouseEvent) {
 					icon: 'ti ti-plus',
 					action: () => {
 						react(props.emoji);
-						sound.playMisskeySfx('reaction');
 					},
 				}
 				: undefined,
