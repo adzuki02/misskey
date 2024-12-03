@@ -58,9 +58,14 @@ const pagination = computed(() => defaultStore.reactiveState.useGroupedNotificat
 	})),
 });
 
+let isFocused: boolean = document.visibilityState === 'visible';
+
+window.addEventListener('blur', () => { isFocused = false; });
+window.addEventListener('focus', () => { isFocused = true; });
+
 function onNotification(notification) {
 	const isMuted = props.excludeTypes ? props.excludeTypes.includes(notification.type) : false;
-	if (isMuted || document.visibilityState === 'visible') {
+	if (isMuted || (isFocused && document.visibilityState === 'visible')) {
 		useStream().send('readNotification');
 	}
 

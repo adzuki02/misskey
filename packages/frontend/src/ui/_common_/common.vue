@@ -66,9 +66,14 @@ const dev = _DEV_;
 
 const notifications = ref<Notification[]>([]);
 
+let isFocused: boolean = document.visibilityState === 'visible';
+
+window.addEventListener('blur', () => { isFocused = false; });
+window.addEventListener('focus', () => { isFocused = true; });
+
 function onNotification(notification: Notification, isClient = false) {
 	if (document.visibilityState === 'visible') {
-		if (!isClient && notification.type !== 'test') {
+		if (isFocused && !isClient && notification.type !== 'test') {
 			// サーバーサイドのテスト通知の際は自動で既読をつけない（テストできないので）
 			useStream().send('readNotification');
 		}
