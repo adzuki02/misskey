@@ -21,13 +21,26 @@ const dialogEl = useTemplateRef('dialogEl');
 const selected = ref<string>();
 
 const icons = [
-	{ name: i18n.ts._timelines.home, value: 'ti ti-home' },
-	{ name: i18n.ts._timelines.local, value: 'ti ti-planet' },
-	{ name: i18n.ts._timelines.social, value: 'ti ti-universe' },
-	{ name: i18n.ts._timelines.global, value: 'ti ti-whirl' },
-	{ name: i18n.ts.lists, value: 'ti ti-list' },
-	{ name: i18n.ts.antennas, value: 'ti ti-antenna' },
-	{ name: i18n.ts.channel, value: 'ti ti-device-tv' },
+	{ value: 'ti ti-home' },
+	{ value: 'ti ti-planet' },
+	{ value: 'ti ti-universe' },
+	{ value: 'ti ti-whirl' },
+	{ value: 'ti ti-list' },
+	{ value: 'ti ti-antenna' },
+	{ value: 'ti ti-device-tv' },
+	{ value: 'ti ti-star' },
+	{ value: 'ti ti-user' },
+	{ value: 'ti ti-users' },
+	{ value: 'ti ti-heart' },
+	{ value: 'ti ti-hearts' },
+	{ value: 'ti ti-music' },
+	{ value: 'ti ti-photo' },
+	{ value: 'ti ti-palette' },
+	{ value: 'ti ti-robot' },
+	{ value: 'ti ti-speakerphone' },
+	{ value: 'ti ti-bell' },
+	{ value: 'ti ti-bell-off' },
+	{ value: 'ti ti-info-circle' },
 ];
 
 const emit = defineEmits<{
@@ -76,7 +89,8 @@ function ok() {
 	}
 
 	> i {
-		font-size: 48px;
+		/* 実際のアイコンは128%拡大される */
+		font-size: 32px;
 		line-height: 64px;
 	}
 }
