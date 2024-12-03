@@ -12,8 +12,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div>
 				<div :class="$style.tlTabsMargin">
 					<MkButton inline style="margin-right: 8px;" @click="addTlTab"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
-					<MkButton v-if="!tlTabsEditMode" :disabled="tlTabs.length < 2" inline danger style="margin-right: 8px;" @click="tlTabsEditMode = !tlTabsEditMode"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
-					<MkButton v-else inline style="margin-right: 8px;" @click="tlTabsEditMode = !tlTabsEditMode"><i class="ti ti-arrows-sort"></i> {{ i18n.ts.rearrange }}</MkButton>
 					<MkButton inline primary @click="saveTlTabs"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
 				</div>
 
@@ -28,14 +26,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				>
 					<template #item="{element, index}">
 						<div :class="$style.tlTabsDragItem">
-							<button v-if="!tlTabsEditMode" class="_button" :class="$style.dragItemHandle" tabindex="-1"><i class="ti ti-menu"></i></button>
-							<button v-if="tlTabsEditMode" :disabled="tlTabs.length < 2" class="_button" :class="$style.dragItemRemove" @click="deleteTlTab(index)"><i class="ti ti-x"></i></button>
+							<button class="_button" :class="$style.dragItemHandle" tabindex="-1"><i class="ti ti-menu"></i></button>
 							<div :class="$style.tlTabsDragItemTlIcon">
 								<i :class="element.icon"></i>
 							</div>
 							<div>
 								{{ element.name }}
 							</div>
+							<button class="_button" :class="$style.dragItemEdit" @click="editTlTab(index, $event)"><i class="ti ti-settings"></i></button>
+							<button :disabled="tlTabs.length < 2" class="_button" :class="$style.dragItemRemove" @click="deleteTlTab(index)"><i class="ti ti-x"></i></button>
 						</div>
 					</template>
 				</Sortable>
@@ -48,6 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref } from 'vue';
 import Sortable from 'vuedraggable';
+import IconSelecter from './timeline.icon-selecter.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';
 import { defaultStore } from '@/store.js';
@@ -59,7 +59,6 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { availableBasicTimelines, basicTimelineIconClass, basicTimelineTypes, type BasicTimelineType } from '@/timelines';
 
 const tlTabs = ref(deepClone(defaultStore.state.timelineTabs));
-const tlTabsEditMode = ref(false);
 
 const addTlTab = async () => {
 	const { canceled: canceled1, result: type } = await os.select({
@@ -114,6 +113,24 @@ if (tlTabs.value.length === 0) {
 	});
 }
 
+const editTlTab = async (index: number, ev: MouseEvent): Promise<void> => {
+	os.popupMenu([
+		{
+			type: 'button',
+			text: i18n.ts.changeIcon,
+			action: () => {
+				const { dispose } = os.popup(IconSelecter, {
+				}, {
+					done: (icon: string) => {
+						tlTabs.value[index].icon = icon;
+					},
+					closed: () => dispose(),
+				});
+			},
+		},
+	], ev.target);
+};
+
 const deleteTlTab = (index: number) => {
 	tlTabs.value.splice(index, 1);
 };
@@ -162,7 +179,7 @@ definePageMetadata(() => ({
 	cursor: grab;
 	width: 32px;
 	height: 32px;
-	margin: 0 8px 0 0;
+	margin-inline-end: 8px;
 	opacity: 0.5;
 	flex-shrink: 0;
 
@@ -171,12 +188,12 @@ definePageMetadata(() => ({
 	}
 }
 
-.dragItemRemove {
+.dragItemEdit {
 	@extend .dragItemHandle;
 
-	color: #ff2a2a;
 	opacity: 1;
 	cursor: pointer;
+	margin-inline-start: auto;
 
 	&:hover, &:focus {
 		opacity: .7;
@@ -185,6 +202,13 @@ definePageMetadata(() => ({
 	&:active {
 		cursor: pointer;
 	}
+}
+
+.dragItemRemove {
+	@extend .dragItemEdit;
+
+	color: #ff2a2a;
+	margin-inline-start: 0;
 
 	&[disabled] {
 		cursor: not-allowed;
