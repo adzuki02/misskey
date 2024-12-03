@@ -8,9 +8,6 @@
 		"eslint": "eslint --quiet src/**/*.ts",
 		"lint": "pnpm typecheck && pnpm eslint"
 	},
-	"dependencies": {
-		"misskey-js": "workspace:*"
-	},
 	"devDependencies": {
 		"@typescript-eslint/parser": "7.17.0",
 		"@typescript/lib-webworker": "npm:@types/serviceworker@0.0.67",
