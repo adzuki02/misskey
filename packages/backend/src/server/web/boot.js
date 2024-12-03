@@ -179,7 +179,7 @@
 				<path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path>
 			</svg>
 			<h1>Failed to load<br>読み込みに失敗しました</h1>
-			<button class="button-big" onclick="location.reload(true);">
+			<button id="reload-button" class="button-big">
 				<span class="button-label-big">Reload / リロード</span>
 			</button>
 			<p><b>The following actions may solve the problem. / 以下を行うと解決する可能性があります。</b></p>
@@ -210,6 +210,7 @@
 			<br>
 			<div id="errors"></div>
 			`;
+			document.getElementById('reload-button').addEventListener('click', () => location.reload(true));
 			errorsElement = document.getElementById('errors');
 		}
 		const detailsElement = document.createElement('details');
