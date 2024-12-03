@@ -124,7 +124,7 @@ const saveTlTabs = () => {
 
 definePageMetadata(() => ({
 	title: i18n.ts.timeline,
-	icon: 'ti ti-adjustments',
+	icon: 'ti ti-layout-navbar',
 }));
 </script>
 
