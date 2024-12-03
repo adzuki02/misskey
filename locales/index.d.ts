@@ -4807,6 +4807,10 @@ export interface Locale extends ILocale {
      */
     "pinnedList": string;
     /**
+     * アイコンを変更する
+     */
+    "changeIcon": string;
+    /**
      * デバイスの画面を常にオンにする
      */
     "keepScreenOn": string;
