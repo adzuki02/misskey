@@ -25,13 +25,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</MkSpacer>
-	<MkSpacer v-else-if="tab === 'timeline'" :contentMax="700">
-		<MkTimeline v-if="visible" ref="timeline" src="role" :role="props.role"/>
-		<div v-else-if="!visible" class="_fullinfo">
-			<img :src="infoImageUrl" class="_ghost"/>
-			<div>{{ i18n.ts.nothing }}</div>
-		</div>
-	</MkSpacer>
 </MkStickyContainer>
 </template>
 
@@ -42,7 +35,6 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import MkUserList from '@/components/MkUserList.vue';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
-import MkTimeline from '@/components/MkTimeline.vue';
 import { instanceName } from '@/config.js';
 import { serverErrorImageUrl, infoImageUrl } from '@/instance.js';
 
@@ -88,11 +80,6 @@ const headerTabs = computed(() => [
 		key: 'users',
 		icon: 'ti ti-users',
 		title: i18n.ts.users,
-	},
-	{
-		key: 'timeline',
-		icon: 'ti ti-pencil',
-		title: i18n.ts.timeline,
 	},
 ]);
 

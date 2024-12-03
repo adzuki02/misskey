@@ -25,14 +25,13 @@ describe('Timeline', () => {
 	});
 
 	type TimelineChannel = keyof Misskey.Channels & (`${string}Timeline` | 'antenna' | 'userList' | 'hashtag');
-	type TimelineEndpoint = keyof Misskey.Endpoints & (`${string}timeline` | 'antennas/notes' | 'roles/notes' | 'notes/search-by-tag');
+	type TimelineEndpoint = keyof Misskey.Endpoints & (`${string}timeline` | 'antennas/notes' | 'notes/search-by-tag');
 	const timelineMap = new Map<TimelineChannel, TimelineEndpoint>([
 		['antenna', 'antennas/notes'],
 		['globalTimeline', 'notes/global-timeline'],
 		['homeTimeline', 'notes/timeline'],
 		['hybridTimeline', 'notes/hybrid-timeline'],
 		['localTimeline', 'notes/local-timeline'],
-		['roleTimeline', 'roles/notes'],
 		['hashtag', 'notes/search-by-tag'],
 		['userList', 'notes/user-list-timeline'],
 	]);
@@ -60,7 +59,6 @@ describe('Timeline', () => {
 			endpoint === 'antennas/notes' ? { antennaId: (channelParams as Misskey.Channels['antenna']['params']).antennaId } :
 			endpoint === 'notes/user-list-timeline' ? { listId: (channelParams as Misskey.Channels['userList']['params']).listId } :
 			endpoint === 'notes/search-by-tag' ? { query: (channelParams as Misskey.Channels['hashtag']['params']).q } :
-			endpoint === 'roles/notes' ? { roleId: (channelParams as Misskey.Channels['roleTimeline']['params']).roleId } :
 			{};
 
 		await sleep();
@@ -240,46 +238,6 @@ describe('Timeline', () => {
 				const tag = crypto.randomUUID();
 				await postAndCheckReception(hashtag, true, { text: `#${tag}`, visibility: 'specified', visibleUserIds: [bobInA.id] }, { q: [[tag]] });
 			});
-		});
-	});
-
-	describe('roleTimeline', () => {
-		const roleTimeline = 'roleTimeline';
-
-		let role: Misskey.entities.Role;
-
-		beforeAll(async () => {
-			role = await createRole('b.test', {
-				name: 'Remote Users',
-				description: 'Remote users are assigned to this role.',
-				condFormula: {
-					/** TODO: @see https://github.com/misskey-dev/misskey/issues/14169 */
-					type: 'isRemote' as never,
-				},
-			});
-			await sleep();
-		});
-
-		describe('Check reception of remote followee\'s Note', () => {
-			test('Receive remote followee\'s Note', async () => {
-				await postAndCheckReception(roleTimeline, true, {}, { roleId: role.id });
-			});
-
-			test('Don\'t receive remote followee\'s home-only Note', async () => {
-				await postAndCheckReception(roleTimeline, false, { visibility: 'home' }, { roleId: role.id });
-			});
-
-			test('Don\'t receive remote followee\'s followers-only Note', async () => {
-				await postAndCheckReception(roleTimeline, false, { visibility: 'followers' }, { roleId: role.id });
-			});
-
-			test('Don\'t receive remote followee\'s visible specified-only Note', async () => {
-				await postAndCheckReception(roleTimeline, false, { visibility: 'specified', visibleUserIds: [bobInA.id] }, { roleId: role.id });
-			});
-		});
-
-		afterAll(async () => {
-			await bAdmin.client.request('admin/roles/delete', { roleId: role.id });
 		});
 	});
 

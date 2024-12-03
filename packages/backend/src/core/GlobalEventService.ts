@@ -133,10 +133,6 @@ export interface AntennaEventTypes {
 	note: MiNote;
 }
 
-export interface RoleTimelineEventTypes {
-	note: Packed<'Note'>;
-}
-
 export interface AdminEventTypes {
 	newAbuseUserReport: Record<string, never>;
 }
@@ -221,10 +217,6 @@ export type GlobalEvents = {
 	userList: {
 		name: `userListStream:${MiUserList['id']}`;
 		payload: EventTypesToEventPayload<UserListEventTypes>;
-	};
-	roleTimeline: {
-		name: `roleTimelineStream:${MiRole['id']}`;
-		payload: EventTypesToEventPayload<RoleTimelineEventTypes>;
 	};
 	antenna: {
 		name: `antennaStream:${MiAntenna['id']}`;
@@ -312,12 +304,6 @@ export class GlobalEventService {
 	public publishAntennaStream<K extends keyof AntennaEventTypes>(antennaId: MiAntenna['id'], type: K, value?: AntennaEventTypes[K]): void {
 		this.publish(`antennaStream:${antennaId}`, type, typeof value === 'undefined' ? null : value);
 	}
-
-	@bindThis
-	public publishRoleTimelineStream<K extends keyof RoleTimelineEventTypes>(roleId: MiRole['id'], type: K, value?: RoleTimelineEventTypes[K]): void {
-		this.publish(`roleTimelineStream:${roleId}`, type, typeof value === 'undefined' ? null : value);
-	}
-
 	@bindThis
 	public publishNotesStream(note: Packed<'Note'>): void {
 		this.publish('notesStream', null, note);

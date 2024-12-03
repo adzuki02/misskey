@@ -2434,15 +2434,6 @@ export type paths = {
      */
     post: operations['roles___users'];
   };
-  '/roles/notes': {
-    /**
-     * roles/notes
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:account*
-     */
-    post: operations['roles___notes'];
-  };
   '/request-reset-password': {
     /**
      * request-reset-password
@@ -19517,68 +19508,6 @@ export type operations = {
               id: string;
               user: components['schemas']['UserDetailed'];
             }[];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * roles/notes
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:account*
-   */
-  roles___notes: {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** Format: misskey:id */
-          roleId: string;
-          /** @default 10 */
-          limit?: number;
-          /** Format: misskey:id */
-          sinceId?: string;
-          /** Format: misskey:id */
-          untilId?: string;
-          sinceDate?: number;
-          untilDate?: number;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Note'][];
         };
       };
       /** @description Client error */

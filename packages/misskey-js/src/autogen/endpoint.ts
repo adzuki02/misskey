@@ -385,8 +385,6 @@ import type {
 	RolesShowResponse,
 	RolesUsersRequest,
 	RolesUsersResponse,
-	RolesNotesRequest,
-	RolesNotesResponse,
 	RequestResetPasswordRequest,
 	ResetPasswordRequest,
 	ServerInfoResponse,
@@ -709,7 +707,6 @@ export type Endpoints = {
 	'roles/list': { req: EmptyRequest; res: RolesListResponse };
 	'roles/show': { req: RolesShowRequest; res: RolesShowResponse };
 	'roles/users': { req: RolesUsersRequest; res: RolesUsersResponse };
-	'roles/notes': { req: RolesNotesRequest; res: RolesNotesResponse };
 	'request-reset-password': { req: RequestResetPasswordRequest; res: EmptyResponse };
 	'reset-db': { req: EmptyRequest; res: EmptyResponse };
 	'reset-password': { req: ResetPasswordRequest; res: EmptyResponse };

@@ -540,15 +540,6 @@ export type Channels = {
         };
         receives: null;
     };
-    roleTimeline: {
-        params: {
-            roleId: string;
-        };
-        events: {
-            note: (payload: Note) => void;
-        };
-        receives: null;
-    };
     antenna: {
         params: {
             antennaId: string;
@@ -1376,8 +1367,6 @@ declare namespace entities {
         RolesShowResponse,
         RolesUsersRequest,
         RolesUsersResponse,
-        RolesNotesRequest,
-        RolesNotesResponse,
         RequestResetPasswordRequest,
         ResetPasswordRequest,
         ServerInfoResponse,
@@ -2199,12 +2188,6 @@ type RolePolicies = components['schemas']['RolePolicies'];
 
 // @public (undocumented)
 type RolesListResponse = operations['roles___list']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type RolesNotesRequest = operations['roles___notes']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type RolesNotesResponse = operations['roles___notes']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type RolesShowRequest = operations['roles___show']['requestBody']['content']['application/json'];

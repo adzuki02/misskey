@@ -115,7 +115,6 @@ import XNotificationsColumn from '@/ui/deck/notifications-column.vue';
 import XWidgetsColumn from '@/ui/deck/widgets-column.vue';
 import XMentionsColumn from '@/ui/deck/mentions-column.vue';
 import XDirectColumn from '@/ui/deck/direct-column.vue';
-import XRoleTimelineColumn from '@/ui/deck/role-timeline-column.vue';
 import { mainRouter } from '@/router/main.js';
 
 const columnComponents = {
@@ -128,7 +127,6 @@ const columnComponents = {
 	antenna: XAntennaColumn,
 	mentions: XMentionsColumn,
 	direct: XDirectColumn,
-	roleTimeline: XRoleTimelineColumn,
 };
 
 mainRouter.navHook = (path, flag): boolean => {
