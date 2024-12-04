@@ -19,7 +19,7 @@ export function genOpenapiSpec(config: Config, includeSelfRef = false) {
 
 		externalDocs: {
 			description: 'Repository',
-			url: 'https://github.com/misskey-dev/misskey',
+			url: 'https://github.com/adzukimame/misskey',
 		},
 
 		servers: [{
@@ -97,7 +97,7 @@ export function genOpenapiSpec(config: Config, includeSelfRef = false) {
 			description: desc,
 			externalDocs: {
 				description: 'Source code',
-				url: `https://github.com/misskey-dev/misskey/blob/develop/packages/backend/src/server/api/endpoints/${endpoint.name}.ts`,
+				url: `https://github.com/adzukimame/misskey/blob/develop/packages/backend/src/server/api/endpoints/${endpoint.name}.ts`,
 			},
 			...(endpoint.meta.tags ? {
 				tags: [endpoint.meta.tags[0]],
