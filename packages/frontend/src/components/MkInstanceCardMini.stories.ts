@@ -56,7 +56,7 @@ export const Default = {
 
 					if (
 						url.href.startsWith(
-							'https://github.com/misskey-dev/misskey/blob/master/packages/frontend/assets/',
+							'https://github.com/adzukimame/misskey/blob/master/packages/frontend/assets/',
 						)
 					) {
 						const image = await (
