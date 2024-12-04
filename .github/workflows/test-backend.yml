@@ -170,3 +170,50 @@ jobs:
           file: ./packages/backend/coverage/coverage-merged.json
           disable_search: true
           flags: backend_e2e
+
+  federation:
+    name: test (federation)
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+      - name: Setup FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@36c6454b5a2348e7794ba2d82a21506605921e3d
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.3
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - name: Enable Corepack
+        run: corepack enable && corepack prepare
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Check if lock file is not modified
+        run: git diff --exit-code pnpm-lock.yaml
+      - name: Build
+        run: pnpm run build
+      - name: Setup test
+        run: |
+          cd packages/backend/test-federation
+          bash ./setup.sh
+          sudo chmod 644 ./certificates/*.test.key
+      - name: Start servers
+        # https://github.com/docker/compose/issues/1294#issuecomment-374847206
+        run: |
+          cd packages/backend/test-federation
+          docker compose up -d --scale tester=0
+      - name: Test
+        run: |
+          cd packages/backend/test-federation
+          docker compose run --no-deps tester
+      - name: Stop servers
+        run: |
+          cd packages/backend/test-federation
+          docker compose down

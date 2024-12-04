@@ -45,3 +45,17 @@ jobs:
     if: ${{ false }}
     steps:
       - run: 'true'
+  
+  merge_backend_e2e_coverage:
+    name: merge_backend_e2e_coverage
+    runs-on: ubuntu-latest
+    if: ${{ false }}
+    steps:
+      - run: 'true'
+
+  test_federation:
+    name: test (federation)
+    runs-on: ubuntu-latest
+    if: ${{ false }}
+    steps:
+      - run: 'true'
