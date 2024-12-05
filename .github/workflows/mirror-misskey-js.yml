@@ -1,0 +1,71 @@
+name: Mirror misskey-js
+
+on:
+  release:
+    types: [released]
+
+permissions: {}
+
+jobs:
+  mirror-misskey-js:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    if: ${{ !endsWith(github.event.release.name, '.next') }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.1
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: '.node-version'
+        cache: 'pnpm'
+    - name: Enable Corepack
+      run: corepack enable
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    - name: Check if lock file is not modified
+      run: git diff --exit-code pnpm-lock.yaml
+    - name: Copy config file
+      run: cp .github/misskey/test.yml .config/default.yml
+    - name: Build
+      run: pnpm --filter misskey-js run build
+    - name: Get GitHub App Token
+      uses: actions/create-github-app-token@v1
+      id: app-token
+      with:
+        app-id: ${{ secrets.MISSKEY_JS_MIRROR_APP_ID }}
+        private-key: ${{ secrets.MISSKEY_JS_MIRROR_APP_PRIVATE_KEY }}
+        owner: ${{ github.repository_owner }}
+        repositories: |
+          ${{ vars.MISSKEY_JS_REPO_NAME }}
+    - name: Clone mirroring target repository
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository_owner }}/${{ vars.MISSKEY_JS_REPO_NAME }}
+        ref: main
+        path: mirror
+        token: ${{ steps.app-token.outputs.token }}
+    - name: Remove contents in mirror
+      run: rm -rf ./mirror/built ./mirror/LICENSE ./mirror/README.md ./mirror/package.json
+    - name: Copy contents to mirror
+      run: cp -r ./packages/misskey-js/built ./packages/misskey-js/LICENSE ./packages/misskey-js/README.md ./packages/misskey-js/package.json ./mirror/
+    - name: Push contents to mirror
+      run: |
+        cd mirror
+        git config --local user.name 'github-actions[bot]'
+        git config --local user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        git add .
+        git commit -a -m "Release/$RELEASE_NAME"
+        git tag "$RELEASE_NAME"
+        git push origin main
+        git push origin "$RELEASE_NAME"
+      env:
+        RELEASE_NAME: ${{ github.event.release.name }}
+    - name: Clean contents in mirror
+      run: rm -rf ./mirror
