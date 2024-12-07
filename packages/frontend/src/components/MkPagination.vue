@@ -207,7 +207,6 @@ async function init(): Promise<void> {
 	await misskeyApi<Entity[]>(props.pagination.endpoint, {
 		...params,
 		limit: props.pagination.limit ?? 10,
-		allowPartial: true,
 	}).then(res => {
 		if (res.length === 0 || props.pagination.noPaging) {
 			concatItems(res);
