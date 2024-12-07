@@ -487,39 +487,8 @@ async function toggleLocalOnly() {
 		return;
 	}
 
-	const neverShowInfo = miLocalStorage.getItem('neverShowLocalOnlyInfo');
-
-	if (!localOnly.value && neverShowInfo !== 'true') {
-		const confirm = await os.actions({
-			type: 'question',
-			title: i18n.ts.disableFederationConfirm,
-			text: i18n.ts.disableFederationConfirmWarn,
-			actions: [
-				{
-					value: 'yes' as const,
-					text: i18n.ts.disableFederationOk,
-					primary: true,
-				},
-				{
-					value: 'neverShow' as const,
-					text: `${i18n.ts.disableFederationOk} (${i18n.ts.neverShow})`,
-					danger: true,
-				},
-				{
-					value: 'no' as const,
-					text: i18n.ts.cancel,
-				},
-			],
-		});
-		if (confirm.canceled) return;
-		if (confirm.result === 'no') return;
-
-		if (confirm.result === 'neverShow') {
-			miLocalStorage.setItem('neverShowLocalOnlyInfo', 'true');
-		}
-	}
-
 	localOnly.value = !localOnly.value;
+
 	if (defaultStore.state.rememberNoteVisibility) {
 		defaultStore.set('localOnly', localOnly.value);
 	}
