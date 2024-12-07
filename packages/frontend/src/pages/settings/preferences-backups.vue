@@ -90,7 +90,6 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'emojiPickerTagPairs',
 	'menuDisplay',
 	'squareAvatars',
-	'showAvatarDecorations',
 	'numberOfPageCache',
 	'showNoteActionsOnlyHover',
 	'showClipButtonInNoteFooter',

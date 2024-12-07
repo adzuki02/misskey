@@ -52,10 +52,6 @@ const routes: RouteDef[] = [{
 		name: 'profile',
 		component: page(() => import('@/pages/settings/profile.vue')),
 	}, {
-		path: '/avatar-decoration',
-		name: 'avatarDecoration',
-		component: page(() => import('@/pages/settings/avatar-decoration.vue')),
-	}, {
 		path: '/roles',
 		name: 'roles',
 		component: page(() => import('@/pages/settings/roles.vue')),
@@ -302,11 +298,6 @@ const routes: RouteDef[] = [{
 	component: page(() => import('@/pages/custom-emojis-manager.vue')),
 	loginRequired: true,
 }, {
-	path: '/avatar-decorations',
-	name: 'avatarDecorations',
-	component: page(() => import('@/pages/avatar-decorations.vue')),
-	loginRequired: true,
-}, {
 	path: '/registry/keys/:domain/:path(*)?',
 	component: page(() => import('@/pages/registry.keys.vue')),
 	loginRequired: true,
@@ -339,10 +330,6 @@ const routes: RouteDef[] = [{
 		path: '/emojis',
 		name: 'emojis',
 		component: page(() => import('@/pages/custom-emojis-manager.vue')),
-	}, {
-		path: '/avatar-decorations',
-		name: 'avatarDecorations',
-		component: page(() => import('@/pages/avatar-decorations.vue')),
 	}, {
 		path: '/queue',
 		name: 'queue',

@@ -86,14 +86,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkInput>
 						</MkFolder>
 
-						<MkFolder v-if="matchQuery([i18n.ts._role._options.canManageAvatarDecorations, 'canManageAvatarDecorations'])">
-							<template #label>{{ i18n.ts._role._options.canManageAvatarDecorations }}</template>
-							<template #suffix>{{ policies.canManageAvatarDecorations ? i18n.ts.yes : i18n.ts.no }}</template>
-							<MkSwitch v-model="policies.canManageAvatarDecorations">
-								<template #label>{{ i18n.ts.enable }}</template>
-							</MkSwitch>
-						</MkFolder>
-
 						<MkFolder v-if="matchQuery([i18n.ts._role._options.canManageCustomEmojis, 'canManageCustomEmojis'])">
 							<template #label>{{ i18n.ts._role._options.canManageCustomEmojis }}</template>
 							<template #suffix>{{ policies.canManageCustomEmojis ? i18n.ts.yes : i18n.ts.no }}</template>
@@ -146,13 +138,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<template #label>{{ i18n.ts._role._options.pinMax }}</template>
 							<template #suffix>{{ policies.pinLimit }}</template>
 							<MkInput v-model="policies.pinLimit" type="number">
-							</MkInput>
-						</MkFolder>
-
-						<MkFolder v-if="matchQuery([i18n.ts._role._options.avatarDecorationLimit, 'avatarDecorationLimit'])">
-							<template #label>{{ i18n.ts._role._options.avatarDecorationLimit }}</template>
-							<template #suffix>{{ policies.avatarDecorationLimit }}</template>
-							<MkInput v-model="policies.avatarDecorationLimit" type="number" :min="0">
 							</MkInput>
 						</MkFolder>
 

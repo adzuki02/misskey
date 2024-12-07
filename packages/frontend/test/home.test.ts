@@ -36,7 +36,6 @@ describe('XHome', () => {
 			fields: [],
 			pinnedNotes: [],
 			avatarUrl: 'https://example.com',
-			avatarDecorations: [],
 		});
 
 		const anchor = home.container.querySelector<HTMLAnchorElement>('a[href^="https://example.com/"]');
@@ -58,7 +57,6 @@ describe('XHome', () => {
 			fields: [],
 			pinnedNotes: [],
 			avatarUrl: 'https://example.com',
-			avatarDecorations: [],
 		});
 
 		const anchor = home.container.querySelector<HTMLAnchorElement>('a[href^="https://example.com/"]');
