@@ -40,7 +40,6 @@ export type RolePolicies = {
 	inviteLimitCycle: number;
 	inviteExpirationTime: number;
 	canManageCustomEmojis: boolean;
-	canManageAvatarDecorations: boolean;
 	canSearchNotes: boolean;
 	canUseTranslator: boolean;
 	driveCapacityMb: number;
@@ -48,7 +47,6 @@ export type RolePolicies = {
 	canUpdateBioMedia: boolean;
 	pinLimit: number;
 	rateLimitFactor: number;
-	avatarDecorationLimit: number;
 	canMakePureRenoteOfRemoteNotes: boolean;
 	canImportAntennas: boolean;
 	canImportBlocking: boolean;
@@ -67,7 +65,6 @@ export const DEFAULT_POLICIES: RolePolicies = {
 	inviteLimitCycle: 60 * 24 * 7,
 	inviteExpirationTime: 0,
 	canManageCustomEmojis: false,
-	canManageAvatarDecorations: false,
 	canSearchNotes: false,
 	canUseTranslator: true,
 	driveCapacityMb: 100,
@@ -75,7 +72,6 @@ export const DEFAULT_POLICIES: RolePolicies = {
 	canUpdateBioMedia: true,
 	pinLimit: 5,
 	rateLimitFactor: 1,
-	avatarDecorationLimit: 1,
 	canMakePureRenoteOfRemoteNotes: true,
 	canImportAntennas: true,
 	canImportBlocking: true,
@@ -358,7 +354,6 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 			inviteLimitCycle: calc('inviteLimitCycle', vs => Math.max(...vs)),
 			inviteExpirationTime: calc('inviteExpirationTime', vs => Math.max(...vs)),
 			canManageCustomEmojis: calc('canManageCustomEmojis', vs => vs.some(v => v === true)),
-			canManageAvatarDecorations: calc('canManageAvatarDecorations', vs => vs.some(v => v === true)),
 			canSearchNotes: calc('canSearchNotes', vs => vs.some(v => v === true)),
 			canUseTranslator: calc('canUseTranslator', vs => vs.some(v => v === true)),
 			driveCapacityMb: calc('driveCapacityMb', vs => Math.max(...vs)),
@@ -366,7 +361,6 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 			canUpdateBioMedia: calc('canUpdateBioMedia', vs => vs.some(v => v === true)),
 			pinLimit: calc('pinLimit', vs => Math.max(...vs)),
 			rateLimitFactor: calc('rateLimitFactor', vs => Math.max(...vs)),
-			avatarDecorationLimit: calc('avatarDecorationLimit', vs => Math.max(...vs)),
 			canMakePureRenoteOfRemoteNotes: calc('canMakePureRenoteOfRemoteNotes', vs => vs.some(v => v === true)),
 			canImportAntennas: calc('canImportAntennas', vs => vs.some(v => v === true)),
 			canImportBlocking: calc('canImportBlocking', vs => vs.some(v => v === true)),

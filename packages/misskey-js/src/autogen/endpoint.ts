@@ -7,11 +7,6 @@ import type {
 	AdminAccountsDeleteRequest,
 	AdminAccountsFindByEmailRequest,
 	AdminAccountsFindByEmailResponse,
-	AdminAvatarDecorationsCreateRequest,
-	AdminAvatarDecorationsDeleteRequest,
-	AdminAvatarDecorationsListRequest,
-	AdminAvatarDecorationsListResponse,
-	AdminAvatarDecorationsUpdateRequest,
 	AdminDeleteAllFilesOfAUserRequest,
 	AdminUnsetUserAvatarRequest,
 	AdminUnsetUserBannerRequest,
@@ -226,7 +221,6 @@ import type {
 	FollowingRequestsListRequest,
 	FollowingRequestsListResponse,
 	FollowingRequestsRejectRequest,
-	GetAvatarDecorationsResponse,
 	HashtagsListRequest,
 	HashtagsListResponse,
 	HashtagsSearchRequest,
@@ -441,10 +435,6 @@ export type Endpoints = {
 	'admin/accounts/create': { req: AdminAccountsCreateRequest; res: AdminAccountsCreateResponse };
 	'admin/accounts/delete': { req: AdminAccountsDeleteRequest; res: EmptyResponse };
 	'admin/accounts/find-by-email': { req: AdminAccountsFindByEmailRequest; res: AdminAccountsFindByEmailResponse };
-	'admin/avatar-decorations/create': { req: AdminAvatarDecorationsCreateRequest; res: EmptyResponse };
-	'admin/avatar-decorations/delete': { req: AdminAvatarDecorationsDeleteRequest; res: EmptyResponse };
-	'admin/avatar-decorations/list': { req: AdminAvatarDecorationsListRequest; res: AdminAvatarDecorationsListResponse };
-	'admin/avatar-decorations/update': { req: AdminAvatarDecorationsUpdateRequest; res: EmptyResponse };
 	'admin/delete-all-files-of-a-user': { req: AdminDeleteAllFilesOfAUserRequest; res: EmptyResponse };
 	'admin/unset-user-avatar': { req: AdminUnsetUserAvatarRequest; res: EmptyResponse };
 	'admin/unset-user-banner': { req: AdminUnsetUserBannerRequest; res: EmptyResponse };
@@ -588,7 +578,6 @@ export type Endpoints = {
 	'following/requests/cancel': { req: FollowingRequestsCancelRequest; res: FollowingRequestsCancelResponse };
 	'following/requests/list': { req: FollowingRequestsListRequest; res: FollowingRequestsListResponse };
 	'following/requests/reject': { req: FollowingRequestsRejectRequest; res: EmptyResponse };
-	'get-avatar-decorations': { req: EmptyRequest; res: GetAvatarDecorationsResponse };
 	'hashtags/list': { req: HashtagsListRequest; res: HashtagsListResponse };
 	'hashtags/search': { req: HashtagsSearchRequest; res: HashtagsSearchResponse };
 	'hashtags/show': { req: HashtagsShowRequest; res: HashtagsShowResponse };

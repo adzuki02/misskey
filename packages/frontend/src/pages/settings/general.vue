@@ -124,10 +124,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="useBlurEffectForModal">{{ i18n.ts.useBlurEffectForModal }}</MkSwitch>
 			</div>
 
-			<div class="_gaps_s">
-				<MkSwitch v-model="squareAvatars">{{ i18n.ts.squareAvatars }}</MkSwitch>
-				<MkSwitch v-model="showAvatarDecorations">{{ i18n.ts.showAvatarDecorations }}</MkSwitch>
-			</div>
+			<MkSwitch v-model="squareAvatars">{{ i18n.ts.squareAvatars }}</MkSwitch>
 
 			<MkSwitch v-model="useNativeUIForVideoAudioPlayer">{{ i18n.ts.useNativeUIForVideoAudioPlayer }}</MkSwitch>
 		
@@ -291,7 +288,6 @@ const instanceTicker = computed(defaultStore.makeGetterSetter('instanceTicker'))
 const enableInfiniteScroll = computed(defaultStore.makeGetterSetter('enableInfiniteScroll'));
 const useReactionPickerForContextMenu = computed(defaultStore.makeGetterSetter('useReactionPickerForContextMenu'));
 const squareAvatars = computed(defaultStore.makeGetterSetter('squareAvatars'));
-const showAvatarDecorations = computed(defaultStore.makeGetterSetter('showAvatarDecorations'));
 const mediaListWithOneImageAppearance = computed(defaultStore.makeGetterSetter('mediaListWithOneImageAppearance'));
 const disableStreamingTimeline = computed(defaultStore.makeGetterSetter('disableStreamingTimeline'));
 const useNativeUIForVideoAudioPlayer = computed(defaultStore.makeGetterSetter('useNativeUIForVideoAudioPlayer'));

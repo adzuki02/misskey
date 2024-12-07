@@ -33,14 +33,6 @@ function toolsMenuItems(): MenuItem[] {
 				icon: 'ti ti-icons',
 			}
 			: undefined,
-		$i && ($i.isAdmin === true || $i.policies.canManageAvatarDecorations)
-			? {
-				type: 'link',
-				to: '/avatar-decorations',
-				text: i18n.ts.manageAvatarDecorations,
-				icon: 'ti ti-sparkles',
-			}
-			: undefined,
 	];
 }
 

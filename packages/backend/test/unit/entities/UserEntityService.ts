@@ -19,7 +19,6 @@ import {
 	UsersRepository,
 } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
-import { AvatarDecorationService } from '@/core/AvatarDecorationService.js';
 import { ApPersonService } from '@/core/activitypub/models/ApPersonService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { CustomEmojiService } from '@/core/CustomEmojiService.js';
@@ -143,7 +142,6 @@ describe('UserEntityService', () => {
 				RoleService,
 				FederatedInstanceService,
 				IdService,
-				AvatarDecorationService,
 				UtilityService,
 				EmojiEntityService,
 				GlobalEventService,

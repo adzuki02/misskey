@@ -37,7 +37,6 @@ describe('ユーザー', () => {
 			host: user.host,
 			avatarUrl: user.avatarUrl,
 			avatarBlurhash: user.avatarBlurhash,
-			avatarDecorations: user.avatarDecorations,
 			isBot: user.isBot,
 			instance: user.instance,
 			emojis: user.emojis,
@@ -295,7 +294,6 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.host, null);
 		response.avatarUrl && assert.match(response.avatarUrl, /^[-a-zA-Z0-9@:%._\+~#&?=\/]+$/);
 		assert.strictEqual(response.avatarBlurhash, null);
-		assert.deepStrictEqual(response.avatarDecorations, []);
 		assert.strictEqual(response.isBot, false);
 		assert.strictEqual(response.instance, undefined);
 		assert.deepStrictEqual(response.emojis, {});

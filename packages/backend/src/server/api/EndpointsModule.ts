@@ -10,10 +10,6 @@ import * as ep___admin_meta from './endpoints/admin/meta.js';
 import * as ep___admin_accounts_create from './endpoints/admin/accounts/create.js';
 import * as ep___admin_accounts_delete from './endpoints/admin/accounts/delete.js';
 import * as ep___admin_accounts_findByEmail from './endpoints/admin/accounts/find-by-email.js';
-import * as ep___admin_avatarDecorations_create from './endpoints/admin/avatar-decorations/create.js';
-import * as ep___admin_avatarDecorations_delete from './endpoints/admin/avatar-decorations/delete.js';
-import * as ep___admin_avatarDecorations_list from './endpoints/admin/avatar-decorations/list.js';
-import * as ep___admin_avatarDecorations_update from './endpoints/admin/avatar-decorations/update.js';
 import * as ep___admin_deleteAllFilesOfAUser from './endpoints/admin/delete-all-files-of-a-user.js';
 import * as ep___admin_unsetUserAvatar from './endpoints/admin/unset-user-avatar.js';
 import * as ep___admin_unsetUserBanner from './endpoints/admin/unset-user-banner.js';
@@ -157,7 +153,6 @@ import * as ep___following_requests_accept from './endpoints/following/requests/
 import * as ep___following_requests_cancel from './endpoints/following/requests/cancel.js';
 import * as ep___following_requests_list from './endpoints/following/requests/list.js';
 import * as ep___following_requests_reject from './endpoints/following/requests/reject.js';
-import * as ep___getAvatarDecorations from './endpoints/get-avatar-decorations.js';
 import * as ep___hashtags_list from './endpoints/hashtags/list.js';
 import * as ep___hashtags_search from './endpoints/hashtags/search.js';
 import * as ep___hashtags_show from './endpoints/hashtags/show.js';
@@ -308,10 +303,6 @@ const $admin_meta: Provider = { provide: 'ep:admin/meta', useClass: ep___admin_m
 const $admin_accounts_create: Provider = { provide: 'ep:admin/accounts/create', useClass: ep___admin_accounts_create.default };
 const $admin_accounts_delete: Provider = { provide: 'ep:admin/accounts/delete', useClass: ep___admin_accounts_delete.default };
 const $admin_accounts_findByEmail: Provider = { provide: 'ep:admin/accounts/find-by-email', useClass: ep___admin_accounts_findByEmail.default };
-const $admin_avatarDecorations_create: Provider = { provide: 'ep:admin/avatar-decorations/create', useClass: ep___admin_avatarDecorations_create.default };
-const $admin_avatarDecorations_delete: Provider = { provide: 'ep:admin/avatar-decorations/delete', useClass: ep___admin_avatarDecorations_delete.default };
-const $admin_avatarDecorations_list: Provider = { provide: 'ep:admin/avatar-decorations/list', useClass: ep___admin_avatarDecorations_list.default };
-const $admin_avatarDecorations_update: Provider = { provide: 'ep:admin/avatar-decorations/update', useClass: ep___admin_avatarDecorations_update.default };
 const $admin_deleteAllFilesOfAUser: Provider = { provide: 'ep:admin/delete-all-files-of-a-user', useClass: ep___admin_deleteAllFilesOfAUser.default };
 const $admin_unsetUserAvatar: Provider = { provide: 'ep:admin/unset-user-avatar', useClass: ep___admin_unsetUserAvatar.default };
 const $admin_unsetUserBanner: Provider = { provide: 'ep:admin/unset-user-banner', useClass: ep___admin_unsetUserBanner.default };
@@ -455,7 +446,6 @@ const $following_requests_accept: Provider = { provide: 'ep:following/requests/a
 const $following_requests_cancel: Provider = { provide: 'ep:following/requests/cancel', useClass: ep___following_requests_cancel.default };
 const $following_requests_list: Provider = { provide: 'ep:following/requests/list', useClass: ep___following_requests_list.default };
 const $following_requests_reject: Provider = { provide: 'ep:following/requests/reject', useClass: ep___following_requests_reject.default };
-const $getAvatarDecorations: Provider = { provide: 'ep:get-avatar-decorations', useClass: ep___getAvatarDecorations.default };
 const $hashtags_list: Provider = { provide: 'ep:hashtags/list', useClass: ep___hashtags_list.default };
 const $hashtags_search: Provider = { provide: 'ep:hashtags/search', useClass: ep___hashtags_search.default };
 const $hashtags_show: Provider = { provide: 'ep:hashtags/show', useClass: ep___hashtags_show.default };
@@ -610,10 +600,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_accounts_create,
 		$admin_accounts_delete,
 		$admin_accounts_findByEmail,
-		$admin_avatarDecorations_create,
-		$admin_avatarDecorations_delete,
-		$admin_avatarDecorations_list,
-		$admin_avatarDecorations_update,
 		$admin_deleteAllFilesOfAUser,
 		$admin_unsetUserAvatar,
 		$admin_unsetUserBanner,
@@ -757,7 +743,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$following_requests_cancel,
 		$following_requests_list,
 		$following_requests_reject,
-		$getAvatarDecorations,
 		$hashtags_list,
 		$hashtags_search,
 		$hashtags_show,
@@ -906,10 +891,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$admin_accounts_create,
 		$admin_accounts_delete,
 		$admin_accounts_findByEmail,
-		$admin_avatarDecorations_create,
-		$admin_avatarDecorations_delete,
-		$admin_avatarDecorations_list,
-		$admin_avatarDecorations_update,
 		$admin_deleteAllFilesOfAUser,
 		$admin_unsetUserAvatar,
 		$admin_unsetUserBanner,
@@ -1053,7 +1034,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$following_requests_cancel,
 		$following_requests_list,
 		$following_requests_reject,
-		$getAvatarDecorations,
 		$hashtags_list,
 		$hashtags_search,
 		$hashtags_show,

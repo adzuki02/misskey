@@ -278,26 +278,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</MkFolder>
 
-			<MkFolder v-if="matchQuery([i18n.ts._role._options.canManageAvatarDecorations, 'canManageAvatarDecorations'])">
-				<template #label>{{ i18n.ts._role._options.canManageAvatarDecorations }}</template>
-				<template #suffix>
-					<span v-if="role.policies.canManageAvatarDecorations.useDefault" :class="$style.useDefaultLabel">{{ i18n.ts._role.useBaseValue }}</span>
-					<span v-else>{{ role.policies.canManageAvatarDecorations.value ? i18n.ts.yes : i18n.ts.no }}</span>
-					<span :class="$style.priorityIndicator"><i :class="getPriorityIcon(role.policies.canManageAvatarDecorations)"></i></span>
-				</template>
-				<div class="_gaps">
-					<MkSwitch v-model="role.policies.canManageAvatarDecorations.useDefault" :readonly="readonly">
-						<template #label>{{ i18n.ts._role.useBaseValue }}</template>
-					</MkSwitch>
-					<MkSwitch v-model="role.policies.canManageAvatarDecorations.value" :disabled="role.policies.canManageAvatarDecorations.useDefault" :readonly="readonly">
-						<template #label>{{ i18n.ts.enable }}</template>
-					</MkSwitch>
-					<MkRange v-model="role.policies.canManageAvatarDecorations.priority" :min="0" :max="2" :step="1" easing :textConverter="(v) => v === 0 ? i18n.ts._role._priority.low : v === 1 ? i18n.ts._role._priority.middle : v === 2 ? i18n.ts._role._priority.high : ''">
-						<template #label>{{ i18n.ts._role.priority }}</template>
-					</MkRange>
-				</div>
-			</MkFolder>
-
 			<MkFolder v-if="matchQuery([i18n.ts._role._options.canSearchNotes, 'canSearchNotes'])">
 				<template #label>{{ i18n.ts._role._options.canSearchNotes }}</template>
 				<template #suffix>
@@ -412,26 +392,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkInput v-model="role.policies.pinLimit.value" :disabled="role.policies.pinLimit.useDefault" type="number" :readonly="readonly">
 					</MkInput>
 					<MkRange v-model="role.policies.pinLimit.priority" :min="0" :max="2" :step="1" easing :textConverter="(v) => v === 0 ? i18n.ts._role._priority.low : v === 1 ? i18n.ts._role._priority.middle : v === 2 ? i18n.ts._role._priority.high : ''">
-						<template #label>{{ i18n.ts._role.priority }}</template>
-					</MkRange>
-				</div>
-			</MkFolder>
-
-			<MkFolder v-if="matchQuery([i18n.ts._role._options.avatarDecorationLimit, 'avatarDecorationLimit'])">
-				<template #label>{{ i18n.ts._role._options.avatarDecorationLimit }}</template>
-				<template #suffix>
-					<span v-if="role.policies.avatarDecorationLimit.useDefault" :class="$style.useDefaultLabel">{{ i18n.ts._role.useBaseValue }}</span>
-					<span v-else>{{ role.policies.avatarDecorationLimit.value }}</span>
-					<span :class="$style.priorityIndicator"><i :class="getPriorityIcon(role.policies.avatarDecorationLimit)"></i></span>
-				</template>
-				<div class="_gaps">
-					<MkSwitch v-model="role.policies.avatarDecorationLimit.useDefault" :readonly="readonly">
-						<template #label>{{ i18n.ts._role.useBaseValue }}</template>
-					</MkSwitch>
-					<MkInput v-model="role.policies.avatarDecorationLimit.value" type="number" :min="0">
-						<template #label>{{ i18n.ts._role._options.avatarDecorationLimit }}</template>
-					</MkInput>
-					<MkRange v-model="role.policies.avatarDecorationLimit.priority" :min="0" :max="2" :step="1" easing :textConverter="(v) => v === 0 ? i18n.ts._role._priority.low : v === 1 ? i18n.ts._role._priority.middle : v === 2 ? i18n.ts._role._priority.high : ''">
 						<template #label>{{ i18n.ts._role.priority }}</template>
 					</MkRange>
 				</div>
