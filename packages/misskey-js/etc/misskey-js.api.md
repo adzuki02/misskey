@@ -41,21 +41,6 @@ type AdminAccountsFindByEmailRequest = operations['admin___accounts___find-by-em
 type AdminAccountsFindByEmailResponse = operations['admin___accounts___find-by-email']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
-type AdminAvatarDecorationsCreateRequest = operations['admin___avatar-decorations___create']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAvatarDecorationsDeleteRequest = operations['admin___avatar-decorations___delete']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAvatarDecorationsListRequest = operations['admin___avatar-decorations___list']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAvatarDecorationsListResponse = operations['admin___avatar-decorations___list']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AdminAvatarDecorationsUpdateRequest = operations['admin___avatar-decorations___update']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
 type AdminDeleteAccountRequest = operations['admin___delete-account']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -989,11 +974,6 @@ declare namespace entities {
         AdminAccountsDeleteRequest,
         AdminAccountsFindByEmailRequest,
         AdminAccountsFindByEmailResponse,
-        AdminAvatarDecorationsCreateRequest,
-        AdminAvatarDecorationsDeleteRequest,
-        AdminAvatarDecorationsListRequest,
-        AdminAvatarDecorationsListResponse,
-        AdminAvatarDecorationsUpdateRequest,
         AdminDeleteAllFilesOfAUserRequest,
         AdminUnsetUserAvatarRequest,
         AdminUnsetUserBannerRequest,
@@ -1208,7 +1188,6 @@ declare namespace entities {
         FollowingRequestsListRequest,
         FollowingRequestsListResponse,
         FollowingRequestsRejectRequest,
-        GetAvatarDecorationsResponse,
         HashtagsListRequest,
         HashtagsListResponse,
         HashtagsSearchRequest,
@@ -1615,9 +1594,6 @@ type FollowingUpdateResponse = operations['following___update']['responses']['20
 
 // @public (undocumented)
 export const followingVisibilities: readonly ["public", "followers", "private"];
-
-// @public (undocumented)
-type GetAvatarDecorationsResponse = operations['get-avatar-decorations']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type Hashtag = components['schemas']['Hashtag'];

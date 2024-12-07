@@ -48,42 +48,6 @@ export type paths = {
      */
     post: operations['admin___accounts___find-by-email'];
   };
-  '/admin/avatar-decorations/create': {
-    /**
-     * admin/avatar-decorations/create
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
-     */
-    post: operations['admin___avatar-decorations___create'];
-  };
-  '/admin/avatar-decorations/delete': {
-    /**
-     * admin/avatar-decorations/delete
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
-     */
-    post: operations['admin___avatar-decorations___delete'];
-  };
-  '/admin/avatar-decorations/list': {
-    /**
-     * admin/avatar-decorations/list
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *read:admin:avatar-decorations*
-     */
-    post: operations['admin___avatar-decorations___list'];
-  };
-  '/admin/avatar-decorations/update': {
-    /**
-     * admin/avatar-decorations/update
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
-     */
-    post: operations['admin___avatar-decorations___update'];
-  };
   '/admin/delete-all-files-of-a-user': {
     /**
      * admin/delete-all-files-of-a-user
@@ -1373,15 +1337,6 @@ export type paths = {
      * **Credential required**: *Yes* / **Permission**: *write:following*
      */
     post: operations['following___requests___reject'];
-  };
-  '/get-avatar-decorations': {
-    /**
-     * get-avatar-decorations
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['get-avatar-decorations'];
   };
   '/hashtags/list': {
     /**
@@ -2758,16 +2713,6 @@ export type components = {
       /** Format: url */
       avatarUrl: string | null;
       avatarBlurhash: string | null;
-      avatarDecorations: {
-          /** Format: id */
-          id: string;
-          angle?: number;
-          flipH?: boolean;
-          /** Format: url */
-          url: string;
-          offsetX?: number;
-          offsetY?: number;
-        }[];
       isBot?: boolean;
       instance?: {
         name: string | null;
@@ -3708,7 +3653,6 @@ export type components = {
       inviteLimitCycle: number;
       inviteExpirationTime: number;
       canManageCustomEmojis: boolean;
-      canManageAvatarDecorations: boolean;
       canSearchNotes: boolean;
       canUseTranslator: boolean;
       driveCapacityMb: number;
@@ -3716,7 +3660,6 @@ export type components = {
       canUpdateBioMedia: boolean;
       pinLimit: number;
       rateLimitFactor: number;
-      avatarDecorationLimit: number;
       canMakePureRenoteOfRemoteNotes: boolean;
       canImportAntennas: boolean;
       canImportBlocking: boolean;
@@ -4107,242 +4050,6 @@ export type operations = {
         content: {
           'application/json': components['schemas']['UserDetailedNotMe'];
         };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/avatar-decorations/create
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
-   */
-  'admin___avatar-decorations___create': {
-    requestBody: {
-      content: {
-        'application/json': {
-          name: string;
-          description: string;
-          url: string;
-          roleIdsThatCanBeUsedThisDecoration?: string[];
-        };
-      };
-    };
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/avatar-decorations/delete
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
-   */
-  'admin___avatar-decorations___delete': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** Format: misskey:id */
-          id: string;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/avatar-decorations/list
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *read:admin:avatar-decorations*
-   */
-  'admin___avatar-decorations___list': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @default 10 */
-          limit?: number;
-          /** Format: misskey:id */
-          sinceId?: string;
-          /** Format: misskey:id */
-          untilId?: string;
-          /** Format: misskey:id */
-          userId?: string | null;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': ({
-              /**
-               * Format: id
-               * @example xxxxxxxxxx
-               */
-              id: string;
-              /** Format: date-time */
-              createdAt: string;
-              /** Format: date-time */
-              updatedAt: string | null;
-              name: string;
-              description: string;
-              url: string;
-              roleIdsThatCanBeUsedThisDecoration: string[];
-            })[];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * admin/avatar-decorations/update
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
-   */
-  'admin___avatar-decorations___update': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** Format: misskey:id */
-          id: string;
-          name?: string;
-          description?: string;
-          url?: string;
-          roleIdsThatCanBeUsedThisDecoration?: string[];
-        };
-      };
-    };
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
       };
       /** @description Client error */
       400: {
@@ -12838,62 +12545,6 @@ export type operations = {
     };
   };
   /**
-   * get-avatar-decorations
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  'get-avatar-decorations': {
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': {
-              /**
-               * Format: id
-               * @example xxxxxxxxxx
-               */
-              id: string;
-              name: string;
-              description: string;
-              url: string;
-              roleIdsThatCanBeUsedThisDecoration: string[];
-            }[];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
    * hashtags/list
    * @description No description provided.
    *
@@ -15560,14 +15211,6 @@ export type operations = {
           lang?: null | 'ach' | 'ady' | 'af' | 'af-NA' | 'af-ZA' | 'ak' | 'ar' | 'ar-AR' | 'ar-MA' | 'ar-SA' | 'ay-BO' | 'az' | 'az-AZ' | 'be-BY' | 'bg' | 'bg-BG' | 'bn' | 'bn-IN' | 'bn-BD' | 'br' | 'bs-BA' | 'ca' | 'ca-ES' | 'cak' | 'ck-US' | 'cs' | 'cs-CZ' | 'cy' | 'cy-GB' | 'da' | 'da-DK' | 'de' | 'de-AT' | 'de-DE' | 'de-CH' | 'dsb' | 'el' | 'el-GR' | 'en' | 'en-GB' | 'en-AU' | 'en-CA' | 'en-IE' | 'en-IN' | 'en-PI' | 'en-SG' | 'en-UD' | 'en-US' | 'en-ZA' | 'en@pirate' | 'eo' | 'eo-EO' | 'es' | 'es-AR' | 'es-419' | 'es-CL' | 'es-CO' | 'es-EC' | 'es-ES' | 'es-LA' | 'es-NI' | 'es-MX' | 'es-US' | 'es-VE' | 'et' | 'et-EE' | 'eu' | 'eu-ES' | 'fa' | 'fa-IR' | 'fb-LT' | 'ff' | 'fi' | 'fi-FI' | 'fo' | 'fo-FO' | 'fr' | 'fr-CA' | 'fr-FR' | 'fr-BE' | 'fr-CH' | 'fy-NL' | 'ga' | 'ga-IE' | 'gd' | 'gl' | 'gl-ES' | 'gn-PY' | 'gu-IN' | 'gv' | 'gx-GR' | 'he' | 'he-IL' | 'hi' | 'hi-IN' | 'hr' | 'hr-HR' | 'hsb' | 'ht' | 'hu' | 'hu-HU' | 'hy' | 'hy-AM' | 'id' | 'id-ID' | 'is' | 'is-IS' | 'it' | 'it-IT' | 'ja' | 'ja-JP' | 'jv-ID' | 'ka-GE' | 'kk-KZ' | 'km' | 'kl' | 'km-KH' | 'kab' | 'kn' | 'kn-IN' | 'ko' | 'ko-KR' | 'ku-TR' | 'kw' | 'la' | 'la-VA' | 'lb' | 'li-NL' | 'lt' | 'lt-LT' | 'lv' | 'lv-LV' | 'mai' | 'mg-MG' | 'mk' | 'mk-MK' | 'ml' | 'ml-IN' | 'mn-MN' | 'mr' | 'mr-IN' | 'ms' | 'ms-MY' | 'mt' | 'mt-MT' | 'my' | 'no' | 'nb' | 'nb-NO' | 'ne' | 'ne-NP' | 'nl' | 'nl-BE' | 'nl-NL' | 'nn-NO' | 'oc' | 'or-IN' | 'pa' | 'pa-IN' | 'pl' | 'pl-PL' | 'ps-AF' | 'pt' | 'pt-BR' | 'pt-PT' | 'qu-PE' | 'rm-CH' | 'ro' | 'ro-RO' | 'ru' | 'ru-RU' | 'sa-IN' | 'se-NO' | 'sh' | 'si-LK' | 'sk' | 'sk-SK' | 'sl' | 'sl-SI' | 'so-SO' | 'sq' | 'sq-AL' | 'sr' | 'sr-RS' | 'su' | 'sv' | 'sv-SE' | 'sw' | 'sw-KE' | 'ta' | 'ta-IN' | 'te' | 'te-IN' | 'tg' | 'tg-TJ' | 'th' | 'th-TH' | 'fil' | 'tlh' | 'tr' | 'tr-TR' | 'tt-RU' | 'uk' | 'uk-UA' | 'ur' | 'ur-PK' | 'uz' | 'uz-UZ' | 'vi' | 'vi-VN' | 'xh-ZA' | 'yi' | 'yi-DE' | 'zh' | 'zh-Hans' | 'zh-Hant' | 'zh-CN' | 'zh-HK' | 'zh-SG' | 'zh-TW' | 'zu-ZA';
           /** Format: misskey:id */
           avatarId?: string | null;
-          avatarDecorations?: ({
-              /** Format: misskey:id */
-              id: string;
-              angle?: number | null;
-              flipH?: boolean | null;
-              offsetX?: number | null;
-              offsetY?: number | null;
-            })[];
           /** Format: misskey:id */
           bannerId?: string | null;
           fields?: {

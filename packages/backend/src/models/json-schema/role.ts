@@ -204,10 +204,6 @@ export const packedRolePoliciesSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
-		canManageAvatarDecorations: {
-			type: 'boolean',
-			optional: false, nullable: false,
-		},
 		canSearchNotes: {
 			type: 'boolean',
 			optional: false, nullable: false,
@@ -233,10 +229,6 @@ export const packedRolePoliciesSchema = {
 			optional: false, nullable: false,
 		},
 		rateLimitFactor: {
-			type: 'integer',
-			optional: false, nullable: false,
-		},
-		avatarDecorationLimit: {
 			type: 'integer',
 			optional: false, nullable: false,
 		},

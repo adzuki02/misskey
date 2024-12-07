@@ -71,42 +71,6 @@ export const packedUserLiteSchema = {
 			type: 'string',
 			nullable: true, optional: false,
 		},
-		avatarDecorations: {
-			type: 'array',
-			nullable: false, optional: false,
-			items: {
-				type: 'object',
-				nullable: false, optional: false,
-				properties: {
-					id: {
-						type: 'string',
-						nullable: false, optional: false,
-						format: 'id',
-					},
-					angle: {
-						type: 'number',
-						nullable: false, optional: true,
-					},
-					flipH: {
-						type: 'boolean',
-						nullable: false, optional: true,
-					},
-					url: {
-						type: 'string',
-						format: 'url',
-						nullable: false, optional: false,
-					},
-					offsetX: {
-						type: 'number',
-						nullable: false, optional: true,
-					},
-					offsetY: {
-						type: 'number',
-						nullable: false, optional: true,
-					},
-				},
-			},
-		},
 		isBot: {
 			type: 'boolean',
 			nullable: false, optional: true,

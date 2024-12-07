@@ -11,7 +11,6 @@ import {
 	MiAntenna,
 	MiApp,
 	MiAuthSession,
-	MiAvatarDecoration,
 	MiBlocking,
 	MiChannel,
 	MiChannelFavorite,
@@ -78,12 +77,6 @@ const $notesRepository: Provider = {
 const $appsRepository: Provider = {
 	provide: DI.appsRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiApp).extend(miRepository as MiRepository<MiApp>),
-	inject: [DI.db],
-};
-
-const $avatarDecorationsRepository: Provider = {
-	provide: DI.avatarDecorationsRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiAvatarDecoration).extend(miRepository as MiRepository<MiAvatarDecoration>),
 	inject: [DI.db],
 };
 
@@ -375,7 +368,6 @@ const $userMemosRepository: Provider = {
 		$usersRepository,
 		$notesRepository,
 		$appsRepository,
-		$avatarDecorationsRepository,
 		$noteThreadMutingsRepository,
 		$noteReactionsRepository,
 		$noteUnreadsRepository,
@@ -428,7 +420,6 @@ const $userMemosRepository: Provider = {
 		$usersRepository,
 		$notesRepository,
 		$appsRepository,
-		$avatarDecorationsRepository,
 		$noteThreadMutingsRepository,
 		$noteReactionsRepository,
 		$noteUnreadsRepository,
