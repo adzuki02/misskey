@@ -6,7 +6,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import bcrypt from 'bcryptjs';
 import { IsNull } from 'typeorm';
-import * as Misskey from 'misskey-js';
 import { DI } from '@/di-symbols.js';
 import type {
 	MiMeta,
@@ -26,6 +25,7 @@ import { CaptchaService } from '@/core/CaptchaService.js';
 import { FastifyReplyError } from '@/misc/fastify-reply-error.js';
 import { RateLimiterService } from './RateLimiterService.js';
 import { SigninService } from './SigninService.js';
+import type { SigninFlowResponse as MisskeyApiSigninFlowResponse } from 'misskey-js/entities.js';
 import type { AuthenticationResponseJSON } from '@simplewebauthn/types';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
@@ -140,12 +140,12 @@ export class SigninApiService {
 				return {
 					finished: false,
 					next: 'password',
-				} satisfies Misskey.entities.SigninFlowResponse;
+				} satisfies MisskeyApiSigninFlowResponse;
 			} else {
 				return {
 					finished: false,
 					next: 'captcha',
-				} satisfies Misskey.entities.SigninFlowResponse;
+				} satisfies MisskeyApiSigninFlowResponse;
 			}
 		}
 
@@ -258,7 +258,7 @@ export class SigninApiService {
 				finished: false,
 				next: 'passkey',
 				authRequest,
-			} satisfies Misskey.entities.SigninFlowResponse;
+			} satisfies MisskeyApiSigninFlowResponse;
 		} else {
 			if (!same || !profile.twoFactorEnabled) {
 				return await fail(403, {
@@ -269,7 +269,7 @@ export class SigninApiService {
 				return {
 					finished: false,
 					next: 'totp',
-				} satisfies Misskey.entities.SigninFlowResponse;
+				} satisfies MisskeyApiSigninFlowResponse;
 			}
 		}
 		// never get here

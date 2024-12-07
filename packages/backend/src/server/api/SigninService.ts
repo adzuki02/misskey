@@ -4,7 +4,6 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-import * as Misskey from 'misskey-js';
 import { DI } from '@/di-symbols.js';
 import type { SigninsRepository } from '@/models/_.js';
 import { IdService } from '@/core/IdService.js';
@@ -12,6 +11,7 @@ import type { MiLocalUser } from '@/models/User.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { SigninEntityService } from '@/core/entities/SigninEntityService.js';
 import { bindThis } from '@/decorators.js';
+import type { SigninFlowResponse as MisskeyApiSigninFlowResponse } from 'misskey-js/entities.js';
 import type { FastifyRequest, FastifyReply } from 'fastify';
 
 @Injectable()
@@ -47,7 +47,7 @@ export class SigninService {
 			finished: true,
 			id: user.id,
 			i: user.token!,
-		} satisfies Misskey.entities.SigninFlowResponse;
+		} satisfies MisskeyApiSigninFlowResponse;
 	}
 }
 
