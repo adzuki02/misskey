@@ -63,8 +63,6 @@ export const permissions = [
 	'read:admin:relays',
 	'write:admin:invite-codes',
 	'read:admin:invite-codes',
-	'write:admin:avatar-decorations',
-	'read:admin:avatar-decorations',
 	'write:admin:federation',
 	'write:admin:account',
 	'read:admin:account',
