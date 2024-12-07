@@ -136,7 +136,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'deviceAccount',
 		default: {
 			src: 'home' as 'home' | 'local' | 'social' | 'global' | `list:${string}`,
-			userList: null as UserList | null,
 			filter: {
 				withReplies: true,
 				withRenotes: true,
@@ -144,10 +143,6 @@ export const defaultStore = markRaw(new Storage('base', {
 				onlyFiles: false,
 			},
 		},
-	},
-	pinnedUserLists: {
-		where: 'deviceAccount',
-		default: [] as UserList[],
 	},
 	timelineTabs: {
 		where: 'deviceAccount',

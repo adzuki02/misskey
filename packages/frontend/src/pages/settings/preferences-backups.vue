@@ -60,7 +60,6 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'localOnly',
 	'widgets',
 	'tl',
-	'pinnedUserLists',
 	'timelineTabs',
 	'overridedDeviceKind',
 	'serverDisconnectedBehavior',
