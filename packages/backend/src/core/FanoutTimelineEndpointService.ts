@@ -22,7 +22,6 @@ type TimelineOptions = {
 	untilId: string | null,
 	sinceId: string | null,
 	limit: number,
-	allowPartial: boolean,
 	me?: { id: MiUser['id'] } | undefined | null,
 	useDbFallback: boolean,
 	redisTimelines: FanoutTimelineName[],
@@ -139,7 +138,7 @@ export class FanoutTimelineEndpointService {
 				redisTimeline.push(...gotFromDb);
 				lastSuccessfulRate = gotFromDb.length / noteIds.length;
 
-				if (ps.allowPartial ? redisTimeline.length !== 0 : redisTimeline.length >= ps.limit) {
+				if (redisTimeline.length >= ps.limit) {
 					// 十分Redisからとれた
 					return redisTimeline.slice(0, ps.limit);
 				}

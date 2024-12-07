@@ -47,7 +47,6 @@ export const paramDef = {
 		untilId: { type: 'string', format: 'misskey:id' },
 		sinceDate: { type: 'integer' },
 		untilDate: { type: 'integer' },
-		allowPartial: { type: 'boolean', default: false }, // true is recommended but for compatibility false by default
 	},
 	required: ['channelId'],
 } as const;
@@ -89,7 +88,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				untilId,
 				sinceId,
 				limit: ps.limit,
-				allowPartial: ps.allowPartial,
 				me,
 				useDbFallback: true,
 				redisTimelines: [`channelTimeline:${channel.id}`],

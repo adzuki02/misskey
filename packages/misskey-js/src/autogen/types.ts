@@ -9222,8 +9222,6 @@ export type operations = {
           untilId?: string;
           sinceDate?: number;
           untilDate?: number;
-          /** @default false */
-          allowPartial?: boolean;
         };
       };
     };
@@ -17414,8 +17412,6 @@ export type operations = {
           untilId?: string;
           sinceDate?: number;
           untilDate?: number;
-          /** @default false */
-          allowPartial?: boolean;
           /** @default true */
           includeMyRenotes?: boolean;
           /** @default true */
@@ -17492,8 +17488,6 @@ export type operations = {
           sinceId?: string;
           /** Format: misskey:id */
           untilId?: string;
-          /** @default false */
-          allowPartial?: boolean;
           sinceDate?: number;
           untilDate?: number;
         };
@@ -18327,8 +18321,6 @@ export type operations = {
           untilId?: string;
           sinceDate?: number;
           untilDate?: number;
-          /** @default false */
-          allowPartial?: boolean;
           /** @default true */
           includeMyRenotes?: boolean;
           /** @default true */
@@ -18521,8 +18513,6 @@ export type operations = {
           untilId?: string;
           sinceDate?: number;
           untilDate?: number;
-          /** @default false */
-          allowPartial?: boolean;
           /** @default true */
           includeMyRenotes?: boolean;
           /** @default true */
@@ -20816,8 +20806,6 @@ export type operations = {
           untilId?: string;
           sinceDate?: number;
           untilDate?: number;
-          /** @default false */
-          allowPartial?: boolean;
           /** @default false */
           withFiles?: boolean;
         };
