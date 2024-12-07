@@ -97,8 +97,6 @@ export class MetaEntityService {
 			defaultDarkTheme,
 			enableEmail: instance.enableEmail,
 
-			translatorAvailable: instance.deeplAuthKey != null,
-
 			serverRules: instance.serverRules,
 
 			policies: { ...DEFAULT_POLICIES, ...instance.policies },

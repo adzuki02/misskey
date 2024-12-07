@@ -244,7 +244,6 @@ import * as ep___notes_state from './endpoints/notes/state.js';
 import * as ep___notes_threadMuting_create from './endpoints/notes/thread-muting/create.js';
 import * as ep___notes_threadMuting_delete from './endpoints/notes/thread-muting/delete.js';
 import * as ep___notes_timeline from './endpoints/notes/timeline.js';
-import * as ep___notes_translate from './endpoints/notes/translate.js';
 import * as ep___notes_unrenote from './endpoints/notes/unrenote.js';
 import * as ep___notes_userListTimeline from './endpoints/notes/user-list-timeline.js';
 import * as ep___notifications_create from './endpoints/notifications/create.js';
@@ -537,7 +536,6 @@ const $notes_state: Provider = { provide: 'ep:notes/state', useClass: ep___notes
 const $notes_threadMuting_create: Provider = { provide: 'ep:notes/thread-muting/create', useClass: ep___notes_threadMuting_create.default };
 const $notes_threadMuting_delete: Provider = { provide: 'ep:notes/thread-muting/delete', useClass: ep___notes_threadMuting_delete.default };
 const $notes_timeline: Provider = { provide: 'ep:notes/timeline', useClass: ep___notes_timeline.default };
-const $notes_translate: Provider = { provide: 'ep:notes/translate', useClass: ep___notes_translate.default };
 const $notes_unrenote: Provider = { provide: 'ep:notes/unrenote', useClass: ep___notes_unrenote.default };
 const $notes_userListTimeline: Provider = { provide: 'ep:notes/user-list-timeline', useClass: ep___notes_userListTimeline.default };
 const $notifications_create: Provider = { provide: 'ep:notifications/create', useClass: ep___notifications_create.default };
@@ -834,7 +832,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$notes_threadMuting_create,
 		$notes_threadMuting_delete,
 		$notes_timeline,
-		$notes_translate,
 		$notes_unrenote,
 		$notes_userListTimeline,
 		$notifications_create,
@@ -1125,7 +1122,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$notes_threadMuting_create,
 		$notes_threadMuting_delete,
 		$notes_timeline,
-		$notes_translate,
 		$notes_unrenote,
 		$notes_userListTimeline,
 		$notifications_create,

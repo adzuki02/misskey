@@ -245,7 +245,6 @@ import * as ep___notes_state from './endpoints/notes/state.js';
 import * as ep___notes_threadMuting_create from './endpoints/notes/thread-muting/create.js';
 import * as ep___notes_threadMuting_delete from './endpoints/notes/thread-muting/delete.js';
 import * as ep___notes_timeline from './endpoints/notes/timeline.js';
-import * as ep___notes_translate from './endpoints/notes/translate.js';
 import * as ep___notes_unrenote from './endpoints/notes/unrenote.js';
 import * as ep___notes_userListTimeline from './endpoints/notes/user-list-timeline.js';
 import * as ep___notifications_create from './endpoints/notifications/create.js';
@@ -536,7 +535,6 @@ const eps = [
 	['notes/thread-muting/create', ep___notes_threadMuting_create],
 	['notes/thread-muting/delete', ep___notes_threadMuting_delete],
 	['notes/timeline', ep___notes_timeline],
-	['notes/translate', ep___notes_translate],
 	['notes/unrenote', ep___notes_unrenote],
 	['notes/user-list-timeline', ep___notes_userListTimeline],
 	['notifications/create', ep___notifications_create],

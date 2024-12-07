@@ -90,13 +90,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:enableEmojiMenuReaction="true"
 				/>
 				<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
-				<div v-if="translating || translation" :class="$style.translation">
-					<MkLoading v-if="translating" mini/>
-					<div v-else-if="translation">
-						<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}: </b>
-						<Mfm :text="translation.text" :author="appearNote.user" :emojiUrls="appearNote.emojis"/>
-					</div>
-				</div>
 				<div v-if="appearNote.files && appearNote.files.length > 0">
 					<MkMediaList ref="galleryEl" :mediaList="appearNote.files"/>
 				</div>
@@ -204,7 +197,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, inject, onMounted, provide, ref, shallowRef } from 'vue';
 import * as mfm from 'mfm-js';
 import { isPureRenote } from 'misskey-js/note.js';
-import type { Note, Clip, NotesTranslateResponse } from 'misskey-js/entities.js';
+import type { Note, Clip } from 'misskey-js/entities.js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
@@ -286,8 +279,6 @@ const isMyRenote = $i && ($i.id === note.value.userId);
 const showContent = ref(false);
 const isDeleted = ref(false);
 const muted = ref($i ? checkWordMute(appearNote.value, $i, $i.mutedWords) : false);
-const translation = ref<NotesTranslateResponse | null>(null);
-const translating = ref(false);
 const parsed = appearNote.value.text ? mfm.parse(appearNote.value.text) : null;
 const urls = parsed ? extractUrlFromMfm(parsed).filter((url) => appearNote.value.renote?.url !== url && appearNote.value.renote?.uri !== url) : null;
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.value.user.instance);
@@ -490,13 +481,13 @@ function onContextmenu(ev: MouseEvent): void {
 		ev.preventDefault();
 		react();
 	} else {
-		const { menu, cleanup } = getNoteMenu({ note: note.value, translating, translation, isDeleted });
+		const { menu, cleanup } = getNoteMenu({ note: note.value, isDeleted });
 		os.contextMenu(menu, ev).then(focus).finally(cleanup);
 	}
 }
 
 function showMenu(): void {
-	const { menu, cleanup } = getNoteMenu({ note: note.value, translating, translation, isDeleted });
+	const { menu, cleanup } = getNoteMenu({ note: note.value, isDeleted });
 	os.popupMenu(menu, menuButton.value).then(focus).finally(cleanup);
 }
 

@@ -1321,8 +1321,6 @@ declare namespace entities {
         NotesThreadMutingDeleteRequest,
         NotesTimelineRequest,
         NotesTimelineResponse,
-        NotesTranslateRequest,
-        NotesTranslateResponse,
         NotesUnrenoteRequest,
         NotesUserListTimelineRequest,
         NotesUserListTimelineResponse,
@@ -2021,12 +2019,6 @@ type NotesTimelineRequest = operations['notes___timeline']['requestBody']['conte
 
 // @public (undocumented)
 type NotesTimelineResponse = operations['notes___timeline']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type NotesTranslateRequest = operations['notes___translate']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type NotesTranslateResponse = operations['notes___translate']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type NotesUnrenoteRequest = operations['notes___unrenote']['requestBody']['content']['application/json'];

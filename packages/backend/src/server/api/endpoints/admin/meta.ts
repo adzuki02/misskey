@@ -110,10 +110,6 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
-			translatorAvailable: {
-				type: 'boolean',
-				optional: false, nullable: false,
-			},
 			silencedHosts: {
 				type: 'array',
 				optional: false,
@@ -367,14 +363,6 @@ export const meta = {
 				type: 'string',
 				optional: false, nullable: true,
 			},
-			deeplAuthKey: {
-				type: 'string',
-				optional: false, nullable: true,
-			},
-			deeplIsPro: {
-				type: 'boolean',
-				optional: false, nullable: false,
-			},
 			defaultDarkTheme: {
 				type: 'string',
 				optional: false, nullable: true,
@@ -553,7 +541,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				defaultLightTheme: instance.defaultLightTheme,
 				defaultDarkTheme: instance.defaultDarkTheme,
 				enableEmail: instance.enableEmail,
-				translatorAvailable: instance.deeplAuthKey != null,
 				cacheRemoteFiles: instance.cacheRemoteFiles,
 				cacheRemoteSensitiveFiles: instance.cacheRemoteSensitiveFiles,
 				pinnedUsers: instance.pinnedUsers,
@@ -592,8 +579,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				objectStorageUseProxy: instance.objectStorageUseProxy,
 				objectStorageSetPublicRead: instance.objectStorageSetPublicRead,
 				objectStorageS3ForcePathStyle: instance.objectStorageS3ForcePathStyle,
-				deeplAuthKey: instance.deeplAuthKey,
-				deeplIsPro: instance.deeplIsPro,
 				enableIpLogging: instance.enableIpLogging,
 				enableActiveEmailValidation: instance.enableActiveEmailValidation,
 				enableVerifymailApi: instance.enableVerifymailApi,
