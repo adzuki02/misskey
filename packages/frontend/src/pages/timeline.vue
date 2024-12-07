@@ -202,12 +202,6 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 
 function saveSrc(newSrc: TimelinePageSrc): void {
 	const out = deepMerge({ src: newSrc }, defaultStore.state.tl);
-
-	if (newSrc.startsWith('userList:')) {
-		const id = newSrc.substring('userList:'.length);
-		out.userList = defaultStore.reactiveState.pinnedUserLists.value.find(l => l.id === id) ?? null;
-	}
-
 	defaultStore.set('tl', out);
 }
 
