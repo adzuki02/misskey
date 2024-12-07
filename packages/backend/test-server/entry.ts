@@ -18,8 +18,6 @@ let serverService: ServerService;
  * テスト用のサーバインスタンスを起動する
  */
 async function launch() {
-	console.log('launching application...');
-
 	app = await NestFactory.createApplicationContext(MainModule, {
 		logger: new NestLogger(),
 	});
@@ -31,8 +29,6 @@ async function launch() {
 
 	// ジョブキューは必要な時にテストコード側で起動する
 	// ジョブキューが動くとテスト結果の確認に支障が出ることがあるので意図的に動かさないでいる
-
-	console.log('application initialized.');
 }
 
 /**
@@ -57,11 +53,7 @@ async function startControllerEndpoints(port = config.port + 1000) {
 	fastify.post<{ Body: { key?: string, value?: string } }>('/env-reset', async (req, res) => {
 		process.env = JSON.parse(originEnv);
 
-		console.log('stopping application...');
-
 		await app.close();
-
-		console.log('restarting application...');
 
 		app = await NestFactory.createApplicationContext(MainModule, {
 			logger: new NestLogger(),
@@ -69,8 +61,6 @@ async function startControllerEndpoints(port = config.port + 1000) {
 		app.enableShutdownHooks();
 		serverService = app.get(ServerService);
 		await serverService.launch();
-
-		console.log('application re-initialized.');
 
 		res.code(200).send({ success: true });
 	});
