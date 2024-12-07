@@ -5,7 +5,7 @@
 
 import { defineAsyncComponent, type Ref, type ShallowRef } from 'vue';
 import type { noteVisibilities } from 'misskey-js/consts.js';
-import type { Note, Clip, NotesTranslateResponse } from 'misskey-js/entities.js';
+import type { Note, Clip } from 'misskey-js/entities.js';
 import type { MenuItem, MenuDivider } from '@/types/menu.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
@@ -138,8 +138,6 @@ export function getCopyNoteLinkMenu(note: Note, text: string): MenuItem {
 
 export function getNoteMenu(props: {
 	note: Note;
-	translation: Ref<NotesTranslateResponse | null>;
-	translating: Ref<boolean>;
 	isDeleted: Ref<boolean>;
 	currentClip?: Clip;
 }) {
@@ -219,17 +217,6 @@ export function getNoteMenu(props: {
 		os.pageWindow(`/notes/${appearNote.id}`);
 	}
 
-	async function translate(): Promise<void> {
-		if (props.translation.value != null) return;
-		props.translating.value = true;
-		const res = await misskeyApi('notes/translate', {
-			noteId: appearNote.id,
-			targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
-		});
-		props.translating.value = false;
-		props.translation.value = res;
-	}
-
 	let menu: MenuItem[];
 
 	if ($i) {
@@ -276,13 +263,6 @@ export function getNoteMenu(props: {
 					icon: 'ti ti-share',
 					text: i18n.ts.share,
 					action: share,
-				}
-				: undefined,
-			$i.policies.canUseTranslator && instance.translatorAvailable
-				? {
-					icon: 'ti ti-language-hiragana',
-					text: i18n.ts.translate,
-					action: translate,
 				}
 				: undefined,
 			{ type: 'divider' } as MenuDivider,

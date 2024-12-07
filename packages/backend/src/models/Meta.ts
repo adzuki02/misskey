@@ -330,17 +330,6 @@ export class MiMeta {
 		length: 1024,
 		nullable: true,
 	})
-	public deeplAuthKey: string | null;
-
-	@Column('boolean', {
-		default: false,
-	})
-	public deeplIsPro: boolean;
-
-	@Column('varchar', {
-		length: 1024,
-		nullable: true,
-	})
 	public termsOfServiceUrl: string | null;
 
 	@Column('varchar', {

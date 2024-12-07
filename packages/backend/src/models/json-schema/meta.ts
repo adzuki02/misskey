@@ -152,10 +152,6 @@ export const packedMetaLiteSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
-		translatorAvailable: {
-			type: 'boolean',
-			optional: false, nullable: false,
-		},
 		mediaProxy: {
 			type: 'string',
 			optional: false, nullable: false,
