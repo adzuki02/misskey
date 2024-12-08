@@ -36,7 +36,7 @@ import { shallowRef } from 'vue';
 import type { ComponentExposed } from 'vue-component-type-helpers';
 import MkNote from '@/components/MkNote.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
-import MkPagination, { Paging } from '@/components/MkPagination.vue';
+import MkPagination, { type Paging } from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n.js';
 import { infoImageUrl } from '@/instance.js';
 
