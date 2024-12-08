@@ -55,7 +55,7 @@ import { computed, ref } from 'vue';
 import type { Endpoints } from 'misskey-js';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
-import MkPagination, { Paging } from '@/components/MkPagination.vue';
+import MkPagination, { type Paging } from '@/components/MkPagination.vue';
 import MkInstanceCardMini from '@/components/MkInstanceCardMini.vue';
 import FormSplit from '@/components/form/split.vue';
 import { i18n } from '@/i18n.js';

@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup generic="E extends keyof Endpoints = keyof Endpoints">
 import type { Endpoints } from 'misskey-js/api.types.js';
 import MkUserInfo from '@/components/MkUserInfo.vue';
-import MkPagination, { Paging } from '@/components/MkPagination.vue';
+import MkPagination, { type Paging } from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n.js';
 import { infoImageUrl } from '@/instance.js';
 

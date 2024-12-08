@@ -20,12 +20,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, watch, onUnmounted, provide, shallowRef, useTemplateRef } from 'vue';
 import type { ChannelConnection, Channels, Endpoints as MisskeyEndpoints } from 'misskey-js';
 import type { BasicTimelineType } from '@/timelines.js';
+import type { Paging } from '@/components/MkPagination.vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
 import { useStream } from '@/stream.js';
 import { $i } from '@/account.js';
 import { defaultStore } from '@/store.js';
-import { Paging } from '@/components/MkPagination.vue';
 
 const props = withDefaults(defineProps<{
 	src: BasicTimelineType | 'mentions' | 'directs' | 'list' | 'antenna' | 'channel';
