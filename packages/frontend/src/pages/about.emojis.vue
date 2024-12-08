@@ -23,14 +23,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkFoldableSection v-for="category in customEmojiCategories" v-once :key="category">
 		<template #header>{{ category || i18n.ts.other }}</template>
 		<div :class="$style.emojis">
-			<XEmoji v-for="emoji in customEmojis.filter(e => e.category === category)" :key="emoji.name" :emoji="emoji"/>
+			<XEmoji v-for="emoji in customEmojis.filter(e => e.category === category)" :key="emoji.name" :emoji="emoji" :class="{ [$style.skipRender]: defaultStore.state.skipNoteRender }"/>
 		</div>
 	</MkFoldableSection>
 
 	<MkFoldableSection v-once>
 		<template #header>{{ i18n.ts.other }}</template>
 		<div :class="$style.emojis">
-			<XEmoji v-for="emoji in customEmojis.filter(e => e.category === null)" :key="emoji.name" :emoji="emoji"/>
+			<XEmoji v-for="emoji in customEmojis.filter(e => e.category === null)" :key="emoji.name" :emoji="emoji" :class="{ [$style.skipRender]: defaultStore.state.skipNoteRender }"/>
 		</div>
 	</MkFoldableSection>
 </div>
@@ -46,6 +46,7 @@ import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import { customEmojis, customEmojiCategories } from '@/custom-emojis.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
+import { defaultStore } from '@/store.js';
 
 const q = ref('');
 const searchEmojis = ref<EmojiSimple[]>([]);
@@ -69,5 +70,10 @@ watch(q, () => {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
 	grid-gap: 12px;
+}
+
+.skipRender {
+	content-visibility: auto;
+	contain-intrinsic-size: 190px 66px;
 }
 </style>
