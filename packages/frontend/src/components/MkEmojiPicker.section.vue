@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:data-emoji="emoji"
 			class="_button item"
 			:disabled="disabledEmojis?.value.includes(emoji)"
-			@pointerenter="computeButtonTitle"
+			@pointerenter.once="computeButtonTitle"
 			@click="emit('chosen', emoji, $event)"
 		>
 			<MkCustomEmoji v-if="emoji[0] === ':'" class="emoji" :name="emoji" :normal="true" :fallbackToImage="true" :forceShowingAnimatedImages="defaultStore.reactiveState.forceShowingAnimatedImagesOnPopup.value"/>
@@ -50,7 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:data-emoji="emoji"
 			class="_button item"
 			:disabled="disabledEmojis?.value.includes(emoji)"
-			@pointerenter="computeButtonTitle"
+			@pointerenter.once="computeButtonTitle"
 			@click="emit('chosen', emoji, $event)"
 		>
 			<MkCustomEmoji v-if="emoji[0] === ':'" class="emoji" :name="emoji" :normal="true" :forceShowingAnimatedImages="defaultStore.reactiveState.forceShowingAnimatedImagesOnPopup.value"/>

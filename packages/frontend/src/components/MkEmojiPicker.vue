@@ -66,7 +66,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						class="_button item"
 						:disabled="!canReact(emoji)"
 						tabindex="0"
-						@pointerenter="computeButtonTitle"
+						@pointerenter.once="computeButtonTitle"
 						@click="chosen(emoji, $event)"
 					>
 						<MkCustomEmoji v-if="!emoji.hasOwnProperty('char')" class="emoji" :name="getKey(emoji)" :normal="true" :forceShowingAnimatedImages="defaultStore.reactiveState.forceShowingAnimatedImagesOnPopup.value"/>
@@ -84,7 +84,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						class="_button item"
 						:disabled="!canReact(emoji)"
 						:data-emoji="getKey(emoji)"
-						@pointerenter="computeButtonTitle"
+						@pointerenter.once="computeButtonTitle"
 						@click="chosen(emoji, $event)"
 					>
 						<MkCustomEmoji v-if="!emoji.hasOwnProperty('char')" class="emoji" :name="getKey(emoji)" :normal="true" :forceShowingAnimatedImages="defaultStore.reactiveState.forceShowingAnimatedImagesOnPopup.value"/>
