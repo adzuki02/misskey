@@ -93,7 +93,6 @@ import * as os from '@/os.js';
 import { ColdDeviceStorage, defaultStore } from '@/store.js';
 import { addTheme } from '@/theme-store.js';
 import { i18n } from '@/i18n.js';
-import { useLeaveGuard } from '@/scripts/use-leave-guard.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 const $i = signinRequired();
@@ -133,9 +132,6 @@ const theme = ref<Pick<Theme, 'base' | 'props'> & Partial<Theme>>({
 });
 const description = ref<string | null>(null);
 const themeCode = ref<string | null>(null);
-const changed = ref(false);
-
-useLeaveGuard(changed);
 
 function showPreview() {
 	os.pageWindow('/preview');
@@ -170,7 +166,6 @@ function setFgColor(color) {
 function apply() {
 	themeCode.value = JSON5.stringify(theme.value, null, '\t');
 	applyTheme(theme.value as Theme, false);
-	changed.value = true;
 }
 
 function applyThemeCode() {
@@ -211,7 +206,7 @@ async function saveAs() {
 	} else {
 		ColdDeviceStorage.set('lightTheme', theme.value as Theme);
 	}
-	changed.value = false;
+
 	os.alert({
 		type: 'success',
 		text: i18n.tsx._theme.installed({ name: theme.value.name }),
