@@ -18,8 +18,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:alt="alt"
 	:title="alt"
 	decoding="async"
-	@error="errored = true"
-	@load="errored = false"
+	@error.once="errored = true"
+	@load.once="errored = false"
 	@click="onClick"
 />
 </template>
