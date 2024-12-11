@@ -1392,7 +1392,6 @@ declare namespace entities {
         UsersSearchResponse,
         UsersShowRequest,
         UsersShowResponse,
-        UsersUpdateMemoRequest,
         Error_2 as Error,
         UserLite,
         UserDetailedNotMeOnly,
@@ -2454,9 +2453,6 @@ type UsersShowRequest = operations['users___show']['requestBody']['content']['ap
 
 // @public (undocumented)
 type UsersShowResponse = operations['users___show']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type UsersUpdateMemoRequest = operations['users___update-memo']['requestBody']['content']['application/json'];
 
 // (No @packageDocumentation comment for this package)
 

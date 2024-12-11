@@ -14,7 +14,6 @@ import {
 	BlockingsRepository,
 	FollowingsRepository, FollowRequestsRepository,
 	MiUserProfile, MutingsRepository, RenoteMutingsRepository,
-	UserMemoRepository,
 	UserProfilesRepository,
 	UsersRepository,
 } from '@/models/_.js';
@@ -54,7 +53,6 @@ describe('UserEntityService', () => {
 		let service: UserEntityService;
 		let usersRepository: UsersRepository;
 		let userProfileRepository: UserProfilesRepository;
-		let userMemosRepository: UserMemoRepository;
 		let followingRepository: FollowingsRepository;
 		let followingRequestRepository: FollowRequestsRepository;
 		let blockingRepository: BlockingsRepository;
@@ -78,15 +76,6 @@ describe('UserEntityService', () => {
 			});
 
 			return user;
-		}
-
-		async function memo(writer: MiUser, target: MiUser, memo: string) {
-			await userMemosRepository.insert({
-				id: genAidx(Date.now()),
-				userId: writer.id,
-				targetUserId: target.id,
-				memo,
-			});
 		}
 
 		async function follow(follower: MiUser, followee: MiUser) {
@@ -177,7 +166,6 @@ describe('UserEntityService', () => {
 			service = app.get<UserEntityService>(UserEntityService);
 			usersRepository = app.get<UsersRepository>(DI.usersRepository);
 			userProfileRepository = app.get<UserProfilesRepository>(DI.userProfilesRepository);
-			userMemosRepository = app.get<UserMemoRepository>(DI.userMemosRepository);
 			followingRepository = app.get<FollowingsRepository>(DI.followingsRepository);
 			followingRequestRepository = app.get<FollowRequestsRepository>(DI.followRequestsRepository);
 			blockingRepository = app.get<BlockingsRepository>(DI.blockingsRepository);
@@ -193,11 +181,7 @@ describe('UserEntityService', () => {
 			const me = await createUser();
 			const who = await createUser();
 
-			await memo(me, who, 'memo');
-
 			const actual = await service.pack(who, me, { schema: 'UserLite' }) as any;
-			// no detail
-			expect(actual.memo).toBeUndefined();
 			// no detail and me
 			expect(actual.birthday).toBeUndefined();
 		});
@@ -206,11 +190,7 @@ describe('UserEntityService', () => {
 			const me = await createUser();
 			const who = await createUser({}, { birthday: '2000-01-01' });
 
-			await memo(me, who, 'memo');
-
 			const actual = await service.pack(who, me, { schema: 'UserDetailedNotMe' }) as any;
-			// is detail
-			expect(actual.memo).toBe('memo');
 			// is detail
 			expect(actual.birthday).toBe('2000-01-01');
 		});
@@ -219,11 +199,8 @@ describe('UserEntityService', () => {
 			const me = await createUser({}, {
 				birthday: '2000-01-01',
 			});
-			await memo(me, me, 'memo');
 
 			const actual = await service.pack(me, me, { schema: 'MeDetailed' }) as any;
-			// is detail
-			expect(actual.memo).toBe('memo');
 			// is detail
 			expect(actual.birthday).toBe('2000-01-01');
 		});

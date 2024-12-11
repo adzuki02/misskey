@@ -33,7 +33,6 @@ import type {
 	MutingsRepository,
 	NoteUnreadsRepository,
 	RenoteMutingsRepository,
-	UserMemoRepository,
 	UserNotePiningsRepository,
 	UserProfilesRepository,
 	UserSecurityKeysRepository,
@@ -124,9 +123,6 @@ export class UserEntityService implements OnModuleInit {
 
 		@Inject(DI.userProfilesRepository)
 		private userProfilesRepository: UserProfilesRepository,
-
-		@Inject(DI.userMemosRepository)
-		private userMemosRepository: UserMemoRepository,
 	) {
 	}
 
@@ -380,7 +376,6 @@ export class UserEntityService implements OnModuleInit {
 			includeSecrets?: boolean,
 			userProfile?: MiUserProfile,
 			userRelations?: Map<MiUser['id'], UserRelation>,
-			userMemos?: Map<MiUser['id'], string | null>,
 			pinNotes?: Map<MiUser['id'], MiUserNotePining[]>,
 		},
 	): Promise<Packed<S>> {
@@ -406,16 +401,6 @@ export class UserEntityService implements OnModuleInit {
 				relation = opts.userRelations.get(user.id) ?? null;
 			} else {
 				relation = await this.getRelation(meId, user.id);
-			}
-		}
-
-		let memo: string | null = null;
-		if (isDetailed && meId) {
-			if (opts.userMemos) {
-				memo = opts.userMemos.get(user.id) ?? null;
-			} else {
-				memo = await this.userMemosRepository.findOneBy({ userId: meId, targetUserId: user.id })
-					.then(row => row?.memo ?? null);
 			}
 		}
 
@@ -517,7 +502,6 @@ export class UserEntityService implements OnModuleInit {
 					isAdministrator: role.isAdministrator,
 					displayOrder: role.displayOrder,
 				}))),
-				memo: memo,
 				moderationNote: iAmModerator ? (profile!.moderationNote ?? '') : undefined,
 			} : {}),
 
@@ -624,7 +608,6 @@ export class UserEntityService implements OnModuleInit {
 
 		let profilesMap: Map<MiUser['id'], MiUserProfile> = new Map();
 		let userRelations: Map<MiUser['id'], UserRelation> = new Map();
-		let userMemos: Map<MiUser['id'], string | null> = new Map();
 		let pinNotes: Map<MiUser['id'], MiUserNotePining[]> = new Map();
 
 		if (options?.schema !== 'UserLite') {
@@ -633,9 +616,6 @@ export class UserEntityService implements OnModuleInit {
 
 			const meId = me ? me.id : null;
 			if (meId) {
-				userMemos = await this.userMemosRepository.findBy({ userId: meId })
-					.then(memos => new Map(memos.map(memo => [memo.targetUserId, memo.memo])));
-
 				if (_userIds.length > 0) {
 					userRelations = await this.getRelations(meId, _userIds);
 					pinNotes = await this.userNotePiningsRepository.createQueryBuilder('pin')
@@ -667,7 +647,6 @@ export class UserEntityService implements OnModuleInit {
 					...options,
 					userProfile: profilesMap.get(u.id),
 					userRelations: userRelations,
-					userMemos: userMemos,
 					pinNotes: pinNotes,
 				},
 			)),

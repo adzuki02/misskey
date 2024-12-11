@@ -79,7 +79,6 @@ describe('ユーザー', () => {
 			followingVisibility: user.followingVisibility,
 			followersVisibility: user.followersVisibility,
 			roles: user.roles,
-			memo: user.memo,
 		});
 	};
 
@@ -326,7 +325,6 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.followingVisibility, 'public');
 		assert.strictEqual(response.followersVisibility, 'public');
 		assert.deepStrictEqual(response.roles, []);
-		assert.strictEqual(response.memo, null);
 
 		// MeDetailedOnly
 		assert.strictEqual(response.avatarId, null);
@@ -504,21 +502,6 @@ describe('ユーザー', () => {
 		const response2 = await successfulApiCall({ endpoint: 'i/unpin', parameters, user: alice });
 		const expected2 = meDetailed(alice, false);
 		assert.deepStrictEqual(response2, expected2);
-	});
-
-	//#endregion
-	//#region メモの更新(users/update-memo)
-
-	test.each([
-		{ label: '最大長', memo: 'x'.repeat(2048) },
-		{ label: '空文字', memo: '', expects: null },
-		{ label: 'null', memo: null },
-	])('を書き換えることができる(メモを$labelに)', async ({ memo, expects }) => {
-		const expected = { ...await show(bob.id, alice), memo: expects === undefined ? memo : expects };
-		const parameters = { userId: bob.id, memo };
-		await successfulApiCall({ endpoint: 'users/update-memo', parameters, user: alice });
-		const response = await show(bob.id, alice);
-		assert.deepStrictEqual(response, expected);
 	});
 
 	//#endregion

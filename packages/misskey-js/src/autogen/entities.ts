@@ -428,4 +428,3 @@ export type UsersSearchRequest = operations['users___search']['requestBody']['co
 export type UsersSearchResponse = operations['users___search']['responses']['200']['content']['application/json'];
 export type UsersShowRequest = operations['users___show']['requestBody']['content']['application/json'];
 export type UsersShowResponse = operations['users___show']['responses']['200']['content']['application/json'];
-export type UsersUpdateMemoRequest = operations['users___update-memo']['requestBody']['content']['application/json'];
