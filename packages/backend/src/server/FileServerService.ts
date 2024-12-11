@@ -86,13 +86,15 @@ export class FileServerService {
 			done();
 		});
 
-		fastify.get<{
-			Params: { url: string; };
-			Querystring: { url?: string; };
-		}>('/proxy/:url*', async (request, reply) => {
-			return await this.proxyHandler(request, reply)
-				.catch(err => this.errorHandler(request, reply, err));
-		});
+		if (process.env.NODE_ENV !== 'production') {
+			fastify.get<{
+				Params: { url: string; };
+				Querystring: { url?: string; };
+			}>('/proxy/:url*', async (request, reply) => {
+				return await this.proxyHandler(request, reply)
+					.catch(err => this.errorHandler(request, reply, err));
+			});
+		}
 
 		done();
 	}
