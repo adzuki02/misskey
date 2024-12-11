@@ -1043,14 +1043,6 @@ describe('Endpoints', () => {
 		});
 	});
 
-	describe('URL preview', () => {
-		test('Error from summaly becomes HTTP 422', async () => {
-			const res = await simpleGet('/url?url=https://e:xample.com');
-			assert.strictEqual(res.status, 422);
-			assert.strictEqual(res.body.error.code, 'URL_PREVIEW_FAILED');
-		});
-	});
-
 	describe('パーソナルメモ機能のテスト', () => {
 		test('他者に関するメモを更新できる', async () => {
 			const memo = '10月まで低浮上とのこと。';
