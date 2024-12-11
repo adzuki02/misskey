@@ -7,7 +7,7 @@ import { query } from '@/scripts/url.js';
 import { url } from '@/config.js';
 import { instance } from '@/instance.js';
 
-export function getProxiedImageUrl(imageUrl: string, type?: 'preview' | 'emoji' | 'avatar', mustOrigin = false, noFallback = false): string {
+export function getProxiedImageUrl(imageUrl: string, type?: 'preview' | 'emoji' | 'avatar', noFallback = false): string {
 	const localProxy = `${url}/proxy`;
 
 	if (imageUrl.startsWith(instance.mediaProxy + '/') || imageUrl.startsWith('/proxy/') || imageUrl.startsWith(localProxy + '/')) {
@@ -15,14 +15,13 @@ export function getProxiedImageUrl(imageUrl: string, type?: 'preview' | 'emoji' 
 		imageUrl = (new URL(imageUrl)).searchParams.get('url') ?? imageUrl;
 	}
 
-	return `${mustOrigin ? localProxy : instance.mediaProxy}/${
+	return `${instance.mediaProxy}/${
 		type === 'preview' ? 'preview.webp'
 		: 'image.webp'
 	}?${query({
 		url: imageUrl,
 		...(!noFallback ? { 'fallback': '1' } : {}),
 		...(type ? { [type]: '1' } : {}),
-		...(mustOrigin ? { origin: '1' } : {}),
 	})}`;
 }
 
