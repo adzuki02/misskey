@@ -86,7 +86,11 @@ export class FileServerService {
 			done();
 		});
 
-		if (process.env.NODE_ENV !== 'production') {
+		if (process.env.NODE_ENV === 'production') {
+			fastify.get('/proxy/*', async (request, reply) => {
+				return reply.status(404).send();
+			});
+		} else {
 			fastify.get<{
 				Params: { url: string; };
 				Querystring: { url?: string; };
