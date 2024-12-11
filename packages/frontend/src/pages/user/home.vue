@@ -27,9 +27,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<span v-if="user.isAdmin" :title="i18n.ts.administrator" style="color: var(--MI_THEME-badge);"><i class="ti ti-shield"></i></span>
 								<span v-if="user.isLocked" :title="i18n.ts._role._condition.isLocked"><i class="ti ti-lock"></i></span>
 								<span v-if="user.isBot" :title="i18n.ts._role._condition.isBot"><i class="ti ti-robot"></i></span>
-								<button v-if="$i && !isEditingMemo && !memoDraft" class="_button add-note-button" @click="showMemoTextarea">
-									<i class="ti ti-edit"/> {{ i18n.ts.addMemo }}
-								</button>
 							</div>
 						</div>
 						<span v-if="$i && $i.id != user.id && user.isFollowed" class="followed">{{ i18n.ts.followsYou }}</span>
@@ -64,17 +61,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div v-else>
 							<MkButton small @click="editModerationNote = true">{{ i18n.ts.addModerationNote }}</MkButton>
 						</div>
-					</div>
-					<div v-if="isEditingMemo || memoDraft" class="memo" :class="{'no-memo': !memoDraft}">
-						<div class="heading" v-text="i18n.ts.memo"/>
-						<textarea
-							ref="memoTextareaEl"
-							v-model="memoDraft"
-							rows="1"
-							@focus="isEditingMemo = true"
-							@blur="updateMemo"
-							@input="adjustMemoTextarea"
-						/>
 					</div>
 					<div class="description">
 						<MkOmit>
@@ -206,9 +192,6 @@ const parallaxAnimationId = ref<null | number>(null);
 const narrow = ref<null | boolean>(null);
 const rootEl = ref<null | HTMLElement>(null);
 const bannerEl = ref<null | HTMLElement>(null);
-const memoTextareaEl = ref<null | HTMLElement>(null);
-const memoDraft = ref(props.user.memo);
-const isEditingMemo = ref(false);
 const moderationNote = ref(props.user.moderationNote);
 const editModerationNote = ref(false);
 
@@ -256,38 +239,9 @@ function parallax() {
 	banner.style.backgroundPosition = `center calc(50% - ${pos}px)`;
 }
 
-function showMemoTextarea() {
-	isEditingMemo.value = true;
-	nextTick(() => {
-		memoTextareaEl.value?.focus();
-	});
-}
-
-function adjustMemoTextarea() {
-	if (!memoTextareaEl.value) return;
-	memoTextareaEl.value.style.height = '0px';
-	memoTextareaEl.value.style.height = `${memoTextareaEl.value.scrollHeight}px`;
-}
-
-async function updateMemo() {
-	await misskeyApi('users/update-memo', {
-		memo: memoDraft.value,
-		userId: props.user.id,
-	});
-	isEditingMemo.value = false;
-}
-
-watch([props.user], () => {
-	memoDraft.value = props.user.memo;
-});
-
 onMounted(() => {
 	window.requestAnimationFrame(parallaxLoop);
 	narrow.value = rootEl.value!.clientWidth < 1000;
-
-	nextTick(() => {
-		adjustMemoTextarea();
-	});
 });
 
 onUnmounted(() => {
@@ -404,16 +358,6 @@ onUnmounted(() => {
 									font-weight: bold;
 								}
 							}
-
-							> .add-note-button {
-								background: rgba(0, 0, 0, 0.2);
-								color: #fff;
-								-webkit-backdrop-filter: var(--MI-blur, blur(8px));
-								backdrop-filter: var(--MI-blur, blur(8px));
-								border-radius: 24px;
-								padding: 4px 8px;
-								font-size: 80%;
-							}
 						}
 					}
 				}
@@ -462,39 +406,6 @@ onUnmounted(() => {
 
 				> .moderationNote {
 					margin: 12px 24px 0 154px;
-				}
-
-				> .memo {
-					margin: 12px 24px 0 154px;
-					background: transparent;
-					color: var(--MI_THEME-fg);
-					border: 1px solid var(--MI_THEME-divider);
-					border-radius: 8px;
-					padding: 8px;
-					line-height: 0;
-
-					> .heading {
-						text-align: left;
-						color: var(--MI_THEME-fgTransparent);
-						line-height: 1.5;
-						font-size: 85%;
-					}
-
-					textarea {
-						margin: 0;
-						padding: 0;
-						resize: none;
-						border: none;
-						outline: none;
-						width: 100%;
-						height: auto;
-						min-height: 0;
-						line-height: 1.5;
-						color: var(--MI_THEME-fg);
-						overflow: hidden;
-						background: transparent;
-						font-family: inherit;
-					}
 				}
 
 				> .description {
@@ -633,10 +544,6 @@ onUnmounted(() => {
 				}
 
 				> .moderationNote {
-					margin: 16px 16px 0 16px;
-				}
-
-				> .memo {
 					margin: 16px 16px 0 16px;
 				}
 

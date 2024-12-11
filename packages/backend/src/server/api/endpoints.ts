@@ -294,7 +294,6 @@ import * as ep___users_relation from './endpoints/users/relation.js';
 import * as ep___users_searchByUsernameAndHost from './endpoints/users/search-by-username-and-host.js';
 import * as ep___users_search from './endpoints/users/search.js';
 import * as ep___users_show from './endpoints/users/show.js';
-import * as ep___users_updateMemo from './endpoints/users/update-memo.js';
 
 const eps = [
 	['admin/meta', ep___admin_meta],
@@ -584,7 +583,6 @@ const eps = [
 	['users/search-by-username-and-host', ep___users_searchByUsernameAndHost],
 	['users/search', ep___users_search],
 	['users/show', ep___users_show],
-	['users/update-memo', ep___users_updateMemo],
 ];
 
 interface IEndpointMetaBase {

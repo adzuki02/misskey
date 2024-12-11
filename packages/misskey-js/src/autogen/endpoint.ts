@@ -425,7 +425,6 @@ import type {
 	UsersSearchResponse,
 	UsersShowRequest,
 	UsersShowResponse,
-	UsersUpdateMemoRequest,
 } from './entities.js';
 
 export type Endpoints = {
@@ -716,7 +715,6 @@ export type Endpoints = {
 	'users/search-by-username-and-host': { req: UsersSearchByUsernameAndHostRequest; res: UsersSearchByUsernameAndHostResponse };
 	'users/search': { req: UsersSearchRequest; res: UsersSearchResponse };
 	'users/show': { req: UsersShowRequest; res: UsersShowResponse };
-	'users/update-memo': { req: UsersUpdateMemoRequest; res: EmptyResponse };
 }
 
 /**

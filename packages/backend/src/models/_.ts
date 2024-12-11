@@ -52,7 +52,6 @@ import { MiUserPending } from '@/models/UserPending.js';
 import { MiUserProfile } from '@/models/UserProfile.js';
 import { MiUserPublickey } from '@/models/UserPublickey.js';
 import { MiUserSecurityKey } from '@/models/UserSecurityKey.js';
-import { MiUserMemo } from '@/models/UserMemo.js';
 import { MiWebhook } from '@/models/Webhook.js';
 import { MiChannel } from '@/models/Channel.js';
 import { MiRole } from '@/models/Role.js';
@@ -155,7 +154,6 @@ export {
 	MiRoleAssignment,
 	MiFlash,
 	MiFlashLike,
-	MiUserMemo,
 };
 
 export type AccessTokensRepository = Repository<MiAccessToken> & MiRepository<MiAccessToken>;
@@ -207,4 +205,3 @@ export type RolesRepository = Repository<MiRole> & MiRepository<MiRole>;
 export type RoleAssignmentsRepository = Repository<MiRoleAssignment> & MiRepository<MiRoleAssignment>;
 export type FlashsRepository = Repository<MiFlash> & MiRepository<MiFlash>;
 export type FlashLikesRepository = Repository<MiFlashLike> & MiRepository<MiFlashLike>;
-export type UserMemoRepository = Repository<MiUserMemo> & MiRepository<MiUserMemo>;

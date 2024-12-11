@@ -234,7 +234,6 @@ export function userDetailed(id = 'someuserid', username = 'miskist', host: enti
 		movedTo: null,
 		alsoKnownAs: null,
 		notify: 'none',
-		memo: null,
 	};
 }
 

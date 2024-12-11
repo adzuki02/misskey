@@ -2657,15 +2657,6 @@ export type paths = {
      */
     post: operations['users___show'];
   };
-  '/users/update-memo': {
-    /**
-     * users/update-memo
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:account*
-     */
-    post: operations['users___update-memo'];
-  };
 };
 
 export type webhooks = Record<string, never>;
@@ -2766,7 +2757,6 @@ export type components = {
       /** @enum {string} */
       followersVisibility: 'public' | 'followers' | 'private';
       roles: components['schemas']['RoleLite'][];
-      memo: string | null;
       moderationNote?: string;
       twoFactorEnabled?: boolean;
       usePasswordLessLogin?: boolean;
@@ -20759,60 +20749,6 @@ export type operations = {
         content: {
           'application/json': components['schemas']['UserDetailed'] | components['schemas']['UserDetailed'][];
         };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * users/update-memo
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:account*
-   */
-  'users___update-memo': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** Format: misskey:id */
-          userId: string;
-          /** @description A personal memo for the target user. If null or empty, delete the memo. */
-          memo: string | null;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
       };
       /** @description Client error */
       400: {

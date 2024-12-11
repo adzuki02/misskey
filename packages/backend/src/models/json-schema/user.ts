@@ -301,10 +301,6 @@ export const packedUserDetailedNotMeOnlySchema = {
 				ref: 'RoleLite',
 			},
 		},
-		memo: {
-			type: 'string',
-			nullable: true, optional: false,
-		},
 		moderationNote: {
 			type: 'string',
 			nullable: false, optional: true,

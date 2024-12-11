@@ -293,7 +293,6 @@ import * as ep___users_relation from './endpoints/users/relation.js';
 import * as ep___users_searchByUsernameAndHost from './endpoints/users/search-by-username-and-host.js';
 import * as ep___users_search from './endpoints/users/search.js';
 import * as ep___users_show from './endpoints/users/show.js';
-import * as ep___users_updateMemo from './endpoints/users/update-memo.js';
 import { GetterService } from './GetterService.js';
 import { ApiLoggerService } from './ApiLoggerService.js';
 import type { Provider } from '@nestjs/common';
@@ -585,7 +584,6 @@ const $users_relation: Provider = { provide: 'ep:users/relation', useClass: ep__
 const $users_searchByUsernameAndHost: Provider = { provide: 'ep:users/search-by-username-and-host', useClass: ep___users_searchByUsernameAndHost.default };
 const $users_search: Provider = { provide: 'ep:users/search', useClass: ep___users_search.default };
 const $users_show: Provider = { provide: 'ep:users/show', useClass: ep___users_show.default };
-const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass: ep___users_updateMemo.default };
 
 @Module({
 	imports: [
@@ -881,7 +879,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$users_searchByUsernameAndHost,
 		$users_search,
 		$users_show,
-		$users_updateMemo,
 	],
 	exports: [
 		$admin_meta,
@@ -1171,7 +1168,6 @@ const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass:
 		$users_searchByUsernameAndHost,
 		$users_search,
 		$users_show,
-		$users_updateMemo,
 	],
 })
 export class EndpointsModule {}

@@ -156,27 +156,6 @@ export function getUserMenu(user: UserDetailed, router: IRouter = mainRouter) {
 		});
 	}
 
-	async function editMemo(): Promise<void> {
-		const userDetailed = await misskeyApi('users/show', {
-			userId: user.id,
-		});
-		const { canceled, result } = await os.form(i18n.ts.editMemo, {
-			memo: {
-				type: 'string',
-				required: true,
-				multiline: true,
-				label: i18n.ts.memo,
-				default: userDetailed.memo,
-			},
-		});
-		if (canceled) return;
-
-		os.apiWithDialog('users/update-memo', {
-			memo: result.memo,
-			userId: user.id,
-		});
-	}
-
 	const menu: MenuItem[] = [
 		{
 			icon: 'ti ti-at',
@@ -232,13 +211,6 @@ export function getUserMenu(user: UserDetailed, router: IRouter = mainRouter) {
 				},
 			},
 			{ type: 'divider' } as MenuDivider,
-			{
-				icon: 'ti ti-pencil',
-				text: i18n.ts.editMemo,
-				action: () => {
-					editMemo();
-				},
-			},
 			{
 				type: 'parent' as const,
 				icon: 'ti ti-list',

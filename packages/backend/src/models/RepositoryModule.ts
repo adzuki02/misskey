@@ -52,7 +52,6 @@ import {
 	MiUserList,
 	MiUserListFavorite,
 	MiUserListMembership,
-	MiUserMemo,
 	MiUserNotePining,
 	MiUserPending,
 	MiUserProfile,
@@ -356,12 +355,6 @@ const $roleAssignmentsRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $userMemosRepository: Provider = {
-	provide: DI.userMemosRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiUserMemo).extend(miRepository as MiRepository<MiUserMemo>),
-	inject: [DI.db],
-};
-
 @Module({
 	imports: [],
 	providers: [
@@ -414,7 +407,6 @@ const $userMemosRepository: Provider = {
 		$roleAssignmentsRepository,
 		$flashsRepository,
 		$flashLikesRepository,
-		$userMemosRepository,
 	],
 	exports: [
 		$usersRepository,
@@ -466,7 +458,6 @@ const $userMemosRepository: Provider = {
 		$roleAssignmentsRepository,
 		$flashsRepository,
 		$flashLikesRepository,
-		$userMemosRepository,
 	],
 })
 export class RepositoryModule {
